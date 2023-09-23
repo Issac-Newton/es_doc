@@ -1,1 +1,7 @@
-POST /follower_index/_ccr/pause_follow
+PUT /my-index-000001
+{
+  "settings": {
+    "index.number_of_shards": 2,
+    "index.lifecycle.name": "shrink-index"
+  }
+}

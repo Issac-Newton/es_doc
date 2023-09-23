@@ -1,5 +1,17 @@
-PUT my-index/_settings
+GET /_search
 {
-  "index.routing.allocation.require.data": null,
-  "index.routing.allocation.include._tier_preference": "data_hot"
+  "aggs": {
+    "JapaneseCars": {
+      "terms": {
+        "field": "make",
+        "include": [ "mazda", "honda" ]
+      }
+    },
+    "ActiveCarManufacturers": {
+      "terms": {
+        "field": "make",
+        "exclude": [ "rover", "jensen" ]
+      }
+    }
+  }
 }

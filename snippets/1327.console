@@ -1,13 +1,16 @@
-PUT _ilm/policy/my_policy
+GET news/_search
 {
-  "policy": {
-    "phases": {
-      "hot": {
-        "actions": {
-          "rollover" : {
-            "max_age": "7d",
-            "max_size": "100GB"
-          }
+  "query": {
+    "match": {
+      "content": "madrid"
+    }
+  },
+  "aggs": {
+    "tags": {
+      "significant_text": {
+        "field": "content",
+        "background_filter": {
+          "term": { "content": "spain" }
         }
       }
     }

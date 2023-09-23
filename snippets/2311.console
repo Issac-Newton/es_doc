@@ -1,5 +1,8 @@
-POST /_security/saml/logout
+POST test/_search?filter_path=hits.total
 {
-  "token" : "46ToAxZVaXVVZTVKOVF5YU04ZFJVUDVSZlV3",
-  "refresh_token" : "mJdXLtmvTUSpoLwMvdBt_w"
+  "query": {
+    "match": {
+      "flag": "foo"
+    }
+  }
 }

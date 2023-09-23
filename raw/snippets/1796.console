@@ -1,2 +1,8 @@
-PUT /test/_doc/4?refresh=wait_for
-{"test": "test"}
+PUT /_security/role_mapping/users
+{
+  "roles" : [ "user" ],
+  "rules" : { "field" : {
+    "dn" : "cn=John Doe,ou=example,o=com"
+  } },
+  "enabled": true
+}

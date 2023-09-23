@@ -1,6 +1,13 @@
-PUT /_cluster/settings
+PUT uppercase_example
 {
-  "transient": {
-    "indices.lifecycle.poll_interval": null
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "whitespace_uppercase": {
+          "tokenizer": "whitespace",
+          "filter": [ "uppercase" ]
+        }
+      }
+    }
   }
 }

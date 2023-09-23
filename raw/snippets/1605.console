@@ -1,1 +1,8 @@
-GET /_cluster/settings
+PUT timeseries-000001
+{
+  "aliases": {
+    "timeseries": {
+      "is_write_index": true
+    }
+  }
+}

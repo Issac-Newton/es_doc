@@ -1,8 +1,8 @@
-PUT /users
+PUT /_security/role_mapping/oidc-example
 {
-  "mappings" : {
-    "properties" : {
-      "user_id" : {"type" : "integer"}
-    }
+  "roles": [ "example_role" ],
+  "enabled": true,
+  "rules": {
+    "field": { "realm.name": "oidc1" }
   }
 }

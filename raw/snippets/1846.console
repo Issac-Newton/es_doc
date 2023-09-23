@@ -1,12 +1,7 @@
-PUT /test
+POST /_security/user/admin_user?refresh=true
 {
-  "aliases": {
-    "alias_1": {},
-    "alias_2": {
-      "filter": {
-        "term": { "user.id": "kimchy" }
-      },
-      "routing": "shard-1"
-    }
-  }
+  "password": "l0ng-r4nd0m-p@ssw0rd",
+  "roles": [ "my_admin_role" ],
+  "full_name": "Eirian Zola",
+  "metadata": { "intelligence" : 7}
 }

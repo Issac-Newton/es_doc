@@ -7,7 +7,7 @@
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="setup.html" title="Set up Elasticsearch"/>
-<link rel="prev" href="system-config.html" title="Important System Configuration"/>
+<link rel="prev" href="system-config.html" title="Important system configuration"/>
 <link rel="next" href="bootstrap-checks-xpack.html" title="Bootstrap Checks for X-Pack"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
@@ -25,7 +25,7 @@
 </div>
 <div class="navheader">
 <span class="prev">
-<a href="system-config.html">« Important System Configuration</a>
+<a href="system-config.html">« Important system configuration</a>
 </span>
 <span class="next">
 <a href="bootstrap-checks-xpack.html">Bootstrap Checks for X-Pack »</a>
@@ -33,11 +33,11 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="bootstrap-checks"></a>Bootstrap Checks<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="bootstrap-checks"></a>Bootstrap Checks<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Collectively, we have a lot of experience with users suffering
 unexpected issues because they have not configured
-<a class="xref" href="important-settings.html" title="Important Elasticsearch configuration">important settings</a>. In previous versions of
+<a class="xref" href="settings.html#important-settings" title="Important Elasticsearch configuration">important settings</a>. In previous versions of
 Elasticsearch, misconfiguration of some of these settings were logged
 as warnings. Understandably, users sometimes miss these log messages.
 To ensure that these settings receive the attention that they deserve,
@@ -51,55 +51,53 @@ cause Elasticsearch to refuse to start.</p>
 <p>There are some bootstrap checks that are always enforced to prevent
 Elasticsearch from running with incompatible settings. These checks are
 documented individually.</p>
-<h3><a id="dev-vs-prod-mode"></a>Development vs. production mode<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h3>
-<p>By default, Elasticsearch binds to loopback addresses for <a class="xref" href="settings.html#modules-http" title="HTTP">HTTP</a>
-and <a class="xref" href="settings.html#modules-transport" title="Transport">transport (internal)</a> communication. This is fine for
-downloading and playing with Elasticsearch as well as everyday development, but
-it&#8217;s useless for production systems. To join a cluster, an Elasticsearch node
-must be reachable via transport communication. To join a cluster via a
+<h3><a id="dev-vs-prod-mode"></a>Development vs. production mode<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h3>
+<p>By default, Elasticsearch binds to loopback addresses for
+<a class="xref" href="settings.html#modules-network" title="Networking">HTTP and transport (internal) communication</a>. This is fine
+for downloading and playing with Elasticsearch as well as everyday development,
+but it&#8217;s useless for production systems. To join a cluster, an Elasticsearch
+node must be reachable via transport communication. To join a cluster via a
 non-loopback address, a node must bind transport to a non-loopback address and
 not be using <a class="xref" href="bootstrap-checks.html#single-node-discovery" title="Single-node discovery">single-node discovery</a>. Thus, we consider
 an Elasticsearch node to be in development mode if it can not form a cluster
 with another machine via a non-loopback address, and is otherwise in production
 mode if it can join a cluster via non-loopback addresses.</p>
 <p>Note that HTTP and transport can be configured independently via
-<a class="xref" href="settings.html#modules-http" title="HTTP"><code class="literal">http.host</code></a> and <a class="xref" href="settings.html#modules-transport" title="Transport"><code class="literal">transport.host</code></a>; this
+<a class="xref" href="settings.html#http-settings" title="Advanced HTTP settings"><code class="literal">http.host</code></a> and <a class="xref" href="settings.html#transport-settings" title="Advanced transport settings"><code class="literal">transport.host</code></a>; this
 can be useful for configuring a single node to be reachable via HTTP for testing
 purposes without triggering production mode.</p>
-<h3><a id="single-node-discovery"></a>Single-node discovery<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h3>
-<p>We recognize that some users need to bind transport to an external interface for
-testing their usage of the transport client. For this situation, we provide the
-discovery type <code class="literal">single-node</code> (configure it by setting <code class="literal">discovery.type</code> to
-<code class="literal">single-node</code>); in this situation, a node will elect itself master and will not
-join a cluster with any other node.</p>
-<h3><a id="_forcing_the_bootstrap_checks"></a>Forcing the bootstrap checks<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h3>
+<h3><a id="single-node-discovery"></a>Single-node discovery<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h3>
+<p>We recognize that some users need to bind the transport to an external
+interface for testing a remote-cluster configuration. For this situation, we
+provide the discovery type <code class="literal">single-node</code> (configure it by setting
+<code class="literal">discovery.type</code> to <code class="literal">single-node</code>); in this situation, a node will elect itself
+master and will not join a cluster with any other node.</p>
+<h3><a id="_forcing_the_bootstrap_checks"></a>Forcing the bootstrap checks<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h3>
 <p>If you are running a single node in production, it is possible to evade the
 bootstrap checks (either by not binding transport to an external interface, or
 by binding transport to an external interface and setting the discovery type to
 <code class="literal">single-node</code>). For this situation, you can force execution of the bootstrap
 checks by setting the system property <code class="literal">es.enforce.bootstrap.checks</code> to <code class="literal">true</code>
-(set this in <a class="xref" href="settings.html#jvm-options" title="Setting JVM options">Setting JVM options</a>, or by adding <code class="literal">-Des.enforce.bootstrap.checks=true</code>
-to the environment variable <code class="literal">ES_JAVA_OPTS</code>). We strongly encourage you to do
+in the <a class="xref" href="settings.html#set-jvm-options" title="Set JVM options">JVM options</a>. We strongly encourage you to do
 this if you are in this specific situation. This system property can be used to
 force execution of the bootstrap checks independent of the node configuration.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_heap_size_check"></a>Heap size check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_heap_size_check"></a>Heap size check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
-<p>If a JVM is started with unequal initial and max heap size, it can be
-prone to pauses as the JVM heap is resized during system usage. To avoid
-these resize pauses, it&#8217;s best to start the JVM with the initial heap
-size equal to the maximum heap size. Additionally, if
-<a class="xref" href="system-config.html#bootstrap-memory_lock" title="Enable bootstrap.memory_lock"><code class="literal">bootstrap.memory_lock</code></a> is enabled, the JVM
-will lock the initial size of the heap on startup. If the initial heap
-size is not equal to the maximum heap size, after a resize it will not
-be the case that all of the JVM heap is locked in memory. To pass the
-heap size check, you must configure the <a class="xref" href="redirects.html#heap-size" title="Heap size settings">heap size</a>.</p>
+<p>By default, Elasticsearch automatically sizes JVM heap based on a node&#8217;s
+<a class="xref" href="settings.html#node-roles" title="Node roles">roles</a> and total memory. If you manually override the default
+sizing and start the JVM with different initial and max heap sizes, the JVM may
+pause as it resizes the heap during system usage. If you enable
+<a class="xref" href="system-config.html#bootstrap-memory_lock" title="Enable bootstrap.memory_lock"><code class="literal">bootstrap.memory_lock</code></a>, the JVM locks the initial heap
+size on startup. If the initial heap size is not equal to the maximum heap size,
+some JVM heap may not be locked after a resize. To avoid these issues, start the
+JVM with an initial heap size equal to the maximum heap size.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_file_descriptor_check"></a>File descriptor check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_file_descriptor_check"></a>File descriptor check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>File descriptors are a Unix construct for tracking open "files". In Unix
 though, <a href="https://en.wikipedia.org/wiki/Everything_is_a_file" class="ulink" target="_top">everything is
@@ -114,7 +112,7 @@ descriptors</a>.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_memory_lock_check"></a>Memory lock check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_memory_lock_check"></a>Memory lock check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>When the JVM does a major garbage collection it touches every page of
 the heap. If any of those pages are swapped out to disk they will have
@@ -134,7 +132,7 @@ you might have to configure <a class="xref" href="system-config.html#bootstrap-m
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="max-number-threads-check"></a>Maximum number of threads check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="max-number-threads-check"></a>Maximum number of threads check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Elasticsearch executes requests by breaking the request down into stages
 and handing those stages off to different thread pool executors. There
@@ -152,7 +150,7 @@ limits for the <code class="literal">root</code> user too).</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_max_file_size_check"></a>Max file size check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_max_file_size_check"></a>Max file size check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The segment files that are the components of individual shards and the translog
 generations that are components of the translog can get large (exceeding
@@ -168,7 +166,7 @@ you might have to increase the limits for the <code class="literal">root</code> 
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="max-size-virtual-memory-check"></a>Maximum size virtual memory check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="max-size-virtual-memory-check"></a>Maximum size virtual memory check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Elasticsearch and Lucene use <code class="literal">mmap</code> to great effect to map portions of
 an index into the Elasticsearch address space. This keeps certain index
@@ -185,7 +183,7 @@ for the <code class="literal">root</code> user too.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_maximum_map_count_check"></a>Maximum map count check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_maximum_map_count_check"></a>Maximum map count check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Continuing from the previous <a class="xref" href="bootstrap-checks.html#max-size-virtual-memory-check" title="Maximum size virtual memory check">point</a>, to
 use <code class="literal">mmap</code> effectively, Elasticsearch also requires the ability to
@@ -201,7 +199,7 @@ bootstrap check will not be enforced.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_client_jvm_check"></a>Client JVM check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_client_jvm_check"></a>Client JVM check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>There are two different JVMs provided by OpenJDK-derived JVMs: the
 client JVM and the server JVM. These JVMs use different compilers for
@@ -217,7 +215,7 @@ default.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_use_serial_collector_check"></a>Use serial collector check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_use_serial_collector_check"></a>Use serial collector check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>There are various garbage collectors for the OpenJDK-derived JVMs
 targeting different workloads. The serial collector in particular is
@@ -236,7 +234,7 @@ JDK versions, the configuration defaults to the CMS collector.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_system_call_filter_check"></a>System call filter check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_system_call_filter_check"></a>System call filter check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Elasticsearch installs system call filters of various flavors depending
 on the operating system (e.g., seccomp on Linux). These system call
@@ -244,15 +242,14 @@ filters are installed to prevent the ability to execute system calls
 related to forking as a defense mechanism against arbitrary code
 execution attacks on Elasticsearch. The system call filter check ensures
 that if system call filters are enabled, then they were successfully
-installed. To pass the system call filter check you must either fix any
+installed. To pass the system call filter check you must fix any
 configuration errors on your system that prevented system call filters
-from installing (check your logs), or <span class="strong strong"><strong>at your own risk</strong></span> disable system
-call filters by setting <code class="literal">bootstrap.system_call_filter</code> to <code class="literal">false</code>.</p>
+from installing (check your logs).</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_onerror_and_onoutofmemoryerror_checks"></a>OnError and OnOutOfMemoryError checks<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_onerror_and_onoutofmemoryerror_checks"></a>OnError and OnOutOfMemoryError checks<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The JVM options <code class="literal">OnError</code> and <code class="literal">OnOutOfMemoryError</code> enable executing
 arbitrary commands if the JVM encounters a fatal error (<code class="literal">OnError</code>) or an
@@ -271,7 +268,7 @@ forking will not be supported with seccomp enabled.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_early_access_check"></a>Early-access check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_early_access_check"></a>Early-access check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The OpenJDK project provides early-access snapshots of upcoming releases. These
 releases are not suitable for production. The early-access check detects these
@@ -281,18 +278,18 @@ release build of the JVM.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_g1gc_check"></a>G1GC check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_g1gc_check"></a>G1GC check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Early versions of the HotSpot JVM that shipped with JDK 8 are known to
 have issues that can lead to index corruption when the G1GC collector is
-enabled.  The versions impacted are those earlier than the version of
+enabled. The versions impacted are those earlier than the version of
 HotSpot that shipped with JDK 8u40. The G1GC check detects these early
 versions of the HotSpot JVM.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_all_permission_check"></a>All permission check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_all_permission_check"></a>All permission check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The all permission check ensures that the security policy used during bootstrap
 does not grant the <code class="literal">java.security.AllPermission</code> to Elasticsearch. Running with
@@ -301,7 +298,7 @@ the all permission granted is equivalent to disabling the security manager.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="_discovery_configuration_check"></a>Discovery configuration check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
+<h2 class="title"><a id="_discovery_configuration_check"></a>Discovery configuration check<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/setup/bootstrap-checks.asciidoc">edit</a></h2>
 </div></div></div>
 <p>By default, when Elasticsearch first starts up it will try and discover other
 nodes running on the same host. If no elected master can be discovered within a
@@ -326,12 +323,19 @@ properties:</p>
 </li>
 </ul>
 </div>
+<p>Note that you should remove <code class="literal">cluster.initial_master_nodes</code> from the
+configuration after the cluster has started for the first time. Do not use this
+setting when restarting nodes or when adding new nodes to an existing cluster.
+Instead, configure <code class="literal">discovery.seed_hosts</code> or <code class="literal">discovery.seed_providers</code>. If you
+do not need any discovery configuration, for instance if running a single-node
+cluster, set <code class="literal">discovery.seed_hosts: []</code> to disable discovery and satisfy this
+bootstrap check.</p>
 </div>
 
 </div>
 <div class="navfooter">
 <span class="prev">
-<a href="system-config.html">« Important System Configuration</a>
+<a href="system-config.html">« Important system configuration</a>
 </span>
 <span class="next">
 <a href="bootstrap-checks-xpack.html">Bootstrap Checks for X-Pack »</a>

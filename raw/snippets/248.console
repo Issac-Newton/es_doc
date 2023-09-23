@@ -1,6 +1,11 @@
-PUT my-index-000001/_doc/1?routing=user1&refresh=true
+PUT /test_index/_doc/1?refresh
 {
-  "title": "This is a document"
+  "query" : {
+    "match" : {
+      "body" : {
+        "query" : "miss bicycl",
+        "analyzer" : "whitespace"
+      }
+    }
+  }
 }
-
-GET my-index-000001/_doc/1?routing=user1

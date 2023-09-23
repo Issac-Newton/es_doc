@@ -1,13 +1,1 @@
-POST /_scripts/my_template_1
-{
-  "script": {
-    "lang": "mustache",
-    "source": {
-      "query": {
-        "match": {
-          "message": "{{query_string}}"
-        }
-      }
-    }
-  }
-}
+GET /_internal/desired_nodes/_latest

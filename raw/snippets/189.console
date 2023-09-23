@@ -1,11 +1,4 @@
-PUT /test_index/_doc/1?refresh
+POST /example/_doc
 {
-  "query" : {
-    "match" : {
-      "body" : {
-        "query" : "miss bicycl",
-        "analyzer" : "whitespace"
-      }
-    }
-  }
+  "location" : "POINT (-77.03653 38.897676)"
 }

@@ -1,9 +1,6 @@
-GET /my-index-000001/_search
+PUT /my-data-stream/_settings
 {
-  "timeout": "2s",
-  "query": {
-    "match": {
-      "user.id": "kimchy"
-    }
+  "index": {
+    "refresh_interval": "30s"
   }
 }

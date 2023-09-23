@@ -1,1 +1,5 @@
-GET my-index-000001/_doc/1?stored_fields=tags,counter
+POST /_security/user/cross-cluster-user
+{
+  "password" : "l0ng-r4nd0m-p@ssw0rd",
+  "roles" : [ "remote-replication" ]
+}

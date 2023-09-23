@@ -1,10 +1,1 @@
-POST _reindex
-{
-  "source": {
-    "index": "source"
-  },
-  "dest": {
-    "index": "dest",
-    "pipeline": "some_ingest_pipeline"
-  }
-}
+GET /_cluster/settings?filter_path=**.xpack.profiling.templates.enabled&include_defaults=true

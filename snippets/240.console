@@ -2,10 +2,20 @@ PUT my-index-000001
 {
   "mappings": {
     "properties": {
-      "my_version": {
-        "type": "version"
+      "region": {
+        "type": "keyword"
+      },
+      "manager": {
+        "properties": {
+          "age":  { "type": "integer" },
+          "name": {
+            "properties": {
+              "first": { "type": "text" },
+              "last":  { "type": "text" }
+            }
+          }
+        }
       }
     }
   }
 }
-

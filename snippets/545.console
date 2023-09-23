@@ -1,8 +1,12 @@
-POST /my-data-stream/_doc/
+GET /_analyze
 {
-  "@timestamp": "2020-12-06T11:04:05.000Z",
-  "user": {
-    "id": "vlb44hny"
-  },
-  "message": "Login attempt failed"
+  "tokenizer": "whitespace",
+  "filter": [
+    {
+      "type": "shingle",
+      "min_shingle_size": 2,
+      "max_shingle_size": 3
+    }
+  ],
+  "text": "quick brown fox jumps"
 }

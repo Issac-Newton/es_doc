@@ -1,4 +1,8 @@
-POST /_security/api_key
+POST my-index-000001/_delete_by_query?scroll_size=5000
 {
-  "name": "my-api-key-1"
+  "query": {
+    "term": {
+      "user.id": "kimchy"
+    }
+  }
 }

@@ -1,16 +1,11 @@
-GET news/_search
+PUT /my-index-000001
 {
-  "query": {
-    "match": {
-      "custom_all": "elasticsearch"
-    }
-  },
-  "aggs": {
-    "tags": {
-      "significant_text": {
-        "field": "custom_all",
-        "source_fields": [ "content", "title" ]
+  "mappings": {
+    "properties": {
+      "obj1": {
+        "type": "nested"
       }
     }
   }
 }
+

@@ -1,11 +1,13 @@
-GET /_search
+GET my-index/_search
 {
-  "query": {
-    "wildcard": {
-      "user.id": {
-        "value": "ki*y",
-        "boost": 1.0,
-        "rewrite": "constant_score"
+  "knn": {
+    "field": "my_embeddings.predicted_value",
+    "k": 10,
+    "num_candidates": 100,
+    "query_vector_builder": {
+      "text_embedding": {
+        "model_id": "sentence-transformers__msmarco-minilm-l-12-v3",
+        "model_text": "the query string"
       }
     }
   }

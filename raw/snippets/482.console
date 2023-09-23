@@ -1,25 +1,5 @@
-PUT /my-index-000001
+GET text_payloads/_termvectors/1
 {
-  "settings": {
-    "analysis": {
-      "analyzer": {
-        "my_analyzer": {
-          "tokenizer": "standard",
-          "filter": [
-            "my_script_filter"
-          ]
-        }
-      },
-      "filter": {
-        "my_script_filter": {
-          "type": "predicate_token_filter",
-          "script": {
-            "source": """
-              token.type.contains("ALPHANUM")
-            """
-          }
-        }
-      }
-    }
-  }
+  "fields": [ "text" ],
+  "payloads": true
 }

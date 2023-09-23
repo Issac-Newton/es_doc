@@ -1,11 +1,20 @@
-GET /_analyze
+PUT my-index-000001
 {
-  "tokenizer" : "whitespace",
-  "filter" : [
-    {
-      "type": "common_grams",
-      "common_words": ["is", "the"]
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_email_analyzer": {
+          "type":      "pattern",
+          "pattern":   "\\W|_",
+          "lowercase": true
+        }
+      }
     }
-  ],
-  "text" : "the quick fox is brown"
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_email_analyzer",
+  "text": "John_Smith@foo-bar.com"
 }

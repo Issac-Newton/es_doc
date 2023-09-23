@@ -1,4 +1,6 @@
-POST /_security/saml/prepare
+POST my-index-000001/_update_by_query?refresh&slices=5
 {
-  "realm" : "saml1"
+  "script": {
+    "source": "ctx._source['extra'] = 'test'"
+  }
 }

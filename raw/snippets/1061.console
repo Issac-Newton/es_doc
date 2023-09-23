@@ -1,16 +1,16 @@
-GET /_search
+PUT /example_points
 {
-  "aggs": {
-    "hotspots": {
-      "geohash_grid": {
-        "field": "location",
-        "precision": 5
-      },
-      "aggs": {
-        "significant_crime_types": {
-          "significant_terms": { "field": "crime_type" }
-        }
+  "mappings": {
+    "properties": {
+      "location": {
+        "type": "geo_point"
       }
     }
   }
+}
+
+PUT /example_points/_doc/1?refresh
+{
+  "name": "Wind & Wetter, Berlin, Germany",
+  "location": [13.400544, 52.530286]
 }

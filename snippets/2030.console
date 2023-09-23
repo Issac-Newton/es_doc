@@ -1,1 +1,1 @@
-DELETE /_ingest/pipeline/pipeline-one
+GET _snapshot/my_repository/*?verbose=false

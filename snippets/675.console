@@ -1,6 +1,5 @@
-GET /_search?scroll=1m
+PUT _ingest/pipeline/my-pipeline-id
 {
-  "sort": [
-    "_doc"
-  ]
+  "version": 1,
+  "processors": [ ... ]
 }

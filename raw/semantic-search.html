@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Semantic search | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Semantic search | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="search-your-data.html" title="Search your data"/>
+<link rel="prev" href="knn-search.html" title="k-nearest neighbor (kNN) search"/>
+<link rel="next" href="query-dsl.html" title="Query DSL"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="search-your-data.html">Search your data</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="knn-search.html">« k-nearest neighbor (kNN) search</a>
+</span>
+<span class="next">
+<a href="query-dsl.html">Query DSL »</a>
+</span>
+</div>
+<div class="chapter">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="semantic-search"></a>Semantic search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Semantic search is a search method that helps you find data based on the intent
+and contextual meaning of a search query, instead of a match on query terms
+(lexical search).</p>
+<p>Elasticsearch provides semantic search capabilities using <a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp.html" class="ulink" target="_top">natural
+language processing (NLP)</a> and vector search. Deploying an NLP model to Elasticsearch
+enables it to extract text embeddings out of text. Embeddings are vectors that
+provide a numeric representation of a text. Pieces of content with similar
+meaning have similar representations.</p>
+<div id="semantic-search-diagram" class="imageblock text-center">
+<div class="content">
+<img src="images/search/vector-search-oversimplification.png" alt="A simplified representation of encoding textual concepts as vectors">
+</div>
+<div class="title">Figure 6. A simplified representation of encoding textual concepts as vectors</div>
+</div>
+<p>At query time, Elasticsearch can use the same NLP model to convert a query into
+embeddings, enabling you to find documents with similar text embeddings.</p>
+<p>This guide shows you how to implement semantic search with Elasticsearch, from selecting
+an NLP model, to writing queries.</p>
+<h3><a id="semantic-search-select-nlp-model"></a>Select an NLP model<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search.asciidoc">edit</a></h3>
+<p>Elasticsearch offers the usage of a
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-model-ref.html#ml-nlp-model-ref-text-embedding" class="ulink" target="_top">wide range of NLP models</a>,
+including both dense and sparse vector models. Your choice of the language model
+is critical for implementing semantic search successfully.</p>
+<p>While it is possible to bring your own text embedding model, achieving good
+search results through model tuning is challenging. Selecting an appropriate
+model from our third-party model list is the first step. Training the model on
+your own data is essential to ensure better search results than using only BM25.
+However, the model training process requires a team of data scientists and ML
+experts, making it expensive and time-consuming.</p>
+<p>To address this issue, Elastic provides a pre-trained representational model
+called <a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-elser.html" class="ulink" target="_top">Elastic Learned Sparse EncodeR (ELSER)</a>.
+ELSER, currently available only for English, is an out-of-domain sparse vector
+model that does not require fine-tuning. This adaptability makes it suitable for
+various NLP use cases out of the box. Unless you have a team of ML specialists,
+it is highly recommended to use the ELSER model.</p>
+<p>In the case of sparse vector representation, the vectors mostly consist of zero
+values, with only a small subset containing non-zero values. This representation
+is commonly used for textual data. In the case of ELSER, each document in an
+index and the query text itself are represented by high-dimensional sparse
+vectors. Each non-zero element of the vector corresponds to a term in the model
+vocabulary. The ELSER vocabulary contains around 30000 terms, so the sparse
+vectors created by ELSER contain about 30000 values, the majority of which are
+zero. Effectively the ELSER model is replacing the terms in the original query
+with other terms that have been learnt to exist in the documents that best match
+the original search terms in a training dataset, and weights to control how
+important each is.</p>
+<h3><a id="semantic-search-deploy-nlp-model"></a>Deploy the model<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search.asciidoc">edit</a></h3>
+<p>After you decide which model you want to use for implementing semantic search,
+you need to deploy the model in Elasticsearch.</p>
+<div class="tabs" data-tab-group="model">
+  <div role="tablist" aria-label="model">
+    <button role="tab"
+            aria-selected="true"
+            aria-controls="elser-tab-deploy-nlp-model"
+            id="elser-deploy-nlp-model">
+      ELSER
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="dense-vector-tab-deploy-nlp-model"
+            id="dense-vector-deploy-nlp-model">
+      Dense vector models
+    </button>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="elser-tab-deploy-nlp-model"
+       aria-labelledby="elser-deploy-nlp-model">
+<p>To deploy ELSER, refer to
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-elser.html#download-deploy-elser" class="ulink" target="_top">Download and deploy ELSER</a>.</p>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="dense-vector-tab-deploy-nlp-model"
+       aria-labelledby="dense-vector-deploy-nlp-model"
+       hidden="">
+<p>To deploy a third-party text embedding model, refer to
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-text-emb-vector-search-example.html#ex-te-vs-deploy" class="ulink" target="_top">Deploy a text embedding model</a>.</p>
+  </div>
+</div>
+<h3><a id="semantic-search-field-mappings"></a>Map a field for the text embeddings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search.asciidoc">edit</a></h3>
+<p>Before you start using the deployed model to generate embeddings based on your
+input text, you need to prepare your index mapping first. The mapping of the
+index depends on the type of model.</p>
+<div class="tabs" data-tab-group="model">
+  <div role="tablist" aria-label="model">
+    <button role="tab"
+            aria-selected="true"
+            aria-controls="elser-tab-field-mappings"
+            id="elser-field-mappings">
+      ELSER
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="dense-vector-tab-field-mappings"
+            id="dense-vector-field-mappings">
+      Dense vector models
+    </button>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="elser-tab-field-mappings"
+       aria-labelledby="elser-field-mappings">
+<p>ELSER produces token-weight pairs as output from the input text and the query.
+The Elasticsearch <a class="xref" href="mapping-types.html#rank-features" title="Rank features field type"><code class="literal">rank_features</code></a> field type can store these
+token-weight pairs as numeric feature vectors. The index must have a field with
+the <code class="literal">rank_features</code> field type to index the tokens that ELSER generates.</p>
+<p>To create a mapping for your ELSER index, refer to the
+<a class="xref" href="semantic-search.html#elser-mappings" title="Create the index mapping">Create the index mapping section</a> of the tutorial. The example
+shows how to create an index mapping for <code class="literal">my-index</code> that defines the
+<code class="literal">my_embeddings.tokens</code> field - which will contain the ELSER output - as a
+<code class="literal">rank_features</code> field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index
+{
+  "mappings": {
+    "properties": {
+      "my_embeddings.tokens": { <a id="CO213-1"></a><i class="conum" data-value="1"></i>
+        "type": "rank_features" <a id="CO213-2"></a><i class="conum" data-value="2"></i>
+      },
+      "my_text_field": { <a id="CO213-3"></a><i class="conum" data-value="3"></i>
+        "type": "text" <a id="CO213-4"></a><i class="conum" data-value="4"></i>
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/941.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO213-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of the field that will contain the tokens generated by ELSER.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO213-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The field that contains the tokens must be a <code class="literal">rank_features</code> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO213-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of the field from which to create the sparse vector representation.
+In this example, the name of the field is <code class="literal">my_text_field</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO213-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The field type is <code class="literal">text</code> in this example.</p>
+</td>
+</tr>
+</table>
+</div>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="dense-vector-tab-field-mappings"
+       aria-labelledby="dense-vector-field-mappings"
+       hidden="">
+<p>The models compatible with Elasticsearch NLP generate dense vectors as output. The
+<a class="xref" href="mapping-types.html#dense-vector" title="Dense vector field type"><code class="literal">dense_vector</code></a> field type is suitable for storing dense vectors
+of numeric values. The index must have a field with the <code class="literal">dense_vector</code> field
+type to index the embeddings that the supported third-party model that you
+selected generates. Keep in mind that the model produces embeddings with a
+certain number of dimensions. The <code class="literal">dense_vector</code> field must be configured with
+the same number of dimensions using the <code class="literal">dims</code> option. Refer to the respective
+model documentation to get information about the number of dimensions of the
+embeddings.</p>
+<p>To review a mapping of an index for an NLP model, refer to the mapping code
+snippet in the
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-text-emb-vector-search-example.html#ex-text-emb-ingest" class="ulink" target="_top">Add the text embedding model to an ingest inference pipeline</a>
+section of the tutorial. The example shows how to create an index mapping that
+defines the <code class="literal">my_embeddings.predicted_value</code> field - which will contain the model
+output - as a <code class="literal">dense_vector</code> field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index
+{
+  "mappings": {
+    "properties": {
+      "my_embeddings.predicted_value": { <a id="CO214-1"></a><i class="conum" data-value="1"></i>
+        "type": "dense_vector", <a id="CO214-2"></a><i class="conum" data-value="2"></i>
+        "dims": 384,<a id="CO214-3"></a><i class="conum" data-value="3"></i>
+        "index": true,
+        "similarity": "cosine"
+      },
+      "my_text_field": { <a id="CO214-4"></a><i class="conum" data-value="4"></i>
+        "type": "text" <a id="CO214-5"></a><i class="conum" data-value="5"></i>
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/942.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO214-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of the field that will contain the embeddings generated by the
+model.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO214-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The field that contains the embeddings must be a <code class="literal">dense_vector</code> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO214-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The model produces embeddings with a certain number of dimensions. The
+<code class="literal">dense_vector</code> field must be configured with the same number of dimensions by
+the <code class="literal">dims</code> option. Refer to the respective model documentation to get
+information about the number of dimensions of the embeddings.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO214-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of the field from which to create the dense vector representation.
+In this example, the name of the field is <code class="literal">my_text_field</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO214-5"><i class="conum" data-value="5"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The field type is <code class="literal">text</code> in this example.</p>
+</td>
+</tr>
+</table>
+</div>
+  </div>
+</div>
+<h3><a id="semantic-search-generate-embeddings"></a>Generate text embeddings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search.asciidoc">edit</a></h3>
+<p>Once you have created the mappings for the index, you can generate text
+embeddings from your input text. This can be done by using an
+<a class="xref" href="ingest.html" title="Ingest pipelines">ingest pipeline</a> with an <a class="xref" href="processors.html#inference-processor" title="Inference processor">inference processor</a>.
+The ingest pipeline processes the input data and indexes it into the destination
+index. At index time, the inference ingest processor uses the trained model to
+infer against the data ingested through the pipeline. After you created the
+ingest pipeline with the inference processor, you can ingest your data through
+it to generate the model output.</p>
+<div class="tabs" data-tab-group="model">
+  <div role="tablist" aria-label="model">
+    <button role="tab"
+            aria-selected="true"
+            aria-controls="elser-tab-generate-embeddings"
+            id="elser-generate-embeddings">
+      ELSER
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="dense-vector-tab-generate-embeddings"
+            id="dense-vector-generate-embeddings">
+      Dense vector models
+    </button>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="elser-tab-generate-embeddings"
+       aria-labelledby="elser-generate-embeddings">
+<p>This is how an ingest pipeline that uses the ELSER model is created:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ingest/pipeline/my-text-embeddings-pipeline
+{
+  "description": "Text embedding pipeline",
+  "processors": [
+    {
+      "inference": {
+        "model_id": ".elser_model_1",
+        "target_field": "my_embeddings",
+        "field_map": { <a id="CO215-1"></a><i class="conum" data-value="1"></i>
+          "my_text_field": "text_field"
+        },
+        "inference_config": {
+          "text_expansion": { <a id="CO215-2"></a><i class="conum" data-value="2"></i>
+            "results_field": "tokens"
+          }
+        }
+      }
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/943.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO215-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">field_map</code> object maps the input document field name (which is
+<code class="literal">my_text_field</code> in this example) to the name of the field that the model expects
+(which is always <code class="literal">text_field</code>).</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO215-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">text_expansion</code> inference type needs to be used in the inference ingest
+processor.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>To ingest data through the pipeline to generate tokens with ELSER, refer to the
+<a class="xref" href="semantic-search.html#reindexing-data-elser" title="Ingest the data through the inference ingest pipeline">Ingest the data through the inference ingest pipeline</a> section of the tutorial. After you successfully
+ingested documents by using the pipeline, your index will contain the tokens
+generated by ELSER.</p>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="dense-vector-tab-generate-embeddings"
+       aria-labelledby="dense-vector-generate-embeddings"
+       hidden="">
+<p>This is how an ingest pipeline that uses a text embedding model is created:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ingest/pipeline/my-text-embeddings-pipeline
+{
+  "description": "Text embedding pipeline",
+  "processors": [
+    {
+      "inference": {
+        "model_id": "sentence-transformers__msmarco-minilm-l-12-v3", <a id="CO216-1"></a><i class="conum" data-value="1"></i>
+        "target_field": "my_embeddings",
+        "field_map": { <a id="CO216-2"></a><i class="conum" data-value="2"></i>
+          "my_text_field": "text_field"
+        }
+      }
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/944.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO216-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The model ID of the text embedding model you want to use.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO216-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">field_map</code> object maps the input document field name (which is
+<code class="literal">my_text_field</code> in this example) to the name of the field that the model expects
+(which is always <code class="literal">text_field</code>).</p>
+</td>
+</tr>
+</table>
+</div>
+<p>To ingest data through the pipeline to generate text embeddings with your chosen
+model, refer to the
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-text-emb-vector-search-example.html#ex-text-emb-ingest" class="ulink" target="_top">Add the text embedding model to an inference ingest pipeline</a>
+section. The example shows how to create the pipeline with the inference
+processor and reindex your data through the pipeline. After you successfully
+ingested documents by using the pipeline, your index will contain the text
+embeddings generated by the model.</p>
+  </div>
+</div>
+<p>Now it is time to perform semantic search!</p>
+<h3><a id="semantic-search-search"></a>Search the data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search.asciidoc">edit</a></h3>
+<p>Depending on the type of model you have deployed, you can query rank features
+with a text expansion query, or dense vectors with a kNN search.</p>
+<div class="tabs" data-tab-group="model">
+  <div role="tablist" aria-label="model">
+    <button role="tab"
+            aria-selected="true"
+            aria-controls="elser-tab-search"
+            id="elser-search">
+      ELSER
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="dense-vector-tab-search"
+            id="dense-vector-search">
+      Dense vector models
+    </button>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="elser-tab-search"
+       aria-labelledby="elser-search">
+<p>ELSER text embeddings can be queried using a
+<a class="xref" href="query-dsl-text-expansion-query.html" title="Text expansion query">text expansion query</a>. The text expansion
+query enables you to query a rank features field, by providing the model ID of
+the NLP model, and the query text:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+   "query":{
+      "text_expansion":{
+         "my_embeddings.tokens":{ <a id="CO217-1"></a><i class="conum" data-value="1"></i>
+            "model_id":".elser_model_1",
+            "model_text":"the query string"
+         }
+      }
+   }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/945.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO217-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The field of type <code class="literal">rank_features</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="dense-vector-tab-search"
+       aria-labelledby="dense-vector-search"
+       hidden="">
+<p>Text embeddings produced by dense vector models can be queried using a
+<a class="xref" href="knn-search.html#knn-semantic-search" title="Perform semantic search">kNN search</a>. In the <code class="literal">knn</code> clause, provide the name of the
+dense vector field, and a <code class="literal">query_vector_builder</code> clause with the model ID and
+the query text.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+  "knn": {
+    "field": "my_embeddings.predicted_value",
+    "k": 10,
+    "num_candidates": 100,
+    "query_vector_builder": {
+      "text_embedding": {
+        "model_id": "sentence-transformers__msmarco-minilm-l-12-v3",
+        "model_text": "the query string"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/946.console"></div>
+  </div>
+</div>
+<h3><a id="semantic-search-hybrid-search"></a>Beyond semantic search with hybrid search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search.asciidoc">edit</a></h3>
+<p>In some situations, lexical search may perform better than semantic search. For
+example, when searching for single words or IDs, like product numbers.</p>
+<p>Combining semantic and lexical search into one hybrid search request using
+<a class="xref" href="search.html#rrf" title="Reciprocal rank fusion">reciprocal rank fusion</a> provides the best of both worlds. Not only that,
+but hybrid search using reciprocal rank fusion <a href="https://www.elastic.co/blog/improving-information-retrieval-elastic-stack-hybrid" class="ulink" target="_top">has been shown to perform better
+in general</a>.</p>
+<div class="tabs" data-tab-group="model">
+  <div role="tablist" aria-label="model">
+    <button role="tab"
+            aria-selected="true"
+            aria-controls="elser-tab-hybrid-search"
+            id="elser-hybrid-search">
+      ELSER
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="dense-vector-tab-hybrid-search"
+            id="dense-vector-hybrid-search">
+      Dense vector models
+    </button>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="elser-tab-hybrid-search"
+       aria-labelledby="elser-hybrid-search">
+<p>Hybrid search between a semantic and lexical query can be achieved by using a
+<code class="literal">sub_searches</code> clause in your search request. In the <code class="literal">sub_searches</code> clause,
+provide a <code class="literal">text_expansion</code> query and a full-text query. Next to the
+<code class="literal">sub_searches</code> clause, also provide a <a class="xref" href="search.html#request-body-rank"><code class="literal">rank</code></a> clause with
+the <code class="literal">rrf</code> parameter to rank documents using reciprocal rank fusion.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+  "sub_searches": [
+    {
+      "query": {
+        "match": {
+          "my_text_field": "the query string"
+        }
+      }
+    },
+    {
+      "query": {
+        "text_expansion": {
+          "my_embeddings.tokens": {
+            "model_id": ".elser_model_1",
+            "model_text": "the query string"
+          }
+        }
+      }
+    }
+  ],
+  "rank": {
+    "rrf": {}
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/947.console"></div>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="dense-vector-tab-hybrid-search"
+       aria-labelledby="dense-vector-hybrid-search"
+       hidden="">
+<p>Hybrid search between a semantic and lexical query can be achieved by providing:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+a <code class="literal">query</code> clause for the full-text query;
+</li>
+<li class="listitem">
+a <code class="literal">knn</code> clause with the kNN search that queries the dense vector field;
+</li>
+<li class="listitem">
+and a <code class="literal">rank</code> clause with the <code class="literal">rrf</code> parameter to rank documents using
+reciprocal rank fusion.
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+  "query": {
+    "match": {
+      "my_text_field": "the query string"
+    }
+  },
+  "knn": {
+    "field": "text_embedding.predicted_value",
+    "k": 10,
+    "num_candidates": 100,
+    "query_vector_builder": {
+      "text_embedding": {
+        "model_id": "sentence-transformers__msmarco-minilm-l-12-v3",
+        "model_text": "the query string"
+      }
+    }
+  },
+  "rank": {
+    "rrf": {}
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/948.console"></div>
+  </div>
+</div>
+<h3><a id="semantic-search-read-more"></a>Read more<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search.asciidoc">edit</a></h3>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p>Tutorials:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="semantic-search.html#semantic-search-elser" title="Tutorial: semantic search with ELSER">Semantic search with ELSER</a>
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-text-emb-vector-search-example.html" class="ulink" target="_top">Semantic search with the msmarco-MiniLM-L-12-v3 sentence-transformer model</a>
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>Blogs:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a href="https://www.elastic.co/blog/may-2023-launch-sparse-encoder-ai-model" class="ulink" target="_top">Introducing Elastic Learned Sparse Encoder: Elastic&#8217;s AI model for semantic search</a>
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/blog/lexical-ai-powered-search-elastic-vector-database" class="ulink" target="_top">How to get the best of lexical and AI-powered search with Elastic&#8217;s vector database</a>
+</li>
+<li class="listitem">
+<p>Information retrieval blog series:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a href="https://www.elastic.co/blog/improving-information-retrieval-elastic-stack-search-relevance" class="ulink" target="_top">Part 1: Steps to improve search relevance</a>
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/blog/improving-information-retrieval-elastic-stack-benchmarking-passage-retrieval" class="ulink" target="_top">Part 2: Benchmarking passage retrieval</a>
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/blog/may-2023-launch-information-retrieval-elasticsearch-ai-model" class="ulink" target="_top">Part 3: Introducing Elastic Learned Sparse Encoder, our new retrieval model</a>
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/blog/improving-information-retrieval-elastic-stack-hybrid" class="ulink" target="_top">Part 4: Hybrid retrieval</a>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="semantic-search-elser"></a>Tutorial: semantic search with ELSER<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Elastic Learned Sparse EncodeR - or ELSER - is an NLP model trained by Elastic
+that enables you to perform semantic search by using sparse vector
+representation. Instead of literal matching on search terms, semantic search
+retrieves results based on the intent and the contextual meaning of a search
+query.</p>
+<p>The instructions in this tutorial shows you how to use ELSER to perform semantic
+search on your data.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Only the first 512 extracted tokens per field are considered during
+semantic search with ELSER v1. Refer to
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-limitations.html#ml-nlp-elser-v1-limit-512" class="ulink" target="_top">this page</a> for more
+information.</p>
+</div>
+</div>
+<h4><a id="requirements"></a>Requirements<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<p>To perform semantic search by using ELSER, you must have the NLP model deployed
+in your cluster. Refer to the
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-elser.html" class="ulink" target="_top">ELSER documentation</a> to learn how to download and
+deploy the model.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The minimum dedicated ML node size for deploying and using the ELSER model
+is 4 GB in Elasticsearch Service if
+<a href="https://www.elastic.co/guide/en/cloud/current/ec-autoscaling.html" class="ulink" target="_top">deployment autoscaling</a> is turned off. Turning on
+autoscaling is recommended because it allows your deployment to dynamically
+adjust resources based on demand. Better performance can be achieved by using
+more allocations or more threads per allocation, which requires bigger ML nodes.
+Autoscaling provides bigger nodes when required. If autoscaling is turned off,
+you must provide suitably sized nodes yourself.</p>
+</div>
+</div>
+<h4><a id="elser-mappings"></a>Create the index mapping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<p>First, the mapping of the destination index - the index that contains the tokens
+that the model created based on your text - must be created.  The destination
+index must have a field with the <a class="xref" href="mapping-types.html#rank-features" title="Rank features field type"><code class="literal">rank_features</code></a> field type
+to index the ELSER output.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>ELSER output must be ingested into a field with the <code class="literal">rank_features</code> field
+type. Otherwise, Elasticsearch interprets the token-weight pairs as a massive amount of
+fields in a document. If you get an error similar to this
+<code class="literal">"Limit of total fields [1000] has been exceeded while adding new fields"</code> then
+the ELSER output field is not mapped properly and it has a field type different
+than <code class="literal">rank_features</code>.</p>
+</div>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index
+{
+  "mappings": {
+    "properties": {
+      "ml.tokens": { <a id="CO218-1"></a><i class="conum" data-value="1"></i>
+        "type": "rank_features" <a id="CO218-2"></a><i class="conum" data-value="2"></i>
+      },
+      "text": { <a id="CO218-3"></a><i class="conum" data-value="3"></i>
+        "type": "text" <a id="CO218-4"></a><i class="conum" data-value="4"></i>
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/949.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO218-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of the field to contain the generated tokens.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO218-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The field to contain the tokens is a <code class="literal">rank_features</code> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO218-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of the field from which to create the sparse vector representation.
+In this example, the name of the field is <code class="literal">text</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO218-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The field type which is text in this example.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>To learn how to optimize space, refer to the <a class="xref" href="semantic-search.html#save-space" title="Saving disk space by excluding the ELSER tokens from document source">Saving disk space by excluding the ELSER tokens from document source</a> section.</p>
+<h4><a id="inference-ingest-pipeline"></a>Create an ingest pipeline with an inference processor<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<p>Create an <a class="xref" href="ingest.html" title="Ingest pipelines">ingest pipeline</a> with an
+<a class="xref" href="processors.html#inference-processor" title="Inference processor">inference processor</a> to use ELSER to infer against the data
+that is being ingested in the pipeline.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ingest/pipeline/elser-v1-test
+{
+  "processors": [
+    {
+      "inference": {
+        "model_id": ".elser_model_1",
+        "target_field": "ml",
+        "field_map": { <a id="CO219-1"></a><i class="conum" data-value="1"></i>
+          "text": "text_field"
+        },
+        "inference_config": {
+          "text_expansion": { <a id="CO219-2"></a><i class="conum" data-value="2"></i>
+            "results_field": "tokens"
+          }
+        }
+      }
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/950.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO219-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">field_map</code> object maps the input document field name (which is <code class="literal">text</code>
+in this example) to the name of the field that the model expects (which is
+always <code class="literal">text_field</code>).</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO219-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">text_expansion</code> inference type needs to be used in the inference ingest
+processor.</p>
+</td>
+</tr>
+</table>
+</div>
+<h4><a id="load-data"></a>Load data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<p>In this step, you load the data that you later use in the inference ingest
+pipeline to extract tokens from it.</p>
+<p>Use the <code class="literal">msmarco-passagetest2019-top1000</code> data set, which is a subset of the MS
+MARCO Passage Ranking data set. It consists of 200 queries, each accompanied by
+a list of relevant text passages. All unique passages, along with their IDs,
+have been extracted from that data set and compiled into a
+<a href="https://github.com/elastic/stack-docs/blob/main/docs/en/stack/ml/nlp/data/msmarco-passagetest2019-unique.tsv" class="ulink" target="_top">tsv file</a>.</p>
+<p>Download the file and upload it to your cluster using the
+<a href="https://www.elastic.co/guide/en/kibana/8.9/connect-to-elasticsearch.html#upload-data-kibana" class="ulink" target="_top">Data Visualizer</a>
+in the Machine Learning UI. Assign the name <code class="literal">id</code> to the first column and <code class="literal">text</code> to the
+second column. The index name is <code class="literal">test-data</code>. Once the upload is complete, you
+can see an index named <code class="literal">test-data</code> with 182469 documents.</p>
+<h4><a id="reindexing-data-elser"></a>Ingest the data through the inference ingest pipeline<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<p>Create the tokens from the text by reindexing the data throught the inference
+pipeline that uses ELSER as the inference model.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _reindex?wait_for_completion=false
+{
+  "source": {
+    "index": "test-data",
+    "size": 50 <a id="CO220-1"></a><i class="conum" data-value="1"></i>
+  },
+  "dest": {
+    "index": "my-index",
+    "pipeline": "elser-v1-test"
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/951.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO220-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default batch size for reindexing is 1000. Reducing <code class="literal">size</code> to a smaller
+number makes the update of the reindexing process quicker which enables you to
+follow the progress closely and detect errors early.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The call returns a task ID to monitor the progress:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _tasks/&lt;task_id&gt;</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/952.console"></div>
+<p>You can also open the Trained Models UI, select the Pipelines tab under ELSER to
+follow the progress.</p>
+<h4><a id="text-expansion-query"></a>Semantic search by using the <code class="literal">text_expansion</code> query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<p>To perform semantic search, use the <code class="literal">text_expansion</code> query, and provide the
+query text and the ELSER model ID. The example below uses the query text "How to
+avoid muscle soreness after running?", the <code class="literal">ml-tokens</code> field contains the
+generated ELSER output:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+   "query":{
+      "text_expansion":{
+         "ml.tokens":{
+            "model_id":".elser_model_1",
+            "model_text":"How to avoid muscle soreness after running?"
+         }
+      }
+   }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/953.console"></div>
+<p>The result is the top 10 documents that are closest in meaning to your query
+text from the <code class="literal">my-index</code> index sorted by their relevancy. The result also
+contains the extracted tokens for each of the relevant search results with their
+weights.</p>
+<div class="pre_wrapper lang-consol-result">
+<pre class="programlisting prettyprint lang-consol-result">"hits":[
+   {
+      "_index":"my-index",
+      "_id":"978UAYgBKCQMet06sLEy",
+      "_score":18.612831,
+      "_ignored":[
+         "text.keyword"
+      ],
+      "_source":{
+         "id":7361587,
+         "text":"For example, if you go for a run, you will mostly use the muscles in your lower body. Give yourself 2 days to rest those muscles so they have a chance to heal before you exercise them again. Not giving your muscles enough time to rest can cause muscle damage, rather than muscle development.",
+         "ml":{
+            "tokens":{
+               "muscular":0.075696334,
+               "mostly":0.52380747,
+               "practice":0.23430172,
+               "rehab":0.3673556,
+               "cycling":0.13947526,
+               "your":0.35725075,
+               "years":0.69484913,
+               "soon":0.005317828,
+               "leg":0.41748235,
+               "fatigue":0.3157955,
+               "rehabilitation":0.13636169,
+               "muscles":1.302141,
+               "exercises":0.36694175,
+               (...)
+            },
+            "model_id":".elser_model_1"
+         }
+      }
+   },
+   (...)
+]</pre>
+</div>
+<p>To learn about optimizing your <code class="literal">text_expansion</code> query, refer to
+<a class="xref" href="query-dsl-text-expansion-query.html#optimizing-text-expansion" title="Optimizing the search performance of the text_expansion query">Optimizing the search performance of the text_expansion query</a>.</p>
+<h4><a id="text-expansion-compound-query"></a>Combining semantic search with other queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<p>You can combine <code class="literal">text_expansion</code> with other queries in a
+<a class="xref" href="compound-queries.html" title="Compound queries">compound query</a>. For example using a filter clause in a
+<a class="xref" href="compound-queries.html#query-dsl-bool-query" title="Boolean query">Boolean</a> or a full text query which may or may not use the same
+query text as the <code class="literal">text_expansion</code> query. This enables you to combine the search
+results from both queries.</p>
+<p>The search hits from the <code class="literal">text_expansion</code> query tend to score higher than other
+Elasticsearch queries. Those scores can be regularized by increasing or decreasing the
+relevance scores of each query by using the <code class="literal">boost</code> parameter. Recall on the
+<code class="literal">text_expansion</code> query can be high where there is a long tail of less relevant
+results. Use the <code class="literal">min_score</code> parameter to prune those less relevant documents.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+  "query": {
+    "bool": { <a id="CO221-1"></a><i class="conum" data-value="1"></i>
+      "should": [
+        {
+          "text_expansion": {
+            "ml.tokens": {
+              "model_text": "How to avoid muscle soreness after running?",
+              "model_id": ".elser_model_1",
+              "boost": 1 <a id="CO221-2"></a><i class="conum" data-value="2"></i>
+            }
+          }
+        },
+        {
+          "query_string": {
+            "query": "toxins",
+            "boost": 4 <a id="CO221-3"></a><i class="conum" data-value="3"></i>
+          }
+        }
+      ]
+    }
+  },
+  "min_score": 10 <a id="CO221-4"></a><i class="conum" data-value="4"></i>
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/954.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO221-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Both the <code class="literal">text_expansion</code> and the <code class="literal">query_string</code> queries are in a <code class="literal">should</code>
+clause of a <code class="literal">bool</code> query.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO221-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">boost</code> value is <code class="literal">1</code> for the <code class="literal">text_expansion</code> query which is the default
+value. This means that the relevance score of the results of this query are not
+boosted.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO221-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">boost</code> value is <code class="literal">4</code> for the <code class="literal">query_string</code> query. The relevance score
+of the results of this query is increased causing them to rank higher in the
+search results.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO221-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Only the results with a score equal to or higher than <code class="literal">10</code> are displayed.</p>
+</td>
+</tr>
+</table>
+</div>
+<h3><a id="optimization"></a>Optimizing performance<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h3>
+<h4><a id="save-space"></a>Saving disk space by excluding the ELSER tokens from document source<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<p>The tokens generated by ELSER must be indexed for use in the
+<a class="xref" href="query-dsl-text-expansion-query.html" title="Text expansion query">text_expansion query</a>. However, it is not
+necessary to retain those terms in the document source. You can save disk space
+by using the <a class="xref" href="mapping-fields.html#include-exclude" title="Including / Excluding fields from _source">source exclude</a> mapping to remove the ELSER
+terms from the document source.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Reindex uses the document source to populate the destination index.
+Once the ELSER terms have been excluded from the source, they cannot be
+recovered through reindexing. Excluding the tokens from the source is a
+space-saving optimsation that should only be applied if you are certain that
+reindexing will not be required in the future! It&#8217;s important to carefully
+consider this trade-off and make sure that excluding the ELSER terms from the
+source aligns with your specific requirements and use case.</p>
+</div>
+</div>
+<p>The mapping that excludes <code class="literal">ml.tokens</code> from the  <code class="literal">_source</code> field can be created
+by the following API call:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index
+{
+  "mappings": {
+    "_source": {
+      "excludes": [
+        "ml.tokens"
+      ]
+    },
+    "properties": {
+      "ml.tokens": {
+        "type": "rank_features"
+      },
+      "text": {
+        "type": "text"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/955.console"></div>
+<h4><a id="further-reading"></a>Further reading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-elser.html" class="ulink" target="_top">How to download and deploy ELSER</a>
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-nlp-limitations.html#ml-nlp-elser-v1-limit-512" class="ulink" target="_top">ELSER v1 limitation</a>
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/blog/may-2023-launch-information-retrieval-elasticsearch-ai-model" class="ulink" target="_top">Improving information retrieval in the Elastic Stack: Introducing Elastic Learned Sparse Encoder, our new retrieval model</a>
+</li>
+</ul>
+</div>
+<h4><a id="interactive-example"></a>Interactive example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/search/search-your-data/semantic-search-elser.asciidoc">edit</a></h4>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The <code class="literal">elasticsearch-labs</code> repo has an interactive example of running <a href="https://github.com/elastic/elasticsearch-labs/blob/main/notebooks/search/03-ELSER.ipynb" class="ulink" target="_top">ELSER-powered semantic search</a> using the Elasticsearch Python client.
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="knn-search.html">« k-nearest neighbor (kNN) search</a>
+</span>
+<span class="next">
+<a href="query-dsl.html">Query DSL »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

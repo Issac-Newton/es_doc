@@ -1,6 +1,5 @@
-POST my-index-000001/_delete_by_query?conflicts=proceed
+### On clusterB ###
+POST kibana_sample_data_ecommerce2/_doc/
 {
-  "query": {
-    "match_all": {}
-  }
+  "user": "kimchy"
 }

@@ -117,7 +117,7 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="span-queries"></a>Span queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-queries.asciidoc">edit</a></h2>
+<h2 class="title"><a id="span-queries"></a>Span queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-queries.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Span queries are low-level positional queries which provide expert control
 over the order and proximity of the specified terms. These are typically used
@@ -141,7 +141,7 @@ Accepts a list of span queries, but only returns those spans which also match a 
 </dd>
 <dt>
 <span class="term">
-<a class="xref" href="span-queries.html#query-dsl-span-field-masking-query" title="Span field masking query"><code class="literal">field_masking_span</code> query</a>
+<a class="xref" href="span-queries.html#query-dsl-span-field-masking-query" title="Span field masking query"><code class="literal">span_field_masking</code> query</a>
 </span>
 </dt>
 <dd>
@@ -213,7 +213,7 @@ within the spans returned by a list of other span queries.
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-span-containing-query"></a>Span containing query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-containing-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-span-containing-query"></a>Span containing query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-containing-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Returns matches which enclose another span query. The span containing
@@ -240,14 +240,14 @@ query maps to Lucene <code class="literal">SpanContainingQuery</code>. Here is a
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/862.console"></div>
+<div class="console_widget" data-snippet="snippets/1091.console"></div>
 <p>The <code class="literal">big</code> and <code class="literal">little</code> clauses can be any span type query. Matching
 spans from <code class="literal">big</code> that contain matches from <code class="literal">little</code> are returned.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-span-field-masking-query"></a>Span field masking query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-field-masking-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-span-field-masking-query"></a>Span field masking query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-field-masking-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Wrapper to allow span queries to participate in composite single-field span queries by <em>lying</em> about their search field. The span field masking query maps to Lucene&#8217;s <code class="literal">SpanFieldMaskingQuery</code></p>
@@ -266,7 +266,7 @@ spans from <code class="literal">big</code> that contain matches from <code clas
           }
         },
         {
-          "field_masking_span": {
+          "span_field_masking": {
             "query": {
               "span_term": {
                 "text.stems": "fox"
@@ -282,13 +282,13 @@ spans from <code class="literal">big</code> that contain matches from <code clas
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/863.console"></div>
+<div class="console_widget" data-snippet="snippets/1092.console"></div>
 <p>Note: as span field masking query returns the masked field, scoring will be done using the norms of the field name supplied. This may lead to unexpected scoring behaviour.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-span-first-query"></a>Span first query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-first-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-span-first-query"></a>Span first query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-first-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Matches spans near the beginning of a field. The span first query maps
@@ -306,14 +306,14 @@ to Lucene <code class="literal">SpanFirstQuery</code>. Here is an example:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/864.console"></div>
+<div class="console_widget" data-snippet="snippets/1093.console"></div>
 <p>The <code class="literal">match</code> clause can be any other span type query. The <code class="literal">end</code> controls
 the maximum end position permitted in a match.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-span-multi-term-query"></a>Span multi-term query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-multi-term-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-span-multi-term-query"></a>Span multi-term query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-multi-term-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">span_multi</code> query allows you to wrap a <code class="literal">multi term query</code> (one of wildcard,
@@ -331,7 +331,7 @@ it can be nested. Example:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/865.console"></div>
+<div class="console_widget" data-snippet="snippets/1094.console"></div>
 <p>A boost can also be associated with the query:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_search
@@ -345,12 +345,12 @@ it can be nested. Example:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/866.console"></div>
+<div class="console_widget" data-snippet="snippets/1095.console"></div>
 <div class="warning admon">
 <div class="icon"></div>
 <div class="admon_content">
 <p><code class="literal">span_multi</code> queries will hit too many clauses failure if the number of terms that match the query exceeds the
-boolean query limit (defaults to 1024).To avoid an unbounded expansion you can set the <a class="xref" href="query-dsl-multi-term-rewrite.html" title="rewrite parameter">rewrite method</a> of the multi term query to <code class="literal">top_terms_*</code> rewrite. Or, if you use <code class="literal">span_multi</code> on <code class="literal">prefix</code> query only,
+boolean query limit (defaults to 4096).To avoid an unbounded expansion you can set the <a class="xref" href="query-dsl-multi-term-rewrite.html" title="rewrite parameter">rewrite method</a> of the multi term query to <code class="literal">top_terms_*</code> rewrite. Or, if you use <code class="literal">span_multi</code> on <code class="literal">prefix</code> query only,
 you can activate the <a class="xref" href="mapping-params.html#index-prefixes" title="index_prefixes"><code class="literal">index_prefixes</code></a> field option of the <code class="literal">text</code> field instead. This will
 rewrite any prefix query on the field to a single term query that matches the indexed prefix.</p>
 </div>
@@ -359,7 +359,7 @@ rewrite any prefix query on the field to a single term query that matches the in
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-span-near-query"></a>Span near query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-near-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-span-near-query"></a>Span near query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-near-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Matches spans which are near one another. One can specify <em>slop</em>, the
@@ -382,7 +382,7 @@ matches are required to be in-order. The span near query maps to Lucene
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/867.console"></div>
+<div class="console_widget" data-snippet="snippets/1096.console"></div>
 <p>The <code class="literal">clauses</code> element is a list of one or more other span type queries
 and the <code class="literal">slop</code> controls the maximum number of intervening unmatched
 positions permitted.</p>
@@ -390,7 +390,7 @@ positions permitted.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-span-not-query"></a>Span not query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-not-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-span-not-query"></a>Span not query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-not-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Removes matches which overlap with another span query or which are
@@ -419,7 +419,7 @@ query maps to Lucene <code class="literal">SpanNotQuery</code>. Here is an examp
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/868.console"></div>
+<div class="console_widget" data-snippet="snippets/1097.console"></div>
 <p>The <code class="literal">include</code> and <code class="literal">exclude</code> clauses can be any span type query. The
 <code class="literal">include</code> clause is the span query whose matches are filtered, and the
 <code class="literal">exclude</code> clause is the span query whose matches must not overlap those
@@ -477,7 +477,7 @@ of setting both <code class="literal">pre</code> and <code class="literal">post<
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-span-or-query"></a>Span or query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-or-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-span-or-query"></a>Span or query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-or-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Matches the union of its span clauses. The span or query maps to Lucene
@@ -496,13 +496,13 @@ of setting both <code class="literal">pre</code> and <code class="literal">post<
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/869.console"></div>
+<div class="console_widget" data-snippet="snippets/1098.console"></div>
 <p>The <code class="literal">clauses</code> element is a list of one or more other span type queries.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-span-term-query"></a>Span term query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-term-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-span-term-query"></a>Span term query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-term-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Matches spans containing a term. The span term query maps to Lucene
@@ -515,7 +515,7 @@ of setting both <code class="literal">pre</code> and <code class="literal">post<
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/870.console"></div>
+<div class="console_widget" data-snippet="snippets/1099.console"></div>
 <p>A boost can also be associated with the query:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_search
@@ -525,7 +525,7 @@ of setting both <code class="literal">pre</code> and <code class="literal">post<
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/871.console"></div>
+<div class="console_widget" data-snippet="snippets/1100.console"></div>
 <p>Or :</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_search
@@ -535,12 +535,12 @@ of setting both <code class="literal">pre</code> and <code class="literal">post<
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/872.console"></div>
+<div class="console_widget" data-snippet="snippets/1101.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-span-within-query"></a>Span within query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/span-within-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-span-within-query"></a>Span within query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/span-within-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Returns matches which are enclosed inside another span query. The span within
@@ -567,7 +567,7 @@ query maps to Lucene <code class="literal">SpanWithinQuery</code>. Here is an ex
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/873.console"></div>
+<div class="console_widget" data-snippet="snippets/1102.console"></div>
 <p>The <code class="literal">big</code> and <code class="literal">little</code> clauses can be any span type query. Matching
 spans from <code class="literal">little</code> that are enclosed within <code class="literal">big</code> are returned.</p>
 </div>

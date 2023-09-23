@@ -1,21 +1,38 @@
-GET /example_points/_search
+PUT test
+{
+  "mappings": {
+    "properties": {
+      "comments": {
+        "type": "nested"
+      }
+    }
+  }
+}
+
+PUT test/_doc/1?refresh
+{
+  "title": "Test title",
+  "comments": [
+    {
+      "author": "kimchy",
+      "number": 1
+    },
+    {
+      "author": "nik9000",
+      "number": 2
+    }
+  ]
+}
+
+POST test/_search
 {
   "query": {
-    "bool": {
-      "must": {
-        "match_all": {}
+    "nested": {
+      "path": "comments",
+      "query": {
+        "match": {"comments.number" : 2}
       },
-      "filter": {
-        "geo_shape": {
-          "location": {
-            "shape": {
-              "type": "envelope",
-              "coordinates": [ [ 13.0, 53.0 ], [ 14.0, 52.0 ] ]
-            },
-            "relation": "intersects"
-          }
-        }
-      }
+      "inner_hits": {}
     }
   }
 }

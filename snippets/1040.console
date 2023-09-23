@@ -1,29 +1,49 @@
-PUT parent_example/_doc/2?routing=1
+PUT /my_locations
 {
-  "join": {
-    "name": "answer",
-    "parent": "1"
-  },
-  "owner": {
-    "location": "Norfolk, United Kingdom",
-    "display_name": "Sam",
-    "id": 48
-  },
-  "body": "<p>Unfortunately you're pretty much limited to FTP...",
-  "creation_date": "2009-05-04T13:45:37.030"
+  "mappings": {
+    "properties": {
+      "pin": {
+        "properties": {
+          "location": {
+            "type": "geo_point"
+          }
+        }
+      }
+    }
+  }
 }
 
-PUT parent_example/_doc/3?routing=1&refresh
+PUT /my_locations/_doc/1
 {
-  "join": {
-    "name": "answer",
-    "parent": "1"
-  },
-  "owner": {
-    "location": "Norfolk, United Kingdom",
-    "display_name": "Troll",
-    "id": 49
-  },
-  "body": "<p>Use Linux...",
-  "creation_date": "2009-05-05T13:45:37.030"
+  "pin": {
+    "location": {
+      "lat": 40.12,
+      "lon": -71.34
+    }
+  }
+}
+
+PUT /my_geoshapes
+{
+  "mappings": {
+    "properties": {
+      "pin": {
+        "properties": {
+          "location": {
+            "type": "geo_shape"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /my_geoshapes/_doc/1
+{
+  "pin": {
+    "location": {
+      "type" : "polygon",
+      "coordinates" : [[[13.0 ,51.5], [15.0, 51.5], [15.0, 54.0], [13.0, 54.0], [13.0 ,51.5]]]
+    }
+  }
 }

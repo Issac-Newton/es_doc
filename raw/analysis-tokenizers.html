@@ -33,12 +33,12 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-tokenizers"></a>Tokenizer reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-tokenizers"></a>Tokenizer reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers.asciidoc">edit</a></h2>
 </div></div></div>
-<p>A <em>tokenizer</em>  receives a stream of characters, breaks it up into individual
+<p>A <em>tokenizer</em> receives a stream of characters, breaks it up into individual
 <em>tokens</em> (usually individual words), and outputs a stream of <em>tokens</em>. For
 instance, a <a class="xref" href="analysis-tokenizers.html#analysis-whitespace-tokenizer" title="Whitespace tokenizer"><code class="literal">whitespace</code></a> tokenizer breaks
-text into tokens whenever it sees any whitespace.  It would convert the text
+text into tokens whenever it sees any whitespace. It would convert the text
 <code class="literal">"Quick brown fox!"</code> into the terms <code class="literal">[Quick, brown, fox!]</code>.</p>
 <p>The tokenizer is also responsible for recording the following:</p>
 <div class="ulist itemizedlist">
@@ -58,7 +58,7 @@ represents (used for highlighting search snippets).
 </div>
 <p>Elasticsearch has a number of built in tokenizers which can be used to build
 <a class="xref" href="configure-text-analysis.html#analysis-custom-analyzer" title="Create a custom analyzer">custom analyzers</a>.</p>
-<h3><a id="_word_oriented_tokenizers"></a>Word Oriented Tokenizers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers.asciidoc">edit</a></h3>
+<h3><a id="_word_oriented_tokenizers"></a>Word Oriented Tokenizers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers.asciidoc">edit</a></h3>
 <p>The following tokenizers are usually used for tokenizing full text into
 individual words:</p>
 <div class="variablelist">
@@ -128,7 +128,7 @@ The <code class="literal">thai</code> tokenizer segments Thai text into words.
 </dd>
 </dl>
 </div>
-<h3><a id="_partial_word_tokenizers"></a>Partial Word Tokenizers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers.asciidoc">edit</a></h3>
+<h3><a id="_partial_word_tokenizers"></a>Partial Word Tokenizers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers.asciidoc">edit</a></h3>
 <p>These tokenizers break up text or words into small fragments, for partial word
 matching:</p>
 <div class="variablelist">
@@ -157,7 +157,7 @@ n-grams of each word which are anchored to the start of the word, e.g. <code cla
 </dd>
 </dl>
 </div>
-<h3><a id="_structured_text_tokenizers"></a>Structured Text Tokenizers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers.asciidoc">edit</a></h3>
+<h3><a id="_structured_text_tokenizers"></a>Structured Text Tokenizers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers.asciidoc">edit</a></h3>
 <p>The following tokenizers are usually used with structured text like
 identifiers, email addresses, zip codes, and paths, rather than with full
 text:</p>
@@ -170,7 +170,7 @@ text:</p>
 </dt>
 <dd>
 The <code class="literal">keyword</code> tokenizer is a &#8220;noop&#8221; tokenizer that accepts whatever text it
-is given and outputs the exact same text as a single term.  It can be combined
+is given and outputs the exact same text as a single term. It can be combined
 with token filters like <a class="xref" href="analysis-tokenfilters.html#analysis-lowercase-tokenfilter" title="Lowercase token filter"><code class="literal">lowercase</code></a> to
 normalise the analysed terms.
 </dd>
@@ -227,14 +227,14 @@ tree, e.g. <code class="literal">/foo/bar/baz</code> &#8594; <code class="litera
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-chargroup-tokenizer"></a>Character group tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/chargroup-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-chargroup-tokenizer"></a>Character group tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/chargroup-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">char_group</code> tokenizer breaks text into terms whenever it encounters a
 character which is in a defined set. It is mostly useful for cases where a simple
 custom tokenization is desired, and the overhead of use of the <a class="xref" href="analysis-tokenizers.html#analysis-pattern-tokenizer" title="Pattern tokenizer"><code class="literal">pattern</code> tokenizer</a>
 is not acceptable.</p>
-<h3><a id="_configuration_8"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/chargroup-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_8"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/chargroup-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">char_group</code> tokenizer accepts one parameter:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -274,7 +274,7 @@ it is split at <code class="literal">max_token_length</code> intervals. Defaults
 </tbody>
 </table>
 </div>
-<h3><a id="_example_output_7"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/chargroup-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_7"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/chargroup-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -289,7 +289,7 @@ it is split at <code class="literal">max_token_length</code> intervals. Defaults
   "text": "The QUICK brown-fox"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/371.console"></div>
+<div class="console_widget" data-snippet="snippets/427.console"></div>
 <p>returns</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -329,7 +329,7 @@ it is split at <code class="literal">max_token_length</code> intervals. Defaults
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-classic-tokenizer"></a>Classic tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/classic-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-classic-tokenizer"></a>Classic tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/classic-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">classic</code> tokenizer is a grammar based tokenizer that is good for English
@@ -352,7 +352,7 @@ It recognizes email addresses and internet hostnames as one token.
 </li>
 </ul>
 </div>
-<h3><a id="_example_output_8"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/classic-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_8"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/classic-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -360,12 +360,12 @@ It recognizes email addresses and internet hostnames as one token.
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/372.console"></div>
+<div class="console_widget" data-snippet="snippets/428.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ The, 2, QUICK, Brown, Foxes, jumped, over, the, lazy, dog's, bone ]</pre>
 </div>
-<h3><a id="_configuration_9"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/classic-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_9"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/classic-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">classic</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -390,7 +390,7 @@ it is split at <code class="literal">max_token_length</code> intervals. Defaults
 </tbody>
 </table>
 </div>
-<h3><a id="_example_configuration_6"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/classic-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_6"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/classic-tokenizer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">classic</code> tokenizer to have a
 <code class="literal">max_token_length</code> of 5 (for demonstration purposes):</p>
 <div class="pre_wrapper lang-console">
@@ -419,7 +419,7 @@ POST my-index-000001/_analyze
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/373.console"></div>
+<div class="console_widget" data-snippet="snippets/429.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ The, 2, QUICK, Brown, Foxes, jumpe, d, over, the, lazy, dog's, bone ]</pre>
@@ -428,7 +428,7 @@ POST my-index-000001/_analyze
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-edgengram-tokenizer"></a>Edge n-gram tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-edgengram-tokenizer"></a>Edge n-gram tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">edge_ngram</code> tokenizer first breaks text down into words whenever it
@@ -442,11 +442,11 @@ the N-gram is anchored to the beginning of the word.</p>
 <p>When you need <em>search-as-you-type</em> for text which has a widely known
 order, such as movie or song titles, the
 <a class="xref" href="search.html#completion-suggester" title="Completion Suggester">completion suggester</a> is a much more efficient
-choice than edge N-grams.  Edge N-grams have the advantage when trying to
+choice than edge N-grams. Edge N-grams have the advantage when trying to
 autocomplete words that can appear in any order.</p>
 </div>
 </div>
-<h3><a id="_example_output_9"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_9"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h3>
 <p>With the default settings, the <code class="literal">edge_ngram</code> tokenizer treats the initial text as a
 single token and produces N-grams with minimum length <code class="literal">1</code> and maximum length
 <code class="literal">2</code>:</p>
@@ -457,7 +457,7 @@ single token and produces N-grams with minimum length <code class="literal">1</c
   "text": "Quick Fox"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/374.console"></div>
+<div class="console_widget" data-snippet="snippets/430.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ Q, Qu ]</pre>
@@ -465,11 +465,11 @@ single token and produces N-grams with minimum length <code class="literal">1</c
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>These default gram lengths are almost entirely useless.  You need to
+<p>These default gram lengths are almost entirely useless. You need to
 configure the <code class="literal">edge_ngram</code> before using it.</p>
 </div>
 </div>
-<h3><a id="_configuration_10"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_10"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">edge_ngram</code> tokenizer accepts the following parameters:</p>
 <div class="variablelist">
 <dl class="variablelist">
@@ -479,7 +479,7 @@ configure the <code class="literal">edge_ngram</code> before using it.</p>
 </span>
 </dt>
 <dd>
-Minimum length of characters in a gram.  Defaults to <code class="literal">1</code>.
+Minimum length of characters in a gram. Defaults to <code class="literal">1</code>.
 </dd>
 <dt>
 <span class="term">
@@ -487,7 +487,7 @@ Minimum length of characters in a gram.  Defaults to <code class="literal">1</co
 </span>
 </dt>
 <dd>
-<p>Maximum length of characters in a gram.  Defaults to <code class="literal">2</code>.</p>
+<p>Maximum length of characters in a gram. Defaults to <code class="literal">2</code>.</p>
 <p>See <a class="xref" href="analysis-tokenizers.html#max-gram-limits" title="Limitations of the max_gram parameter">Limitations of the <code class="literal">max_gram</code> parameter</a>.</p>
 </dd>
 <dt>
@@ -497,7 +497,7 @@ Minimum length of characters in a gram.  Defaults to <code class="literal">1</co
 </dt>
 <dd>
 <p>
-Character classes that should be included in a token.  Elasticsearch
+Character classes that should be included in a token. Elasticsearch
 will split on characters that don&#8217;t belong to the classes specified.
 Defaults to <code class="literal">[]</code> (keep all characters).
 </p>
@@ -534,11 +534,11 @@ Defaults to <code class="literal">[]</code> (keep all characters).
 <dd>
 Custom characters that should be treated as part of a token. For example,
 setting this to <code class="literal">+-_</code> will make the tokenizer treat the plus, minus and
-underscore sign  as part of a token.
+underscore sign as part of a token.
 </dd>
 </dl>
 </div>
-<h3><a id="max-gram-limits"></a>Limitations of the <code class="literal">max_gram</code> parameter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="max-gram-limits"></a>Limitations of the <code class="literal">max_gram</code> parameter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">edge_ngram</code> tokenizer&#8217;s <code class="literal">max_gram</code> value limits the character length of
 tokens. When the <code class="literal">edge_ngram</code> tokenizer is used with an index analyzer, this
 means search terms longer than the <code class="literal">max_gram</code> length may not match any indexed
@@ -551,16 +551,16 @@ to shorten search terms to the <code class="literal">max_gram</code> character l
 return irrelevant results.</p>
 <p>For example, if the <code class="literal">max_gram</code> is <code class="literal">3</code> and search terms are truncated to three
 characters, the search term <code class="literal">apple</code> is shortened to <code class="literal">app</code>. This means searches
-for <code class="literal">apple</code> return any indexed terms matching <code class="literal">app</code>, such as <code class="literal">apply</code>, <code class="literal">snapped</code>,
+for <code class="literal">apple</code> return any indexed terms matching <code class="literal">app</code>, such as <code class="literal">apply</code>, <code class="literal">approximate</code>
 and <code class="literal">apple</code>.</p>
 <p>We recommend testing both approaches to see which best fits your
 use case and desired search experience.</p>
-<h3><a id="_example_configuration_7"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_7"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/edgengram-tokenizer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">edge_ngram</code> tokenizer to treat letters and
 digits as tokens, and to produce grams with minimum length <code class="literal">2</code> and maximum
 length <code class="literal">10</code>:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT my-index-00001
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
 {
   "settings": {
     "analysis": {
@@ -584,13 +584,13 @@ length <code class="literal">10</code>:</p>
   }
 }
 
-POST my-index-00001/_analyze
+POST my-index-000001/_analyze
 {
   "analyzer": "my_analyzer",
   "text": "2 Quick Foxes."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/375.console"></div>
+<div class="console_widget" data-snippet="snippets/431.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ Qu, Qui, Quic, Quick, Fo, Fox, Foxe, Foxes ]</pre>
@@ -605,7 +605,7 @@ just search for the terms the user has typed in, for instance: <code class="lite
 indexed terms to 10 characters. Search terms are not truncated, meaning that
 search terms longer than 10 characters may not match any indexed terms.</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT my-index-00001
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
 {
   "settings": {
     "analysis": {
@@ -643,31 +643,31 @@ search terms longer than 10 characters may not match any indexed terms.</p>
   }
 }
 
-PUT my-index-00001/_doc/1
+PUT my-index-000001/_doc/1
 {
-  "title": "Quick Foxes" <a id="CO161-1"></a><i class="conum" data-value="1"></i>
+  "title": "Quick Foxes" <a id="CO167-1"></a><i class="conum" data-value="1"></i>
 }
 
-POST my-index-00001/_refresh
+POST my-index-000001/_refresh
 
-GET my-index-00001/_search
+GET my-index-000001/_search
 {
   "query": {
     "match": {
       "title": {
-        "query": "Quick Fo", <a id="CO161-2"></a><i class="conum" data-value="2"></i>
+        "query": "Quick Fo", <a id="CO167-2"></a><i class="conum" data-value="2"></i>
         "operator": "and"
       }
     }
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/376.console"></div>
+<div class="console_widget" data-snippet="snippets/432.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO161-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO167-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">autocomplete</code> analyzer indexes the terms <code class="literal">[qu, qui, quic, quick, fo, fox, foxe, foxes]</code>.</p>
@@ -675,7 +675,7 @@ GET my-index-00001/_search
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO161-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO167-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">autocomplete_search</code> analyzer searches for the terms <code class="literal">[quick, fo]</code>, both of which appear in the index.</p>
@@ -687,13 +687,13 @@ GET my-index-00001/_search
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-keyword-tokenizer"></a>Keyword tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/keyword-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-keyword-tokenizer"></a>Keyword tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/keyword-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>The <code class="literal">keyword</code> tokenizer  is a &#8220;noop&#8221; tokenizer that accepts whatever text it
-is given and outputs the exact same text as a single term.  It can be combined
+<p>The <code class="literal">keyword</code> tokenizer is a &#8220;noop&#8221; tokenizer that accepts whatever text it
+is given and outputs the exact same text as a single term. It can be combined
 with token filters to normalise output, e.g. lower-casing email addresses.</p>
-<h3><a id="_example_output_10"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/keyword-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_10"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/keyword-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -701,12 +701,12 @@ with token filters to normalise output, e.g. lower-casing email addresses.</p>
   "text": "New York"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/377.console"></div>
+<div class="console_widget" data-snippet="snippets/433.console"></div>
 <p>The above sentence would produce the following term:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ New York ]</pre>
 </div>
-<h3><a id="analysis-keyword-tokenizer-token-filters"></a>Combine with token filters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/keyword-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="analysis-keyword-tokenizer-token-filters"></a>Combine with token filters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/keyword-tokenizer.asciidoc">edit</a></h3>
 <p>You can combine the <code class="literal">keyword</code> tokenizer with token filters to normalise
 structured data, such as product IDs or email addresses.</p>
 <p>For example, the following <a class="xref" href="indices.html#indices-analyze" title="Analyze API">analyze API</a> request uses the
@@ -720,12 +720,12 @@ convert an email address to lowercase.</p>
   "text": "john.SMITH@example.COM"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/378.console"></div>
+<div class="console_widget" data-snippet="snippets/434.console"></div>
 <p>The request produces the following token:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ john.smith@example.com ]</pre>
 </div>
-<h3><a id="_configuration_11"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/keyword-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_11"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/keyword-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">keyword</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -743,8 +743,8 @@ convert an email address to lowercase.</p>
 <td valign="top">
 <p>
 The number of characters read into the term buffer in a single pass.
-Defaults to <code class="literal">256</code>.  The term buffer will grow by this size until all the
-text has been consumed.  It is advisable not to change this setting.
+Defaults to <code class="literal">256</code>. The term buffer will grow by this size until all the
+text has been consumed. It is advisable not to change this setting.
 </p>
 </td>
 </tr>
@@ -755,14 +755,14 @@ text has been consumed.  It is advisable not to change this setting.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-letter-tokenizer"></a>Letter tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/letter-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-letter-tokenizer"></a>Letter tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/letter-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">letter</code> tokenizer breaks text into terms whenever it encounters a
 character which is not a letter. It does a reasonable job for most European
 languages, but does a terrible job for some Asian languages, where words are
 not separated by spaces.</p>
-<h3><a id="_example_output_11"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/letter-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_11"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/letter-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -770,28 +770,28 @@ not separated by spaces.</p>
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/379.console"></div>
+<div class="console_widget" data-snippet="snippets/435.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ The, QUICK, Brown, Foxes, jumped, over, the, lazy, dog, s, bone ]</pre>
 </div>
-<h3><a id="_configuration_12"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/letter-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_12"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/letter-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">letter</code> tokenizer is not configurable.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-lowercase-tokenizer"></a>Lowercase tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/lowercase-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-lowercase-tokenizer"></a>Lowercase tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/lowercase-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">lowercase</code> tokenizer, like the
 <a class="xref" href="analysis-tokenizers.html#analysis-letter-tokenizer" title="Letter tokenizer"><code class="literal">letter</code> tokenizer</a> breaks text into terms
 whenever it encounters a character which is not a letter, but it also
-lowercases all terms.  It is functionally equivalent to the
+lowercases all terms. It is functionally equivalent to the
 <a class="xref" href="analysis-tokenizers.html#analysis-letter-tokenizer" title="Letter tokenizer"><code class="literal">letter</code> tokenizer</a> combined with the
 <a class="xref" href="analysis-tokenfilters.html#analysis-lowercase-tokenfilter" title="Lowercase token filter"><code class="literal">lowercase</code> token filter</a>, but is more
 efficient as it performs both steps in a single pass.</p>
-<h3><a id="_example_output_12"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/lowercase-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_12"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/lowercase-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -799,18 +799,18 @@ efficient as it performs both steps in a single pass.</p>
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/380.console"></div>
+<div class="console_widget" data-snippet="snippets/436.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ the, quick, brown, foxes, jumped, over, the, lazy, dog, s, bone ]</pre>
 </div>
-<h3><a id="_configuration_13"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/lowercase-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_13"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/lowercase-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">lowercase</code> tokenizer is not configurable.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-ngram-tokenizer"></a>N-gram tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/ngram-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-ngram-tokenizer"></a>N-gram tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/ngram-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">ngram</code> tokenizer first breaks text down into words whenever it encounters
@@ -820,7 +820,7 @@ length.</p>
 <p>N-grams are like a sliding window that moves across the word - a continuous
 sequence of characters of the specified length. They are useful for querying
 languages that don&#8217;t use spaces or that have long compound words, like German.</p>
-<h3><a id="_example_output_13"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/ngram-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_13"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/ngram-tokenizer.asciidoc">edit</a></h3>
 <p>With the default settings, the <code class="literal">ngram</code> tokenizer treats the initial text as a
 single token and produces N-grams with minimum length <code class="literal">1</code> and maximum length
 <code class="literal">2</code>:</p>
@@ -831,12 +831,12 @@ single token and produces N-grams with minimum length <code class="literal">1</c
   "text": "Quick Fox"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/381.console"></div>
+<div class="console_widget" data-snippet="snippets/437.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ Q, Qu, u, ui, i, ic, c, ck, k, "k ", " ", " F", F, Fo, o, ox, x ]</pre>
 </div>
-<h3><a id="_configuration_14"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/ngram-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_14"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/ngram-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">ngram</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -853,7 +853,7 @@ single token and produces N-grams with minimum length <code class="literal">1</c
 </td>
 <td valign="top">
 <p>
-Minimum length of characters in a gram.  Defaults to <code class="literal">1</code>.
+Minimum length of characters in a gram. Defaults to <code class="literal">1</code>.
 </p>
 </td>
 </tr>
@@ -865,7 +865,7 @@ Minimum length of characters in a gram.  Defaults to <code class="literal">1</co
 </td>
 <td valign="top">
 <p>
-Maximum length of characters in a gram.  Defaults to <code class="literal">2</code>.
+Maximum length of characters in a gram. Defaults to <code class="literal">2</code>.
 </p>
 </td>
 </tr>
@@ -878,7 +878,7 @@ Maximum length of characters in a gram.  Defaults to <code class="literal">2</co
 <td valign="top">
 <p>
 <p>
-Character classes that should be included in a token.  Elasticsearch
+Character classes that should be included in a token. Elasticsearch
 will split on characters that don&#8217;t belong to the classes specified.
 Defaults to <code class="literal">[]</code> (keep all characters).
 </p>
@@ -919,7 +919,7 @@ Defaults to <code class="literal">[]</code> (keep all characters).
 <p>
 Custom characters that should be treated as part of a token. For example,
 setting this to <code class="literal">+-_</code> will make the tokenizer treat the plus, minus and
-underscore sign  as part of a token.
+underscore sign as part of a token.
 </p>
 </td>
 </tr>
@@ -930,14 +930,14 @@ underscore sign  as part of a token.
 <div class="icon"></div>
 <div class="admon_content">
 <p>It usually makes sense to set <code class="literal">min_gram</code> and <code class="literal">max_gram</code> to the same
-value.  The smaller the length, the more documents will match but the lower
-the quality of the matches.  The longer the length, the more specific the
-matches.  A tri-gram (length <code class="literal">3</code>) is a good place to start.</p>
+value. The smaller the length, the more documents will match but the lower
+the quality of the matches. The longer the length, the more specific the
+matches. A tri-gram (length <code class="literal">3</code>) is a good place to start.</p>
 </div>
 </div>
 <p>The index level setting <code class="literal">index.max_ngram_diff</code> controls the maximum allowed
 difference between <code class="literal">max_gram</code> and <code class="literal">min_gram</code>.</p>
-<h3><a id="_example_configuration_8"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/ngram-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_8"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/ngram-tokenizer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">ngram</code> tokenizer to treat letters and
 digits as tokens, and to produce tri-grams (grams of length <code class="literal">3</code>):</p>
 <div class="pre_wrapper lang-console">
@@ -971,7 +971,7 @@ POST my-index-000001/_analyze
   "text": "2 Quick Foxes."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/382.console"></div>
+<div class="console_widget" data-snippet="snippets/438.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ Qui, uic, ick, Fox, oxe, xes ]</pre>
@@ -980,13 +980,15 @@ POST my-index-000001/_analyze
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-pathhierarchy-tokenizer"></a>Path hierarchy tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-pathhierarchy-tokenizer"></a>Path hierarchy tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">path_hierarchy</code> tokenizer takes a hierarchical value like a filesystem
 path, splits on the path separator, and emits a term for each component in the
-tree.</p>
-<h3><a id="_example_output_14"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h3>
+tree. The <code class="literal">path_hierarcy</code> tokenizer uses Lucene&#8217;s
+<a href="https://lucene.apache.org/core/9_7_0/analysis/common/org/apache/lucene/analysis/path/PathHierarchyTokenizer.html" class="ulink" target="_top">PathHierarchyTokenizer</a>
+underneath.</p>
+<h3><a id="_example_output_14"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -994,12 +996,12 @@ tree.</p>
   "text": "/one/two/three"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/383.console"></div>
+<div class="console_widget" data-snippet="snippets/439.console"></div>
 <p>The above text would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ /one, /one/two, /one/two/three ]</pre>
 </div>
-<h3><a id="_configuration_15"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_15"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">path_hierarchy</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -1016,7 +1018,7 @@ tree.</p>
 </td>
 <td valign="top">
 <p>
-The character to use as the path separator.  Defaults to <code class="literal">/</code>.
+The character to use as the path separator. Defaults to <code class="literal">/</code>.
 </p>
 </td>
 </tr>
@@ -1042,8 +1044,8 @@ Defaults to the <code class="literal">delimiter</code>.
 <td valign="top">
 <p>
 The number of characters read into the term buffer in a single pass.
-Defaults to <code class="literal">1024</code>.  The term buffer will grow by this size until all the
-text has been consumed.  It is advisable not to change this setting.
+Defaults to <code class="literal">1024</code>. The term buffer will grow by this size until all the
+text has been consumed. It is advisable not to change this setting.
 </p>
 </td>
 </tr>
@@ -1055,7 +1057,9 @@ text has been consumed.  It is advisable not to change this setting.
 </td>
 <td valign="top">
 <p>
-If set to <code class="literal">true</code>, emits the tokens in reverse order.  Defaults to <code class="literal">false</code>.
+If <code class="literal">true</code>, uses Lucene&#8217;s
+<a href="http://lucene.apache.org/core/9_7_0/analysis/common/org/apache/lucene/analysis/path/ReversePathHierarchyTokenizer.html" class="ulink" target="_top">ReversePathHierarchyTokenizer</a>,
+which is suitable for domain–like hierarchies. Defaults to <code class="literal">false</code>.
 </p>
 </td>
 </tr>
@@ -1067,16 +1071,16 @@ If set to <code class="literal">true</code>, emits the tokens in reverse order. 
 </td>
 <td valign="top">
 <p>
-The number of initial tokens to skip.  Defaults to <code class="literal">0</code>.
+The number of initial tokens to skip. Defaults to <code class="literal">0</code>.
 </p>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<h3><a id="_example_configuration_9"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_9"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">path_hierarchy</code> tokenizer to split on <code class="literal">-</code>
-characters, and to replace them with <code class="literal">/</code>.  The first two tokens are skipped:</p>
+characters, and to replace them with <code class="literal">/</code>. The first two tokens are skipped:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT my-index-000001
 {
@@ -1105,7 +1109,7 @@ POST my-index-000001/_analyze
   "text": "one-two-three-four-five"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/384.console"></div>
+<div class="console_widget" data-snippet="snippets/440.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ /three, /three/four, /three/four/five ]</pre>
@@ -1114,7 +1118,7 @@ POST my-index-000001/_analyze
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ one/two/three/, two/three/, three/ ]</pre>
 </div>
-<h3><a id="analysis-pathhierarchy-tokenizer-detailed-examples"></a>Detailed examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="analysis-pathhierarchy-tokenizer-detailed-examples"></a>Detailed examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/pathhierarchy-tokenizer.asciidoc">edit</a></h3>
 <p>A common use-case for the <code class="literal">path_hierarchy</code> tokenizer is filtering results by
 file paths. If indexing a file path along with the data, the use of the
 <code class="literal">path_hierarchy</code> tokenizer to analyze the path allows filtering the results
@@ -1194,7 +1198,7 @@ POST file-path-test/_doc/5
   "file_path": "/User/bob/photos/2017/05/16/my_photo1.jpg"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/385.console"></div>
+<div class="console_widget" data-snippet="snippets/441.console"></div>
 <p>A search for a particular file path string against the text field matches all
 the example documents, with Bob&#8217;s documents ranking highest due to <code class="literal">bob</code> also
 being one of the terms created by the standard analyzer boosting relevance for
@@ -1209,7 +1213,7 @@ Bob&#8217;s documents.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/386.console"></div>
+<div class="console_widget" data-snippet="snippets/442.console"></div>
 <p>It&#8217;s simple to match or filter documents with file paths that exist within a
 particular directory using the <code class="literal">file_path.tree</code> field.</p>
 <div class="pre_wrapper lang-console">
@@ -1222,7 +1226,7 @@ particular directory using the <code class="literal">file_path.tree</code> field
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/387.console"></div>
+<div class="console_widget" data-snippet="snippets/443.console"></div>
 <p>With the reverse parameter for this tokenizer, it&#8217;s also possible to match
 from the other end of the file path, such as individual file names or a deep
 level subdirectory. The following example shows a search for all files named
@@ -1240,7 +1244,7 @@ configured to use the reverse parameter in the mapping.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/388.console"></div>
+<div class="console_widget" data-snippet="snippets/444.console"></div>
 <p>Viewing the tokens generated with both forward and reverse is instructive
 in showing the tokens created for the same file path value.</p>
 <div class="pre_wrapper lang-console">
@@ -1256,7 +1260,7 @@ POST file-path-test/_analyze
   "text": "/User/alice/photos/2017/05/16/my_photo1.jpg"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/389.console"></div>
+<div class="console_widget" data-snippet="snippets/445.console"></div>
 <p>It&#8217;s also useful to be able to filter with file paths when combined with other
 types of searches, such as this example looking for any files paths with <code class="literal">16</code>
 that also must be in Alice&#8217;s photo directory.</p>
@@ -1275,12 +1279,12 @@ that also must be in Alice&#8217;s photo directory.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/390.console"></div>
+<div class="console_widget" data-snippet="snippets/446.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-pattern-tokenizer"></a>Pattern tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/pattern-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-pattern-tokenizer"></a>Pattern tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/pattern-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">pattern</code> tokenizer uses a regular expression to either split text into
@@ -1299,7 +1303,7 @@ StackOverflowError and cause the node it is running on to exit suddenly.</p>
 <p>Read more about <a href="https://www.regular-expressions.info/catastrophic.html" class="ulink" target="_top">pathological regular expressions and how to avoid them</a>.</p>
 </div>
 </div>
-<h3><a id="_example_output_15"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/pattern-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_15"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/pattern-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -1307,12 +1311,12 @@ StackOverflowError and cause the node it is running on to exit suddenly.</p>
   "text": "The foo_bar_size's default is 5."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/391.console"></div>
+<div class="console_widget" data-snippet="snippets/447.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ The, foo_bar_size, s, default, is, 5 ]</pre>
 </div>
-<h3><a id="_configuration_16"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/pattern-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_16"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/pattern-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">pattern</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -1354,14 +1358,14 @@ Flags should be pipe-separated, eg <code class="literal">"CASE_INSENSITIVE|COMME
 </td>
 <td valign="top">
 <p>
-Which capture group to extract as tokens.  Defaults to <code class="literal">-1</code> (split).
+Which capture group to extract as tokens. Defaults to <code class="literal">-1</code> (split).
 </p>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<h3><a id="_example_configuration_10"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/pattern-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_10"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/pattern-tokenizer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">pattern</code> tokenizer to break text into
 tokens when it encounters commas:</p>
 <div class="pre_wrapper lang-console">
@@ -1390,13 +1394,13 @@ POST my-index-000001/_analyze
   "text": "comma,separated,values"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/392.console"></div>
+<div class="console_widget" data-snippet="snippets/448.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ comma, separated, values ]</pre>
 </div>
 <p>In the next example, we configure the <code class="literal">pattern</code> tokenizer to capture values
-enclosed in double quotes (ignoring embedded escaped quotes <code class="literal">\"</code>).  The regex
+enclosed in double quotes (ignoring embedded escaped quotes <code class="literal">\"</code>). The regex
 itself looks like this:</p>
 <pre class="literallayout">"((?:\\"|[^"]|\\")*)"</pre>
 
@@ -1455,7 +1459,7 @@ POST my-index-000001/_analyze
   "text": "\"value\", \"value with embedded \\\" quote\""
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/393.console"></div>
+<div class="console_widget" data-snippet="snippets/449.console"></div>
 <p>The above example produces the following two terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ value, value with embedded \" quote ]</pre>
@@ -1464,7 +1468,7 @@ POST my-index-000001/_analyze
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-simplepattern-tokenizer"></a>Simple pattern tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/simplepattern-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-simplepattern-tokenizer"></a>Simple pattern tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/simplepattern-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">simple_pattern</code> tokenizer uses a regular expression to capture matching
@@ -1475,11 +1479,11 @@ tokenization is generally faster.</p>
 the <a class="xref" href="analysis-tokenizers.html#analysis-pattern-tokenizer" title="Pattern tokenizer"><code class="literal">pattern</code></a> tokenizer. To split on pattern
 matches using the same restricted regular expression subset, see the
 <a class="xref" href="analysis-tokenizers.html#analysis-simplepatternsplit-tokenizer" title="Simple pattern split tokenizer"><code class="literal">simple_pattern_split</code></a> tokenizer.</p>
-<p>This tokenizer uses <a href="https://lucene.apache.org/core/8_7_0/core/org/apache/lucene/util/automaton/RegExp.html" class="ulink" target="_top">Lucene regular expressions</a>.
+<p>This tokenizer uses <a href="https://lucene.apache.org/core/9_7_0/core/org/apache/lucene/util/automaton/RegExp.html" class="ulink" target="_top">Lucene regular expressions</a>.
 For an explanation of the supported features and syntax, see <a class="xref" href="regexp-syntax.html" title="Regular expression syntax">Regular Expression Syntax</a>.</p>
 <p>The default pattern is the empty string, which produces no terms. This
 tokenizer should always be configured with a non-default pattern.</p>
-<h3><a id="_configuration_17"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/simplepattern-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_17"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/simplepattern-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">simple_pattern</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -1496,14 +1500,14 @@ tokenizer should always be configured with a non-default pattern.</p>
 </td>
 <td valign="top">
 <p>
-<a href="https://lucene.apache.org/core/8_7_0/core/org/apache/lucene/util/automaton/RegExp.html" class="ulink" target="_top">Lucene regular expression</a>, defaults to the empty string.
+<a href="https://lucene.apache.org/core/9_7_0/core/org/apache/lucene/util/automaton/RegExp.html" class="ulink" target="_top">Lucene regular expression</a>, defaults to the empty string.
 </p>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<h3><a id="_example_configuration_11"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/simplepattern-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_11"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/simplepattern-tokenizer.asciidoc">edit</a></h3>
 <p>This example configures the <code class="literal">simple_pattern</code> tokenizer to produce terms that are
 three-digit numbers</p>
 <div class="pre_wrapper lang-console">
@@ -1532,7 +1536,7 @@ POST my-index-000001/_analyze
   "text": "fd-786-335-514-x"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/394.console"></div>
+<div class="console_widget" data-snippet="snippets/450.console"></div>
 <p>The above example produces these terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ 786, 335, 514 ]</pre>
@@ -1541,7 +1545,7 @@ POST my-index-000001/_analyze
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-simplepatternsplit-tokenizer"></a>Simple pattern split tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/simplepatternsplit-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-simplepatternsplit-tokenizer"></a>Simple pattern split tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/simplepatternsplit-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">simple_pattern_split</code> tokenizer uses a regular expression to split the
@@ -1552,12 +1556,12 @@ tokenizer, but the tokenization is generally faster.</p>
 terms from matches using patterns in the same restricted regular expression
 subset, see the <a class="xref" href="analysis-tokenizers.html#analysis-simplepattern-tokenizer" title="Simple pattern tokenizer"><code class="literal">simple_pattern</code></a>
 tokenizer.</p>
-<p>This tokenizer uses <a href="https://lucene.apache.org/core/8_7_0/core/org/apache/lucene/util/automaton/RegExp.html" class="ulink" target="_top">Lucene regular expressions</a>.
+<p>This tokenizer uses <a href="https://lucene.apache.org/core/9_7_0/core/org/apache/lucene/util/automaton/RegExp.html" class="ulink" target="_top">Lucene regular expressions</a>.
 For an explanation of the supported features and syntax, see <a class="xref" href="regexp-syntax.html" title="Regular expression syntax">Regular Expression Syntax</a>.</p>
 <p>The default pattern is the empty string, which produces one term containing the
 full input. This tokenizer should always be configured with a non-default
 pattern.</p>
-<h3><a id="_configuration_18"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/simplepatternsplit-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_18"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/simplepatternsplit-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">simple_pattern_split</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -1574,14 +1578,14 @@ pattern.</p>
 </td>
 <td valign="top">
 <p>
-A <a href="https://lucene.apache.org/core/8_7_0/core/org/apache/lucene/util/automaton/RegExp.html" class="ulink" target="_top">Lucene regular expression</a>, defaults to the empty string.
+A <a href="https://lucene.apache.org/core/9_7_0/core/org/apache/lucene/util/automaton/RegExp.html" class="ulink" target="_top">Lucene regular expression</a>, defaults to the empty string.
 </p>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<h3><a id="_example_configuration_12"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/simplepatternsplit-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_12"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/simplepatternsplit-tokenizer.asciidoc">edit</a></h3>
 <p>This example configures the <code class="literal">simple_pattern_split</code> tokenizer to split the input
 text on underscores.</p>
 <div class="pre_wrapper lang-console">
@@ -1610,7 +1614,7 @@ POST my-index-000001/_analyze
   "text": "an_underscored_phrase"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/395.console"></div>
+<div class="console_widget" data-snippet="snippets/451.console"></div>
 <p>The above example produces these terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ an, underscored, phrase ]</pre>
@@ -1619,14 +1623,14 @@ POST my-index-000001/_analyze
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-standard-tokenizer"></a>Standard tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/standard-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-standard-tokenizer"></a>Standard tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/standard-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">standard</code> tokenizer provides grammar based tokenization (based on the
 Unicode Text Segmentation algorithm, as specified in
 <a href="https://unicode.org/reports/tr29/" class="ulink" target="_top">Unicode Standard Annex #29</a>) and works well
 for most languages.</p>
-<h3><a id="_example_output_16"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/standard-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_16"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/standard-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -1634,12 +1638,12 @@ for most languages.</p>
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/396.console"></div>
+<div class="console_widget" data-snippet="snippets/452.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ The, 2, QUICK, Brown, Foxes, jumped, over, the, lazy, dog's, bone ]</pre>
 </div>
-<h3><a id="_configuration_19"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/standard-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_19"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/standard-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">standard</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -1664,7 +1668,7 @@ it is split at <code class="literal">max_token_length</code> intervals. Defaults
 </tbody>
 </table>
 </div>
-<h3><a id="_example_configuration_13"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/standard-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_13"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/standard-tokenizer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">standard</code> tokenizer to have a
 <code class="literal">max_token_length</code> of 5 (for demonstration purposes):</p>
 <div class="pre_wrapper lang-console">
@@ -1693,7 +1697,7 @@ POST my-index-000001/_analyze
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/397.console"></div>
+<div class="console_widget" data-snippet="snippets/453.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ The, 2, QUICK, Brown, Foxes, jumpe, d, over, the, lazy, dog's, bone ]</pre>
@@ -1702,7 +1706,7 @@ POST my-index-000001/_analyze
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-thai-tokenizer"></a>Thai tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/thai-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-thai-tokenizer"></a>Thai tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/thai-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">thai</code> tokenizer segments Thai text into words, using the Thai
@@ -1714,10 +1718,10 @@ will be treated the same as the
 <div class="admon_content">
 <p>This tokenizer may not be supported by all JREs. It is known to work
 with Sun/Oracle and OpenJDK. If your application needs to be fully portable,
-consider using the <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/7.10/analysis-icu-tokenizer.html" class="ulink" target="_top">ICU Tokenizer</a> instead.</p>
+consider using the <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/8.9/analysis-icu-tokenizer.html" class="ulink" target="_top">ICU Tokenizer</a> instead.</p>
 </div>
 </div>
-<h3><a id="_example_output_17"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/thai-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_17"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/thai-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -1725,23 +1729,23 @@ consider using the <a href="https://www.elastic.co/guide/en/elasticsearch/plugin
   "text": "การที่ได้ต้องแสดงว่างานดี"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/398.console"></div>
+<div class="console_widget" data-snippet="snippets/454.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ การ, ที่, ได้, ต้อง, แสดง, ว่า, งาน, ดี ]</pre>
 </div>
-<h3><a id="_configuration_20"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/thai-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_20"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/thai-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">thai</code> tokenizer is not configurable.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-uaxurlemail-tokenizer"></a>UAX URL email tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/uaxurlemail-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-uaxurlemail-tokenizer"></a>UAX URL email tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/uaxurlemail-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">uax_url_email</code> tokenizer is like the <a class="xref" href="analysis-tokenizers.html#analysis-standard-tokenizer" title="Standard tokenizer"><code class="literal">standard</code> tokenizer</a> except that it
 recognises URLs and email addresses as single tokens.</p>
-<h3><a id="_example_output_18"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/uaxurlemail-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_18"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/uaxurlemail-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -1749,7 +1753,7 @@ recognises URLs and email addresses as single tokens.</p>
   "text": "Email me at john.smith@global-international.com"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/399.console"></div>
+<div class="console_widget" data-snippet="snippets/455.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ Email, me, at, john.smith@global-international.com ]</pre>
@@ -1758,7 +1762,7 @@ recognises URLs and email addresses as single tokens.</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ Email, me, at, john.smith, global, international.com ]</pre>
 </div>
-<h3><a id="_configuration_21"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/uaxurlemail-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_21"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/uaxurlemail-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">uax_url_email</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -1783,7 +1787,7 @@ it is split at <code class="literal">max_token_length</code> intervals. Defaults
 </tbody>
 </table>
 </div>
-<h3><a id="_example_configuration_14"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/uaxurlemail-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_14"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/uaxurlemail-tokenizer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">uax_url_email</code> tokenizer to have a
 <code class="literal">max_token_length</code> of 5 (for demonstration purposes):</p>
 <div class="pre_wrapper lang-console">
@@ -1812,7 +1816,7 @@ POST my-index-000001/_analyze
   "text": "john.smith@global-international.com"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/400.console"></div>
+<div class="console_widget" data-snippet="snippets/456.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ john, smith, globa, l, inter, natio, nal.c, om ]</pre>
@@ -1821,12 +1825,12 @@ POST my-index-000001/_analyze
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-whitespace-tokenizer"></a>Whitespace tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/whitespace-tokenizer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-whitespace-tokenizer"></a>Whitespace tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/whitespace-tokenizer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">whitespace</code> tokenizer breaks text into terms whenever it encounters a
 whitespace character.</p>
-<h3><a id="_example_output_19"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/whitespace-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_19"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/whitespace-tokenizer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -1834,12 +1838,12 @@ whitespace character.</p>
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/401.console"></div>
+<div class="console_widget" data-snippet="snippets/457.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ The, 2, QUICK, Brown-Foxes, jumped, over, the, lazy, dog's, bone. ]</pre>
 </div>
-<h3><a id="_configuration_22"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/tokenizers/whitespace-tokenizer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_22"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/tokenizers/whitespace-tokenizer.asciidoc">edit</a></h3>
 <p>The <code class="literal">whitespace</code> tokenizer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">

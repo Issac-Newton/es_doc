@@ -1,8 +1,9 @@
-PUT /_security/role_mapping/basic_users
+PUT /sales/_doc/1?refresh
 {
-  "roles" : [ "user" ],
-  "rules" : { "field" : {
-    "groups" : "cn=users,dc=example,dc=com"
-  } },
-  "enabled": true
+  "tags": [ "car", "auto" ],
+  "comments": [
+    { "username": "baddriver007", "comment": "This car could have better brakes" },
+    { "username": "dr_who", "comment": "Where's the autopilot? Can't find it" },
+    { "username": "ilovemotorbikes", "comment": "This car has two extra wheels" }
+  ]
 }

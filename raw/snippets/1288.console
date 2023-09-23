@@ -1,7 +1,8 @@
-POST _scripts/calculate-score
+POST /sales/_search?size=0
 {
-  "script": {
-    "lang": "painless",
-    "source": "Math.log(_score * 2) + params.my_modifier"
+  "aggs": {
+    "products_without_a_price": {
+      "missing": { "field": "price" }
+    }
   }
 }

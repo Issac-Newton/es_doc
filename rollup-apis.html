@@ -3,13 +3,14 @@
   <head>
     
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>Rollup APIs | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="Rollup APIs | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="rest-apis.html" title="REST APIs"/>
 <link rel="prev" href="repositories-metering-apis.html" title="Repositories metering APIs"/>
-<link rel="next" href="search.html" title="Search APIs"/>
+<link rel="next" href="script-apis.html" title="Script APIs"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -112,14 +113,14 @@
 <a href="repositories-metering-apis.html">« Repositories metering APIs</a>
 </span>
 <span class="next">
-<a href="search.html">Search APIs »</a>
+<a href="script-apis.html">Script APIs »</a>
 </span>
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-apis"></a>Rollup APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-api.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-apis"></a>Rollup APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-apis.asciidoc">edit</a></h2>
 </div></div></div>
-<h3><a id="rollup-jobs-endpoint"></a>Jobs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-api.asciidoc">edit</a></h3>
+<h3><a id="rollup-jobs-endpoint"></a>Jobs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-apis.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -133,28 +134,28 @@
 </li>
 </ul>
 </div>
-<h3><a id="rollup-data-endpoint"></a>Data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-api.asciidoc">edit</a></h3>
+<h3><a id="rollup-data-endpoint"></a>Data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-apis.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="rollup-apis.html#rollup-get-rollup-caps" title="Get rollup job capabilities API">Get Rollup Capabilities</a>
+<a class="xref" href="rollup-apis.html#rollup-get-rollup-caps" title="Get rollup job capabilities API">Get rollup capabilities</a>
 </li>
 <li class="listitem">
-<a class="xref" href="rollup-apis.html#rollup-get-rollup-index-caps" title="Get rollup index capabilities API">Get Rollup Index Capabilities</a>
+<a class="xref" href="rollup-apis.html#rollup-get-rollup-index-caps" title="Get rollup index capabilities API">Get rollup index capabilities</a>
 </li>
 </ul>
 </div>
-<h3><a id="rollup-search-endpoint"></a>Search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-api.asciidoc">edit</a></h3>
+<h3><a id="rollup-search-endpoint"></a>Search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-apis.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="rollup-apis.html#rollup-search" title="Rollup search">Rollup Search</a>
+<a class="xref" href="rollup-apis.html#rollup-search" title="Rollup search">Rollup search</a>
 </li>
 </ul>
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-put-job"></a>Create rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/put-job.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-put-job"></a>Create rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Creates a rollup job.</p>
@@ -164,16 +165,23 @@
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-put-job-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-put-job-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">PUT _rollup/job/&lt;job_id&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-put-job-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-put-job-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -188,7 +196,7 @@ If the Elasticsearch security features are enabled, you must have <code class="l
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-put-job-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-put-job-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The rollup job configuration contains all the details about how the job should
 run, when it indexes documents, and what future queries will be able to execute
@@ -202,7 +210,7 @@ what metrics to collect for each group.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-put-job-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-put-job-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -226,7 +234,7 @@ mismatched job configurations.
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-put-job-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-put-job-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -547,13 +555,22 @@ the indexer.
 be shared with other rollup jobs. The data is stored so that it doesn&#8217;t
 interfere with unrelated jobs.
 </dd>
+<dt>
+<span class="term">
+<code class="literal">timeout</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>)
+Time to wait for the request to complete. Defaults to <code class="literal">20s</code> (20 seconds).
+</dd>
 </dl>
 </div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-put-job-api-example"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-put-job-api-example"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/put-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example creates a rollup job named <code class="literal">sensor</code>, targeting the
 <code class="literal">sensor-*</code> index pattern:</p>
@@ -564,7 +581,7 @@ interfere with unrelated jobs.
   "rollup_index": "sensor_rollup",
   "cron": "*/30 * * * * ?",
   "page_size": 1000,
-  "groups": { <a id="CO657-1"></a><i class="conum" data-value="1"></i>
+  "groups": { <a id="CO736-1"></a><i class="conum" data-value="1"></i>
     "date_histogram": {
       "field": "timestamp",
       "fixed_interval": "1h",
@@ -574,7 +591,7 @@ interfere with unrelated jobs.
       "fields": [ "node" ]
     }
   },
-  "metrics": [ <a id="CO657-2"></a><i class="conum" data-value="2"></i>
+  "metrics": [ <a id="CO736-2"></a><i class="conum" data-value="2"></i>
       {
       "field": "temperature",
       "metrics": [ "min", "max", "sum" ]
@@ -586,12 +603,12 @@ interfere with unrelated jobs.
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2124.console"></div>
+<div class="console_widget" data-snippet="snippets/2711.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO657-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO736-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>This configuration enables date histograms to be used on the <code class="literal">timestamp</code>
@@ -600,7 +617,7 @@ field and <code class="literal">terms</code> aggregations to be used on the <cod
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO657-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO736-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>This configuration defines metrics over two fields: <code class="literal">temperature</code> and
@@ -622,7 +639,7 @@ sum of the temperature. For <code class="literal">voltage</code>, we are collect
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-delete-job"></a>Delete rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/delete-job.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-delete-job"></a>Delete rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Deletes an existing rollup job.</p>
@@ -632,16 +649,23 @@ sum of the temperature. For <code class="literal">voltage</code>, we are collect
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-delete-job-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-delete-job-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">DELETE _rollup/job/&lt;job_id&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-delete-job-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-delete-job-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -656,7 +680,7 @@ If the Elasticsearch security features are enabled, you must have <code class="l
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-delete-job-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-delete-job-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p>A job must be <span class="strong strong"><strong>stopped</strong></span> first before it can be deleted. If you attempt to delete
 a started job, an error occurs. Similarly, if you attempt to delete a
@@ -690,7 +714,7 @@ that targets the rollup job&#8217;s ID in the rollup index.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-delete-job-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-delete-job-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -708,7 +732,7 @@ that targets the rollup job&#8217;s ID in the rollup index.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-delete-job-response-codes"></a>Response codes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-delete-job-response-codes"></a>Response codes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -727,13 +751,13 @@ occurs if you try to delete a job that doesn&#8217;t exist.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-delete-job-example"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-delete-job-example"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/delete-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If we have a rollup job named <code class="literal">sensor</code>, it can be deleted with:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">DELETE _rollup/job/sensor</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2125.console"></div>
+<div class="console_widget" data-snippet="snippets/2712.console"></div>
 <p>Which will return the response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -746,7 +770,7 @@ occurs if you try to delete a job that doesn&#8217;t exist.
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-get-job"></a>Get rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/get-job.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-get-job"></a>Get rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Retrieves the configuration, stats, and status of rollup jobs.</p>
@@ -756,16 +780,23 @@ occurs if you try to delete a job that doesn&#8217;t exist.
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-job-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-job-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET _rollup/job/&lt;job_id&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-job-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-job-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -780,7 +811,7 @@ For more information, see <a class="xref" href="authorization.html#security-priv
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-job-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-job-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The API can return the details for a single rollup job or for all rollup jobs.</p>
 <div class="note admon">
@@ -797,7 +828,7 @@ about that job.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-job-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-job-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -816,7 +847,7 @@ about that job.</p>
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-job-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-job-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -883,7 +914,7 @@ be ignored because the job is already active with the prior trigger.
 <li class="listitem">
 <code class="literal">abort</code> is a transient state, which is usually not witnessed by the user. It
 is used if the task needs to be shut down for some reason (job has been deleted,
-an unrecoverable error has been encountered, etc).  Shortly after the <code class="literal">abort</code>
+an unrecoverable error has been encountered, etc). Shortly after the <code class="literal">abort</code>
 state is set, the job will remove itself from the cluster.
 </li>
 </ul>
@@ -900,14 +931,14 @@ state is set, the job will remove itself from the cluster.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-job-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-job-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/get-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If we have already created a rollup job named <code class="literal">sensor</code>, the details about the
 job can be retrieved with:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET _rollup/job/sensor</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2126.console"></div>
+<div class="console_widget" data-snippet="snippets/2713.console"></div>
 <p>The API yields the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -951,8 +982,7 @@ job can be retrieved with:</p>
         "page_size": 1000
       },
       "status": {
-        "job_state": "stopped",
-        "upgraded_doc_id": true
+        "job_state": "stopped"
       },
       "stats": {
         "pages_processed": 0,
@@ -975,7 +1005,7 @@ job can be retrieved with:</p>
 <p>The <code class="literal">jobs</code> array contains a single job (<code class="literal">id: sensor</code>) since we requested a single job in the endpoint&#8217;s URL.
 If we add another job, we can see how multi-job responses are handled:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT _rollup/job/sensor2 <a id="CO658-1"></a><i class="conum" data-value="1"></i>
+<pre class="programlisting prettyprint lang-console">PUT _rollup/job/sensor2 <a id="CO737-1"></a><i class="conum" data-value="1"></i>
 {
   "index_pattern": "sensor-*",
   "rollup_index": "sensor_rollup",
@@ -1003,14 +1033,14 @@ If we add another job, we can see how multi-job responses are handled:</p>
   ]
 }
 
-GET _rollup/job/_all <a id="CO658-2"></a><i class="conum" data-value="2"></i></pre>
+GET _rollup/job/_all <a id="CO737-2"></a><i class="conum" data-value="2"></i></pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2127.console"></div>
+<div class="console_widget" data-snippet="snippets/2714.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO658-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO737-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>We create a second job with name <code class="literal">sensor2</code></p>
@@ -1018,7 +1048,7 @@ GET _rollup/job/_all <a id="CO658-2"></a><i class="conum" data-value="2"></i></p
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO658-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO737-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Then request all jobs by using <code class="literal">_all</code> in the GetJobs API</p>
@@ -1069,8 +1099,7 @@ GET _rollup/job/_all <a id="CO658-2"></a><i class="conum" data-value="2"></i></p
         "page_size": 1000
       },
       "status": {
-        "job_state": "stopped",
-        "upgraded_doc_id": true
+        "job_state": "stopped"
       },
       "stats": {
         "pages_processed": 0,
@@ -1126,8 +1155,7 @@ GET _rollup/job/_all <a id="CO658-2"></a><i class="conum" data-value="2"></i></p
         "page_size": 1000
       },
       "status": {
-        "job_state": "stopped",
-        "upgraded_doc_id": true
+        "job_state": "stopped"
       },
       "stats": {
         "pages_processed": 0,
@@ -1153,7 +1181,7 @@ GET _rollup/job/_all <a id="CO658-2"></a><i class="conum" data-value="2"></i></p
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-get-rollup-caps"></a>Get rollup job capabilities API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-get-rollup-caps"></a>Get rollup job capabilities API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Returns the capabilities of any rollup jobs that have been configured for a
@@ -1164,16 +1192,23 @@ specific index or index pattern.</p>
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-caps-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-caps-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET _rollup/data/&lt;index&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-caps-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-caps-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1188,7 +1223,7 @@ For more information, see <a class="xref" href="authorization.html#security-priv
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-caps-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-caps-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API is useful because a rollup job is often configured to rollup only a
 subset of fields from the source index. Furthermore, only certain aggregations
@@ -1210,7 +1245,7 @@ can be performed, and where does the data live?
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1229,10 +1264,10 @@ can be performed, and where does the data live?
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-caps.asciidoc">edit</a></h3>
 </div></div></div>
-<p>Imagine we have an index named <code class="literal">sensor-1</code> full of raw data.  We know that the
-data will grow over time, so there will be a <code class="literal">sensor-2</code>, <code class="literal">sensor-3</code>, etc.  Let&#8217;s
+<p>Imagine we have an index named <code class="literal">sensor-1</code> full of raw data. We know that the
+data will grow over time, so there will be a <code class="literal">sensor-2</code>, <code class="literal">sensor-3</code>, etc. Let&#8217;s
 create a rollup job that targets the index pattern <code class="literal">sensor-*</code> to accommodate
 this future scaling:</p>
 <div class="pre_wrapper lang-console">
@@ -1264,13 +1299,13 @@ this future scaling:</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2128.console"></div>
+<div class="console_widget" data-snippet="snippets/2715.console"></div>
 <p>We can then retrieve the rollup capabilities of that index pattern (<code class="literal">sensor-*</code>)
 via the following command:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET _rollup/data/sensor-*</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2129.console"></div>
+<div class="console_widget" data-snippet="snippets/2716.console"></div>
 <p>Which will yield the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -1317,7 +1352,7 @@ via the following command:</p>
 }</pre>
 </div>
 <p>The response that is returned contains information that is similar to the
-original rollup configuration, but formatted differently.  First, there are some
+original rollup configuration, but formatted differently. First, there are some
 house-keeping details: the rollup job ID, the index that holds the rolled data,
 and the index pattern that the job was targeting.</p>
 <p>Next it shows a list of fields that contain data eligible for rollup searches.
@@ -1333,20 +1368,20 @@ various configurations available.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET _rollup/data/_all</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2130.console"></div>
+<div class="console_widget" data-snippet="snippets/2717.console"></div>
 <p>But note that if we use the concrete index name (<code class="literal">sensor-1</code>), we&#8217;ll retrieve no
 rollup capabilities:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET _rollup/data/sensor-1</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2131.console"></div>
+<div class="console_widget" data-snippet="snippets/2718.console"></div>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
 
 }</pre>
 </div>
 <p>Why is this?  The original rollup job was configured against a specific index
-pattern (<code class="literal">sensor-*</code>) not a concrete index (<code class="literal">sensor-1</code>).  So while the index
+pattern (<code class="literal">sensor-*</code>) not a concrete index (<code class="literal">sensor-1</code>). So while the index
 belongs to the pattern, the rollup job is only valid across the entirety of
 the pattern not just one of it&#8217;s containing indices. So for that reason, the
 get rollup capabilities API only returns information based on the originally
@@ -1357,7 +1392,7 @@ configured index name or pattern.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-get-rollup-index-caps"></a>Get rollup index capabilities API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-get-rollup-index-caps"></a>Get rollup index capabilities API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Returns the rollup capabilities of all jobs inside of a rollup index (e.g. the
@@ -1368,22 +1403,30 @@ index where rollup data is stored).</p>
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-index-caps-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-index-caps-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET &lt;target&gt;/_rollup/data</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-index-caps-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-index-caps-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-If the Elasticsearch security features are enabled, you must have the <code class="literal">read</code> index
-privilege on the index that stores the rollup results. For more information, see
+If the Elasticsearch security features are enabled, you must have any of the <code class="literal">read</code>,
+<code class="literal">view_index_metadata</code>, or <code class="literal">manage</code> <a class="xref" href="authorization.html#privileges-list-indices" title="Indices privileges">index privilege</a>
+on the index that stores the rollup results. For more information, see
 <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
 </li>
 </ul>
@@ -1392,7 +1435,7 @@ privilege on the index that stores the rollup results. For more information, see
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-index-caps-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-index-caps-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
 </div></div></div>
 <p>A single rollup index may store the data for multiple rollup jobs, and may
 have a variety of capabilities depending on those jobs.</p>
@@ -1412,7 +1455,7 @@ and what aggregations can be performed on each job?
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-index-caps-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-index-caps-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1431,9 +1474,9 @@ Wildcard (<code class="literal">*</code>) expressions are supported.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-get-rollup-index-caps-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-get-rollup-index-caps-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-index-caps.asciidoc">edit</a></h3>
 </div></div></div>
-<p>Imagine we have an index named <code class="literal">sensor-1</code> full of raw data.  We know that the
+<p>Imagine we have an index named <code class="literal">sensor-1</code> full of raw data. We know that the
 data will grow over time, so there will be a <code class="literal">sensor-2</code>, <code class="literal">sensor-3</code>, etc.
 Let&#8217;s create a rollup job that stores its data in <code class="literal">sensor_rollup</code>:</p>
 <div class="pre_wrapper lang-console">
@@ -1465,15 +1508,15 @@ Let&#8217;s create a rollup job that stores its data in <code class="literal">se
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2132.console"></div>
+<div class="console_widget" data-snippet="snippets/2719.console"></div>
 <p>If at a later date, we&#8217;d like to determine what jobs and capabilities were
 stored in the <code class="literal">sensor_rollup</code> index, we can use the get rollup index API:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /sensor_rollup/_rollup/data</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2133.console"></div>
+<div class="console_widget" data-snippet="snippets/2720.console"></div>
 <p>Note how we are requesting the concrete rollup index name (<code class="literal">sensor_rollup</code>) as
-the first part of the URL. This  will yield the following response:</p>
+the first part of the URL. This will yield the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
   "sensor_rollup" : {
@@ -1536,44 +1579,51 @@ instead of explicit indices:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /*_rollup/_rollup/data</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2134.console"></div>
+<div class="console_widget" data-snippet="snippets/2721.console"></div>
 </div>
 
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-search"></a>Rollup search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-search"></a>Rollup search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>Enables searching rolled-up data using the standard query DSL.</p>
+<p>Enables searching rolled-up data using the standard Query DSL.</p>
 <div class="warning admon">
 <div class="icon"></div>
 <div class="admon_content">
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-search-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-search-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET &lt;target&gt;/_rollup_search</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-search-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-search-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The rollup search endpoint is needed because, internally, rolled-up documents
 utilize a different document structure than the original data. The rollup search
-endpoint rewrites standard query DSL into a format that matches the rollup
+endpoint rewrites standard Query DSL into a format that matches the rollup
 documents, then takes the response and rewrites it back to what a client would
 expect given the original query.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-search-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-search-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1617,7 +1667,7 @@ indices or data streams.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-search-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-search-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The request body supports a subset of features from the regular Search API. It
 supports:</p>
@@ -1649,11 +1699,11 @@ similarly disallowed.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-search-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-search-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_historical_only_search_example"></a>Historical-only search example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_historical_only_search_example"></a>Historical-only search example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h4>
 </div></div></div>
 <p>Imagine we have an index named <code class="literal">sensor-1</code> full of raw data, and we have created
 a rollup job with the following configuration:</p>
@@ -1686,10 +1736,10 @@ a rollup job with the following configuration:</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2135.console"></div>
+<div class="console_widget" data-snippet="snippets/2722.console"></div>
 <p>This rolls up the <code class="literal">sensor-*</code> pattern and stores the results in <code class="literal">sensor_rollup</code>.
 To search this rolled up data, we need to use the <code class="literal">_rollup_search</code> endpoint.
-However, you&#8217;ll notice that we can use regular query DSL to search the rolled-up
+However, you&#8217;ll notice that we can use regular Query DSL to search the rolled-up
 data:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /sensor_rollup/_rollup_search
@@ -1704,7 +1754,7 @@ data:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2136.console"></div>
+<div class="console_widget" data-snippet="snippets/2723.console"></div>
 <p>The query is targeting the <code class="literal">sensor_rollup</code> data, since this contains the rollup
 data as configured in the job. A <code class="literal">max</code> aggregation has been used on the
 <code class="literal">temperature</code> field, yielding the following response:</p>
@@ -1749,7 +1799,7 @@ If we try to execute that search:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2137.console"></div>
+<div class="console_widget" data-snippet="snippets/2724.console"></div>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
   "error": {
@@ -1771,13 +1821,13 @@ If we try to execute that search:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_searching_both_historical_rollup_and_non_rollup_data"></a>Searching both historical rollup and non-rollup data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_searching_both_historical_rollup_and_non_rollup_data"></a>Searching both historical rollup and non-rollup data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/rollup-search.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The rollup search API has the capability to search across both "live"
 non-rollup data and the aggregated rollup data. This is done by simply adding
 the live indices to the URI:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET sensor-1,sensor_rollup/_rollup_search <a id="CO659-1"></a><i class="conum" data-value="1"></i>
+<pre class="programlisting prettyprint lang-console">GET sensor-1,sensor_rollup/_rollup_search <a id="CO738-1"></a><i class="conum" data-value="1"></i>
 {
   "size": 0,
   "aggregations": {
@@ -1789,12 +1839,12 @@ the live indices to the URI:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2138.console"></div>
+<div class="console_widget" data-snippet="snippets/2725.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO659-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO738-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Note the URI now searches <code class="literal">sensor-1</code> and <code class="literal">sensor_rollup</code> at the same time</p>
@@ -1848,7 +1898,7 @@ non-rollup indices:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-start-job"></a>Start rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/start-job.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-start-job"></a>Start rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Starts an existing, stopped rollup job.</p>
@@ -1858,16 +1908,23 @@ non-rollup indices:</p>
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-start-job-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-start-job-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST _rollup/job/&lt;job_id&gt;/_start</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-start-job-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-start-job-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1882,7 +1939,7 @@ If the Elasticsearch security features are enabled, you must have <code class="l
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-start-job-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-start-job-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If you try to start a job that does not exist, an exception occurs. If you try
 to start a job that is already started, nothing happens.</p>
@@ -1890,7 +1947,7 @@ to start a job that is already started, nothing happens.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-start-job-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-start-job-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1908,7 +1965,7 @@ to start a job that is already started, nothing happens.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-start-job-response-codes"></a>Response codes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-start-job-response-codes"></a>Response codes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1927,13 +1984,13 @@ occurs if you try to start a job that doesn&#8217;t exist.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-start-job-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-start-job-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/start-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If we have already created a rollup job named <code class="literal">sensor</code>, it can be started with:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _rollup/job/sensor/_start</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2139.console"></div>
+<div class="console_widget" data-snippet="snippets/2726.console"></div>
 <p>Which will return the response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -1946,7 +2003,7 @@ occurs if you try to start a job that doesn&#8217;t exist.
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-stop-job"></a>Stop rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/stop-job.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-stop-job"></a>Stop rollup jobs API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Stops an existing, started rollup job.</p>
@@ -1956,16 +2013,23 @@ occurs if you try to start a job that doesn&#8217;t exist.
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-stop-job-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-stop-job-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST _rollup/job/&lt;job_id&gt;/_stop</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-stop-job-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-stop-job-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1978,7 +2042,7 @@ If the Elasticsearch security features are enabled, you must have <code class="l
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="rollup-stop-job-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h4>
+<h4 class="title"><a id="rollup-stop-job-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h4>
 </div></div></div>
 <p>If you try to stop a job that does not exist, an exception occurs. If you try
 to stop a job that is already stopped, nothing happens.</p>
@@ -1988,7 +2052,7 @@ to stop a job that is already stopped, nothing happens.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-stop-job-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-stop-job-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -2006,7 +2070,7 @@ to stop a job that is already stopped, nothing happens.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-stop-job-query-parms"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-stop-job-query-parms"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -2048,7 +2112,7 @@ and the indexer is stopped asynchronously in the background. Defaults to
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-stop-job-response-codes"></a>Response codes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-stop-job-response-codes"></a>Response codes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -2067,7 +2131,7 @@ occurs if you try to stop a job that doesn&#8217;t exist.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-stop-job-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-stop-job-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/apis/stop-job.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Since only a stopped job can be deleted, it can be useful to block the API until
 the indexer has fully stopped. This is accomplished with the
@@ -2075,7 +2139,7 @@ the indexer has fully stopped. This is accomplished with the
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _rollup/job/sensor/_stop?wait_for_completion=true&amp;timeout=10s</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2140.console"></div>
+<div class="console_widget" data-snippet="snippets/2727.console"></div>
 <p>The parameter blocks the API call from returning until either the job has moved
 to <code class="literal">STOPPED</code> or the specified time has elapsed. If the specified time elapses
 without the job moving to <code class="literal">STOPPED</code>, a timeout exception is thrown.</p>
@@ -2089,7 +2153,7 @@ without the job moving to <code class="literal">STOPPED</code>, a timeout except
 <a href="repositories-metering-apis.html">« Repositories metering APIs</a>
 </span>
 <span class="next">
-<a href="search.html">Search APIs »</a>
+<a href="script-apis.html">Script APIs »</a>
 </span>
 </div>
 </div>

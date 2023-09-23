@@ -1,4 +1,16 @@
-POST /example/_doc
+PUT my-index-000001/_mapping
 {
-  "location" : "LINESTRING (-77.03653 38.897676, -77.009051 38.889939)"
+  "runtime": {
+    "voltage_corrected": {
+      "type": "double",
+      "script": {
+        "source": """
+        emit(doc['voltage'].value * params['multiplier'])
+        """,
+        "params": {
+          "multiplier": 2
+        }
+      }
+    }
+  }
 }

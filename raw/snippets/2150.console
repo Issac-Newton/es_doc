@@ -1,4 +1,6 @@
-GET /_search/scroll
+GET _cluster/allocation/explain
 {
-  "scroll_id" : "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAD4WYm9laVYtZndUQlNsdDcwakFMNjU1QQ=="
+  "index": "my-index-000001",
+  "shard": 0,
+  "primary": true
 }

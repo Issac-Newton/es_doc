@@ -1,1 +1,11 @@
-GET /my-index-000001/_ilm/explain
+GET /_search
+{
+  "aggs": {
+    "tags": {
+      "terms": {
+        "field": "tags",
+        "execution_hint": "map"
+      }
+    }
+  }
+}

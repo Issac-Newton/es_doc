@@ -1,8 +1,16 @@
-POST _nodes/reload_secure_settings
+PUT _ilm/policy/my_policy
 {
-  "secure_settings_password":"s3cr3t"
-}
-POST _nodes/nodeId1,nodeId2/reload_secure_settings
-{
-  "secure_settings_password":"s3cr3t"
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover" : {
+            "max_age": "7d",
+            "max_size": "100gb",
+            "min_docs": 1000
+          }
+        }
+      }
+    }
+  }
 }

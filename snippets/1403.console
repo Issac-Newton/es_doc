@@ -1,7 +1,12 @@
-PUT /_snapshot/my_unverified_backup?verify=false
+GET latency/_search
 {
-  "type": "fs",
-  "settings": {
-    "location": "my_unverified_backup_location"
+  "size": 0,
+  "aggs": {
+    "load_time_outlier": {
+      "percentiles": {
+        "field": "load_time",
+        "keyed": false
+      }
+    }
   }
 }

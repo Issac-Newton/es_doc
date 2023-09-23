@@ -1,8 +1,21 @@
-POST /my-data-stream/_doc/
+PUT /my-index-000001
 {
-  "@timestamp": "2020-12-07T11:06:07.000Z",
-  "user": {
-    "id": "8a4f500d"
-  },
-  "message": "Login successful"
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "en": {
+          "tokenizer": "standard",
+          "filter": [ "my_shingle_filter" ]
+        }
+      },
+      "filter": {
+        "my_shingle_filter": {
+          "type": "shingle",
+          "min_shingle_size": 2,
+          "max_shingle_size": 5,
+          "output_unigrams": false
+        }
+      }
+    }
+  }
 }

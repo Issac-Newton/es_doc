@@ -1,7 +1,13 @@
-GET /_search
+PUT /postal_codes
 {
-  "indices_boost": [
-    { "my-index-000001": 1.4 },
-    { "my-index-000002": 1.3 }
-  ]
+  "mappings": {
+    "properties": {
+      "location": {
+        "type": "geo_shape"
+      },
+      "postal_code": {
+        "type": "keyword"
+      }
+    }
+  }
 }

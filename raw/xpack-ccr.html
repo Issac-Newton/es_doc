@@ -7,7 +7,7 @@
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="high-availability.html" title="Set up a cluster for high availability"/>
-<link rel="prev" href="backup-cluster.html" title="Back up a cluster"/>
+<link rel="prev" href="high-availability-cluster-design.html" title="Designing for resilience"/>
 <link rel="next" href="snapshot-restore.html" title="Snapshot and restore"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
@@ -25,7 +25,7 @@
 </div>
 <div class="navheader">
 <span class="prev">
-<a href="backup-cluster.html">« Back up a cluster</a>
+<a href="high-availability-cluster-design.html">« Designing for resilience</a>
 </span>
 <span class="next">
 <a href="snapshot-restore.html">Snapshot and restore »</a>
@@ -33,7 +33,7 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="xpack-ccr"></a>Cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="xpack-ccr"></a>Cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h2>
 </div></div></div>
 <p>With cross-cluster replication, you can replicate indices across clusters to:</p>
 <div class="ulist itemizedlist">
@@ -86,26 +86,32 @@ If newer, the versions must also be compatible as outlined in the following matr
 <col class="col_6"/>
 <col class="col_7"/>
 <col class="col_8"/>
+<col class="col_9"/>
+<col class="col_10"/>
 </colgroup>
 <tbody>
 <tr>
 <td align="center" valign="top"><p></p></td>
-<td align="center" colspan="7" valign="top"><p><span class="strong strong"><strong>Local cluster</strong></span></p></td>
+<td align="center" colspan="9" valign="top"><p><span class="strong strong"><strong>Local cluster</strong></span></p></td>
 </tr>
 <tr>
 <td align="center" valign="top"><p><span class="strong strong"><strong>Remote cluster</strong></span></p></td>
-<td align="center" valign="top"><p>5.0&#8594;5.5</p></td>
+<td align="center" valign="top"><p>5.0–5.5</p></td>
 <td align="center" valign="top"><p>5.6</p></td>
-<td align="center" valign="top"><p>6.0&#8594;6.6</p></td>
+<td align="center" valign="top"><p>6.0–6.6</p></td>
 <td align="center" valign="top"><p>6.7</p></td>
 <td align="center" valign="top"><p>6.8</p></td>
 <td align="center" valign="top"><p>7.0</p></td>
-<td align="center" valign="top"><p>7.1&#8594;7.x</p></td>
+<td align="center" valign="top"><p>7.1–7.16</p></td>
+<td align="center" valign="top"><p>7.17</p></td>
+<td align="center" valign="top"><p>8.0–8.9</p></td>
 </tr>
 <tr>
-<td align="center" valign="top"><p>5.0&#8594;5.5</p></td>
+<td align="center" valign="top"><p>5.0–5.5</p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
@@ -121,14 +127,18 @@ If newer, the versions must also be compatible as outlined in the following matr
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 </tr>
 <tr>
-<td align="center" valign="top"><p>6.0&#8594;6.6</p></td>
+<td align="center" valign="top"><p>6.0–6.6</p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 </tr>
@@ -141,6 +151,8 @@ If newer, the versions must also be compatible as outlined in the following matr
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 </tr>
 <tr>
 <td align="center" valign="top"><p>6.8</p></td>
@@ -151,6 +163,8 @@ If newer, the versions must also be compatible as outlined in the following matr
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 </tr>
 <tr>
 <td align="center" valign="top"><p>7.0</p></td>
@@ -161,14 +175,42 @@ If newer, the versions must also be compatible as outlined in the following matr
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 </tr>
 <tr>
-<td align="center" valign="top"><p>7.1&#8594;7.x</p></td>
+<td align="center" valign="top"><p>7.1–7.16</p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p>7.17</p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p>8.0–8.9</p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
+<td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 <td align="center" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
 </tr>
@@ -177,7 +219,7 @@ If newer, the versions must also be compatible as outlined in the following matr
 </div>
 </div>
 </details>
-<h3><a id="ccr-multi-cluster-architectures"></a>Multi-cluster architectures<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h3>
+<h3><a id="ccr-multi-cluster-architectures"></a>Multi-cluster architectures<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h3>
 <p>Use cross-cluster replication to construct several multi-cluster architectures within the Elastic
 Stack:</p>
 <div class="ulist itemizedlist">
@@ -200,9 +242,20 @@ secondary cluster
 </div>
 <p>Watch the
 <a href="https://www.elastic.co/webinars/replicate-elasticsearch-data-with-cross-cluster-replication-ccr" class="ulink" target="_top">cross-cluster replication webinar</a> to learn more about the following use cases.
-Then, <a class="xref" href="xpack-ccr.html#ccr-getting-started" title="Tutorial: Set up cross-cluster replication">set up cross-cluster replication</a> on your local machine and work
+Then, <a class="xref" href="xpack-ccr.html#ccr-getting-started-tutorial" title="Tutorial: Set up cross-cluster replication">set up cross-cluster replication</a> on your local machine and work
 through the demo from the webinar.</p>
-<h4><a id="ccr-disaster-recovery"></a>Disaster recovery and high availability<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h4>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>In all of these use cases, you must
+<a class="xref" href="manually-configure-security.html" title="Manually configure security">configure security</a> independently on every
+cluster. The security configuration is not replicated when configuring cross-cluster replication for
+disaster recovery. To ensure that the Elasticsearch <code class="literal">security</code> feature state is backed up,
+<a class="xref" href="snapshots-take-snapshot.html#back-up-specific-feature-state" title="Back up a specific feature state">take snapshots</a> regularly. You can then restore
+the native users, roles, and tokens from your security configuration.</p>
+</div>
+</div>
+<h4><a id="ccr-disaster-recovery"></a>Disaster recovery and high availability<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h4>
 <p>Disaster recovery provides your mission-critical applications with the
 tolerance to withstand datacenter or region outages. This use case is the
 most common deployment of cross-cluster replication. You can configure clusters in different
@@ -223,7 +276,7 @@ architectures to support disaster recovery and high availability:</p>
 </li>
 </ul>
 </div>
-<h5><a id="ccr-single-datacenter-recovery"></a>Single disaster recovery datacenter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h5>
+<h5><a id="ccr-single-datacenter-recovery"></a>Single disaster recovery datacenter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h5>
 <p>In this configuration, data is replicated from the production datacenter to the
 disaster recovery datacenter. Because the follower indices replicate the leader
 index, your application can use the disaster recovery datacenter if the
@@ -233,7 +286,7 @@ production datacenter is unavailable.</p>
 <img src="images/ccr-arch-disaster-recovery.png" alt="Production datacenter that replicates data to a disaster recovery datacenter">
 </div>
 </div>
-<h5><a id="ccr-multiple-datacenter-recovery"></a>Multiple disaster recovery datacenters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h5>
+<h5><a id="ccr-multiple-datacenter-recovery"></a>Multiple disaster recovery datacenters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h5>
 <p>You can replicate data from one datacenter to multiple datacenters. This
 configuration provides both disaster recovery and high availability, ensuring
 that data is replicated in two datacenters if the primary datacenter is down
@@ -246,7 +299,7 @@ index from Datacenter A.</p>
 <img src="images/ccr-arch-multiple-dcs.png" alt="Production datacenter that replicates data to two other datacenters">
 </div>
 </div>
-<h5><a id="ccr-chained-replication"></a>Chained replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h5>
+<h5><a id="ccr-chained-replication"></a>Chained replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h5>
 <p>You can replicate data across multiple datacenters to form a replication
 chain. In the following diagram, Datacenter A contains the leader index.
 Datacenter B replicates data from Datacenter A, and Datacenter C replicates
@@ -257,7 +310,7 @@ datacenters forms a chained replication pattern.</p>
 <img src="images/ccr-arch-chain-dcs.png" alt="Three datacenters connected to form a replication chain">
 </div>
 </div>
-<h5><a id="ccr-bi-directional-replication"></a>Bi-directional replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h5>
+<h5><a id="ccr-bi-directional-replication"></a>Bi-directional replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h5>
 <p>In a <a href="https://www.elastic.co/blog/bi-directional-replication-with-elasticsearch-cross-cluster-replication-ccr" class="ulink" target="_top">bi-directional replication</a> setup, all clusters have access to view
 all data, and all clusters have an index to write to without manually
 implementing failover. Applications can write to the local index within each
@@ -271,16 +324,11 @@ comes online, replication resumes between the clusters.</p>
 <img src="images/ccr-arch-bi-directional.png" alt="Bi-directional configuration where each cluster contains both a leader index and follower indices">
 </div>
 </div>
-<div class="note admon">
-<div class="icon"></div>
-<div class="admon_content">
-<p>This configuration is useful for index-only workloads, where no updates
+<p>This configuration is particularly useful for index-only workloads, where no updates
 to document values occur. In this configuration, documents indexed by Elasticsearch are
 immutable. Clients are located in each datacenter alongside the Elasticsearch
 cluster, and do not communicate with clusters in different datacenters.</p>
-</div>
-</div>
-<h4><a id="ccr-data-locality"></a>Data locality<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h4>
+<h4><a id="ccr-data-locality"></a>Data locality<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h4>
 <p>Bringing data closer to your users or application server can reduce latency
 and response time. This methodology also applies when replicating data in Elasticsearch.
 For example, you can replicate a product catalog or reference dataset to 20 or
@@ -296,7 +344,7 @@ puts data closer to the application accessing it.</p>
 <img src="images/ccr-arch-data-locality.png" alt="A centralized datacenter replicated across three other datacenters" width="each in their own region">
 </div>
 </div>
-<h4><a id="ccr-centralized-reporting"></a>Centralized reporting<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h4>
+<h4><a id="ccr-centralized-reporting"></a>Centralized reporting<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h4>
 <p>Using a centralized reporting cluster is useful when querying across a large
 network is inefficient. In this configuration, you replicate data from many
 smaller clusters to the centralized reporting cluster.</p>
@@ -314,8 +362,8 @@ reports locally.</p>
 <img src="images/ccr-arch-central-reporting.png" alt="Three clusters in different regions sending data to a centralized reporting cluster for analysis">
 </div>
 </div>
-<h3><a id="ccr-replication-mechanics"></a>Replication mechanics<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h3>
-<p>Although you <a class="xref" href="xpack-ccr.html#ccr-getting-started" title="Tutorial: Set up cross-cluster replication">set up cross-cluster replication</a> at the index level, Elasticsearch
+<h3><a id="ccr-replication-mechanics"></a>Replication mechanics<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h3>
+<p>Although you <a class="xref" href="xpack-ccr.html#ccr-getting-started-tutorial" title="Tutorial: Set up cross-cluster replication">set up cross-cluster replication</a> at the index level, Elasticsearch
 achieves replication at the shard level. When a follower index is created,
 each shard in that index pulls changes from its corresponding shard in the
 leader index, which means that a follower index has the same number of
@@ -338,6 +386,23 @@ cause of the failure is deemed to be recoverable (such as a network
 failure), the follower shard enters into a retry loop. Otherwise, the
 follower shard pauses
 <a class="xref" href="xpack-ccr.html#ccr-pause-replication" title="Pause and resume replication">until you resume it</a>.</p>
+<h4><a id="ccr-update-leader-index"></a>Processing updates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h4>
+<p>You can&#8217;t manually modify a follower index&#8217;s mappings or aliases. To make
+changes, you must update the leader index. Because they are read-only, follower
+indices reject writes in all configurations.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Although changes to aliases on the leader index are replicated to follower
+indices, write indices are ignored. Follower indices can&#8217;t accept direct writes,
+so if any leader aliases have <code class="literal">is_write_index</code> set to <code class="literal">true</code>, that value is
+forced to <code class="literal">false</code>.</p>
+</div>
+</div>
+<p>For example, you index a document named <code class="literal">doc_1</code> in Datacenter A, which
+replicates to Datacenter B. If a client connects to Datacenter B and attempts
+to update <code class="literal">doc_1</code>, the request fails. To update <code class="literal">doc_1</code>, the client must
+connect to Datacenter A and update the document in the leader index.</p>
 <p>When a follower shard receives operations from the leader shard, it places
 those operations in a write buffer. The follower shard submits bulk write
 requests using operations from the write buffer. If the write buffer exceeds
@@ -347,52 +412,16 @@ to resume sending read requests when the write buffer is no longer full.</p>
 <p>To manage how operations are replicated from the leader index, you can
 configure settings when
 <a class="xref" href="xpack-ccr.html#ccr-getting-started-follower-index" title="Create a follower index to replicate a specific index">creating the follower index</a>.</p>
-<p>The follower index automatically retrieves some updates applied to the leader
-index, while other updates are retrieved as needed:</p>
-<div class="informaltable">
-<table border="1" cellpadding="4px">
-<colgroup>
-<col class="col_1"/>
-<col class="col_2"/>
-<col class="col_3"/>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p><span class="strong strong"><strong>Update type</strong></span></p></td>
-<td align="left" valign="top"><p><span class="strong strong"><strong>Automatic</strong></span></p></td>
-<td align="left" valign="top"><p><span class="strong strong"><strong>As needed</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Alias</p></td>
-<td align="left" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
-<td align="left" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Mapping</p></td>
-<td align="left" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
-<td align="left" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Settings</p></td>
-<td align="left" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-no.png" alt="No" width="20" height="15"></span></p></td>
-<td align="left" valign="top"><p><span class="image"><img src="https://doc-icons.s3.us-east-2.amazonaws.com/icon-yes.png" alt="Yes" width="20" height="15"></span></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>For example, changing the number of replicas on the leader index is not
-replicated by the follower index, so that setting might not be retrieved.</p>
-<div class="note admon">
-<div class="icon"></div>
-<div class="admon_content">
-<p>You cannot manually modify a follower index&#8217;s mappings or aliases.</p>
-</div>
-</div>
+<p>Changes in the index mapping on the leader index are replicated to the
+follower index as soon as possible. This behavior is true for index
+settings as well, except for some settings that are local to the leader
+index. For example, changing the number of replicas on the leader index is
+not replicated by the follower index, so that setting might not be retrieved.</p>
 <p>If you apply a non-dynamic settings change to the leader index that is
 needed by the follower index, the follower index closes itself, applies the
 settings update, and then re-opens itself. The follower index is unavailable
 for reads and cannot replicate writes during this cycle.</p>
-<h3><a id="ccr-remote-recovery"></a>Initializing followers using remote recovery<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h3>
+<h3><a id="ccr-remote-recovery"></a>Initializing followers using remote recovery<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h3>
 <p>When you create a follower index, you cannot use it until it is fully
 initialized. The <em>remote recovery</em> process builds a new copy of a shard on a
 follower node by copying data from the primary shard in the leader cluster.</p>
@@ -420,7 +449,7 @@ index to obtain information about an in-progress remote recovery. Because Elasti
 implements remote recoveries using the
 <a class="xref" href="snapshot-restore.html" title="Snapshot and restore">snapshot and restore</a> infrastructure, running remote
 recoveries are labelled as type <code class="literal">snapshot</code> in the recovery API.</p>
-<h3><a id="ccr-leader-requirements"></a>Replicating a leader requires soft deletes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h3>
+<h3><a id="ccr-leader-requirements"></a>Replicating a leader requires soft deletes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h3>
 <p>Cross-cluster replication works by replaying the history of individual write
 operations that were performed on the shards of the leader index. Elasticsearch needs to
 retain the
@@ -431,12 +460,17 @@ mechanism used to retain these operations is <em>soft deletes</em>.</p>
 retaining these soft deletes up to configurable limits, the history of
 operations can be retained on the leader shards and made available to the
 follower shard tasks as it replays the history of operations.</p>
-<p>The <a class="xref" href="index-modules.html#ccr-index-soft-deletes-retention-period"><code class="literal">index.soft_deletes.retention_lease.period</code></a> setting defines the
-maximum time to retain a shard history retention lease before it is
-considered expired. This setting determines how long the cluster containing
-your leader index can be offline, which is 12 hours by default. If a shard copy
-recovers after its retention lease expires, then Elasticsearch will fall back to copying
-the entire index, because it can no longer replay the missing history.</p>
+<p>The <a class="xref" href="index-modules.html#ccr-index-soft-deletes-retention-period"><code class="literal">index.soft_deletes.retention_lease.period</code></a>
+setting defines the maximum time to retain a shard history retention lease
+before it is considered expired. This setting determines how long the cluster
+containing your follower index can be offline, which is 12 hours by default. If
+a shard copy recovers after its retention lease expires, but the missing
+operations are still available on the leader index, then Elasticsearch will establish a
+new lease and copy the missing operations. However Elasticsearch does not guarantee to
+retain unleased operations, so it is also possible that some of the missing
+operations have been discarded by the leader and are now completely
+unavailable. If this happens then the follower cannot recover automatically so
+you must <a class="xref" href="xpack-ccr.html#ccr-recreate-follower-index" title="Recreate a follower index">recreate it</a>.</p>
 <p>Soft deletes must be enabled for indices that you want to use as leader
 indices. Soft deletes are enabled by default on new indices created on
 or after Elasticsearch 7.0.0.</p>
@@ -449,13 +483,13 @@ or after Elasticsearch 7.0.0.</p>
 enabled.</p>
 </div>
 </div>
-<h3><a id="ccr-learn-more"></a>Use cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/index.asciidoc">edit</a></h3>
+<h3><a id="ccr-learn-more"></a>Use cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h3>
 <p>This following sections provide more information about how to configure
 and use cross-cluster replication:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="xpack-ccr.html#ccr-getting-started" title="Tutorial: Set up cross-cluster replication">Set up cross-cluster replication</a>
+<a class="xref" href="xpack-ccr.html#ccr-getting-started-tutorial" title="Tutorial: Set up cross-cluster replication">Set up cross-cluster replication</a>
 </li>
 <li class="listitem">
 <a class="xref" href="xpack-ccr.html#ccr-managing" title="Manage cross-cluster replication">Manage cross-cluster replication</a>
@@ -468,9 +502,54 @@ and use cross-cluster replication:</p>
 </li>
 </ul>
 </div>
+<h3><a id="ccr-limitations"></a>Cross-cluster replication limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/index.asciidoc">edit</a></h3>
+<p>Cross-cluster replication is designed to replicate user-generated indices only, and doesn&#8217;t
+currently replicate any of the following:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="api-conventions.html#system-indices" title="System indices">System indices</a>
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/machine-learning-intro.html" class="ulink" target="_top">Machine learning jobs</a>
+</li>
+<li class="listitem">
+<a class="xref" href="index-templates.html" title="Index templates">index templates</a>
+</li>
+<li class="listitem">
+<a class="xref" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle">Index lifecycle management</a> and
+<a class="xref" href="snapshot-lifecycle-management-api.html" title="Snapshot lifecycle management APIs">snapshot lifecycle management</a> polices
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/mapping-roles.html" class="ulink" target="_top">User permissions and role mappings</a>
+</li>
+<li class="listitem">
+<a class="xref" href="snapshots-register-repository.html" title="Register a snapshot repository">Snapshot repository settings</a>
+</li>
+<li class="listitem">
+<a class="xref" href="settings.html#modules-cluster" title="Cluster-level shard allocation and routing settings">Cluster settings</a>
+</li>
+<li class="listitem">
+<a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">Searchable snapshot</a>
+</li>
+</ul>
+</div>
+<p>If you want to replicate any of this data, you must replicate it to a remote
+cluster manually.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Data for <a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshot</a> indices is stored in
+the snapshot repository. Cross-cluster replication won&#8217;t replicate these indices completely, even
+though they&#8217;re either partially or fully-cached on the Elasticsearch nodes. To achieve
+searchable snapshots in a remote cluster, configure snapshot repositories on
+the remote cluster and use the same index lifecycle management policy from the local cluster to move
+data into the cold or frozen tiers on the remote cluster.</p>
+</div>
+</div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-getting-started"></a>Tutorial: Set up cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/getting-started.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-getting-started-tutorial"></a>Tutorial: Set up cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/getting-started.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Use this guide to set up cross-cluster replication (CCR) between clusters in two
@@ -490,7 +569,7 @@ Provides your mission-critical applications with the tolerance to withstand data
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-Configure a <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a> with a leader index
+Configure a <a class="xref" href="remote-clusters.html" title="Remote clusters">remote cluster</a> with a leader index
 </li>
 <li class="listitem">
 Create a follower index on a local cluster
@@ -503,36 +582,39 @@ that are periodically created in a remote cluster
 </div>
 <p>You can manually create follower indices to replicate specific indices on a
 remote cluster, or configure auto-follow patterns to replicate rolling time series indices.</p>
-<div class="videoblock">
-<div class="content">
-<video src="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt994089f5e841ad69/5f6265de6f40ab4648b5cf9b/ccr-setup-video-edited.mp4" width="700" height="500" autoplay controls loop>
-Your browser does not support the video tag.
-</video>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If you want to replicate data across clusters in the cloud, you can
+<a href="https://www.elastic.co/guide/en/cloud/current/ec-enable-ccs.html" class="ulink" target="_top">configure remote clusters on Elasticsearch Service</a>. Then, you
+can <a class="xref" href="modules-cross-cluster-search.html" title="Search across clusters">search across clusters</a> and set up cross-cluster replication.</p>
 </div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-getting-started-prerequisites"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/getting-started.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-getting-started-prerequisites"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/getting-started.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To complete this tutorial, you need:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-A license on both clusters that includes cross-cluster replication. <a href="https://www.elastic.co/guide/en/kibana/7.10/managing-licenses.html" class="ulink" target="_top">Activate a free 30-day trial</a>.
+The <code class="literal">manage</code> cluster privilege on the local cluster.
 </li>
 <li class="listitem">
-The <code class="literal">read_ccr</code> cluster privilege and <code class="literal">monitor</code> and <code class="literal">read</code> privileges
-for the leader index on the remote cluster. <a class="xref" href="authorization.html#stack-management-ccr-remote">Configure remote cluster privileges</a>.
-</li>
-<li class="listitem">
-The <code class="literal">manage_ccr</code> cluster privilege and <code class="literal">monitor</code>, <code class="literal">read</code>, <code class="literal">write</code> and
-<code class="literal">manage_follow_index</code> privileges to configure remote clusters and follower
-indices on the local cluster. <a class="xref" href="authorization.html#stack-management-ccr-local">Configure local cluster privileges</a>.
+A license on both clusters that includes cross-cluster replication. <a href="https://www.elastic.co/guide/en/kibana/8.9/managing-licenses.html" class="ulink" target="_top">Activate a free 30-day trial</a>.
 </li>
 <li class="listitem">
 An index on the remote cluster that contains the data you want to replicate.
 This tutorial uses the sample eCommerce orders data set.
-<a href="https://www.elastic.co/guide/en/kibana/7.10/get-started.html#gs-get-data-into-kibana" class="ulink" target="_top">Load sample data</a>.
+<a href="https://www.elastic.co/guide/en/kibana/8.9/get-started.html#gs-get-data-into-kibana" class="ulink" target="_top">Load sample data</a>.
+</li>
+<li class="listitem">
+In the local cluster, all nodes with the <code class="literal">master</code> <a class="xref" href="settings.html#node-roles" title="Node roles">node role</a> must
+also have the <a class="xref" href="settings.html#remote-node" title="Remote-eligible node"><code class="literal">remote_cluster_client</code></a> role. The local cluster
+must also have at least one node with both a data role and the
+<a class="xref" href="settings.html#remote-node" title="Remote-eligible node"><code class="literal">remote_cluster_client</code></a> role. Individual tasks for coordinating
+replication scale based on the number of data nodes with the
+<code class="literal">remote_cluster_client</code> role in the local cluster.
 </li>
 </ul>
 </div>
@@ -540,7 +622,7 @@ This tutorial uses the sample eCommerce orders data set.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-getting-started-remote-cluster"></a>Connect to a remote cluster<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/getting-started.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_connect_to_a_remote_cluster"></a>Connect to a remote cluster<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/getting-started.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To replicate an index on a remote cluster (Cluster A) to a local cluster (Cluster B), you configure Cluster A as a remote on Cluster B.</p>
 <div class="imageblock">
@@ -555,21 +637,18 @@ This tutorial uses the sample eCommerce orders data set.
 Select <span class="strong strong"><strong>Remote Clusters</strong></span> from the side navigation.
 </li>
 <li class="listitem">
-Specify the IP address or host name of the remote cluster (ClusterB),
-followed by the transport port of the remote cluster (defaults to <code class="literal">9300</code>). For
-example, <code class="literal">192.168.1.1:9300</code>.
+Specify the Elasticsearch endpoint URL, or the IP address or host name of the remote
+cluster (<code class="literal">ClusterA</code>) followed by the transport port (defaults to <code class="literal">9300</code>). For
+example, <code class="literal">cluster.es.eastus2.staging.azure.foundit.no:9400</code> or
+<code class="literal">192.168.1.1:9300</code>.
 </li>
 </ol>
 </div>
-<div class="imageblock screenshot">
-<div class="content">
-<img src="images/ccr-add-remote-cluster.png" alt="The Add remote clusters page in Kibana">
-</div>
-</div>
-<details>
+<details open>
 <summary class="title">API example</summary>
 <div class="content">
-<p>Use the <a class="xref" href="cluster.html#cluster-update-settings" title="Cluster update settings API">cluster update settings API</a> to add a remote cluster:</p>
+<p>You can also use the <a class="xref" href="cluster.html#cluster-update-settings" title="Cluster update settings API">cluster update settings API</a> to
+add a remote cluster:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT /_cluster/settings
 {
@@ -578,7 +657,7 @@ example, <code class="literal">192.168.1.1:9300</code>.
       "remote" : {
         "leader" : {
           "seeds" : [
-            "127.0.0.1:9300" <a id="CO499-1"></a><i class="conum" data-value="1"></i>
+            "127.0.0.1:9300" <a id="CO547-1"></a><i class="conum" data-value="1"></i>
           ]
         }
       }
@@ -586,12 +665,12 @@ example, <code class="literal">192.168.1.1:9300</code>.
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1386.console"></div>
+<div class="console_widget" data-snippet="snippets/1690.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO499-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO547-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Specifies the hostname and transport port of a seed node in the remote
@@ -605,17 +684,17 @@ cluster.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_remote/info</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1387.console"></div>
-<p>The API will respond by showing that the local cluster is connected to the
-remote cluster.</p>
+<div class="console_widget" data-snippet="snippets/1691.console"></div>
+<p>The API response indicates that the local cluster is connected to the remote
+cluster with cluster alias <code class="literal">leader</code>.</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
   "leader" : {
     "seeds" : [
       "127.0.0.1:9300"
     ],
-    "connected" : true, <a id="CO500-1"></a><i class="conum" data-value="1"></i>
-    "num_nodes_connected" : 1, <a id="CO500-2"></a><i class="conum" data-value="2"></i>
+    "connected" : true,
+    "num_nodes_connected" : 1, <a id="CO548-1"></a><i class="conum" data-value="1"></i>
     "max_connections_per_cluster" : 3,
     "initial_connect_timeout" : "30s",
     "skip_unavailable" : false,
@@ -627,19 +706,10 @@ remote cluster.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO500-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO548-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>This shows the local cluster is connected to the remote cluster with cluster
-alias <code class="literal">leader</code></p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO500-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This shows the number of nodes in the remote cluster the local cluster is
+<p>The number of nodes in the remote cluster the local cluster is
 connected to.</p>
 </td>
 </tr>
@@ -651,18 +721,103 @@ connected to.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-enable-soft-deletes"></a>Enable soft deletes on leader indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/getting-started.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_configure_privileges_for_cross_cluster_replication"></a>Configure privileges for cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authentication/remote-clusters-privileges.asciidoc">edit</a></h3>
 </div></div></div>
-<p>To follow an index, it must have been created with
-<a class="xref" href="xpack-ccr.html#ccr-leader-requirements" title="Replicating a leader requires soft deletes">soft deletes</a> enabled. If the index doesn’t have
-soft deletes enabled, you must reindex it and use the new index as the leader
-index. Soft deletes are enabled by default on new indices
-created with Elasticsearch 7.0.0 and later.</p>
+<p>The cross-cluster replication user requires different cluster and index privileges on the remote
+cluster and local cluster. Use the following requests to create separate roles
+on the local and remote clusters, and then create a user with the required
+roles.</p>
+<h5><a id="_remote_cluster_4"></a>Remote cluster<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authentication/remote-clusters-privileges.asciidoc">edit</a></h5>
+<p>On the remote cluster that contains the leader index, the cross-cluster replication role requires
+the <code class="literal">read_ccr</code> cluster privilege, and <code class="literal">monitor</code> and <code class="literal">read</code> privileges on the
+leader index.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If requests are authenticated with an <a class="xref" href="security-api.html#security-api-create-api-key" title="Create API key API">API key</a>, the API key
+requires the above privileges on the <span class="strong strong"><strong>local</strong></span> cluster, instead of the remote.</p>
+</div>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If requests are issued <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">on behalf of other users</a>,
+then the authenticating user must have the <code class="literal">run_as</code> privilege on the remote
+cluster.</p>
+</div>
+</div>
+<p>The following request creates a <code class="literal">remote-replication</code> role on the remote cluster:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/role/remote-replication
+{
+  "cluster": [
+    "read_ccr"
+  ],
+  "indices": [
+    {
+      "names": [
+        "leader-index-name"
+      ],
+      "privileges": [
+        "monitor",
+        "read"
+      ]
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1692.console"></div>
+<h5><a id="_local_cluster_4"></a>Local cluster<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authentication/remote-clusters-privileges.asciidoc">edit</a></h5>
+<p>On the local cluster that contains the follower index, the <code class="literal">remote-replication</code>
+role requires the <code class="literal">manage_ccr</code> cluster privilege, and <code class="literal">monitor</code>, <code class="literal">read</code>, <code class="literal">write</code>,
+and <code class="literal">manage_follow_index</code> privileges on the follower index.</p>
+<p>The following request creates a <code class="literal">remote-replication</code> role on the local cluster:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/role/remote-replication
+{
+  "cluster": [
+    "manage_ccr"
+  ],
+  "indices": [
+    {
+      "names": [
+        "follower-index-name"
+      ],
+      "privileges": [
+        "monitor",
+        "read",
+        "write",
+        "manage_follow_index"
+      ]
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1693.console"></div>
+<p>After creating the <code class="literal">remote-replication</code> role on each cluster, use the
+<a class="xref" href="security-api.html#security-api-put-user" title="Create or update users API">create or update users API</a> to create a user on
+the local cluster cluster and assign the <code class="literal">remote-replication</code> role. For
+example, the following request assigns the <code class="literal">remote-replication</code> role to a user
+named <code class="literal">cross-cluster-user</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/user/cross-cluster-user
+{
+  "password" : "l0ng-r4nd0m-p@ssw0rd",
+  "roles" : [ "remote-replication" ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1694.console"></div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You only need to create this user on the <span class="strong strong"><strong>local</strong></span> cluster.</p>
+</div>
+</div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-getting-started-follower-index"></a>Create a follower index to replicate a specific index<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/getting-started.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-getting-started-follower-index"></a>Create a follower index to replicate a specific index<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/getting-started.asciidoc">edit</a></h3>
 </div></div></div>
 <p>When you create a follower index, you reference the remote cluster and the
 leader index in your remote cluster.</p>
@@ -686,11 +841,6 @@ Enter a name for your follower index, such as <code class="literal">follower-kib
 </li>
 </ol>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="images/ccr-add-follower-index.png" alt="Adding a follower index named server-metrics in Kibana">
-</div>
-</div>
 <p>Elasticsearch initializes the follower using the
 <a class="xref" href="xpack-ccr.html#ccr-remote-recovery" title="Initializing followers using remote recovery">remote recovery</a>
 process, which transfers the existing Lucene segment files from the leader
@@ -704,13 +854,12 @@ in the follower index.</p>
 <img src="images/ccr-follower-index.png" alt="The Cross-Cluster Replication page in Kibana">
 </div>
 </div>
-<details>
+<details open>
 <summary class="title">API example</summary>
 <div class="content">
-<p>Use the <a class="xref" href="ccr-apis.html#ccr-put-follow" title="Create follower API">create follower API</a> to create follower indices.
-When you create a follower index, you must reference the remote cluster and the
-leader index that you created in the
-remote cluster.</p>
+<p>You can also use the <a class="xref" href="ccr-apis.html#ccr-put-follow" title="Create follower API">create follower API</a> to create follower
+indices. When you create a follower index, you must reference the remote cluster
+and the leader index that you created in the remote cluster.</p>
 <p>When initiating the follower request, the response returns before the
 <a class="xref" href="xpack-ccr.html#ccr-remote-recovery" title="Initializing followers using remote recovery">remote recovery</a> process completes. To wait for the process
 to complete, add the <code class="literal">wait_for_active_shards</code> parameter to your request.</p>
@@ -721,22 +870,24 @@ to complete, add the <code class="literal">wait_for_active_shards</code> paramet
   "leader_index" : "server-metrics"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1388.console"></div>
+<div class="console_widget" data-snippet="snippets/1695.console"></div>
 <p>Use the
 <a class="xref" href="ccr-apis.html#ccr-get-follow-stats" title="Get follower stats API">get follower stats API</a> to inspect the status of
-replication</p>
+replication.</p>
 </div>
 </details>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-getting-started-auto-follow"></a>Create an auto-follow pattern to replicate time series indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/getting-started.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-getting-started-auto-follow"></a>Create an auto-follow pattern to replicate time series indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/getting-started.asciidoc">edit</a></h3>
 </div></div></div>
 <p>You use <a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow patterns</a> to automatically create new
 followers for rolling time series indices. Whenever the name of a new index on
 the remote cluster matches the auto-follow pattern, a corresponding follower
-index is added to the local cluster.</p>
+index is added to the local cluster. Note that only indices created on the
+remote cluster after the auto-follow pattern is created will be auto-followed:
+existing indices on the remote cluster are ignored even if they match the pattern.</p>
 <p>An auto-follow pattern specifies the remote cluster you want to replicate from,
 and one or more index patterns that specify the rolling time series indices you
 want to replicate.</p>
@@ -772,7 +923,7 @@ created on the remote, Elasticsearch automatically replicates them to local foll
 <img src="images/auto-follow-patterns.png" alt="The Auto-follow patterns page in Kibana">
 </div>
 </div>
-<details>
+<details open>
 <summary class="title">API example</summary>
 <div class="content">
 <p>Use the <a class="xref" href="ccr-apis.html#ccr-put-auto-follow-pattern" title="Create auto-follow pattern API">create auto-follow pattern API</a> to
@@ -783,18 +934,18 @@ configure auto-follow patterns.</p>
   "remote_cluster" : "leader",
   "leader_index_patterns" :
   [
-    "metricbeat-*", <a id="CO501-1"></a><i class="conum" data-value="1"></i>
-    "packetbeat-*" <a id="CO501-2"></a><i class="conum" data-value="2"></i>
+    "metricbeat-*", <a id="CO549-1"></a><i class="conum" data-value="1"></i>
+    "packetbeat-*" <a id="CO549-2"></a><i class="conum" data-value="2"></i>
   ],
-  "follow_index_pattern" : "{{leader_index}}-copy" <a id="CO501-3"></a><i class="conum" data-value="3"></i>
+  "follow_index_pattern" : "{{leader_index}}-copy" <a id="CO549-3"></a><i class="conum" data-value="3"></i>
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1389.console"></div>
+<div class="console_widget" data-snippet="snippets/1696.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO501-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO549-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Automatically follow new Metricbeat indices.</p>
@@ -802,7 +953,7 @@ configure auto-follow patterns.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO501-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO549-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Automatically follow new Packetbeat indices.</p>
@@ -810,7 +961,7 @@ configure auto-follow patterns.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO501-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO549-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The name of the follower index is derived from the name of the leader index
@@ -827,7 +978,7 @@ by adding the suffix <code class="literal">-copy</code> to the name of the leade
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-managing"></a>Manage cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/managing.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-managing"></a>Manage cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/managing.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Use the following information to manage cross-cluster replication tasks, such as inspecting
 replication progress, pausing and resuming replication, recreating a follower
@@ -837,7 +988,7 @@ index, and terminating replication.</p>
 <span class="strong strong"><strong>Cross-Cluster Replication</strong></span>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-inspect-progress"></a>Inspect replication statistics<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/managing.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-inspect-progress"></a>Inspect replication statistics<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/managing.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To inspect the progress of replication for a follower index and view
 detailed shard statistics, <a class="xref" href="xpack-ccr.html#ccr-access-ccr">access Cross-Cluster Replication</a> and choose the <span class="strong strong"><strong>Follower indices</strong></span> tab.</p>
@@ -861,7 +1012,7 @@ retried and fatal exceptions that require user intervention.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-pause-replication"></a>Pause and resume replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/managing.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-pause-replication"></a>Pause and resume replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/managing.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To pause and resume replication of the leader index, <a class="xref" href="xpack-ccr.html#ccr-access-ccr">access Cross-Cluster Replication</a> and choose the <span class="strong strong"><strong>Follower indices</strong></span> tab.</p>
 <p>Select the follower index you want to pause and choose <span class="strong strong"><strong>Manage &gt; Pause Replication</strong></span>. The follower index status changes to Paused.</p>
@@ -882,7 +1033,7 @@ your use case.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-recreate-follower-index"></a>Recreate a follower index<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/managing.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-recreate-follower-index"></a>Recreate a follower index<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/managing.asciidoc">edit</a></h3>
 </div></div></div>
 <p>When a document is updated or deleted, the underlying operation is retained in
 the Lucene index for a period of time defined by the
@@ -907,11 +1058,6 @@ Lucene segment files are deleted on the cluster containing the follower index.</
 <p>To recreate a follower index,
 <a class="xref" href="xpack-ccr.html#ccr-access-ccr">access Cross-Cluster Replication</a> and choose the
 <span class="strong strong"><strong>Follower indices</strong></span> tab.</p>
-<div class="imageblock screenshot">
-<div class="content">
-<img src="images/ccr-follower-index.png" alt="The Cross-Cluster Replication page in Kibana">
-</div>
-</div>
 <p>Select the follower index and pause replication. When the follower index status
 changes to Paused, reselect the follower index and choose to unfollow the
 leader index.</p>
@@ -937,14 +1083,14 @@ PUT /follower_index/_ccr/follow?wait_for_active_shards=1
   "leader_index" : "leader_index"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1390.console"></div>
+<div class="console_widget" data-snippet="snippets/1697.console"></div>
 </div>
 </details>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-terminate-replication"></a>Terminate replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/managing.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-terminate-replication"></a>Terminate replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/managing.asciidoc">edit</a></h3>
 </div></div></div>
 <p>You can unfollow a leader index to terminate replication and convert the
 follower index to a standard index.</p>
@@ -971,97 +1117,96 @@ to a standard (non-follower) index.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-auto-follow"></a>Manage auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/auto-follow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-auto-follow"></a>Manage auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/auto-follow.asciidoc">edit</a></h2>
 </div></div></div>
 <p>To replicate time series indices, you configure an auto-follow pattern so that
 each new index in the series is replicated automatically. Whenever the name of
 a new index on the remote cluster matches the auto-follow pattern, a
 corresponding follower index is added to the local cluster.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Auto-follow patterns only match open indices on the remote cluster that
+have all primary shards started. Auto-follow patterns do not match indices that
+can&#8217;t be used for CCR such as <a class="xref" href="indices.html#open-index-api-desc" title="Description">closed indices</a> or
+<a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshots</a>. Avoid using an auto-follow pattern
+that matches indices with a <a class="xref" href="index-modules-blocks.html#index-block-settings" title="Index block settings">read or write block</a>. These
+blocks prevent follower indices from replicating such indices.</p>
+</div>
+</div>
+<p>You can also create auto-follow patterns for data streams. When a new backing
+index is generated on a remote cluster, that index and its data stream are
+automatically followed if the data stream name matches an auto-follow
+pattern. If you create a data stream after creating the auto-follow pattern,
+all backing indices are followed automatically.</p>
+<p>The data streams replicated from a remote cluster by CCR are protected from
+local rollovers. The <a class="xref" href="data-stream-apis.html#promote-data-stream-api" title="Promote data stream API">promote data stream API</a>
+can be used to turn these data streams into regular data streams.</p>
 <p>Auto-follow patterns are especially useful with
 <a class="xref" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle">Index lifecycle management</a>, which might continually create
 new indices on the cluster containing the leader index.</p>
-<p><a id="ccr-access-ccr-auto-follow"></a>To start using cross-cluster replication auto-follow patterns, access Kibana and go to
-<span class="strong strong"><strong>Management &gt; Stack Management</strong></span>. In the side navigation, select
-<span class="strong strong"><strong>Cross-Cluster Replication</strong></span> and choose the <span class="strong strong"><strong>Auto-follow patterns</strong></span> tab</p>
+<p><a id="ccr-access-ccr-auto-follow"></a>To start using cross-cluster replication auto-follow patterns from Stack Management in Kibana, select
+<span class="strong strong"><strong>Cross-Cluster Replication</strong></span> from the side navigation and choose the
+<span class="strong strong"><strong>Auto-follow patterns</strong></span> tab.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-auto-follow-create"></a>Create auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/auto-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-auto-follow-create"></a>Create auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/auto-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>When you <a class="xref" href="xpack-ccr.html#ccr-getting-started-auto-follow" title="Create an auto-follow pattern to replicate time series indices">create an auto-follow pattern</a>,
 you are configuring a collection of patterns against a single remote cluster.
 When an index is created in the remote cluster with a name that matches one of
 the patterns in the collection, a follower index is configured in the local
 cluster. The follower index uses the new index as its leader index.</p>
-<details>
-<summary class="title">Use the API</summary>
-<div class="content">
 <p>Use the <a class="xref" href="ccr-apis.html#ccr-put-auto-follow-pattern" title="Create auto-follow pattern API">create auto-follow pattern API</a> to add a
 new auto-follow pattern configuration.</p>
-</div>
-</details>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-auto-follow-retrieve"></a>Retrieve auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/auto-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-auto-follow-retrieve"></a>Retrieve auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/auto-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To view existing auto-follow patterns and make changes to the backing
 patterns, <a class="xref" href="xpack-ccr.html#ccr-access-ccr-auto-follow">access Kibana</a> on your <em>remote</em> cluster.</p>
 <p>Select the auto-follow pattern that you want to view details about. From there,
 you can make changes to the auto-follow pattern. You can also view your
 follower indices included in the auto-follow pattern.</p>
-<details>
-<summary class="title">Use the API</summary>
-<div class="content">
 <p>Use the <a class="xref" href="ccr-apis.html#ccr-get-auto-follow-pattern" title="Get auto-follow pattern API">get auto-follow pattern API</a> to inspect
 all configured auto-follow pattern collections.</p>
-</div>
-</details>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-auto-follow-pause"></a>Pause and resume auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/auto-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-auto-follow-pause"></a>Pause and resume auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/auto-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To pause and resume replication of auto-follow pattern collections,
 <a class="xref" href="xpack-ccr.html#ccr-access-ccr-auto-follow">access Kibana</a>, select the auto-follow pattern,
 and pause replication.</p>
 <p>To resume replication, select the pattern and choose
 <span class="strong strong"><strong>Manage pattern &gt; Resume replication</strong></span>.</p>
-<details>
-<summary class="title">Use the API</summary>
-<div class="content">
 <p>Use the <a class="xref" href="ccr-apis.html#ccr-pause-auto-follow-pattern" title="Pause auto-follow pattern API">pause auto-follow pattern API</a> to
 pause auto-follow patterns.
 Use the <a class="xref" href="ccr-apis.html#ccr-resume-auto-follow-pattern" title="Resume auto-follow pattern API">resume auto-follow pattern API</a> to
 resume auto-follow patterns.</p>
 </div>
-</details>
-</div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-auto-follow-delete"></a>Delete auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/auto-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-auto-follow-delete"></a>Delete auto-follow patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/auto-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To delete an auto-follow pattern collection,
 <a class="xref" href="xpack-ccr.html#ccr-access-ccr-auto-follow">access Kibana</a>, select the auto-follow pattern,
 and pause replication.</p>
 <p>When the pattern status changes to Paused, choose
 <span class="strong strong"><strong>Manage pattern &gt; Delete pattern</strong></span>.</p>
-<details>
-<summary class="title">Use the API</summary>
-<div class="content">
 <p>Use the <a class="xref" href="ccr-apis.html#ccr-delete-auto-follow-pattern" title="Delete auto-follow pattern API">delete auto-follow pattern API</a> to
 delete a configured auto-follow pattern collection.</p>
-</div>
-</details>
 </div>
 
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-upgrading"></a>Upgrading clusters using cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/upgrading.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-upgrading"></a>Upgrading clusters using cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/upgrading.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Clusters that are actively using cross-cluster replication require a careful approach to upgrades.
@@ -1085,7 +1230,7 @@ compatible.
 enabled differs based on uni-directional and bi-directional index following.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-uni-directional-upgrade"></a>Uni-directional index following<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/upgrading.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-uni-directional-upgrade"></a>Uni-directional index following<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/upgrading.asciidoc">edit</a></h3>
 </div></div></div>
 <p>In a uni-directional configuration, one cluster contains only
 leader indices, and the other cluster contains only follower indices that
@@ -1123,7 +1268,7 @@ Cluster A
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-bi-directional-upgrade"></a>Bi-directional index following<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/upgrading.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-bi-directional-upgrade"></a>Bi-directional index following<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/upgrading.asciidoc">edit</a></h3>
 </div></div></div>
 <p>In a bi-directional configuration, each cluster contains both leader and
 follower indices.</p>
@@ -1137,10 +1282,628 @@ of auto-follow patterns.</p>
 
 </div>
 
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-disaster-recovery-uni-directional-tutorial"></a>Tutorial: Disaster recovery based on uni-directional cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/uni-directional-disaster-recovery.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Learn how to failover and failback between two clusters based on uni-directional cross-cluster replication. You can also visit <a class="xref" href="xpack-ccr.html#ccr-disaster-recovery-bi-directional-tutorial" title="Tutorial: Disaster recovery based on bi-directional cross-cluster replication">Bi-directional disaster recovery</a> to set up replicating data streams that automatically failover and failback without human intervention.</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Setting up uni-directional cross-cluster replication replicated from <code class="literal">clusterA</code>
+to <code class="literal">clusterB</code>.
+</li>
+<li class="listitem">
+Failover - If <code class="literal">clusterA</code> goes offline, <code class="literal">clusterB</code> needs to "promote" follower
+indices to regular indices to allow write operations. All ingestion will need to
+be redirected to <code class="literal">clusterB</code>, this is controlled by the clients (Logstash, Beats,
+Elastic Agents, etc).
+</li>
+<li class="listitem">
+Failback - When <code class="literal">clusterA</code> is back online, it assumes the role of a follower
+and replicates the leader indices from <code class="literal">clusterB</code>.
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ccr-uni-directional-disaster-recovery.png" alt="Uni-directional cross cluster replication failover and failback">
+</div>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Cross-cluster replication provides functionality to replicate user-generated indices only.
+Cross-cluster replication isn&#8217;t designed for replicating system-generated indices or snapshot
+settings, and can&#8217;t replicate ILM or SLM policies across clusters.
+Learn more in cross-cluster replication <a class="xref" href="xpack-ccr.html#ccr-limitations" title="Cross-cluster replication limitations">limitations</a>.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_prerequisites_11"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/uni-directional-disaster-recovery.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Before completing this tutorial,
+<a class="xref" href="xpack-ccr.html#ccr-getting-started-tutorial" title="Tutorial: Set up cross-cluster replication">set up cross-cluster replication</a> to connect two
+clusters and configure a follower index.</p>
+<p>In this tutorial, <code class="literal">kibana_sample_data_ecommerce</code> is replicated from <code class="literal">clusterA</code> to <code class="literal">clusterB</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On clusterB ###
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster": {
+      "remote": {
+        "clusterA": {
+          "mode": "proxy",
+          "skip_unavailable": "true",
+          "server_name": "clustera.es.region-a.gcp.elastic-cloud.com",
+          "proxy_socket_connections": "18",
+          "proxy_address": "clustera.es.region-a.gcp.elastic-cloud.com:9400"
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1698.console"></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On clusterB ###
+PUT /kibana_sample_data_ecommerce2/_ccr/follow?wait_for_active_shards=1
+{
+  "remote_cluster": "clusterA",
+  "leader_index": "kibana_sample_data_ecommerce"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1699.console"></div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Writes (such as ingestion or updates) should occur only on the leader
+index. Follower indices are read-only and will reject any writes.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_failover_when_clustera_is_down"></a>Failover when <code class="literal">clusterA</code> is down<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/uni-directional-disaster-recovery.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Promote the follower indices in <code class="literal">clusterB</code> into regular indices so
+that they accept writes. This can be achieved by:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+First, pause indexing following for the follower index.
+</li>
+<li class="listitem">
+Next, close the follower index.
+</li>
+<li class="listitem">
+Unfollow the leader index.
+</li>
+<li class="listitem">
+Finally, open the follower index (which at this point is a regular index).
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On clusterB ###
+POST /kibana_sample_data_ecommerce2/_ccr/pause_follow
+POST /kibana_sample_data_ecommerce2/_close
+POST /kibana_sample_data_ecommerce2/_ccr/unfollow
+POST /kibana_sample_data_ecommerce2/_open</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1700.console"></div>
+</li>
+<li class="listitem">
+<p>On the client side (Logstash, Beats, Elastic Agent), manually re-enable ingestion of
+<code class="literal">kibana_sample_data_ecommerce2</code> and redirect traffic to the <code class="literal">clusterB</code>. You should
+also redirect all search traffic to the <code class="literal">clusterB</code> cluster during
+this time. You can simulate this by ingesting documents into this index. You should
+notice this index is now writable.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On clusterB ###
+POST kibana_sample_data_ecommerce2/_doc/
+{
+  "user": "kimchy"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1701.console"></div>
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_failback_when_clustera_comes_back"></a>Failback when <code class="literal">clusterA</code> comes back<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/uni-directional-disaster-recovery.asciidoc">edit</a></h3>
+</div></div></div>
+<p>When <code class="literal">clusterA</code> comes back, <code class="literal">clusterB</code> becomes the new leader and <code class="literal">clusterA</code> becomes the follower.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Set up remote cluster <code class="literal">clusterB</code> on <code class="literal">clusterA</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On clusterA ###
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster": {
+      "remote": {
+        "clusterB": {
+          "mode": "proxy",
+          "skip_unavailable": "true",
+          "server_name": "clusterb.es.region-b.gcp.elastic-cloud.com",
+          "proxy_socket_connections": "18",
+          "proxy_address": "clusterb.es.region-b.gcp.elastic-cloud.com:9400"
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1702.console"></div>
+</li>
+<li class="listitem">
+<p>Existing data needs to be discarded before you can turn any index into a
+follower. Ensure the most up-to-date data is available on <code class="literal">clusterB</code> prior to
+deleting any indices on <code class="literal">clusterA</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On clusterA ###
+DELETE kibana_sample_data_ecommerce</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1703.console"></div>
+</li>
+<li class="listitem">
+<p>Create a follower index on <code class="literal">clusterA</code>, now following the leader index in
+<code class="literal">clusterB</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On clusterA ###
+PUT /kibana_sample_data_ecommerce/_ccr/follow?wait_for_active_shards=1
+{
+  "remote_cluster": "clusterB",
+  "leader_index": "kibana_sample_data_ecommerce2"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1704.console"></div>
+</li>
+<li class="listitem">
+<p>The index on the follower cluster now contains the updated documents.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On clusterA ###
+GET kibana_sample_data_ecommerce/_search?q=kimchy</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1705.console"></div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If a soft delete is merged away before it can be replicated to a follower the following process will fail due to incomplete history on the leader, see <a class="xref" href="index-modules.html#ccr-index-soft-deletes-retention-period">index.soft_deletes.retention_lease.period</a> for more details.</p>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-disaster-recovery-bi-directional-tutorial"></a>Tutorial: Disaster recovery based on bi-directional cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/bi-directional-disaster-recovery.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Learn how to set up disaster recovery between two clusters based on
+bi-directional cross-cluster replication. The following tutorial is designed for data streams which support
+<a class="xref" href="use-a-data-stream.html#update-docs-in-a-data-stream-by-query" title="Update documents in a data stream by query">update by query</a> and <a class="xref" href="use-a-data-stream.html#delete-docs-in-a-data-stream-by-query" title="Delete documents in a data stream by query">delete by query</a>. You can only perform these actions on the leader index.</p>
+<p>This tutorial works with Logstash as the source of ingestion. It takes advantage of a Logstash feature where <a href="https://www.elastic.co/guide/en/logstash/8.9/plugins-outputs-elasticsearch.html" class="ulink" target="_top">the Logstash output to Elasticsearch</a> can be load balanced across an array of hosts specified. Beats and Elastic Agents currently do not
+support multiple outputs. It should also be possible to set up a proxy
+(load balancer) to redirect traffic without Logstash in this tutorial.</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Setting up a remote cluster on <code class="literal">clusterA</code> and <code class="literal">clusterB</code>.
+</li>
+<li class="listitem">
+Setting up bi-directional cross-cluster replication with exclusion patterns.
+</li>
+<li class="listitem">
+Setting up Logstash with multiple hosts to allow automatic load balancing and switching during disasters.
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ccr-bi-directional-disaster-recovery.png" alt="Bi-directional cross cluster replication failover and failback">
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-tutorial-initial-setup"></a>Initial setup<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/bi-directional-disaster-recovery.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Set up a remote cluster on both clusters.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On cluster A ###
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster": {
+      "remote": {
+        "clusterB": {
+          "mode": "proxy",
+          "skip_unavailable": true,
+          "server_name": "clusterb.es.region-b.gcp.elastic-cloud.com",
+          "proxy_socket_connections": 18,
+          "proxy_address": "clusterb.es.region-b.gcp.elastic-cloud.com:9400"
+        }
+      }
+    }
+  }
+}
+### On cluster B ###
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster": {
+      "remote": {
+        "clusterA": {
+          "mode": "proxy",
+          "skip_unavailable": true,
+          "server_name": "clustera.es.region-a.gcp.elastic-cloud.com",
+          "proxy_socket_connections": 18,
+          "proxy_address": "clustera.es.region-a.gcp.elastic-cloud.com:9400"
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1706.console"></div>
+</li>
+<li class="listitem">
+<p>Set up bi-directional cross-cluster replication.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On cluster A ###
+PUT /_ccr/auto_follow/logs-generic-default
+{
+  "remote_cluster": "clusterB",
+  "leader_index_patterns": [
+    ".ds-logs-generic-default-20*"
+  ],
+  "leader_index_exclusion_patterns":"{{leader_index}}-replicated_from_clustera",
+  "follow_index_pattern": "{{leader_index}}-replicated_from_clusterb"
+}
+
+### On cluster B ###
+PUT /_ccr/auto_follow/logs-generic-default
+{
+  "remote_cluster": "clusterA",
+  "leader_index_patterns": [
+    ".ds-logs-generic-default-20*"
+  ],
+  "leader_index_exclusion_patterns":"{{leader_index}}-replicated_from_clusterb",
+  "follow_index_pattern": "{{leader_index}}-replicated_from_clustera"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1707.console"></div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Existing data on the cluster will not be replicated by
+<code class="literal">_ccr/auto_follow</code> even though the patterns may match. This function will only
+replicate newly created backing indices (as part of the data stream).</p>
+</div>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Use <code class="literal">leader_index_exclusion_patterns</code> to avoid recursion.</p>
+</div>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p><code class="literal">follow_index_pattern</code> allows lowercase characters only.</p>
+</div>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This step cannot be executed via the Kibana UI due to the lack of an exclusion
+pattern in the UI. Use the API in this step.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p>Set up the Logstash configuration file.</p>
+<p>This example uses the input generator to demonstrate the document
+count in the clusters. Reconfigure this section
+to suit your own use case.</p>
+<div class="pre_wrapper lang-logstash">
+<pre class="programlisting prettyprint lang-logstash">### On Logstash server ###
+### This is a logstash config file ###
+input {
+  generator{
+    message =&gt; 'Hello World'
+    count =&gt; 100
+  }
+}
+output {
+  elasticsearch {
+    hosts =&gt; ["https://clustera.es.region-a.gcp.elastic-cloud.com:9243","https://clusterb.es.region-b.gcp.elastic-cloud.com:9243"]
+    user =&gt; "logstash-user"
+    password =&gt; "same_password_for_both_clusters"
+  }
+}</pre>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The key point is that when <code class="literal">cluster A</code> is down, all traffic will be
+automatically redirected to <code class="literal">cluster B</code>. Once <code class="literal">cluster A</code> comes back, traffic
+is automatically redirected back to <code class="literal">cluster A</code> again. This is achieved by the
+option <code class="literal">hosts</code> where multiple ES cluster endpoints are specified in the
+array <code class="literal">[clusterA, clusterB]</code>.</p>
+</div>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Set up the same password for the same user on both clusters to use this load-balancing feature.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p>Start Logstash with the earlier configuration file.</p>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">### On Logstash server ###
+bin/logstash -f multiple_hosts.conf</pre>
+</div>
+</li>
+<li class="listitem">
+<p>Observe document counts in data streams.</p>
+<p>The setup creates a data stream named <code class="literal">logs-generic-default</code> on each of the clusters. Logstash will write 50% of the documents to <code class="literal">cluster A</code> and 50% of the documents to <code class="literal">cluster B</code> when both clusters are up.</p>
+<p>Bi-directional cross-cluster replication will create one more data stream on each of the clusters
+with the <code class="literal">-replication_from_cluster{a|b}</code> suffix. At the end of this step:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p>data streams on cluster A contain:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+50 documents in <code class="literal">logs-generic-default-replicated_from_clusterb</code>
+</li>
+<li class="listitem">
+50 documents in <code class="literal">logs-generic-default</code>
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>data streams on cluster B contain:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+50 documents in <code class="literal">logs-generic-default-replicated_from_clustera</code>
+</li>
+<li class="listitem">
+50 documents in <code class="literal">logs-generic-default</code>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>Queries should be set up to search across both data streams.
+A query on <code class="literal">logs*</code>, on either of the clusters, returns 100
+hits in total.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET logs*/_search?size=0</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1708.console"></div>
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_failover_when_clustera_is_down_2"></a>Failover when <code class="literal">clusterA</code> is down<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/bi-directional-disaster-recovery.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+You can simulate this by shutting down either of the clusters. Let&#8217;s shut down
+<code class="literal">cluster A</code> in this tutorial.
+</li>
+<li class="listitem">
+<p>Start Logstash with the same configuration file. (This step is not required in real
+use cases where Logstash ingests continuously.)</p>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">### On Logstash server ###
+bin/logstash -f multiple_hosts.conf</pre>
+</div>
+</li>
+<li class="listitem">
+<p>Observe all Logstash traffic will be redirected to <code class="literal">cluster B</code> automatically.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You should also redirect all search traffic to the <code class="literal">clusterB</code> cluster during this time.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p>The two data streams on <code class="literal">cluster B</code> now contain a different number of documents.</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p>data streams on cluster A (down)</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+50 documents in <code class="literal">logs-generic-default-replicated_from_clusterb</code>
+</li>
+<li class="listitem">
+50 documents in <code class="literal">logs-generic-default</code>
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>data streams On cluster B (up)</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+50 documents in <code class="literal">logs-generic-default-replicated_from_clustera</code>
+</li>
+<li class="listitem">
+150 documents in <code class="literal">logs-generic-default</code>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_failback_when_clustera_comes_back_2"></a>Failback when <code class="literal">clusterA</code> comes back<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/bi-directional-disaster-recovery.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+You can simulate this by turning <code class="literal">cluster A</code> back on.
+</li>
+<li class="listitem">
+<p>Data ingested to <code class="literal">cluster B</code> during <code class="literal">cluster A</code> 's downtime will be
+automatically replicated.</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p>data streams on cluster A</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+150 documents in <code class="literal">logs-generic-default-replicated_from_clusterb</code>
+</li>
+<li class="listitem">
+50 documents in <code class="literal">logs-generic-default</code>
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>data streams on cluster B</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+50 documents in <code class="literal">logs-generic-default-replicated_from_clustera</code>
+</li>
+<li class="listitem">
+150 documents in <code class="literal">logs-generic-default</code>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+If you have Logstash running at this time, you will also observe traffic is
+sent to both clusters.
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_perform_update_or_delete_by_query"></a>Perform update or delete by query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/bi-directional-disaster-recovery.asciidoc">edit</a></h3>
+</div></div></div>
+<p>It is possible to update or delete the documents but you can only perform these actions on the leader index.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>First identify which backing index contains the document you want to update.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On either of the cluster ###
+GET logs-generic-default*/_search?filter_path=hits.hits._index
+{
+"query": {
+    "match": {
+      "event.sequence": "97"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1709.console"></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the hits returns <code class="literal">"_index": ".ds-logs-generic-default-replicated_from_clustera-&lt;yyyy.MM.dd&gt;-*"</code>, then you need to proceed to the next step on <code class="literal">cluster A</code>.
+</li>
+<li class="listitem">
+If the hits returns <code class="literal">"_index": ".ds-logs-generic-default-replicated_from_clusterb-&lt;yyyy.MM.dd&gt;-*"</code>, then you need to proceed to the next step on <code class="literal">cluster B</code>.
+</li>
+<li class="listitem">
+If the hits returns <code class="literal">"_index": ".ds-logs-generic-default-&lt;yyyy.MM.dd&gt;-*"</code>, then you need to proceed to the next step on the same cluster where you performed the search query.
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>Perform the update (or delete) by query:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">### On the cluster identified from the previous step ###
+POST logs-generic-default/_update_by_query
+{
+  "query": {
+    "match": {
+      "event.sequence": "97"
+    }
+  },
+  "script": {
+    "source": "ctx._source.event.original = params.new_event",
+    "lang": "painless",
+    "params": {
+      "new_event": "FOOBAR"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1710.console"></div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If a soft delete is merged away before it can be replicated to a follower the following process will fail due to incomplete history on the leader, see <a class="xref" href="index-modules.html#ccr-index-soft-deletes-retention-period">index.soft_deletes.retention_lease.period</a> for more details.</p>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+</div>
+
 </div>
 <div class="navfooter">
 <span class="prev">
-<a href="backup-cluster.html">« Back up a cluster</a>
+<a href="high-availability-cluster-design.html">« Designing for resilience</a>
 </span>
 <span class="next">
 <a href="snapshot-restore.html">Snapshot and restore »</a>

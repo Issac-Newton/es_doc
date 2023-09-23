@@ -1,14 +1,20 @@
-PUT /my-index-000001
+PUT text_payloads
 {
+  "mappings": {
+    "properties": {
+      "text": {
+        "type": "text",
+        "term_vector": "with_positions_payloads",
+        "analyzer": "payload_delimiter"
+      }
+    }
+  },
   "settings": {
     "analysis": {
       "analyzer": {
-        "my_analyzer": {
+        "payload_delimiter": {
           "tokenizer": "whitespace",
-          "filter": [
-            "lowercase",
-            "porter_stem"
-          ]
+          "filter": [ "delimited_payload" ]
         }
       }
     }

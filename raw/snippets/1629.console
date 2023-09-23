@@ -1,1 +1,14 @@
-GET /_nodes/stats?metric=ingest&filter_path=nodes.*.ingest
+PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "set_priority" : {
+            "priority": 50
+          }
+        }
+      }
+    }
+  }
+}

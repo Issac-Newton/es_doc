@@ -1,1 +1,14 @@
-DELETE /_slm/policy/daily-snapshots
+POST _reindex
+{
+  "source": {
+    "index": "my-index-000001",
+    "query": {
+      "term": {
+        "user.id": "kimchy"
+      }
+    }
+  },
+  "dest": {
+    "index": "my-new-index-000001"
+  }
+}

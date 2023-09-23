@@ -1,6 +1,5 @@
-POST _watcher/watch/my_watch/_execute
+PUT products/_doc/1567
 {
-  "action_modes" : {
-    "_all" : "force_execute"
-  }
+  "product" : "r2d2",
+  "details" : "A resourceful astromech droid"
 }

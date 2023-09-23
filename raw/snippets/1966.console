@@ -1,7 +1,6 @@
-POST /my_source_index/_shrink/my_target_index
+PUT _cluster/settings
 {
-  "settings": {
-    "index.routing.allocation.require._name": null,
-    "index.blocks.write": null
+  "persistent" : {
+    "cluster.routing.allocation.enable" : "all"
   }
 }

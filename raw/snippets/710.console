@@ -1,8 +1,14 @@
-POST /my-index-000001/_doc?routing=my-routing-value
+PUT /_ingest/pipeline/postal_lookup
 {
-  "@timestamp": "2099-11-15T13:12:00",
-  "message": "GET /search HTTP/1.1 200 1070000",
-  "user": {
-    "id": "kimchy"
-  }
+  "processors": [
+    {
+      "enrich": {
+        "description": "Add 'geo_data' based on 'geo_location'",
+        "policy_name": "postal_policy",
+        "field": "geo_location",
+        "target_field": "geo_data",
+        "shape_relation": "INTERSECTS"
+      }
+    }
+  ]
 }

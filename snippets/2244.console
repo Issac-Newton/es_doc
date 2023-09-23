@@ -1,11 +1,6 @@
-POST /_security/role_mapping/mapping1
+PUT my-index-000001/_doc/1?version=2&version_type=external
 {
-  "roles": [ "user"],
-  "enabled": true,
-  "rules": {
-    "field" : { "username" : "*" }
-  },
-  "metadata" : {
-    "version" : 1
+  "user": {
+    "id": "elkbee"
   }
 }

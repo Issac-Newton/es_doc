@@ -1,27 +1,15 @@
-GET /my-index-00001/_search
+PUT _scripts/my-search-template
 {
-  "query": {
-    "bool": {
-      "should": [
-        {
-          "percolate": {
-            "field": "query",
-            "document": {
-              "message": "bonsai tree"
-            },
-            "name": "query1"
-          }
-        },
-        {
-          "percolate": {
-            "field": "query",
-            "document": {
-              "message": "tulip flower"
-            },
-            "name": "query2"
-          }
+  "script": {
+    "lang": "mustache",
+    "source": {
+      "query": {
+        "match": {
+          "message": "{{query_string}}"
         }
-      ]
+      },
+      "from": "{{from}}",
+      "size": "{{size}}"
     }
   }
 }

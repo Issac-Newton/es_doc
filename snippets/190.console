@@ -1,11 +1,7 @@
-GET /test_index/_search
+POST /example/_doc
 {
-  "query": {
-    "percolate" : {
-      "field" : "query",
-      "document" : {
-        "body" : "Bycicles are missing"
-      }
-    }
+  "location" : {
+    "type" : "LineString",
+    "coordinates" : [[-77.03653, 38.897676], [-77.009051, 38.889939]]
   }
 }

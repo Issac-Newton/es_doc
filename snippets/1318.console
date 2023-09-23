@@ -1,12 +1,11 @@
-PUT _ilm/policy/my_policy
+GET /_search
 {
-  "policy": {
-    "phases": {
-      "warm": {
-        "actions": {
-          "forcemerge" : {
-            "max_num_segments": 1
-          }
+  "aggregations": {
+    "forces": {
+      "terms": { "field": "force" },
+      "aggregations": {
+        "significant_crime_types": {
+          "significant_terms": { "field": "crime_type" }
         }
       }
     }

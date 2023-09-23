@@ -1,19 +1,19 @@
-PUT /common_grams_example
+PUT my-index-000001
 {
   "settings": {
     "analysis": {
       "analyzer": {
-        "index_grams": {
-          "tokenizer": "whitespace",
-          "filter": [ "common_grams" ]
-        }
-      },
-      "filter": {
-        "common_grams": {
-          "type": "common_grams",
-          "common_words": [ "a", "is", "the" ]
+        "camel": {
+          "type": "pattern",
+          "pattern": "([^\\p{L}\\d]+)|(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)|(?<=[\\p{L}&&[^\\p{Lu}]])(?=\\p{Lu})|(?<=\\p{Lu})(?=\\p{Lu}[\\p{L}&&[^\\p{Lu}]])"
         }
       }
     }
   }
+}
+
+GET my-index-000001/_analyze
+{
+  "analyzer": "camel",
+  "text": "MooseX::FTPClass2_beta"
 }

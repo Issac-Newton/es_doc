@@ -33,7 +33,7 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="xpack-rollup"></a>Rolling up historical data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="xpack-rollup"></a>Rolling up historical data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/index.asciidoc">edit</a></h2>
 </div></div></div>
 <div class="warning admon">
 <div class="icon"></div>
@@ -41,8 +41,15 @@
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <p>Keeping historical data around for analysis is extremely useful but often avoided due to the financial cost of
-archiving massive amounts of data.  Retention periods are thus driven by financial realities rather than by the
+archiving massive amounts of data. Retention periods are thus driven by financial realities rather than by the
 usefulness of extensive historical data.</p>
 <p>The Elastic Stack data rollup features provide a means to summarize and store historical
 data so that it can still be used for analysis, but at a fraction of the storage
@@ -71,7 +78,7 @@ cost of raw data.</p>
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-overview"></a>Rollup overview<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/overview.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-overview"></a>Rollup overview<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/overview.asciidoc">edit</a></h2>
 </div></div></div>
 
 <div class="warning admon">
@@ -80,112 +87,126 @@ cost of raw data.</p>
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
 <p>Time-based data (documents that are predominantly identified by their timestamp) often have associated retention policies
-to manage data growth.  For example, your system may be generating 500 documents every second.  That will generate
+to manage data growth. For example, your system may be generating 500 documents every second. That will generate
 43 million documents per day, and nearly 16 billion documents a year.</p>
 <p>While your analysts and data scientists may wish you stored that data indefinitely for analysis, time is never-ending and
-so your storage requirements will continue to grow without bound.  Retention policies are therefore often dictated
+so your storage requirements will continue to grow without bound. Retention policies are therefore often dictated
 by the simple calculation of storage costs over time, and what the organization is willing to pay to retain historical data.
 Often these policies start deleting data after a few months or years.</p>
-<p>Storage cost is a fixed quantity.  It takes X money to store Y data.  But the utility of a piece of data often changes
-with time.  Sensor data gathered at millisecond granularity is extremely useful right now, reasonably useful if from a
+<p>Storage cost is a fixed quantity. It takes X money to store Y data. But the utility of a piece of data often changes
+with time. Sensor data gathered at millisecond granularity is extremely useful right now, reasonably useful if from a
 few weeks ago, and only marginally useful if older than a few months.</p>
 <p>So while the cost of storing a millisecond of sensor data from ten years ago is fixed, the value of that individual sensor
-reading often diminishes with time.  It&#8217;s not useless&#8201;&#8212;&#8201;it could easily contribute to a useful analysis&#8201;&#8212;&#8201;but it&#8217;s reduced
+reading often diminishes with time. It&#8217;s not useless&#8201;&#8212;&#8201;it could easily contribute to a useful analysis&#8201;&#8212;&#8201;but it&#8217;s reduced
 value often leads to deletion rather than paying the fixed storage cost.</p>
-<h4><a id="_rollup_stores_historical_data_at_reduced_granularity"></a>Rollup stores historical data at reduced granularity<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/overview.asciidoc">edit</a></h4>
-<p>That&#8217;s where Rollup comes into play.  The Rollup functionality summarizes old, high-granularity data into a reduced
-granularity format for long-term storage.  By "rolling" the data up into a single summary document, historical data
+<h4><a id="_rollup_stores_historical_data_at_reduced_granularity"></a>Rollup stores historical data at reduced granularity<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/overview.asciidoc">edit</a></h4>
+<p>That&#8217;s where Rollup comes into play. The Rollup functionality summarizes old, high-granularity data into a reduced
+granularity format for long-term storage. By "rolling" the data up into a single summary document, historical data
 can be compressed greatly compared to the raw data.</p>
-<p>For example, consider the system that&#8217;s generating 43 million documents every day.  The second-by-second data is useful
+<p>For example, consider the system that&#8217;s generating 43 million documents every day. The second-by-second data is useful
 for real-time analysis, but historical analysis looking over ten years of data are likely to be working at a larger interval
 such as hourly or daily trends.</p>
-<p>If we compress the 43 million documents into hourly summaries, we can save vast amounts of space.  The Rollup feature
+<p>If we compress the 43 million documents into hourly summaries, we can save vast amounts of space. The Rollup feature
 automates this process of summarizing historical data.</p>
 <p>Details about setting up and configuring Rollup are covered in <a class="xref" href="rollup-apis.html#rollup-put-job" title="Create rollup jobs API">Create Job API</a>.</p>
-<h4><a id="_rollup_uses_standard_query_dsl"></a>Rollup uses standard query DSL<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/overview.asciidoc">edit</a></h4>
+<h4><a id="_rollup_uses_standard_query_dsl"></a>Rollup uses standard Query DSL<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/overview.asciidoc">edit</a></h4>
 <p>The Rollup feature exposes a new search endpoint (<code class="literal">/_rollup_search</code> vs the standard <code class="literal">/_search</code>) which knows how to search
-over rolled-up data.  Importantly, this endpoint accepts 100% normal Elasticsearch Query DSL.  Your application does not need to learn
+over rolled-up data. Importantly, this endpoint accepts 100% normal Elasticsearch Query DSL. Your application does not need to learn
 a new DSL to inspect historical data, it can simply reuse existing queries and dashboards.</p>
 <p>There are some limitations to the functionality available; not all queries and aggregations are supported, certain search
-features (highlighting, etc) are disabled, and available fields depend on how the rollup was configured.  These limitations
+features (highlighting, etc) are disabled, and available fields depend on how the rollup was configured. These limitations
 are covered more in <a class="xref" href="xpack-rollup.html#rollup-search-limitations" title="Rollup search limitations">Rollup Search limitations</a>.</p>
 <p>But if your queries, aggregations and dashboards only use the available functionality, redirecting them to historical
 data is trivial.</p>
-<h4><a id="_rollup_merges_live_and_rolled_data"></a>Rollup merges "live" and "rolled" data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/overview.asciidoc">edit</a></h4>
+<h4><a id="_rollup_merges_live_and_rolled_data"></a>Rollup merges "live" and "rolled" data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/overview.asciidoc">edit</a></h4>
 <p>A useful feature of Rollup is the ability to query both "live", realtime data in addition to historical "rolled" data
 in a single query.</p>
-<p>For example, your system may keep a month of raw data.  After a month, it is rolled up into historical summaries using
+<p>For example, your system may keep a month of raw data. After a month, it is rolled up into historical summaries using
 Rollup and the raw data is deleted.</p>
-<p>If you were to query the raw data, you&#8217;d only see the most recent month.  And if you were to query the rolled up data, you
-would only see data older than a month.  The RollupSearch endpoint, however, supports querying both at the same time.
-It will take the results from both data sources and merge them together.  If there is overlap between the "live" and
+<p>If you were to query the raw data, you&#8217;d only see the most recent month. And if you were to query the rolled up data, you
+would only see data older than a month. The RollupSearch endpoint, however, supports querying both at the same time.
+It will take the results from both data sources and merge them together. If there is overlap between the "live" and
 "rolled" data, live data is preferred to increase accuracy.</p>
-<h4><a id="_rollup_is_multi_interval_aware"></a>Rollup is multi-interval aware<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/overview.asciidoc">edit</a></h4>
-<p>Finally, Rollup is capable of intelligently utilizing the best interval available.  If you&#8217;ve worked with summarizing
-features of other products, you&#8217;ll find that they can be limiting.  If you configure rollups at daily intervals&#8230;&#8203; your
-queries and charts can only work with daily intervals.  If you need a monthly interval, you have to create another rollup
+<h4><a id="_rollup_is_multi_interval_aware"></a>Rollup is multi-interval aware<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/overview.asciidoc">edit</a></h4>
+<p>Finally, Rollup is capable of intelligently utilizing the best interval available. If you&#8217;ve worked with summarizing
+features of other products, you&#8217;ll find that they can be limiting. If you configure rollups at daily intervals&#8230;&#8203; your
+queries and charts can only work with daily intervals. If you need a monthly interval, you have to create another rollup
 that explicitly stores monthly averages, etc.</p>
 <p>The Rollup feature stores data in such a way that queries can identify the smallest available interval and use that
-for their processing.  If you store rollups at a daily interval, queries can be executed on daily or longer intervals
-(weekly, monthly, etc) without the need to explicitly configure a new rollup job.  This helps alleviate one of the major
+for their processing. If you store rollups at a daily interval, queries can be executed on daily or longer intervals
+(weekly, monthly, etc) without the need to explicitly configure a new rollup job. This helps alleviate one of the major
 disadvantages of a rollup system; reduced flexibility relative to raw data.</p>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-api-quickref"></a>Rollup API quick reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/api-quickref.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-api-quickref"></a>Rollup API quick reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/api-quickref.asciidoc">edit</a></h2>
 </div></div></div>
 
 <div class="warning admon">
 <div class="icon"></div>
 <div class="admon_content">
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
+</div>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
 </div>
 </div>
 <p>Most rollup endpoints have the following base:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">/_rollup/</pre>
 </div>
-<h4><a id="rollup-api-jobs"></a>/job/<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/api-quickref.asciidoc">edit</a></h4>
+<h4><a id="rollup-api-jobs"></a>/job/<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/api-quickref.asciidoc">edit</a></h4>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rollup-put-job.html" class="ulink" target="_top">PUT /_rollup/job/&lt;job_id></a>: Create a rollup job
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/rollup-put-job.html" class="ulink" target="_top">PUT /_rollup/job/&lt;job_id></a>: Create a rollup job
 </li>
 <li class="listitem">
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rollup-get-job.html" class="ulink" target="_top">GET /_rollup/job</a>: List rollup jobs
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/rollup-get-job.html" class="ulink" target="_top">GET /_rollup/job</a>: List rollup jobs
 </li>
 <li class="listitem">
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rollup-get-job.html" class="ulink" target="_top">GET /_rollup/job/&lt;job_id></a>: Get rollup job details
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/rollup-get-job.html" class="ulink" target="_top">GET /_rollup/job/&lt;job_id></a>: Get rollup job details
 </li>
 <li class="listitem">
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rollup-start-job.html" class="ulink" target="_top">POST /_rollup/job/&lt;job_id&gt;/_start</a>: Start a rollup job
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/rollup-start-job.html" class="ulink" target="_top">POST /_rollup/job/&lt;job_id&gt;/_start</a>: Start a rollup job
 </li>
 <li class="listitem">
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rollup-stop-job.html" class="ulink" target="_top">POST /_rollup/job/&lt;job_id&gt;/_stop</a>: Stop a rollup job
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/rollup-stop-job.html" class="ulink" target="_top">POST /_rollup/job/&lt;job_id&gt;/_stop</a>: Stop a rollup job
 </li>
 <li class="listitem">
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rollup-delete-job.html" class="ulink" target="_top">DELETE /_rollup/job/&lt;job_id></a>: Delete a rollup job
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/rollup-delete-job.html" class="ulink" target="_top">DELETE /_rollup/job/&lt;job_id></a>: Delete a rollup job
 </li>
 </ul>
 </div>
-<h4><a id="rollup-api-data"></a>/data/<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/api-quickref.asciidoc">edit</a></h4>
+<h4><a id="rollup-api-data"></a>/data/<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/api-quickref.asciidoc">edit</a></h4>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rollup-get-rollup-caps.html" class="ulink" target="_top">GET /_rollup/data/&lt;index_pattern>/_rollup_caps</a>: Get Rollup Capabilities
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/rollup-get-rollup-caps.html" class="ulink" target="_top">GET /_rollup/data/&lt;index_pattern>/_rollup_caps</a>: Get Rollup Capabilities
 </li>
 <li class="listitem">
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rollup-get-rollup-index-caps.html" class="ulink" target="_top">GET /&lt;index_name>/_rollup/data/</a>: Get Rollup Index Capabilities
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/rollup-get-rollup-index-caps.html" class="ulink" target="_top">GET /&lt;index_name>/_rollup/data/</a>: Get Rollup Index Capabilities
 </li>
 </ul>
 </div>
-<h4><a id="rollup-api-index"></a>/&lt;index_name&gt;/<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/api-quickref.asciidoc">edit</a></h4>
+<h4><a id="rollup-api-index"></a>/&lt;index_name&gt;/<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/api-quickref.asciidoc">edit</a></h4>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/rollup-search.html" class="ulink" target="_top">GET /&lt;index_name&gt;/_rollup_search</a>: Search rollup data
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/rollup-search.html" class="ulink" target="_top">GET /&lt;index_name&gt;/_rollup_search</a>: Search rollup data
 </li>
 </ul>
 </div>
@@ -193,7 +214,7 @@ disadvantages of a rollup system; reduced flexibility relative to raw data.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-getting-started"></a>Getting started with rollups<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-getting-started"></a>Getting started with rollups<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a></h2>
 </div></div></div>
 
 <div class="warning admon">
@@ -202,9 +223,16 @@ disadvantages of a rollup system; reduced flexibility relative to raw data.</p>
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
-<p>To use the Rollup feature, you need to create one or more "Rollup Jobs".  These jobs run continuously in the background
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
+<p>To use the Rollup feature, you need to create one or more "Rollup Jobs". These jobs run continuously in the background
 and rollup the index or indices that you specify, placing the rolled documents in a secondary index (also of your choosing).</p>
-<p>Imagine you have a series of daily indices that hold sensor data (<code class="literal">sensor-2017-01-01</code>, <code class="literal">sensor-2017-01-02</code>, etc).  A sample document might
+<p>Imagine you have a series of daily indices that hold sensor data (<code class="literal">sensor-2017-01-01</code>, <code class="literal">sensor-2017-01-02</code>, etc). A sample document might
 look like this:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
@@ -214,9 +242,9 @@ look like this:</p>
   "node": "a"
 }</pre>
 </div>
-<h4><a id="_creating_a_rollup_job"></a>Creating a rollup job<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a></h4>
+<h4><a id="_creating_a_rollup_job"></a>Creating a rollup job<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a></h4>
 <p>We&#8217;d like to rollup these documents into hourly summaries, which will allow us to generate reports and dashboards with any time interval
-one hour or greater.  A rollup job might look like this:</p>
+one hour or greater. A rollup job might look like this:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT _rollup/job/sensor
 {
@@ -245,13 +273,13 @@ one hour or greater.  A rollup job might look like this:</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1364.console"></div>
+<div class="console_widget" data-snippet="snippets/1667.console"></div>
 <p>We give the job the ID of "sensor" (in the url: <code class="literal">PUT _rollup/job/sensor</code>), and tell it to rollup the index pattern <code class="literal">"sensor-*"</code>.
 This job will find and rollup any index that matches that pattern. Rollup summaries are then stored in the <code class="literal">"sensor_rollup"</code> index.</p>
-<p>The <code class="literal">cron</code> parameter controls when and how often the job activates.  When a rollup job&#8217;s cron schedule triggers, it will begin rolling up
-from where it left off after the last activation.  So if you configure the cron to run every 30 seconds, the job will process the last 30
+<p>The <code class="literal">cron</code> parameter controls when and how often the job activates. When a rollup job&#8217;s cron schedule triggers, it will begin rolling up
+from where it left off after the last activation. So if you configure the cron to run every 30 seconds, the job will process the last 30
 seconds worth of data that was indexed into the <code class="literal">sensor-*</code> indices.</p>
-<p>If instead the cron was configured to run once a day at midnight, the job would process the last 24 hours worth of data.  The choice is largely
+<p>If instead the cron was configured to run once a day at midnight, the job would process the last 24 hours worth of data. The choice is largely
 preference, based on how "realtime" you want the rollups, and if you wish to process continuously or move it to off-peak hours.</p>
 <p>Next, we define a set of <code class="literal">groups</code>. Essentially, we are defining the dimensions
 that we wish to pivot on at a later date when querying the data. The grouping in
@@ -263,12 +291,12 @@ the <code class="literal">node</code> field.</p>
 <p class="title"><strong>Date histogram interval vs cron schedule</strong></p>
 </div></div></div>
 <p>You&#8217;ll note that the job&#8217;s cron is configured to run every 30 seconds, but the date_histogram is configured to
-rollup at 60 minute intervals.  How do these relate?</p>
-<p>The date_histogram controls the granularity of the saved data.  Data will be rolled up into hourly intervals, and you will be unable
-to query with finer granularity.  The cron simply controls when the process looks for new data to rollup.  Every 30 seconds it will see
-if there is a new hour&#8217;s worth of data and roll it up.  If not, the job goes back to sleep.</p>
+rollup at 60 minute intervals. How do these relate?</p>
+<p>The date_histogram controls the granularity of the saved data. Data will be rolled up into hourly intervals, and you will be unable
+to query with finer granularity. The cron simply controls when the process looks for new data to rollup. Every 30 seconds it will see
+if there is a new hour&#8217;s worth of data and roll it up. If not, the job goes back to sleep.</p>
 <p>Often, it doesn&#8217;t make sense to define such a small cron (30s) on a large interval (1h), because the majority of the activations will
-simply go back to sleep.  But there&#8217;s nothing wrong with it either, the job will do the right thing.</p>
+simply go back to sleep. But there&#8217;s nothing wrong with it either, the job will do the right thing.</p>
 </div>
 <p>After defining which groups should be generated for the data, you next configure
 which metrics should be collected. By default, only the <code class="literal">doc_counts</code> are
@@ -299,16 +327,16 @@ average of averages here!)</p>
   "acknowledged": true
 }</pre>
 </div>
-<h4><a id="_starting_the_job"></a>Starting the job<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a></h4>
-<p>After the job is created, it will be sitting in an inactive state.  Jobs need to be started before they begin processing data (this allows
+<h4><a id="_starting_the_job"></a>Starting the job<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a></h4>
+<p>After the job is created, it will be sitting in an inactive state. Jobs need to be started before they begin processing data (this allows
 you to stop them later as a way to temporarily pause, without deleting the configuration).</p>
 <p>To start the job, execute this command:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _rollup/job/sensor/_start</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1365.console"></div>
-<h4><a id="_searching_the_rolled_results"></a>Searching the rolled results<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a></h4>
-<p>After the job has run and processed some data, we can use the <a class="xref" href="rollup-apis.html#rollup-search" title="Rollup search">Rollup search</a> endpoint to do some searching.  The Rollup feature is designed
+<div class="console_widget" data-snippet="snippets/1668.console"></div>
+<h4><a id="_searching_the_rolled_results"></a>Searching the rolled results<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a></h4>
+<p>After the job has run and processed some data, we can use the <a class="xref" href="rollup-apis.html#rollup-search" title="Rollup search">Rollup search</a> endpoint to do some searching. The Rollup feature is designed
 so that you can use the same Query DSL syntax that you are accustomed to&#8230;&#8203; it just happens to run on the rolled up data instead.</p>
 <p>For example, take this query:</p>
 <div class="pre_wrapper lang-console">
@@ -324,9 +352,9 @@ so that you can use the same Query DSL syntax that you are accustomed to&#8230;&
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1366.console"></div>
-<p>It&#8217;s a simple aggregation that calculates the maximum of the <code class="literal">temperature</code> field.  But you&#8217;ll notice that is is being sent to the <code class="literal">sensor_rollup</code>
-index instead of the raw <code class="literal">sensor-*</code> indices.  And you&#8217;ll also notice that it is using the <code class="literal">_rollup_search</code> endpoint.  Otherwise the syntax
+<div class="console_widget" data-snippet="snippets/1669.console"></div>
+<p>It&#8217;s a simple aggregation that calculates the maximum of the <code class="literal">temperature</code> field. But you&#8217;ll notice that it is being sent to the <code class="literal">sensor_rollup</code>
+index instead of the raw <code class="literal">sensor-*</code> indices. And you&#8217;ll also notice that it is using the <code class="literal">_rollup_search</code> endpoint. Otherwise the syntax
 is exactly as you&#8217;d expect.</p>
 <p>If you were to execute that query, you&#8217;d receive a result that looks like a normal aggregation response:</p>
 <div class="pre_wrapper lang-console-result">
@@ -351,10 +379,10 @@ is exactly as you&#8217;d expect.</p>
 }</pre>
 </div>
 <p>The only notable difference is that Rollup search results have zero <code class="literal">hits</code>, because we aren&#8217;t really searching the original, live data any
-more.  Otherwise it&#8217;s identical syntax.</p>
-<p>There are a few interesting takeaways here.  Firstly, even though the data was rolled up with hourly intervals and partitioned by
-node name, the query we ran is just calculating the max temperature across all documents.  The <code class="literal">groups</code> that were configured in the job
-are not mandatory elements of a query, they are just extra dimensions you can partition on.  Second, the request and response syntax
+more. Otherwise it&#8217;s identical syntax.</p>
+<p>There are a few interesting takeaways here. Firstly, even though the data was rolled up with hourly intervals and partitioned by
+node name, the query we ran is just calculating the max temperature across all documents. The <code class="literal">groups</code> that were configured in the job
+are not mandatory elements of a query, they are just extra dimensions you can partition on. Second, the request and response syntax
 is nearly identical to normal DSL, making it easy to integrate into dashboards and applications.</p>
 <p>Finally, we can use those grouping fields we defined to construct a more complicated query:</p>
 <div class="pre_wrapper lang-console">
@@ -390,7 +418,7 @@ is nearly identical to normal DSL, making it easy to integrate into dashboards a
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1367.console"></div>
+<div class="console_widget" data-snippet="snippets/1670.console"></div>
 <p>Which returns a corresponding response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -408,7 +436,6 @@ is nearly identical to normal DSL, making it easy to integrate into dashboards a
    },
    "aggregations" : {
      "timeline" : {
-       "meta" : { },
        "buckets" : [
          {
            "key_as_string" : "2018-01-18T00:00:00.000Z",
@@ -458,15 +485,15 @@ is nearly identical to normal DSL, making it easy to integrate into dashboards a
 </div>
 <p>In addition to being more complicated (date histogram and a terms aggregation, plus an additional average metric), you&#8217;ll notice
 the date_histogram uses a <code class="literal">7d</code> interval instead of <code class="literal">60m</code>.</p>
-<h4><a id="_conclusion"></a>Conclusion<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a></h4>
-<p>This quickstart should have provided a concise overview of the core functionality that Rollup exposes.  There are more tips and things
-to consider when setting up Rollups, which you can find throughout the rest of this section.  You may also explore the <a class="xref" href="xpack-rollup.html#rollup-api-quickref" title="Rollup API quick reference">REST API</a>
+<h4><a id="_conclusion"></a>Conclusion<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-getting-started.asciidoc">edit</a></h4>
+<p>This quickstart should have provided a concise overview of the core functionality that Rollup exposes. There are more tips and things
+to consider when setting up Rollups, which you can find throughout the rest of this section. You may also explore the <a class="xref" href="xpack-rollup.html#rollup-api-quickref" title="Rollup API quick reference">REST API</a>
 for an overview of what is available.</p>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-understanding-groups"></a>Understanding groups<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/understanding-groups.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-understanding-groups"></a>Understanding groups<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/understanding-groups.asciidoc">edit</a></h2>
 </div></div></div>
 <div class="warning admon">
 <div class="icon"></div>
@@ -474,15 +501,22 @@ for an overview of what is available.</p>
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
-<p>To preserve flexibility, Rollup Jobs are defined based on how future queries may need to use the data.  Traditionally, systems force
-the admin to make decisions about what metrics to rollup and on what interval.  E.g. The average of <code class="literal">cpu_time</code> on an hourly basis.  This
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
+<p>To preserve flexibility, Rollup Jobs are defined based on how future queries may need to use the data. Traditionally, systems force
+the admin to make decisions about what metrics to rollup and on what interval. E.g. The average of <code class="literal">cpu_time</code> on an hourly basis. This
 is limiting; if, in the future, the admin wishes to see the average of <code class="literal">cpu_time</code> on an hourly basis <em>and</em> partitioned by <code class="literal">host_name</code>,
 they are out of luck.</p>
 <p>Of course, the admin can decide to rollup the <code class="literal">[hour, host]</code> tuple on an hourly basis, but as the number of grouping keys grows, so do the
-number of tuples the admin needs to configure.  Furthermore, these <code class="literal">[hours, host]</code> tuples are only useful for hourly rollups&#8230;&#8203; daily, weekly,
+number of tuples the admin needs to configure. Furthermore, these <code class="literal">[hours, host]</code> tuples are only useful for hourly rollups&#8230;&#8203; daily, weekly,
 or monthly rollups all require new configurations.</p>
 <p>Rather than force the admin to decide ahead of time which individual tuples should be rolled up, Elasticsearch&#8217;s Rollup jobs are configured
-based on which groups are potentially useful to future queries.  For example, this configuration:</p>
+based on which groups are potentially useful to future queries. For example, this configuration:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"groups" : {
   "date_histogram": {
@@ -501,7 +535,7 @@ based on which groups are potentially useful to future queries.  For example, th
 </div>
 <p>Allows <code class="literal">date_histogram</code> to be used on the <code class="literal">"timestamp"</code> field, <code class="literal">terms</code> aggregations to be used on the <code class="literal">"hostname"</code> and <code class="literal">"datacenter"</code>
 fields, and <code class="literal">histograms</code> to be used on any of <code class="literal">"load"</code>, <code class="literal">"net_in"</code>, <code class="literal">"net_out"</code> fields.</p>
-<p>Importantly, these aggs/fields can be used in any combination.  This aggregation:</p>
+<p>Importantly, these aggs/fields can be used in any combination. This aggregation:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"aggs" : {
   "hourly": {
@@ -553,8 +587,8 @@ fields, and <code class="literal">histograms</code> to be used on any of <code c
 }</pre>
 </div>
 <p>You&#8217;ll notice that the second aggregation is not only substantially larger, it also swapped the position of the terms aggregation on
-<code class="literal">"hostname"</code>, illustrating how the order of aggregations does not matter to rollups.  Similarly, while the <code class="literal">date_histogram</code> is required
-for rolling up data, it isn&#8217;t required while querying (although often used).  For example, this is a valid aggregation for
+<code class="literal">"hostname"</code>, illustrating how the order of aggregations does not matter to rollups. Similarly, while the <code class="literal">date_histogram</code> is required
+for rolling up data, it isn&#8217;t required while querying (although often used). For example, this is a valid aggregation for
 Rollup Search to execute:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"aggs" : {
@@ -566,11 +600,11 @@ Rollup Search to execute:</p>
 }</pre>
 </div>
 <p>Ultimately, when configuring <code class="literal">groups</code> for a job, think in terms of how you might wish to partition data in a query at a future date&#8230;&#8203;
-then include those in the config.  Because Rollup Search allows any order or combination of the grouped fields, you just need to decide
+then include those in the config. Because Rollup Search allows any order or combination of the grouped fields, you just need to decide
 if a field is useful for aggregating later, and how you might wish to use it (terms, histogram, etc).</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rollup-understanding-group-intervals"></a>Calendar vs fixed time intervals<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/understanding-groups.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rollup-understanding-group-intervals"></a>Calendar vs fixed time intervals<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/understanding-groups.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Each rollup-job must have a date histogram group with a defined interval. Elasticsearch
 understands both
@@ -664,14 +698,14 @@ time in the future.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_grouping_limitations_with_heterogeneous_indices"></a>Grouping limitations with heterogeneous indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/understanding-groups.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_grouping_limitations_with_heterogeneous_indices"></a>Grouping limitations with heterogeneous indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/understanding-groups.asciidoc">edit</a></h3>
 </div></div></div>
 <p>There was previously a limitation in how Rollup could handle indices that had heterogeneous mappings (multiple, unrelated/non-overlapping
-mappings).  The recommendation at the time was to configure a separate job per data "type".  For example, you might configure a separate
+mappings). The recommendation at the time was to configure a separate job per data "type". For example, you might configure a separate
 job for each Beats module that you had enabled (one for <code class="literal">process</code>, another for <code class="literal">filesystem</code>, etc).</p>
 <p>This recommendation was driven by internal implementation details that caused document counts to be potentially incorrect if a single "merged"
 job was used.</p>
-<p>This limitation has since been alleviated.  As of 6.4.0, it is now considered best practice to combine all rollup configurations
+<p>This limitation has since been alleviated. As of 6.4.0, it is now considered best practice to combine all rollup configurations
 into a single job.</p>
 <p>As an example, if your index has two types of documents:</p>
 <div class="pre_wrapper lang-js">
@@ -724,10 +758,10 @@ into a single job.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_doc_counts_and_overlapping_jobs"></a>Doc counts and overlapping jobs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/understanding-groups.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_doc_counts_and_overlapping_jobs"></a>Doc counts and overlapping jobs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/understanding-groups.asciidoc">edit</a></h3>
 </div></div></div>
 <p>There was previously an issue with document counts on "overlapping" job configurations, driven by the same internal implementation detail.
-If there were  two Rollup jobs saving to the same index, where one job is a "subset" of another job, it was possible that document counts
+If there were two Rollup jobs saving to the same index, where one job is a "subset" of another job, it was possible that document counts
 could be incorrect for certain aggregation arrangements.</p>
 <p>This issue has also since been eliminated in 6.4.0.</p>
 </div>
@@ -736,7 +770,7 @@ could be incorrect for certain aggregation arrangements.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-agg-limitations"></a>Rollup aggregation limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-agg-limitations.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-agg-limitations"></a>Rollup aggregation limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-agg-limitations.asciidoc">edit</a></h2>
 </div></div></div>
 <div class="warning admon">
 <div class="icon"></div>
@@ -744,9 +778,16 @@ could be incorrect for certain aggregation arrangements.</p>
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
-<p>There are some limitations to how fields can be rolled up / aggregated.  This page highlights the major limitations so that
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
+<p>There are some limitations to how fields can be rolled up / aggregated. This page highlights the major limitations so that
 you are aware of them.</p>
-<h4><a id="_limited_aggregation_components"></a>Limited aggregation components<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-agg-limitations.asciidoc">edit</a></h4>
+<h4><a id="_limited_aggregation_components"></a>Limited aggregation components<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-agg-limitations.asciidoc">edit</a></h4>
 <p>The Rollup functionality allows fields to be grouped with the following aggregations:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -785,7 +826,7 @@ Value Count aggregation
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="rollup-search-limitations"></a>Rollup search limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="rollup-search-limitations"></a>Rollup search limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h2>
 </div></div></div>
 <div class="warning admon">
 <div class="icon"></div>
@@ -793,40 +834,47 @@ Value Count aggregation
 <p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
 </div>
 </div>
-<p>While we feel the Rollup function is extremely flexible, the nature of summarizing data means there will be some limitations.  Once
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For version 8.5 and above we recommend <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">downsampling</a> over
+rollups as a way to reduce your storage costs for time series data.</p>
+</div>
+</div>
+<p>While we feel the Rollup function is extremely flexible, the nature of summarizing data means there will be some limitations. Once
 live data is thrown away, you will always lose some flexibility.</p>
 <p>This page highlights the major limitations so that you are aware of them.</p>
-<h4><a id="_only_one_rollup_index_per_search"></a>Only one rollup index per search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
-<p>When using the <a class="xref" href="rollup-apis.html#rollup-search" title="Rollup search">Rollup search</a> endpoint, the <code class="literal">index</code> parameter accepts one or more indices.  These can be a mix of regular, non-rollup
-indices and rollup indices.  However, only one rollup index can be specified.  The exact list of rules for the <code class="literal">index</code> parameter are as
+<h4><a id="_only_one_rollup_index_per_search"></a>Only one rollup index per search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
+<p>When using the <a class="xref" href="rollup-apis.html#rollup-search" title="Rollup search">Rollup search</a> endpoint, the <code class="literal">index</code> parameter accepts one or more indices. These can be a mix of regular, non-rollup
+indices and rollup indices. However, only one rollup index can be specified. The exact list of rules for the <code class="literal">index</code> parameter are as
 follows:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-At least one index/index-pattern must be specified.  This can be either a rollup or non-rollup index.  Omitting the index parameter,
+At least one index/index-pattern must be specified. This can be either a rollup or non-rollup index. Omitting the index parameter,
 or using <code class="literal">_all</code>, is not permitted
 </li>
 <li class="listitem">
 Multiple non-rollup indices may be specified
 </li>
 <li class="listitem">
-Only one rollup index may be specified.  If more than one are supplied an exception will be thrown
+Only one rollup index may be specified. If more than one are supplied an exception will be thrown
 </li>
 <li class="listitem">
 Index patterns may be used, but if they match more than one rollup index an exception will be thrown.
 </li>
 </ul>
 </div>
-<p>This limitation is driven by the logic that decides which jobs are the "best" for any given query.  If you have ten jobs stored in a single
+<p>This limitation is driven by the logic that decides which jobs are the "best" for any given query. If you have ten jobs stored in a single
 index, which cover the source data with varying degrees of completeness and different intervals, the query needs to determine which set
-of jobs to actually search.  Incorrect decisions can lead to inaccurate aggregation results (e.g. over-counting doc counts, or bad metrics).
+of jobs to actually search. Incorrect decisions can lead to inaccurate aggregation results (e.g. over-counting doc counts, or bad metrics).
 Needless to say, this is a technically challenging piece of code.</p>
-<p>To help simplify the problem, we have limited search to just one rollup index at a time (which may contain multiple jobs).  In the future we
+<p>To help simplify the problem, we have limited search to just one rollup index at a time (which may contain multiple jobs). In the future we
 may be able to open this up to multiple rollup jobs.</p>
-<h4><a id="aggregate-stored-only"></a>Can only aggregate what&#8217;s been stored<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
-<p>A perhaps obvious limitation, but rollups can only aggregate on data that has been stored in the rollups.  If you don&#8217;t configure the
+<h4><a id="aggregate-stored-only"></a>Can only aggregate what&#8217;s been stored<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
+<p>A perhaps obvious limitation, but rollups can only aggregate on data that has been stored in the rollups. If you don&#8217;t configure the
 rollup job to store metrics about the <code class="literal">price</code> field, you won&#8217;t be able to use the <code class="literal">price</code> field in any query or aggregation.</p>
-<p>For example, the <code class="literal">temperature</code> field in the following query has been stored in a rollup job&#8230;&#8203; but not with an <code class="literal">avg</code> metric.  Which means
+<p>For example, the <code class="literal">temperature</code> field in the following query has been stored in a rollup job&#8230;&#8203; but not with an <code class="literal">avg</code> metric. Which means
 the usage of <code class="literal">avg</code> here is not allowed:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET sensor_rollup/_rollup_search
@@ -841,7 +889,7 @@ the usage of <code class="literal">avg</code> here is not allowed:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1368.console"></div>
+<div class="console_widget" data-snippet="snippets/1671.console"></div>
 <p>The response will tell you that the field and aggregation were not possible, because no rollup jobs were found which contained them:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -860,11 +908,11 @@ the usage of <code class="literal">avg</code> here is not allowed:</p>
   "status": 400
 }</pre>
 </div>
-<h4><a id="_interval_granularity"></a>Interval granularity<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
-<p>Rollups are stored at a certain granularity, as defined by the <code class="literal">date_histogram</code> group in the configuration.  This means you
+<h4><a id="_interval_granularity"></a>Interval granularity<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
+<p>Rollups are stored at a certain granularity, as defined by the <code class="literal">date_histogram</code> group in the configuration. This means you
 can only search/aggregate the rollup data with an interval that is greater-than or equal to the configured rollup interval.</p>
 <p>For example, if data is rolled up at hourly intervals, the <a class="xref" href="rollup-apis.html#rollup-search" title="Rollup search">Rollup search</a> API can aggregate on any time interval
-hourly or greater.  Intervals that are less than an hour will throw an exception, since the data simply doesn&#8217;t
+hourly or greater. Intervals that are less than an hour will throw an exception, since the data simply doesn&#8217;t
 exist for finer granularities.</p>
 <div class="sidebar">
 <a id="rollup-search-limitations-intervals"></a>
@@ -872,7 +920,7 @@ exist for finer granularities.</p>
 <p class="title"><strong>Requests must be multiples of the config</strong></p>
 </div></div></div>
 <p>Perhaps not immediately apparent, but the interval specified in an aggregation request must be a whole
-multiple of the configured interval.  If the job was configured to rollup on <code class="literal">3d</code> intervals, you can only
+multiple of the configured interval. If the job was configured to rollup on <code class="literal">3d</code> intervals, you can only
 query and aggregate on multiples of three (<code class="literal">3d</code>, <code class="literal">6d</code>, <code class="literal">9d</code>, etc).</p>
 <p>A non-multiple wouldn&#8217;t work, since the rolled up data wouldn&#8217;t cleanly "overlap" with the buckets generated
 by the aggregation, leading to incorrect results.</p>
@@ -883,8 +931,8 @@ It&#8217;s recommended to just configure a single job with the smallest granular
 as needed.</p>
 <p>That said, if multiple jobs are present in a single rollup index with varying intervals, the search endpoint will identify and use the job(s)
 with the largest interval to satisfy the search request.</p>
-<h4><a id="_limited_querying_components"></a>Limited querying components<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
-<p>The Rollup functionality allows <code class="literal">query</code>'s in the search request, but with a limited subset of components.  The queries currently allowed are:</p>
+<h4><a id="_limited_querying_components"></a>Limited querying components<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
+<p>The Rollup functionality allows <code class="literal">query</code>'s in the search request, but with a limited subset of components. The queries currently allowed are:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -907,9 +955,9 @@ Any compound query (Boolean, Boosting, ConstantScore, etc)
 <p>Furthermore, these queries can only use fields that were also saved in the rollup job as a <code class="literal">group</code>.
 If you wish to filter on a keyword <code class="literal">hostname</code> field, that field must have been configured in the rollup job under a <code class="literal">terms</code> grouping.</p>
 <p>If you attempt to use an unsupported query, or the query references a field that wasn&#8217;t configured in the rollup job, an exception will be
-thrown.  We expect the list of support queries to grow over time as more are implemented.</p>
-<h4><a id="_timezones"></a>Timezones<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
-<p>Rollup documents are stored in the timezone of the <code class="literal">date_histogram</code> group configuration in the job.  If no timezone is specified, the default
+thrown. We expect the list of support queries to grow over time as more are implemented.</p>
+<h4><a id="_timezones"></a>Timezones<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rollup/rollup-search-limitations.asciidoc">edit</a></h4>
+<p>Rollup documents are stored in the timezone of the <code class="literal">date_histogram</code> group configuration in the job. If no timezone is specified, the default
 is to rollup timestamps in <code class="literal">UTC</code>.</p>
 </div>
 

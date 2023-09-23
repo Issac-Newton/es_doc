@@ -1,7 +1,13 @@
-GET /_search
+PUT _ingest/pipeline/my-pipeline
 {
-  "stored_fields" : [],
-  "query" : {
-    "term" : { "user" : "kimchy" }
-  }
+  "processors": [
+    {
+      "rename": {
+        "description": "Rename 'provider' to 'cloud.provider'",
+        "field": "provider",
+        "target_field": "cloud.provider",
+        "ignore_failure": true
+      }
+    }
+  ]
 }

@@ -1,11 +1,11 @@
-GET _analyze
+POST file-path-test/_analyze
 {
-  "tokenizer": "standard",
-  "filter": [
-    {
-      "type": "keep_types",
-      "types": [ "<NUM>" ]
-    }
-  ],
-  "text": "1 quick fox 2 lazy dogs"
+  "analyzer": "custom_path_tree",
+  "text": "/User/alice/photos/2017/05/16/my_photo1.jpg"
+}
+
+POST file-path-test/_analyze
+{
+  "analyzer": "custom_path_tree_reversed",
+  "text": "/User/alice/photos/2017/05/16/my_photo1.jpg"
 }

@@ -1,1 +1,4 @@
-POST _flush/synced
+PUT index_4/_settings
+{
+  "index.priority": 1
+}

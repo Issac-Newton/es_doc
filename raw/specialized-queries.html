@@ -33,7 +33,7 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="specialized-queries"></a>Specialized queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/special-queries.asciidoc">edit</a></h2>
+<h2 class="title"><a id="specialized-queries"></a>Specialized queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/special-queries.asciidoc">edit</a></h2>
 </div></div></div>
 <p>This group contains queries which do not fit into the other groups:</p>
 <div class="variablelist">
@@ -45,7 +45,7 @@
 </dt>
 <dd>
 A query that computes scores based on the dynamically computed distances
-between the origin and documents' date, date_nanos and geo_point fields.
+between the origin and documents' <code class="literal">date</code>, <code class="literal">date_nanos</code>, and <code class="literal">geo_point</code> fields.
 It is able to efficiently skip non-competitive hits.
 </dd>
 <dt>
@@ -81,7 +81,7 @@ able to efficiently skip non-competitive hits.
 </span>
 </dt>
 <dd>
-This query allows a script to act as a filter.  Also see the
+This query allows a script to act as a filter. Also see the
 <a class="xref" href="compound-queries.html#query-dsl-function-score-query" title="Function score query"><code class="literal">function_score</code> query</a>.
 </dd>
 <dt>
@@ -112,7 +112,7 @@ A query that promotes selected documents over others matching a given query.
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-distance-feature-query"></a>Distance feature query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-distance-feature-query"></a>Distance feature query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Boosts the <a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance score</a> of documents closer to a
@@ -124,14 +124,14 @@ search&#8217;s <code class="literal">should</code> filter to add boosted relevan
 scores.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="distance-feature-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="distance-feature-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="distance-feature-index-setup"></a>Index setup<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="distance-feature-index-setup"></a>Index setup<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>To use the <code class="literal">distance_feature</code> query, your index must include a <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a>,
-<a class="xref" href="mapping-types.html#date_nanos" title="Date nanoseconds field type"><code class="literal">date_nanos</code></a> or <a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type"><code class="literal">geo_point</code></a> field.</p>
+<a class="xref" href="mapping-types.html#date_nanos" title="Date nanoseconds field type"><code class="literal">date_nanos</code></a> or <a class="xref" href="mapping-types.html#geo-point" title="Geopoint field type"><code class="literal">geo_point</code></a> field.</p>
 <p>To see how you can set up an index for the <code class="literal">distance_feature</code> query, try the
 following example.</p>
 <div class="olist orderedlist">
@@ -147,7 +147,7 @@ following example.</p>
 <code class="literal">production_date</code>, a <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a> field
 </li>
 <li class="listitem">
-<code class="literal">location</code>, a <a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type"><code class="literal">geo_point</code></a> field
+<code class="literal">location</code>, a <a class="xref" href="mapping-types.html#geo-point" title="Geopoint field type"><code class="literal">geo_point</code></a> field
 </li>
 </ul>
 </div>
@@ -169,7 +169,7 @@ following example.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/874.console"></div>
+<div class="console_widget" data-snippet="snippets/1103.console"></div>
 </li>
 <li class="listitem">
 <p>Index several documents to this index.</p>
@@ -196,7 +196,7 @@ PUT /items/_doc/3?refresh
   "location": [-71.3, 41.12]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/875.console"></div>
+<div class="console_widget" data-snippet="snippets/1104.console"></div>
 </li>
 </ol>
 </div>
@@ -204,11 +204,11 @@ PUT /items/_doc/3?refresh
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="distance-feature-query-ex-query"></a>Example queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="distance-feature-query-ex-query"></a>Example queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h4>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="distance-feature-query-date-ex"></a>Boost documents based on date<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="distance-feature-query-date-ex"></a>Boost documents based on date<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p>The following <code class="literal">bool</code> search returns documents with a <code class="literal">name</code> value of
 <code class="literal">chocolate</code>. The search also uses the <code class="literal">distance_feature</code> query to increase the
@@ -234,12 +234,12 @@ relevance score of documents with a <code class="literal">production_date</code>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/876.console"></div>
+<div class="console_widget" data-snippet="snippets/1105.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="distance-feature-query-distance-ex"></a>Boost documents based on location<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="distance-feature-query-distance-ex"></a>Boost documents based on location<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p>The following <code class="literal">bool</code> search returns documents with a <code class="literal">name</code> value of
 <code class="literal">chocolate</code>. The search also uses the <code class="literal">distance_feature</code> query to increase the
@@ -265,7 +265,7 @@ relevance score of documents with a <code class="literal">location</code> value 
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/877.console"></div>
+<div class="console_widget" data-snippet="snippets/1106.console"></div>
 </div>
 
 </div>
@@ -274,7 +274,7 @@ relevance score of documents with a <code class="literal">location</code> value 
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="distance-feature-top-level-params"></a>Top-level parameters for <code class="literal">distance_feature</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="distance-feature-top-level-params"></a>Top-level parameters for <code class="literal">distance_feature</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -292,7 +292,7 @@ must meet the following criteria:
 <ul class="itemizedlist">
 <li class="listitem">
 Be a <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a>, <a class="xref" href="mapping-types.html#date_nanos" title="Date nanoseconds field type"><code class="literal">date_nanos</code></a> or
-<a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type"><code class="literal">geo_point</code></a> field
+<a class="xref" href="mapping-types.html#geo-point" title="Geopoint field type"><code class="literal">geo_point</code></a> field
 </li>
 <li class="listitem">
 Have an <a class="xref" href="mapping-params.html#mapping-index" title="index"><code class="literal">index</code></a> mapping parameter value of <code class="literal">true</code>, which is
@@ -314,8 +314,8 @@ is the default
 <p>(Required, string) Date or point of origin used to calculate distances.</p>
 <p>If the <code class="literal">field</code> value is a <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a> or <a class="xref" href="mapping-types.html#date_nanos" title="Date nanoseconds field type"><code class="literal">date_nanos</code></a>
 field, the <code class="literal">origin</code> value must be a <a class="xref" href="search-aggregations-bucket.html#date-format-pattern" title="Date Format/Pattern">date</a>.
-<a class="xref" href="api-conventions.html#date-math" title="Date Math">Date Math</a>, such as <code class="literal">now-1h</code>, is supported.</p>
-<p>If the <code class="literal">field</code> value is a <a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type"><code class="literal">geo_point</code></a> field, the <code class="literal">origin</code> value
+<a class="xref" href="common-options.html#date-math" title="Date Math">Date Math</a>, such as <code class="literal">now-1h</code>, is supported.</p>
+<p>If the <code class="literal">field</code> value is a <a class="xref" href="mapping-types.html#geo-point" title="Geopoint field type"><code class="literal">geo_point</code></a> field, the <code class="literal">origin</code> value
 must be a geopoint.</p>
 </dd>
 <dt>
@@ -330,7 +330,7 @@ value.</p>
 <p>If the <code class="literal">field</code> value is a <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a> or <a class="xref" href="mapping-types.html#date_nanos" title="Date nanoseconds field type"><code class="literal">date_nanos</code></a>
 field, the <code class="literal">pivot</code> value must be a <a class="xref" href="api-conventions.html#time-units" title="Time units">time unit</a>, such as <code class="literal">1h</code> or
 <code class="literal">10d</code>.</p>
-<p>If the <code class="literal">field</code> value is a <a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type"><code class="literal">geo_point</code></a> field, the <code class="literal">pivot</code> value
+<p>If the <code class="literal">field</code> value is a <a class="xref" href="mapping-types.html#geo-point" title="Geopoint field type"><code class="literal">geo_point</code></a> field, the <code class="literal">pivot</code> value
 must be a <a class="xref" href="api-conventions.html#distance-units" title="Distance Units">distance unit</a>, such as <code class="literal">1km</code> or <code class="literal">12m</code>.</p>
 </dd>
 <dt>
@@ -349,11 +349,11 @@ cannot be negative. Defaults to <code class="literal">1.0</code>.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="distance-feature-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="distance-feature-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="distance-feature-calculation"></a>How the <code class="literal">distance_feature</code> query calculates relevance scores<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="distance-feature-calculation"></a>How the <code class="literal">distance_feature</code> query calculates relevance scores<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">distance_feature</code> query dynamically calculates the distance between the
 <code class="literal">origin</code> value and a document&#8217;s field values. It then uses this distance as a
@@ -368,12 +368,12 @@ document&#8217;s field value.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="distance-feature-skip-hits"></a>Skip non-competitive hits<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="distance-feature-skip-hits"></a>Skip non-competitive hits<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/distance-feature-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>Unlike the <a class="xref" href="compound-queries.html#query-dsl-function-score-query" title="Function score query"><code class="literal">function_score</code></a> query or other
 ways to change <a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a>, the
 <code class="literal">distance_feature</code> query efficiently skips non-competitive hits when the
-<a class="xref" href="getting-started-modify-data.html#search-uri-request" title="URI search"><code class="literal">track_total_hits</code></a> parameter is <span class="strong strong"><strong>not</strong></span> <code class="literal">true</code>.</p>
+<a class="xref" href="search.html#search-search" title="Search API"><code class="literal">track_total_hits</code></a> parameter is <span class="strong strong"><strong>not</strong></span> <code class="literal">true</code>.</p>
 </div>
 
 </div>
@@ -382,7 +382,7 @@ ways to change <a class="xref" href="query-filter-context.html#relevance-scores"
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-mlt-query"></a>More like this query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-mlt-query"></a>More like this query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The More Like This Query finds documents that are "like" a given
@@ -407,7 +407,7 @@ fields, limiting the number of selected terms to 12.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/878.console"></div>
+<div class="console_widget" data-snippet="snippets/1107.console"></div>
 <p>A more complicated use case consists of mixing texts with documents already
 existing in the index. In this case, the syntax to specify a document is
 similar to the one used in the <a class="xref" href="docs.html#docs-multi-get" title="Multi get (mget) API">Multi GET API</a>.</p>
@@ -434,7 +434,7 @@ similar to the one used in the <a class="xref" href="docs.html#docs-multi-get" t
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/879.console"></div>
+<div class="console_widget" data-snippet="snippets/1108.console"></div>
 <p>Finally, users can mix some texts, a chosen set of documents but also provide
 documents not necessarily present in the index. To provide documents not
 present in the index, the syntax is similar to <a class="xref" href="docs.html#docs-termvectors-artificial-doc" title="Artificial documents">artificial documents</a>.</p>
@@ -466,10 +466,10 @@ present in the index, the syntax is similar to <a class="xref" href="docs.html#d
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/880.console"></div>
+<div class="console_widget" data-snippet="snippets/1109.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_how_it_works"></a>How it Works<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_how_it_works"></a>How it Works<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Suppose we wanted to find all documents similar to a given input document.
 Obviously, the input document itself should be its best match for that type of
@@ -521,17 +521,17 @@ default, but there will be no speed up on analysis for these fields.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/881.console"></div>
+<div class="console_widget" data-snippet="snippets/1110.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_parameters_2"></a>Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_parameters_2"></a>Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The only required parameter is <code class="literal">like</code>, all other parameters have sensible
 defaults. There are three types of parameters: one to specify the document
 input, the other one for term selection and for query formation.</p>
-<h4><a id="_document_input_parameters"></a>Document Input Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h4>
+<h4><a id="_document_input_parameters"></a>Document Input Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h4>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
 <colgroup>
@@ -584,14 +584,17 @@ is the same as <code class="literal">like</code>.
 </td>
 <td valign="top">
 <p>
-A list of fields to fetch and analyze the text from.
+A list of fields to fetch and analyze the text from. Defaults to the
+<code class="literal">index.query.default_field</code> index setting, which has a default value of <code class="literal">*</code>. The
+<code class="literal">*</code> value matches all fields eligible for <a class="xref" href="term-level-queries.html" title="Term-level queries">term-level
+queries</a>, excluding metadata fields.
 </p>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<h4><a id="mlt-query-term-selection"></a>Term Selection Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h4>
+<h4><a id="mlt-query-term-selection"></a>Term Selection Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h4>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
 <colgroup>
@@ -710,7 +713,7 @@ analyzer associated with the first field in <code class="literal">fields</code>.
 </tbody>
 </table>
 </div>
-<h4><a id="_query_formation_parameters"></a>Query Formation Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h4>
+<h4><a id="_query_formation_parameters"></a>Query Formation Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h4>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
 <colgroup>
@@ -795,7 +798,7 @@ Sets the boost value of the whole query. Defaults to <code class="literal">1.0</
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_alternative"></a>Alternative<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_alternative"></a>Alternative<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/mlt-query.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To take more control over the construction of a query for similar documents it is worth considering writing custom client code to assemble selected terms from an example document into a Boolean query with the desired settings. The logic in <code class="literal">more_like_this</code> that selects "interesting" words from a piece of text is also accessible via the <a class="xref" href="docs.html#docs-termvectors" title="Term vectors API">TermVectors API</a>. For example, using the termvectors API it would be possible to present users with a selection of topical keywords found in a document&#8217;s text, allowing them to select words of interest to drill down on, rather than using the more "black-box" approach of matching used by <code class="literal">more_like_this</code>.</p>
 </div>
@@ -804,17 +807,30 @@ Sets the boost value of the whole query. Defaults to <code class="literal">1.0</
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-percolate-query"></a>Percolate query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-percolate-query"></a>Percolate query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">percolate</code> query can be used to match queries
 stored in an index. The <code class="literal">percolate</code> query itself
 contains the document that will be used as query
 to match with the stored queries.</p>
-<h3><a id="_sample_usage"></a>Sample Usage<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_sample_usage"></a>Sample usage<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>To provide a simple example, this documentation uses one index,
+<code class="literal">my-index-000001</code>, for both the percolate queries and documents. This setup can
+work well when there are just a few percolate queries registered. For heavier
+usage, we recommend you store queries and documents in separate indices. For
+more details, refer to <a class="xref" href="specialized-queries.html#how-it-works" title="How it Works Under the Hood">How it Works Under the Hood</a>.</p>
+</div>
+</div>
 <p>Create an index with two fields:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /my-index-00001
+<pre class="programlisting prettyprint lang-console">PUT /my-index-000001
 {
   "mappings": {
     "properties": {
@@ -828,7 +844,7 @@ to match with the stored queries.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/882.console"></div>
+<div class="console_widget" data-snippet="snippets/1111.console"></div>
 <p>The <code class="literal">message</code> field is the field used to preprocess the document defined in
 the <code class="literal">percolator</code> query before it gets indexed into a temporary index.</p>
 <p>The <code class="literal">query</code> field is used for indexing the query documents. It will hold a
@@ -838,7 +854,7 @@ type understands the query dsl and stores the query in such a way that it can be
 used later on to match documents defined on the <code class="literal">percolate</code> query.</p>
 <p>Register a query in the percolator:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /my-index-00001/_doc/1?refresh
+<pre class="programlisting prettyprint lang-console">PUT /my-index-000001/_doc/1?refresh
 {
   "query": {
     "match": {
@@ -847,10 +863,10 @@ used later on to match documents defined on the <code class="literal">percolate<
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/883.console"></div>
+<div class="console_widget" data-snippet="snippets/1112.console"></div>
 <p>Match a document to the registered percolator queries:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /my-index-00001/_search
+<pre class="programlisting prettyprint lang-console">GET /my-index-000001/_search
 {
   "query": {
     "percolate": {
@@ -862,7 +878,7 @@ used later on to match documents defined on the <code class="literal">percolate<
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/884.console"></div>
+<div class="console_widget" data-snippet="snippets/1113.console"></div>
 <p>The above request will yield the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -881,9 +897,8 @@ used later on to match documents defined on the <code class="literal">percolate<
     },
     "max_score": 0.26152915,
     "hits": [
-      { <a id="CO210-1"></a><i class="conum" data-value="1"></i>
-        "_index": "my-index-00001",
-        "_type": "_doc",
+      { <a id="CO239-1"></a><i class="conum" data-value="1"></i>
+        "_index": "my-index-000001",
         "_id": "1",
         "_score": 0.26152915,
         "_source": {
@@ -894,7 +909,7 @@ used later on to match documents defined on the <code class="literal">percolate<
           }
         },
         "fields" : {
-          "_percolator_document_slot" : [0] <a id="CO210-2"></a><i class="conum" data-value="2"></i>
+          "_percolator_document_slot" : [0] <a id="CO239-2"></a><i class="conum" data-value="2"></i>
         }
       }
     ]
@@ -905,7 +920,7 @@ used later on to match documents defined on the <code class="literal">percolate<
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO210-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO239-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The query with id <code class="literal">1</code> matches our document.</p>
@@ -913,7 +928,7 @@ used later on to match documents defined on the <code class="literal">percolate<
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO210-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO239-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">_percolator_document_slot</code> field indicates which document has matched with this query.
@@ -922,15 +937,12 @@ Useful when percolating multiple document simultaneously.</p>
 </tr>
 </table>
 </div>
-<div class="tip admon">
-<div class="icon"></div>
-<div class="admon_content">
-<p>To provide a simple example, this documentation uses one index <code class="literal">my-index-00001</code> for both the percolate queries and documents.
-This set-up can work well when there are just a few percolate queries registered. However, with heavier usage it is recommended
-to store queries and documents in separate indices. Please see <a class="xref" href="specialized-queries.html#how-it-works" title="How it Works Under the Hood">How it Works Under the Hood</a> for more details.</p>
 </div>
-</div>
-<h4><a id="_parameters_3"></a>Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_parameters_3"></a>Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+</div></div></div>
 <p>The following parameters are required when percolating a document:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -1088,11 +1100,16 @@ Optionally, the expected version of the document to be fetched.
 </tbody>
 </table>
 </div>
-<h4><a id="_percolating_in_a_filter_context"></a>Percolating in a filter context<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_percolating_in_a_filter_context"></a>Percolating in a filter context<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+</div></div></div>
 <p>In case you are not interested in the score, better performance can be expected by wrapping
 the percolator query in a <code class="literal">bool</code> query&#8217;s filter clause or in a <code class="literal">constant_score</code> query:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /my-index-00001/_search
+<pre class="programlisting prettyprint lang-console">GET /my-index-000001/_search
 {
   "query": {
     "constant_score": {
@@ -1108,7 +1125,7 @@ the percolator query in a <code class="literal">bool</code> query&#8217;s filter
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/885.console"></div>
+<div class="console_widget" data-snippet="snippets/1114.console"></div>
 <p>At index time terms are extracted from the percolator query and the percolator
 can often determine whether a query matches just by looking at those extracted
 terms. However, computing scores requires to deserialize each matching query
@@ -1116,7 +1133,12 @@ and run it against the percolated document, which is a much more expensive
 operation. Hence if computing scores is not required the <code class="literal">percolate</code> query
 should be wrapped in a <code class="literal">constant_score</code> query or a <code class="literal">bool</code> query&#8217;s filter clause.</p>
 <p>Note that the <code class="literal">percolate</code> query never gets cached by the query cache.</p>
-<h4><a id="_percolating_multiple_documents"></a>Percolating multiple documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_percolating_multiple_documents"></a>Percolating multiple documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+</div></div></div>
 <p>The <code class="literal">percolate</code> query can match multiple documents simultaneously with the indexed percolator queries.
 Percolating multiple documents in a single request can improve performance as queries only need to be parsed and
 matched once instead of multiple times.</p>
@@ -1124,12 +1146,12 @@ matched once instead of multiple times.</p>
 multiple documents simultaneously. It indicates which documents matched with a particular percolator query. The numbers
 correlate with the slot in the <code class="literal">documents</code> array specified in the <code class="literal">percolate</code> query.</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /my-index-00001/_search
+<pre class="programlisting prettyprint lang-console">GET /my-index-000001/_search
 {
   "query": {
     "percolate": {
       "field": "query",
-      "documents": [ <a id="CO211-1"></a><i class="conum" data-value="1"></i>
+      "documents": [ <a id="CO240-1"></a><i class="conum" data-value="1"></i>
         {
           "message": "bonsai tree"
         },
@@ -1147,12 +1169,12 @@ correlate with the slot in the <code class="literal">documents</code> array spec
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/886.console"></div>
+<div class="console_widget" data-snippet="snippets/1115.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO211-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO240-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The documents array contains 4 documents that are going to be percolated at the same time.</p>
@@ -1178,8 +1200,7 @@ correlate with the slot in the <code class="literal">documents</code> array spec
     "max_score": 0.7093853,
     "hits": [
       {
-        "_index": "my-index-00001",
-        "_type": "_doc",
+        "_index": "my-index-000001",
         "_id": "1",
         "_score": 0.7093853,
         "_source": {
@@ -1190,7 +1211,7 @@ correlate with the slot in the <code class="literal">documents</code> array spec
           }
         },
         "fields" : {
-          "_percolator_document_slot" : [0, 1, 3] <a id="CO212-1"></a><i class="conum" data-value="1"></i>
+          "_percolator_document_slot" : [0, 1, 3] <a id="CO241-1"></a><i class="conum" data-value="1"></i>
         }
       }
     ]
@@ -1201,7 +1222,7 @@ correlate with the slot in the <code class="literal">documents</code> array spec
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO212-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO241-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">_percolator_document_slot</code> indicates that the first, second and last documents specified in the <code class="literal">percolate</code> query
@@ -1210,25 +1231,32 @@ are matching with this query.</p>
 </tr>
 </table>
 </div>
-<h4><a id="_percolating_an_existing_document"></a>Percolating an Existing Document<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_percolating_an_existing_document"></a>Percolating an Existing Document<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+</div></div></div>
 <p>In order to percolate a newly indexed document, the <code class="literal">percolate</code> query can be used. Based on the response
 from an index request, the <code class="literal">_id</code> and other meta information can be used to immediately percolate the newly added
 document.</p>
-<h5><a id="_example_3"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h5>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_example_3"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+</div></div></div>
 <p>Based on the previous example.</p>
 <p>Index the document we want to percolate:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /my-index-00001/_doc/2
+<pre class="programlisting prettyprint lang-console">PUT /my-index-000001/_doc/2
 {
   "message" : "A new bonsai tree in the office"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/887.console"></div>
+<div class="console_widget" data-snippet="snippets/1116.console"></div>
 <p>Index response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
-  "_index": "my-index-00001",
-  "_type": "_doc",
+  "_index": "my-index-000001",
   "_id": "2",
   "_version": 1,
   "_shards": {
@@ -1243,24 +1271,24 @@ document.</p>
 </div>
 <p>Percolating an existing document, using the index response as basis to build to new search request:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /my-index-00001/_search
+<pre class="programlisting prettyprint lang-console">GET /my-index-000001/_search
 {
   "query": {
     "percolate": {
       "field": "query",
-      "index": "my-index-00001",
+      "index": "my-index-000001",
       "id": "2",
-      "version": 1 <a id="CO213-1"></a><i class="conum" data-value="1"></i>
+      "version": 1 <a id="CO242-1"></a><i class="conum" data-value="1"></i>
     }
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/888.console"></div>
+<div class="console_widget" data-snippet="snippets/1117.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO213-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO242-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The version is optional, but useful in certain cases. We can ensure that we are trying to percolate
@@ -1271,15 +1299,25 @@ case the search request would fail with a version conflict error.</p>
 </table>
 </div>
 <p>The search response returned is identical as in the previous example.</p>
-<h4><a id="_percolate_query_and_highlighting"></a>Percolate query and highlighting<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_percolate_query_and_highlighting"></a>Percolate query and highlighting<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+</div></div></div>
 <p>The <code class="literal">percolate</code> query is handled in a special way when it comes to highlighting. The queries hits are used
 to highlight the document that is provided in the <code class="literal">percolate</code> query. Whereas with regular highlighting the query in
 the search request is used to highlight the hits.</p>
-<h5><a id="_example_4"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h5>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_example_4"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+</div></div></div>
 <p>This example is based on the mapping of the first example.</p>
 <p>Save a query:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /my-index-00001/_doc/3?refresh
+<pre class="programlisting prettyprint lang-console">PUT /my-index-000001/_doc/3?refresh
 {
   "query": {
     "match": {
@@ -1288,10 +1326,10 @@ the search request is used to highlight the hits.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/889.console"></div>
+<div class="console_widget" data-snippet="snippets/1118.console"></div>
 <p>Save another query:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /my-index-00001/_doc/4?refresh
+<pre class="programlisting prettyprint lang-console">PUT /my-index-000001/_doc/4?refresh
 {
   "query": {
     "match": {
@@ -1300,10 +1338,10 @@ the search request is used to highlight the hits.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/890.console"></div>
+<div class="console_widget" data-snippet="snippets/1119.console"></div>
 <p>Execute a search request with the <code class="literal">percolate</code> query and highlighting enabled:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /my-index-00001/_search
+<pre class="programlisting prettyprint lang-console">GET /my-index-000001/_search
 {
   "query": {
     "percolate": {
@@ -1320,7 +1358,7 @@ the search request is used to highlight the hits.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/891.console"></div>
+<div class="console_widget" data-snippet="snippets/1120.console"></div>
 <p>This will yield the following response.</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -1340,8 +1378,7 @@ the search request is used to highlight the hits.</p>
     "max_score": 0.26152915,
     "hits": [
       {
-        "_index": "my-index-00001",
-        "_type": "_doc",
+        "_index": "my-index-000001",
         "_id": "3",
         "_score": 0.26152915,
         "_source": {
@@ -1353,7 +1390,7 @@ the search request is used to highlight the hits.</p>
         },
         "highlight": {
           "message": [
-            "The quick &lt;em&gt;brown&lt;/em&gt; &lt;em&gt;fox&lt;/em&gt; jumps over the lazy dog" <a id="CO214-1"></a><i class="conum" data-value="1"></i>
+            "The quick &lt;em&gt;brown&lt;/em&gt; &lt;em&gt;fox&lt;/em&gt; jumps over the lazy dog" <a id="CO243-1"></a><i class="conum" data-value="1"></i>
           ]
         },
         "fields" : {
@@ -1361,8 +1398,7 @@ the search request is used to highlight the hits.</p>
         }
       },
       {
-        "_index": "my-index-00001",
-        "_type": "_doc",
+        "_index": "my-index-000001",
         "_id": "4",
         "_score": 0.26152915,
         "_source": {
@@ -1374,7 +1410,7 @@ the search request is used to highlight the hits.</p>
         },
         "highlight": {
           "message": [
-            "The quick brown fox jumps over the &lt;em&gt;lazy&lt;/em&gt; &lt;em&gt;dog&lt;/em&gt;" <a id="CO214-2"></a><i class="conum" data-value="1"></i>
+            "The quick brown fox jumps over the &lt;em&gt;lazy&lt;/em&gt; &lt;em&gt;dog&lt;/em&gt;" <a id="CO243-2"></a><i class="conum" data-value="1"></i>
           ]
         },
         "fields" : {
@@ -1389,7 +1425,7 @@ the search request is used to highlight the hits.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO214-1"><i class="conum" data-value="1"></i></a><a href="#CO214-2"></a></p>
+<p><a href="#CO243-1"><i class="conum" data-value="1"></i></a><a href="#CO243-2"></a></p>
 </td>
 <td align="left" valign="top">
 <p>The terms from each query have been highlighted in the document.</p>
@@ -1401,7 +1437,7 @@ the search request is used to highlight the hits.</p>
 the document defined in the <code class="literal">percolate</code> query.</p>
 <p>When percolating multiple documents at the same time like the request below then the highlight response is different:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /my-index-00001/_search
+<pre class="programlisting prettyprint lang-console">GET /my-index-000001/_search
 {
   "query": {
     "percolate": {
@@ -1429,7 +1465,7 @@ the document defined in the <code class="literal">percolate</code> query.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/892.console"></div>
+<div class="console_widget" data-snippet="snippets/1121.console"></div>
 <p>The slightly different response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -1449,8 +1485,7 @@ the document defined in the <code class="literal">percolate</code> query.</p>
     "max_score": 0.7093853,
     "hits": [
       {
-        "_index": "my-index-00001",
-        "_type": "_doc",
+        "_index": "my-index-000001",
         "_id": "1",
         "_score": 0.7093853,
         "_source": {
@@ -1463,7 +1498,7 @@ the document defined in the <code class="literal">percolate</code> query.</p>
         "fields" : {
           "_percolator_document_slot" : [0, 1, 3]
         },
-        "highlight" : { <a id="CO215-1"></a><i class="conum" data-value="1"></i>
+        "highlight" : { <a id="CO244-1"></a><i class="conum" data-value="1"></i>
           "0_message" : [
               "&lt;em&gt;bonsai&lt;/em&gt; &lt;em&gt;tree&lt;/em&gt;"
           ],
@@ -1483,7 +1518,7 @@ the document defined in the <code class="literal">percolate</code> query.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO215-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO244-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The highlight fields have been prefixed with the document slot they belong to,
@@ -1492,10 +1527,17 @@ in order to know which highlight field belongs to what document.</p>
 </tr>
 </table>
 </div>
-<h4><a id="_specifying_multiple_percolate_queries"></a>Specifying multiple percolate queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_specifying_multiple_percolate_queries"></a>Specifying multiple percolate queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+</div></div></div>
 <p>It is possible to specify multiple <code class="literal">percolate</code> queries in a single search request:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /my-index-00001/_search
+<pre class="programlisting prettyprint lang-console">GET /my-index-000001/_search
 {
   "query": {
     "bool": {
@@ -1506,7 +1548,7 @@ in order to know which highlight field belongs to what document.</p>
             "document": {
               "message": "bonsai tree"
             },
-            "name": "query1" <a id="CO216-1"></a><i class="conum" data-value="1"></i>
+            "name": "query1" <a id="CO245-1"></a><i class="conum" data-value="1"></i>
           }
         },
         {
@@ -1515,7 +1557,7 @@ in order to know which highlight field belongs to what document.</p>
             "document": {
               "message": "tulip flower"
             },
-            "name": "query2" <a id="CO216-2"></a><i class="conum" data-value="1"></i>
+            "name": "query2" <a id="CO245-2"></a><i class="conum" data-value="1"></i>
           }
         }
       ]
@@ -1523,12 +1565,12 @@ in order to know which highlight field belongs to what document.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/893.console"></div>
+<div class="console_widget" data-snippet="snippets/1122.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO216-1"><i class="conum" data-value="1"></i></a><a href="#CO216-2"></a></p>
+<p><a href="#CO245-1"><i class="conum" data-value="1"></i></a><a href="#CO245-2"></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">name</code> parameter will be used to identify which percolator document slots belong to what <code class="literal">percolate</code> query.</p>
@@ -1557,8 +1599,7 @@ If that isn&#8217;t specified then the <code class="literal">field</code> parame
     "max_score": 0.26152915,
     "hits": [
       {
-        "_index": "my-index-00001",
-        "_type": "_doc",
+        "_index": "my-index-000001",
         "_id": "1",
         "_score": 0.26152915,
         "_source": {
@@ -1569,7 +1610,7 @@ If that isn&#8217;t specified then the <code class="literal">field</code> parame
           }
         },
         "fields" : {
-          "_percolator_document_slot_query1" : [0] <a id="CO217-1"></a><i class="conum" data-value="1"></i>
+          "_percolator_document_slot_query1" : [0] <a id="CO246-1"></a><i class="conum" data-value="1"></i>
         }
       }
     ]
@@ -1580,7 +1621,7 @@ If that isn&#8217;t specified then the <code class="literal">field</code> parame
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO217-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO246-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">_percolator_document_slot_query1</code> percolator slot field indicates that these matched slots are from the <code class="literal">percolate</code>
@@ -1589,7 +1630,12 @@ query with <code class="literal">_name</code> parameter set to <code class="lite
 </tr>
 </table>
 </div>
-<h4><a id="how-it-works"></a>How it Works Under the Hood<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="how-it-works"></a>How it Works Under the Hood<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+</div></div></div>
 <p>When indexing a document into an index that has the <a class="xref" href="mapping-types.html#percolator" title="Percolator field type">percolator field type</a> mapping configured, the query
 part of the document gets parsed into a Lucene query and is stored into the Lucene index. A binary representation
 of the query gets stored, but also the query&#8217;s terms are analyzed and stored into an indexed field.</p>
@@ -1603,7 +1649,7 @@ evaluate. The reason the <code class="literal">percolate</code> query can do thi
 terms are being extracted and indexed with the percolator query. Unfortunately the percolator cannot extract terms from
 all queries (for example the <code class="literal">wildcard</code> or <code class="literal">geo_shape</code> query) and as a result of that in certain cases the percolator
 can&#8217;t do the selecting optimization (for example if an unsupported query is defined in a required clause of a boolean query
-or the unsupported query is the only query in the percolator document).  These queries are marked by the percolator and
+or the unsupported query is the only query in the percolator document). These queries are marked by the percolator and
 can be found by running the following search:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_search
@@ -1615,7 +1661,7 @@ can be found by running the following search:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/894.console"></div>
+<div class="console_widget" data-snippet="snippets/1123.console"></div>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -1637,13 +1683,15 @@ a different index configuration, like the number of primary shards.
 </li>
 </ul>
 </div>
+</div>
+
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="percolate-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="percolate-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_allow_expensive_queries_3"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_allow_expensive_queries_3"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/percolate-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>Percolate queries will not be executed if <a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a>
 is set to false.</p>
@@ -1655,7 +1703,7 @@ is set to false.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-rank-feature-query"></a>Rank feature query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-rank-feature-query"></a>Rank feature query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Boosts the <a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance score</a> of documents based on the
@@ -1664,14 +1712,22 @@ numeric value of a <a class="xref" href="mapping-types.html#rank-feature" title=
 <p>The <code class="literal">rank_feature</code> query is typically used in the <code class="literal">should</code> clause of a
 <a class="xref" href="compound-queries.html#query-dsl-bool-query" title="Boolean query"><code class="literal">bool</code></a> query so its relevance scores are added to other
 scores from the <code class="literal">bool</code> query.</p>
+<p>With <code class="literal">positive_score_impact</code> set to <code class="literal">false</code> for a <code class="literal">rank_feature</code> or
+<code class="literal">rank_features</code> field, we recommend that every document that participates
+in a query has a value for this field. Otherwise, if a <code class="literal">rank_feature</code> query
+is used in the should clause, it doesn&#8217;t add anything to a score of
+a document with a missing value, but adds some boost for a document
+containing a feature. This is contrary to what we want – as we consider these
+features negative, we want to rank documents containing them lower than documents
+missing them.</p>
 <p>Unlike the <a class="xref" href="compound-queries.html#query-dsl-function-score-query" title="Function score query"><code class="literal">function_score</code></a> query or other
 ways to change <a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a>, the
 <code class="literal">rank_feature</code> query efficiently skips non-competitive hits when the
-<a class="xref" href="getting-started-modify-data.html#search-uri-request" title="URI search"><code class="literal">track_total_hits</code></a> parameter is <span class="strong strong"><strong>not</strong></span> <code class="literal">true</code>. This can
+<a class="xref" href="search-your-data.html#track-total-hits" title="Track total hits"><code class="literal">track_total_hits</code></a> parameter is <span class="strong strong"><strong>not</strong></span> <code class="literal">true</code>. This can
 dramatically improve query speed.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rank-feature-query-functions"></a>Rank feature functions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rank-feature-query-functions"></a>Rank feature functions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To calculate relevance scores based on rank feature fields, the <code class="literal">rank_feature</code>
 query supports the following mathematical functions:</p>
@@ -1686,6 +1742,9 @@ query supports the following mathematical functions:</p>
 <li class="listitem">
 <a class="xref" href="specialized-queries.html#rank-feature-query-sigmoid" title="Sigmoid">Sigmoid</a>
 </li>
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#rank-feature-query-linear" title="Linear">Linear</a>
+</li>
 </ul>
 </div>
 <p>If you don&#8217;t know where to start, we recommend using the <code class="literal">saturation</code> function.
@@ -1695,11 +1754,11 @@ function by default.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rank-feature-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rank-feature-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="rank-feature-query-index-setup"></a>Index setup<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="rank-feature-query-index-setup"></a>Index setup<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>To use the <code class="literal">rank_feature</code> query, your index must include a
 <a class="xref" href="mapping-types.html#rank-feature" title="Rank feature field type"><code class="literal">rank_feature</code></a> or <a class="xref" href="mapping-types.html#rank-features" title="Rank features field type"><code class="literal">rank_features</code></a> field
@@ -1742,7 +1801,7 @@ topics and a measure of how well each document is connected to this topic
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/895.console"></div>
+<div class="console_widget" data-snippet="snippets/1124.console"></div>
 <p>Index several documents to the <code class="literal">test</code> index.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT /test/_doc/1?refresh
@@ -1782,12 +1841,12 @@ PUT /test/_doc/3?refresh
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/896.console"></div>
+<div class="console_widget" data-snippet="snippets/1125.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="rank-feature-query-ex-query"></a>Example query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="rank-feature-query-ex-query"></a>Example query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The following query searches for <code class="literal">2016</code> and boosts relevance scores based on
 <code class="literal">pagerank</code>, <code class="literal">url_length</code>, and the <code class="literal">sports</code> topic.</p>
@@ -1826,14 +1885,14 @@ PUT /test/_doc/3?refresh
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/897.console"></div>
+<div class="console_widget" data-snippet="snippets/1126.console"></div>
 </div>
 
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rank-feature-top-level-params"></a>Top-level parameters for <code class="literal">rank_feature</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rank-feature-top-level-params"></a>Top-level parameters for <code class="literal">rank_feature</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1870,7 +1929,7 @@ function used to boost <a class="xref" href="query-filter-context.html#relevance
 value of the rank feature <code class="literal">field</code>. If no function is provided, the <code class="literal">rank_feature</code>
 query defaults to the <code class="literal">saturation</code> function. See
 <a class="xref" href="specialized-queries.html#rank-feature-query-saturation" title="Saturation">Saturation</a> for more information.</p>
-<p>Only one function <code class="literal">saturation</code>, <code class="literal">log</code>, or <code class="literal">sigmoid</code> can be provided.</p>
+<p>Only one function <code class="literal">saturation</code>, <code class="literal">log</code>, <code class="literal">sigmoid</code> or <code class="literal">linear</code> can be provided.</p>
 </dd>
 <dt>
 <span class="term">
@@ -1882,7 +1941,7 @@ query defaults to the <code class="literal">saturation</code> function. See
 function used to boost <a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a> based on the
 value of the rank feature <code class="literal">field</code>. See
 <a class="xref" href="specialized-queries.html#rank-feature-query-logarithm" title="Logarithm">Logarithm</a> for more information.</p>
-<p>Only one function <code class="literal">saturation</code>, <code class="literal">log</code>, or <code class="literal">sigmoid</code> can be provided.</p>
+<p>Only one function <code class="literal">saturation</code>, <code class="literal">log</code>, <code class="literal">sigmoid</code> or <code class="literal">linear</code> can be provided.</p>
 </dd>
 <dt>
 <span class="term">
@@ -1894,7 +1953,19 @@ value of the rank feature <code class="literal">field</code>. See
 to boost <a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a> based on the value of the
 rank feature <code class="literal">field</code>. See <a class="xref" href="specialized-queries.html#rank-feature-query-sigmoid" title="Sigmoid">Sigmoid</a> for more
 information.</p>
-<p>Only one function <code class="literal">saturation</code>, <code class="literal">log</code>, or <code class="literal">sigmoid</code> can be provided.</p>
+<p>Only one function <code class="literal">saturation</code>, <code class="literal">log</code>, <code class="literal">sigmoid</code> or <code class="literal">linear</code> can be provided.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">linear</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, <a class="xref" href="specialized-queries.html#rank-feature-query-linear" title="Linear">function object</a>) Linear function used
+to boost <a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a> based on the value of the
+rank feature <code class="literal">field</code>. See <a class="xref" href="specialized-queries.html#rank-feature-query-linear" title="Linear">Linear</a> for more
+information.</p>
+<p>Only one function <code class="literal">saturation</code>, <code class="literal">log</code>, <code class="literal">sigmoid</code> or <code class="literal">linear</code> can be provided.</p>
 </dd>
 </dl>
 </div>
@@ -1902,11 +1973,11 @@ information.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="rank-feature-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="rank-feature-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="rank-feature-query-saturation"></a>Saturation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="rank-feature-query-saturation"></a>Saturation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">saturation</code> function gives a score equal to <code class="literal">S / (S + pivot)</code>, where <code class="literal">S</code> is
 the value of the rank feature field and <code class="literal">pivot</code> is a configurable pivot value so
@@ -1927,7 +1998,7 @@ computed as <code class="literal">pivot / (S + pivot)</code>, which decreases wh
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/898.console"></div>
+<div class="console_widget" data-snippet="snippets/1127.console"></div>
 <p>If a <code class="literal">pivot</code> value is not provided, Elasticsearch computes a default value equal to the
 approximate geometric mean of all rank feature values in the index. We recommend
 using this default value if you haven&#8217;t had the opportunity to train a good
@@ -1943,12 +2014,12 @@ pivot value.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/899.console"></div>
+<div class="console_widget" data-snippet="snippets/1128.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="rank-feature-query-logarithm"></a>Logarithm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="rank-feature-query-logarithm"></a>Logarithm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">log</code> function gives a score equal to <code class="literal">log(scaling_factor + S)</code>, where <code class="literal">S</code>
 is the value of the rank feature field and <code class="literal">scaling_factor</code> is a configurable
@@ -1967,12 +2038,12 @@ scaling factor. Scores are unbounded.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/900.console"></div>
+<div class="console_widget" data-snippet="snippets/1129.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="rank-feature-query-sigmoid"></a>Sigmoid<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="rank-feature-query-sigmoid"></a>Sigmoid<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">sigmoid</code> function is an extension of <code class="literal">saturation</code> which adds a configurable
 exponent. Scores are computed as <code class="literal">S^exp^ / (S^exp^ + pivot^exp^)</code>. Like for the
@@ -1995,7 +2066,34 @@ do so, we recommend you use the <code class="literal">saturation</code> function
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/901.console"></div>
+<div class="console_widget" data-snippet="snippets/1130.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="rank-feature-query-linear"></a>Linear<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/rank-feature-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">linear</code> function is the simplest function, and gives a score equal
+to the indexed value of <code class="literal">S</code>, where <code class="literal">S</code> is the value of the rank feature
+field.
+If a rank feature field is indexed with <code class="literal">"positive_score_impact": true</code>,
+its indexed value is equal to <code class="literal">S</code> and rounded to preserve only
+9 significant bits for the precision.
+If a rank feature field is indexed with <code class="literal">"positive_score_impact": false</code>,
+its indexed value is equal to <code class="literal">1/S</code> and rounded to preserve only 9 significant
+bits for the precision.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /test/_search
+{
+  "query": {
+    "rank_feature": {
+      "field": "pagerank",
+      "linear": {}
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1131.console"></div>
 </div>
 
 </div>
@@ -2004,21 +2102,30 @@ do so, we recommend you use the <code class="literal">saturation</code> function
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-script-query"></a>Script query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-script-query"></a>Script query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-query.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>Filters documents based on a provided <a class="xref" href="modules-scripting-using.html" title="How to use scripts">script</a>. The
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p><a class="xref" href="runtime.html" title="Runtime fields">Runtime fields</a> provide a very similar feature that is
+      more flexible. You write a script to create field values and they
+      are available everywhere, such as <a class="xref" href="search-fields.html" title="Retrieve selected fields from a search"><code class="literal">fields</code></a>,
+      <a class="xref" href="query-dsl.html" title="Query DSL">all queries</a>, and <a class="xref" href="search-aggregations.html" title="Aggregations">aggregations</a>.</p>
+</div>
+</div>
+<p>Filters documents based on a provided <a class="xref" href="modules-scripting-using.html" title="How to write scripts">script</a>. The
 <code class="literal">script</code> query is typically used in a <a class="xref" href="query-filter-context.html" title="Query and filter context">filter context</a>.</p>
 <div class="warning admon">
 <div class="icon"></div>
 <div class="admon_content">
 <p>Using scripts can result in slower search speeds. See
-<a class="xref" href="modules-scripting-using.html#scripts-and-search-speed" title="Scripts and search speed">Scripts and search speed</a>.</p>
+<a class="xref" href="modules-scripting-using.html#scripts-and-search-speed" title="Scripts, caching, and search speed">Scripts, caching, and search speed</a>.</p>
 </div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="script-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="script-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_search
@@ -2027,22 +2134,58 @@ do so, we recommend you use the <code class="literal">saturation</code> function
     "bool": {
       "filter": {
         "script": {
-          "script": {
-            "source": "doc['num1'].value &gt; 1",
-            "lang": "painless"
-          }
+          "script": """
+            double amount = doc['amount'].value;
+            if (doc['type'].value == 'expense') {
+              amount *= -1;
+            }
+            return amount &lt; 10;
+          """
         }
       }
     }
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/902.console"></div>
+<div class="console_widget" data-snippet="snippets/1132.console"></div>
+<p>You can achieve the same results in a search
+query by using runtime fields. Use the
+<a class="xref" href="search-fields.html" title="Retrieve selected fields from a search"><code class="literal">fields</code></a> parameter on the
+<code class="literal">_search</code> API to fetch values as part of the
+same query:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "runtime_mappings": {
+    "amount.signed": {
+      "type": "double",
+      "script": """
+        double amount = doc['amount'].value;
+        if (doc['type'].value == 'expense') {
+          amount *= -1;
+        }
+        emit(amount);
+      """
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": {
+        "range": {
+          "amount.signed": { "lt": 10 }
+        }
+      }
+    }
+  },
+  "fields": [{"field": "amount.signed"}]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1133.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="script-top-level-params"></a>Top-level parameters for <code class="literal">script</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="script-top-level-params"></a>Top-level parameters for <code class="literal">script</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -2052,7 +2195,7 @@ do so, we recommend you use the <code class="literal">saturation</code> function
 </span>
 </dt>
 <dd>
-(Required, <a class="xref" href="modules-scripting-using.html" title="How to use scripts">script object</a>) Contains a script to run
+(Required, <a class="xref" href="modules-scripting-using.html" title="How to write scripts">script object</a>) Contains a script to run
 as a query. This script must return a boolean value, <code class="literal">true</code> or <code class="literal">false</code>.
 </dd>
 </dl>
@@ -2061,11 +2204,11 @@ as a query. This script must return a boolean value, <code class="literal">true<
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="script-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="script-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="script-query-custom-params"></a>Custom Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="script-query-custom-params"></a>Custom Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>Like <a class="xref" href="query-filter-context.html" title="Query and filter context">filters</a>, scripts are cached for faster execution.
 If you frequently change the arguments of a script, we recommend you store them
@@ -2090,12 +2233,12 @@ in the script&#8217;s <code class="literal">params</code> parameter. For example
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/903.console"></div>
+<div class="console_widget" data-snippet="snippets/1134.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_allow_expensive_queries_4"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_allow_expensive_queries_4"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>Script queries will not be executed if <a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a>
 is set to false.</p>
@@ -2107,7 +2250,7 @@ is set to false.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-script-score-query"></a>Script score query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-script-score-query"></a>Script score query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Uses a <a class="xref" href="modules-scripting.html" title="Scripting">script</a> to provide a custom score for returned
@@ -2115,7 +2258,7 @@ documents.</p>
 <p>The <code class="literal">script_score</code> query is useful if, for example, a scoring function is expensive and you only need to calculate the score of a filtered set of documents.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="script-score-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="script-score-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following <code class="literal">script_score</code> query assigns each returned document a score equal to the <code class="literal">my-int</code> field value divided by <code class="literal">10</code>.</p>
 <div class="pre_wrapper lang-console">
@@ -2133,12 +2276,12 @@ documents.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/904.console"></div>
+<div class="console_widget" data-snippet="snippets/1135.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="script-score-top-level-params"></a>Top-level parameters for <code class="literal">script_score</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="script-score-top-level-params"></a>Top-level parameters for <code class="literal">script_score</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -2156,7 +2299,7 @@ documents.</p>
 </span>
 </dt>
 <dd>
-<p>(Required, <a class="xref" href="modules-scripting-using.html" title="How to use scripts">script object</a>) Script used to compute the score of documents returned by the <code class="literal">query</code>.</p>
+<p>(Required, <a class="xref" href="modules-scripting-using.html" title="How to write scripts">script object</a>) Script used to compute the score of documents returned by the <code class="literal">query</code>.</p>
 <div class="important admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -2190,23 +2333,23 @@ multiplied by <code class="literal">boost</code> to produce final documents' sco
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="script-score-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="script-score-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="script-score-access-scores"></a>Use relevance scores in a script<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="script-score-access-scores"></a>Use relevance scores in a script<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>Within a script, you can
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/modules-scripting-fields.html#scripting-score" class="ulink" target="_top">access</a>
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/modules-scripting-fields.html#scripting-score" class="ulink" target="_top">access</a>
 the <code class="literal">_score</code> variable which represents the current relevance score of a
 document.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="script-score-predefined-functions"></a>Predefined functions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="script-score-predefined-functions"></a>Predefined functions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
 </div></div></div>
-<p>You can use any of the available <a href="https://www.elastic.co/guide/en/elasticsearch/painless/7.10/painless-contexts.html" class="ulink" target="_top">painless
+<p>You can use any of the available <a href="https://www.elastic.co/guide/en/elasticsearch/painless/8.9/painless-contexts.html" class="ulink" target="_top">painless
 functions</a> in your <code class="literal">script</code>. You can also use the following predefined functions
 to customize scoring:</p>
 <div class="ulist itemizedlist">
@@ -2238,7 +2381,7 @@ to customize scoring:</p>
 These functions take advantage of efficiencies from Elasticsearch' internal mechanisms.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="script-score-saturation"></a>Saturation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="script-score-saturation"></a>Saturation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p><code class="literal">saturation(value,k) = value/(k + value)</code></p>
 <div class="pre_wrapper lang-js">
@@ -2250,7 +2393,7 @@ These functions take advantage of efficiencies from Elasticsearch' internal mech
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="script-score-sigmoid"></a>Sigmoid<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="script-score-sigmoid"></a>Sigmoid<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p><code class="literal">sigmoid(value, k, a) = value^a/ (k^a + value^a)</code></p>
 <div class="pre_wrapper lang-js">
@@ -2262,7 +2405,7 @@ These functions take advantage of efficiencies from Elasticsearch' internal mech
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="random-score-function"></a>Random score function<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="random-score-function"></a>Random score function<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p><code class="literal">random_score</code> function generates scores that are uniformly distributed
 from 0 up to but not including 1.</p>
@@ -2294,10 +2437,10 @@ updated since update operations also update the value of the <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="decay-functions-numeric-fields"></a>Decay functions for numeric fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="decay-functions-numeric-fields"></a>Decay functions for numeric fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p>You can read more about decay functions
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/query-dsl-function-score-query.html#function-decay" class="ulink" target="_top">here</a>.</p>
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/query-dsl-function-score-query.html#function-decay" class="ulink" target="_top">here</a>.</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -2314,7 +2457,7 @@ updated since update operations also update the value of the <code class="litera
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"script" : {
     "source" : "decayNumericLinear(params.origin, params.scale, params.offset, params.decay, doc['dval'].value)",
-    "params": { <a id="CO218-1"></a><i class="conum" data-value="1"></i>
+    "params": { <a id="CO247-1"></a><i class="conum" data-value="1"></i>
         "origin": 20,
         "scale": 10,
         "decay" : 0.5,
@@ -2326,7 +2469,7 @@ updated since update operations also update the value of the <code class="litera
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO218-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO247-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Using <code class="literal">params</code> allows to compile the script only once, even if params change.</p>
@@ -2338,7 +2481,7 @@ updated since update operations also update the value of the <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="decay-functions-geo-fields"></a>Decay functions for geo fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="decay-functions-geo-fields"></a>Decay functions for geo fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -2368,7 +2511,7 @@ updated since update operations also update the value of the <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="decay-functions-date-fields"></a>Decay functions for date fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="decay-functions-date-fields"></a>Decay functions for date fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -2405,7 +2548,7 @@ and default time zone. Also calculations with <code class="literal">now</code> a
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="script-score-functions-vector-fields"></a>Functions for vector fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="script-score-functions-vector-fields"></a>Functions for vector fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p><a class="xref" href="specialized-queries.html#vector-functions" title="Functions for vector fields">Functions for vector fields</a> are accessible through
 <code class="literal">script_score</code> query.</p>
@@ -2415,7 +2558,7 @@ and default time zone. Also calculations with <code class="literal">now</code> a
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_allow_expensive_queries_5"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_allow_expensive_queries_5"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>Script score queries will not be executed if <a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a>
 is set to false.</p>
@@ -2423,7 +2566,7 @@ is set to false.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="script-score-faster-alt"></a>Faster alternatives<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="script-score-faster-alt"></a>Faster alternatives<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">script_score</code> query calculates the score for
 every matching document, or hit. There are faster alternative query types that
@@ -2444,11 +2587,12 @@ If you want to boost documents closer to a date or geographic point, use the
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="script-score-function-score-transition"></a>Transition from the function score query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
+<h4 class="title"><a id="script-score-function-score-transition"></a>Transition from the function score query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
 </div></div></div>
-<p>We are deprecating the <a class="xref" href="compound-queries.html#query-dsl-function-score-query" title="Function score query"><code class="literal">function_score</code></a>
-query. We recommend using the <code class="literal">script_score</code> query instead.</p>
-<p>You can implement the following functions from the <code class="literal">function_score</code> query using
+<p>We recommend using the <code class="literal">script_score</code> query instead of
+<a class="xref" href="compound-queries.html#query-dsl-function-score-query" title="Function score query"><code class="literal">function_score</code></a> query for the simplicity
+of the <code class="literal">script_score</code> query.</p>
+<p>You can implement the following functions of the <code class="literal">function_score</code> query using
 the <code class="literal">script_score</code> query:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -2471,7 +2615,7 @@ the <code class="literal">script_score</code> query:</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="script-score"></a><code class="literal">script_score</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="script-score"></a><code class="literal">script_score</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p>What you used in <code class="literal">script_score</code> of the Function Score query, you
 can copy into the Script Score query. No changes here.</p>
@@ -2479,7 +2623,7 @@ can copy into the Script Score query. No changes here.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="weight"></a><code class="literal">weight</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="weight"></a><code class="literal">weight</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p><code class="literal">weight</code> function can be implemented in the Script Score query through
 the following script:</p>
@@ -2495,7 +2639,7 @@ the following script:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="random-score"></a><code class="literal">random_score</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="random-score"></a><code class="literal">random_score</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p>Use <code class="literal">randomScore</code> function
 as described in <a class="xref" href="specialized-queries.html#random-score-function" title="Random score function">random score function</a>.</p>
@@ -2503,7 +2647,7 @@ as described in <a class="xref" href="specialized-queries.html#random-score-func
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="field-value-factor"></a><code class="literal">field_value_factor</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="field-value-factor"></a><code class="literal">field_value_factor</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
 <p><code class="literal">field_value_factor</code> function can be easily implemented through script:</p>
 <div class="pre_wrapper lang-js">
@@ -2587,17 +2731,17 @@ through a script:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="decay-functions"></a><code class="literal">decay</code> functions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h5 class="title"><a id="decay-functions"></a><code class="literal">decay</code> functions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
 </div></div></div>
-<p>The <code class="literal">script_score</code> query has equivalent <a class="xref" href="specialized-queries.html#decay-functions" title="decay functions">decay functions</a>
-that can be used in script.</p>
+<p>The <code class="literal">script_score</code> query has equivalent <a class="xref" href="specialized-queries.html#decay-functions-numeric-fields" title="Decay functions for numeric fields">decay
+functions</a> that can be used in scripts.</p>
 </div>
 
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="vector-functions"></a>Functions for vector fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/vectors/vector-functions.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h4>
+<h4 class="title"><a id="vector-functions"></a>Functions for vector fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/vectors/vector-functions.asciidoc">edit</a></h4>
 </div></div></div>
 <div class="note admon">
 <div class="icon"></div>
@@ -2608,10 +2752,41 @@ with the number of matched documents. For this reason, we recommend
 to limit the number of matched documents with a <code class="literal">query</code> parameter.</p>
 </div>
 </div>
-<div class="section">
-<div class="titlepage"><div><div>
-<h5 class="title"><a id="_dense_vector_functions"></a><code class="literal">dense_vector</code> functions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/vectors/vector-functions.asciidoc">edit</a></h5>
-</div></div></div>
+<p>This is the list of available vector functions and vector access methods:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#vector-functions-cosine" title="Cosine similarity"><code class="literal">cosineSimilarity</code></a> – calculates cosine similarity
+</li>
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#vector-functions-dot-product" title="Dot product"><code class="literal">dotProduct</code></a> – calculates dot product
+</li>
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#vector-functions-l1" title="L1 distance (Manhattan distance)"><code class="literal">l1norm</code></a> – calculates L<sup>1</sup> distance
+</li>
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#vector-functions-l2" title="L2 distance (Euclidean distance)"><code class="literal">l2norm</code></a> - calculates L<sup>2</sup> distance
+</li>
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#vector-functions-accessing-vectors" title="Accessing vectors directly"><code class="literal">doc[&lt;field&gt;].vectorValue</code></a> – returns a vector&#8217;s value as an array of floats
+</li>
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#vector-functions-accessing-vectors" title="Accessing vectors directly"><code class="literal">doc[&lt;field&gt;].magnitude</code></a> – returns a vector&#8217;s magnitude
+</li>
+</ol>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The recommended way to access dense vectors is through the
+<code class="literal">cosineSimilarity</code>, <code class="literal">dotProduct</code>, <code class="literal">l1norm</code> or <code class="literal">l2norm</code> functions. Please note
+however, that you should call these functions only once per script. For example,
+don’t use these functions in a loop to calculate the similarity between a
+document vector and multiple other vectors. If you need that functionality,
+reimplement these functions yourself by
+<a class="xref" href="specialized-queries.html#vector-functions-accessing-vectors" title="Accessing vectors directly">accessing vector values directly</a>.</p>
+</div>
+</div>
 <p>Let&#8217;s create an index with a <code class="literal">dense_vector</code> mapping and index a couple
 of documents into it.</p>
 <div class="pre_wrapper lang-console">
@@ -2644,7 +2819,11 @@ PUT my-index-000001/_doc/2
 
 POST my-index-000001/_refresh</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/905.console"></div>
+<div class="console_widget" data-snippet="snippets/1136.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="vector-functions-cosine"></a>Cosine similarity<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/vectors/vector-functions.asciidoc">edit</a></h5>
+</div></div></div>
 <p>The <code class="literal">cosineSimilarity</code> function calculates the measure of
 cosine similarity between a given query vector and document vectors.</p>
 <div class="pre_wrapper lang-console">
@@ -2656,27 +2835,27 @@ cosine similarity between a given query vector and document vectors.</p>
         "bool" : {
           "filter" : {
             "term" : {
-              "status" : "published" <a id="CO219-1"></a><i class="conum" data-value="1"></i>
+              "status" : "published" <a id="CO248-1"></a><i class="conum" data-value="1"></i>
             }
           }
         }
       },
       "script": {
-        "source": "cosineSimilarity(params.query_vector, 'my_dense_vector') + 1.0", <a id="CO219-2"></a><i class="conum" data-value="2"></i>
+        "source": "cosineSimilarity(params.query_vector, 'my_dense_vector') + 1.0", <a id="CO248-2"></a><i class="conum" data-value="2"></i>
         "params": {
-          "query_vector": [4, 3.4, -0.2]  <a id="CO219-3"></a><i class="conum" data-value="3"></i>
+          "query_vector": [4, 3.4, -0.2]  <a id="CO248-3"></a><i class="conum" data-value="3"></i>
         }
       }
     }
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/906.console"></div>
+<div class="console_widget" data-snippet="snippets/1137.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO219-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO248-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>To restrict the number of documents on which script score calculation is applied, provide a filter.</p>
@@ -2684,7 +2863,7 @@ cosine similarity between a given query vector and document vectors.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO219-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO248-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The script adds 1.0 to the cosine similarity to prevent the score from being negative.</p>
@@ -2692,7 +2871,7 @@ cosine similarity between a given query vector and document vectors.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO219-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO248-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>To take advantage of the script optimizations, provide a query vector as a script parameter.</p>
@@ -2707,6 +2886,12 @@ cosine similarity between a given query vector and document vectors.</p>
 different from the query&#8217;s vector, an error will be thrown.</p>
 </div>
 </div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="vector-functions-dot-product"></a>Dot product<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/vectors/vector-functions.asciidoc">edit</a></h5>
+</div></div></div>
 <p>The <code class="literal">dotProduct</code> function calculates the measure of
 dot product between a given query vector and document vectors.</p>
 <div class="pre_wrapper lang-console">
@@ -2726,7 +2911,7 @@ dot product between a given query vector and document vectors.</p>
       "script": {
         "source": """
           double value = dotProduct(params.query_vector, 'my_dense_vector');
-          return sigmoid(1, Math.E, -value); <a id="CO220-1"></a><i class="conum" data-value="1"></i>
+          return sigmoid(1, Math.E, -value); <a id="CO249-1"></a><i class="conum" data-value="1"></i>
         """,
         "params": {
           "query_vector": [4, 3.4, -0.2]
@@ -2736,12 +2921,12 @@ dot product between a given query vector and document vectors.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/907.console"></div>
+<div class="console_widget" data-snippet="snippets/1138.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO220-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO249-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Using the standard sigmoid function prevents scores from being negative.</p>
@@ -2749,6 +2934,12 @@ dot product between a given query vector and document vectors.</p>
 </tr>
 </table>
 </div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="vector-functions-l1"></a>L<sup>1</sup> distance (Manhattan distance)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/vectors/vector-functions.asciidoc">edit</a></h5>
+</div></div></div>
 <p>The <code class="literal">l1norm</code> function calculates L<sup>1</sup> distance
 (Manhattan distance) between a given query vector and
 document vectors.</p>
@@ -2767,7 +2958,7 @@ document vectors.</p>
         }
       },
       "script": {
-        "source": "1 / (1 + l1norm(params.queryVector, 'my_dense_vector'))", <a id="CO221-1"></a><i class="conum" data-value="1"></i>
+        "source": "1 / (1 + l1norm(params.queryVector, 'my_dense_vector'))", <a id="CO250-1"></a><i class="conum" data-value="1"></i>
         "params": {
           "queryVector": [4, 3.4, -0.2]
         }
@@ -2776,12 +2967,12 @@ document vectors.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/908.console"></div>
+<div class="console_widget" data-snippet="snippets/1139.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO221-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO250-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Unlike <code class="literal">cosineSimilarity</code> that represent similarity, <code class="literal">l1norm</code> and
@@ -2796,6 +2987,12 @@ we added <code class="literal">1</code> in the denominator.</p>
 </tr>
 </table>
 </div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="vector-functions-l2"></a>L<sup>2</sup> distance (Euclidean distance)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/vectors/vector-functions.asciidoc">edit</a></h5>
+</div></div></div>
 <p>The <code class="literal">l2norm</code> function calculates L<sup>2</sup> distance
 (Euclidean distance) between a given query vector and
 document vectors.</p>
@@ -2823,15 +3020,16 @@ document vectors.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/909.console"></div>
-<div class="note admon">
-<div class="icon"></div>
-<div class="admon_content">
-<p>If a document doesn&#8217;t have a value for a vector field on which
-a vector function is executed, an error will be thrown.</p>
+<div class="console_widget" data-snippet="snippets/1140.console"></div>
 </div>
-</div>
-<p>You can check if a document has a value for the field <code class="literal">my_vector</code> by
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="vector-functions-missing-values"></a>Checking for missing values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/vectors/vector-functions.asciidoc">edit</a></h5>
+</div></div></div>
+<p>If a document doesn&#8217;t have a value for a vector field on which a vector function
+is executed, an error will be thrown.</p>
+<p>You can check if a document has a value for the field <code class="literal">my_vector</code> with
 <code class="literal">doc['my_vector'].size() == 0</code>. Your overall script can look like this:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"source": "doc['my_vector'].size() == 0 ? 0 : cosineSimilarity(params.queryVector, 'my_vector')"</pre>
@@ -2840,80 +3038,25 @@ a vector function is executed, an error will be thrown.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="_sparse_vector_functions"></a><code class="literal">sparse_vector</code> functions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/vectors/vector-functions.asciidoc">edit</a></h5>
+<h5 class="title"><a id="vector-functions-accessing-vectors"></a>Accessing vectors directly<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/vectors/vector-functions.asciidoc">edit</a></h5>
 </div></div></div>
-<div class="warning admon">
-<div class="icon"></div>
-<div class="admon_content">
-<h3>Deprecated in 7.6.</h3>
-<p>The <code class="literal">sparse_vector</code> type is deprecated and will be removed in 8.0.</p>
+<p>You can access vector values directly through the following functions:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">doc[&lt;field&gt;].vectorValue</code> – returns a vector&#8217;s value as an array of floats
+</li>
+<li class="listitem">
+<code class="literal">doc[&lt;field&gt;].magnitude</code> – returns a vector&#8217;s magnitude as a float
+(for vectors created prior to version 7.5 the magnitude is not stored.
+So this function calculates it anew every time it is called).
+</li>
+</ul>
 </div>
-</div>
-<p>Let&#8217;s create an index with a <code class="literal">sparse_vector</code> mapping and index a couple
-of documents into it.</p>
+<p>For example, the script below implements a cosine similarity using these
+two functions:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT my_sparse_index
-{
-  "mappings": {
-    "properties": {
-      "my_sparse_vector": {
-        "type": "sparse_vector"
-      },
-      "status" : {
-        "type" : "keyword"
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/910.console"></div>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT my_sparse_index/_doc/1
-{
-  "my_sparse_vector": {"2": 1.5, "15" : 2, "50": -1.1, "4545": 1.1},
-  "status" : "published"
-}
-
-PUT my_sparse_index/_doc/2
-{
-  "my_sparse_vector": {"2": 2.5, "10" : 1.3, "55": -2.3, "113": 1.6},
-  "status" : "published"
-}
-
-POST my_sparse_index/_refresh</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/911.console"></div>
-<p>The <code class="literal">cosineSimilaritySparse</code> function calculates cosine similarity
-between a given query vector and document vectors.</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET my_sparse_index/_search
-{
-  "query": {
-    "script_score": {
-      "query" : {
-        "bool" : {
-          "filter" : {
-            "term" : {
-              "status" : "published"
-            }
-          }
-        }
-      },
-      "script": {
-        "source": "cosineSimilaritySparse(params.query_vector, 'my_sparse_vector') + 1.0",
-        "params": {
-          "query_vector": {"2": 0.5, "10" : 111.3, "50": -1.3, "113": 14.8, "4545": 156.0}
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/912.console"></div>
-<p>The <code class="literal">dotProductSparse</code> function calculates dot product
-between a given query vector and document vectors.</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET my_sparse_index/_search
+<pre class="programlisting prettyprint lang-console">GET my-index-000001/_search
 {
   "query": {
     "script_score": {
@@ -2928,77 +3071,31 @@ between a given query vector and document vectors.</p>
       },
       "script": {
         "source": """
-          double value = dotProductSparse(params.query_vector, 'my_sparse_vector');
-          return sigmoid(1, Math.E, -value);
+          float[] v = doc['my_dense_vector'].vectorValue;
+          float vm = doc['my_dense_vector'].magnitude;
+          float dotProduct = 0;
+          for (int i = 0; i &lt; v.length; i++) {
+            dotProduct += v[i] * params.queryVector[i];
+          }
+          return dotProduct / (vm * (float) params.queryVectorMag);
         """,
-         "params": {
-          "query_vector": {"2": 0.5, "10" : 111.3, "50": -1.3, "113": 14.8, "4545": 156.0}
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/913.console"></div>
-<p>The <code class="literal">l1normSparse</code> function calculates L<sup>1</sup> distance
-between a given query vector and document vectors.</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET my_sparse_index/_search
-{
-  "query": {
-    "script_score": {
-      "query" : {
-        "bool" : {
-          "filter" : {
-            "term" : {
-              "status" : "published"
-            }
-          }
-        }
-      },
-      "script": {
-        "source": "1 / (1 + l1normSparse(params.queryVector, 'my_sparse_vector'))",
         "params": {
-          "queryVector": {"2": 0.5, "10" : 111.3, "50": -1.3, "113": 14.8, "4545": 156.0}
+          "queryVector": [4, 3.4, -0.2],
+          "queryVectorMag": 5.25357
         }
       }
     }
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/914.console"></div>
-<p>The <code class="literal">l2normSparse</code> function calculates L<sup>2</sup> distance
-between a given query vector and document vectors.</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET my_sparse_index/_search
-{
-  "query": {
-    "script_score": {
-      "query" : {
-        "bool" : {
-          "filter" : {
-            "term" : {
-              "status" : "published"
-            }
-          }
-        }
-      },
-      "script": {
-        "source": "1 / (1 + l2normSparse(params.queryVector, 'my_sparse_vector'))",
-        "params": {
-          "queryVector": {"2": 0.5, "10" : 111.3, "50": -1.3, "113": 14.8, "4545": 156.0}
-        }
-      }
-    }
-  }
-}</pre>
+<div class="console_widget" data-snippet="snippets/1141.console"></div>
 </div>
-<div class="console_widget" data-snippet="snippets/915.console"></div>
+
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h5 class="title"><a id="score-explanation"></a>Explain request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h5>
+<h4 class="title"><a id="score-explanation"></a>Explain request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/script-score-query.asciidoc">edit</a></h4>
 </div></div></div>
 <p>Using an <a class="xref" href="search.html#search-explain" title="Explain API">explain request</a> provides an explanation of how the parts of a score were computed. The <code class="literal">script_score</code> query can add its own explanation by setting the <code class="literal">explanation</code> parameter:</p>
 <div class="pre_wrapper lang-console">
@@ -3023,10 +3120,8 @@ between a given query vector and document vectors.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/916.console"></div>
+<div class="console_widget" data-snippet="snippets/1142.console"></div>
 <p>Note that the <code class="literal">explanation</code> will be null when using in a normal <code class="literal">_search</code> request, so having a conditional guard is best practice.</p>
-</div>
-
 </div>
 
 </div>
@@ -3035,7 +3130,7 @@ between a given query vector and document vectors.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-wrapper-query"></a>Wrapper query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/wrapper-query.asciidoc">edit</a></h2>
+<h2 class="title"><a id="query-dsl-wrapper-query"></a>Wrapper query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/wrapper-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>A query that accepts any other query as base64 encoded string.</p>
@@ -3044,17 +3139,17 @@ between a given query vector and document vectors.</p>
 {
   "query": {
     "wrapper": {
-      "query": "eyJ0ZXJtIiA6IHsgInVzZXIuaWQiIDogImtpbWNoeSIgfX0=" <a id="CO222-1"></a><i class="conum" data-value="1"></i>
+      "query": "eyJ0ZXJtIiA6IHsgInVzZXIuaWQiIDogImtpbWNoeSIgfX0=" <a id="CO251-1"></a><i class="conum" data-value="1"></i>
     }
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/917.console"></div>
+<div class="console_widget" data-snippet="snippets/1143.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO222-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO251-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Base64 encoded string:  <code class="literal">{"term" : { "user.id" : "kimchy" }}</code></p>
@@ -3062,15 +3157,12 @@ between a given query vector and document vectors.</p>
 </tr>
 </table>
 </div>
-<p>This query is more useful in the context of the Java high-level REST client or
-transport client to also accept queries as json formatted string.
-In these cases queries can be specified as a json or yaml formatted string or
-as a query builder (which is a available in the Java high-level REST client).</p>
+<p>This query is more useful in the context of Spring Data Elasticsearch. It&#8217;s the way a user can add custom queries when using Spring Data repositories. The user can add a @Query() annotation to a repository method. When such a method is called we do a parameter replacement in the query argument of the annotation and then send this as the query part of a search request.</p>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-pinned-query"></a>Pinned Query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/pinned-query.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="query-dsl-pinned-query"></a>Pinned Query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/pinned-query.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Promotes selected documents to rank higher than those matching a given query.
 This feature is typically used to guide searchers to curated documents that are
@@ -3079,7 +3171,7 @@ The promoted or "pinned" documents are identified using the document IDs stored 
 the <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field"><code class="literal">_id</code></a> field.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_example_request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/pinned-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_example_request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/pinned-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_search
@@ -3096,12 +3188,12 @@ the <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/918.console"></div>
+<div class="console_widget" data-snippet="snippets/1144.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="pinned-query-top-level-parameters"></a>Top-level parameters for <code class="literal">pinned</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/pinned-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="pinned-query-top-level-parameters"></a>Top-level parameters for <code class="literal">pinned</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/pinned-query.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -3111,7 +3203,40 @@ the <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field
 </span>
 </dt>
 <dd>
-An array of <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field">document IDs</a> listed in the order they are to appear in results.
+(Optional, array) <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field">Document IDs</a> listed in the order they are to appear in results.
+Required if <code class="literal">docs</code> is not specified.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">docs</code>
+</span>
+</dt>
+<dd>
+<p>
+(Optional, array) Documents listed in the order they are to appear in results.
+Required if <code class="literal">ids</code> is not specified.
+You can specify the following attributes for each document:
+</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">_id</code>
+</span>
+</dt>
+<dd>
+(Required, string) The unique <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field">document ID</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">_index</code>
+</span>
+</dt>
+<dd>
+(Required, string) The index that contains the document.
+</dd>
+</dl>
+</div>
 </dd>
 <dt>
 <span class="term">
@@ -3119,10 +3244,46 @@ An array of <a class="xref" href="mapping-fields.html#mapping-id-field" title="_
 </span>
 </dt>
 <dd>
-Any choice of query used to rank documents which will be ranked below the "pinned" document ids.
+Any choice of query used to rank documents which will be ranked below the "pinned" documents.
 </dd>
 </dl>
 </div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_pin_documents_in_a_specific_index"></a>Pin documents in a specific index<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/pinned-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>If you&#8217;re searching over multiple indices, you can pin a document within a specific index using <code class="literal">docs</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "pinned": {
+      "docs": [
+        {
+          "_index": "my-index-000001",
+          "_id": "1"
+        },
+        {
+          "_index": "my-index-000001",
+          "_id": "4"
+        },
+        {
+          "_index": "my-index-000002",
+          "_id": "100"
+        }
+      ],
+      "organic": {
+        "match": {
+          "description": "iphone"
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1145.console"></div>
 </div>
 
 </div>

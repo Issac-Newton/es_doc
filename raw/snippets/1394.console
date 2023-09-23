@@ -1,1 +1,11 @@
-GET /_snapshot
+POST /sales/_search
+{
+  "aggs": {
+    "grade_min": {
+      "min": {
+        "field": "grade",
+        "missing": 10
+      }
+    }
+  }
+}

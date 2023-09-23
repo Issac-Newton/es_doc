@@ -1,4 +1,10 @@
-PUT my-index-000001/_doc/1
+POST byte-image-index/_search
 {
-  "full_text":   "Quick Brown Foxes!"
+  "knn": {
+    "field": "byte-image-vector",
+    "query_vector": [-5, 9],
+    "k": 10,
+    "num_candidates": 100
+  },
+  "fields": [ "title" ]
 }

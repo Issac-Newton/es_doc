@@ -1,25 +1,9 @@
-POST _ingest/pipeline/_simulate
+GET /my-data-stream/_search
 {
-  "pipeline": {
-  "description" : "parse multiple patterns",
-  "processors": [
-    {
-      "grok": {
-        "field": "message",
-        "patterns": ["%{FAVORITE_DOG:pet}", "%{FAVORITE_CAT:pet}"],
-        "pattern_definitions" : {
-          "FAVORITE_DOG" : "beagle",
-          "FAVORITE_CAT" : "burmese"
-        }
-      }
-    }
-  ]
-},
-"docs":[
-  {
-    "_source": {
-      "message": "I love burmese cats!"
+  "seq_no_primary_term": true,
+  "query": {
+    "match": {
+      "user.id": "yWIumJd7"
     }
   }
-  ]
 }

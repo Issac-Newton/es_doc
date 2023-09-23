@@ -1,13 +1,21 @@
-PUT /my-index-000001
+PUT ngram_custom_example
 {
   "settings": {
+    "index": {
+      "max_ngram_diff": 2
+    },
     "analysis": {
       "analyzer": {
-        "my_analyzer": {
-          "tokenizer": "keyword",
-          "char_filter": [
-            "html_strip"
-          ]
+        "default": {
+          "tokenizer": "whitespace",
+          "filter": [ "3_5_grams" ]
+        }
+      },
+      "filter": {
+        "3_5_grams": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 5
         }
       }
     }

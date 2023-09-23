@@ -1,5 +1,10 @@
-POST /_security/user/snapshot_user
+GET /_search
 {
-  "password" : "secret",
-  "roles" : [ "snapshot_user" ]
+  "aggs": {
+    "statistics": {
+      "matrix_stats": {
+        "fields": [ "poverty", "income" ]
+      }
+    }
+  }
 }

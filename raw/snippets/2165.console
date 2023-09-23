@@ -1,14 +1,6 @@
-GET _render/template
+PUT /_cluster/settings
 {
-  "source": {
-    "query": {
-      "term": {
-        "http_access_log": "{{#url}}{{host}}/{{page}}{{/url}}"
-      }
-    }
-  },
-  "params": {
-    "host": "https://www.elastic.co/",
-    "page": "learn"
+  "persistent" : {
+    "indices.recovery.max_bytes_per_sec" : "50mb"
   }
 }

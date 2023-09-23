@@ -1,28 +1,13 @@
-PUT /_index_template/template_1
+PUT _cluster/settings
 {
-  "index_patterns" : ["t*"],
-  "priority" : 0,
-  "template": {
-    "settings" : {
-      "number_of_shards" : 1,
-      "number_of_replicas": 0
-    },
-    "mappings" : {
-      "_source" : { "enabled" : false }
-    }
-  }
-}
-
-PUT /_index_template/template_2
-{
-  "index_patterns" : ["te*"],
-  "priority" : 1,
-  "template": {
-    "settings" : {
-      "number_of_shards" : 2
-    },
-    "mappings" : {
-      "_source" : { "enabled" : true }
-    }
+  "persistent": {
+    "cluster.routing.allocation.disk.watermark.low": null,
+    "cluster.routing.allocation.disk.watermark.low.max_headroom": null,
+    "cluster.routing.allocation.disk.watermark.high": null,
+    "cluster.routing.allocation.disk.watermark.high.max_headroom": null,
+    "cluster.routing.allocation.disk.watermark.flood_stage": null,
+    "cluster.routing.allocation.disk.watermark.flood_stage.max_headroom": null,
+    "cluster.routing.allocation.disk.watermark.flood_stage.frozen": null,
+    "cluster.routing.allocation.disk.watermark.flood_stage.frozen.max_headroom": null
   }
 }

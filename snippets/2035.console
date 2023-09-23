@@ -1,31 +1,5 @@
-POST /_ingest/pipeline/_simulate
+POST _snapshot/my_repository/snapshot-20200617/_restore
 {
-  "pipeline" :
-  {
-    "description": "_description",
-    "processors": [
-      {
-        "set" : {
-          "field" : "field2",
-          "value" : "_value"
-        }
-      }
-    ]
-  },
-  "docs": [
-    {
-      "_index": "index",
-      "_id": "id",
-      "_source": {
-        "foo": "bar"
-      }
-    },
-    {
-      "_index": "index",
-      "_id": "id",
-      "_source": {
-        "foo": "rab"
-      }
-    }
-  ]
+  "indices": "kibana_sample_data_flights,.ds-my-data-stream-2022.06.17-000001",
+  "include_aliases": true                                                      
 }

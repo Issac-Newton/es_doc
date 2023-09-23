@@ -1,23 +1,13 @@
-GET /_search
+PUT _ingest/pipeline/my-pipeline
 {
-  "query": {
-    "match_all": {}
-  },
-  "script_fields": {
-    "test1": {
-      "script": {
-        "lang": "painless",
-        "source": "doc['price'].value * 2"
-      }
-    },
-    "test2": {
-      "script": {
-        "lang": "painless",
-        "source": "doc['price'].value * params.factor",
-        "params": {
-          "factor": 2.0
-        }
+  "processors": [
+    {
+      "set": {
+        "description": "If 'url.scheme' is 'http', set 'url.insecure' to true",
+        "if": "ctx.url?.scheme =~ /^http[^s]/",
+        "field": "url.insecure",
+        "value": true
       }
     }
-  }
+  ]
 }

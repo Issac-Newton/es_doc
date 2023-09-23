@@ -1,17 +1,15 @@
-GET /_mget
+PUT _slm/policy/daily-snapshots
 {
-  "docs": [
-    {
-      "_index": "test",
-      "_type": "_doc",
-      "_id": "1",
-      "stored_fields": [ "field1", "field2" ]
-    },
-    {
-      "_index": "test",
-      "_type": "_doc",
-      "_id": "2",
-      "stored_fields": [ "field3", "field4" ]
-    }
-  ]
+  "name": "<daily-snapshot-{now/d}>",
+  "schedule": "0 45 23 * * ?",         
+  "repository": "my_repository",
+  "config": {
+    "indices": "*",
+    "include_global_state": true
+  },
+  "retention": {
+    "expire_after": "30d",
+    "min_count": 1,
+    "max_count": 31
+  }
 }

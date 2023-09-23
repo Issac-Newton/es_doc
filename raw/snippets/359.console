@@ -1,19 +1,29 @@
 PUT my-index-000001
 {
-  "settings": {
-    "analysis": {
-      "analyzer": {
-        "camel": {
-          "type": "pattern",
-          "pattern": "([^\\p{L}\\d]+)|(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)|(?<=[\\p{L}&&[^\\p{Lu}]])(?=\\p{Lu})|(?<=\\p{Lu})(?=\\p{Lu}[\\p{L}&&[^\\p{Lu}]])"
-        }
+  "mappings": {
+    "properties": {
+      "metrics": {
+        "type":  "object",
+        "subobjects": false
       }
     }
   }
 }
 
-GET my-index-000001/_analyze
+PUT my-index-000001/_doc/metric_1
 {
-  "analyzer": "camel",
-  "text": "MooseX::FTPClass2_beta"
+  "metrics.time" : 100,
+  "metrics.time.min" : 10,
+  "metrics.time.max" : 900
 }
+
+PUT my-index-000001/_doc/metric_2
+{
+  "metrics" : {
+    "time" : 100,
+    "time.min" : 10,
+    "time.max" : 900
+  }
+}
+
+GET my-index-000001/_mapping

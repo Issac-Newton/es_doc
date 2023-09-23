@@ -1,7 +1,4 @@
-GET /bank/_search
+PUT /my-index-000001/_settings
 {
-  "query": { "match_all": {} },
-  "sort": [
-    { "account_number": "asc" }
-  ]
+  "index.blocks.read_only_allow_delete": null
 }

@@ -1,7 +1,11 @@
-PUT /_snapshot/my_read_only_url_repository
+GET latency/_search
 {
-  "type": "url",
-  "settings": {
-    "url": "file:/mount/backups/my_fs_backup_location"
+  "size": 0,
+  "aggs": {
+    "load_time_outlier": {
+      "percentiles": {
+        "field": "load_time"
+      }
+    }
   }
 }

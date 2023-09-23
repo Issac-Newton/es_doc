@@ -1,6 +1,6 @@
-GET _ml/anomaly_detectors/esxi_log/results/categories
+PUT _cluster/settings
 {
-  "page":{
-    "size": 1
+  "persistent" : {
+    "cluster.max_shards_per_node.frozen": null
   }
 }

@@ -1,8 +1,12 @@
-PUT timeseries-000001
+GET /_search
 {
-  "aliases": {
-    "timeseries": {
-      "is_write_index": true
+  "aggs": {
+    "genres": {
+      "rare_terms": {
+        "field": "genre",
+        "include": [ "swing", "rock" ],
+        "exclude": [ "jazz" ]
+      }
     }
   }
 }

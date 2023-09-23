@@ -1,18 +1,18 @@
-GET /_search
+PUT _scripts/my-search-template
 {
-  "query": {
-    "bool": {
-      "filter": {
-        "script": {
-          "script": {
-            "source": "doc['num1'].value > params.param1",
-            "lang": "painless",
-            "params": {
-              "param1": 5
-            }
-          }
+  "script": {
+    "lang": "mustache",
+    "source":
+    """
+    {
+      "query": {
+        "match": {
+           {{=( )=}}
+          "message": "(query_string)"
+          (={{ }}=)
         }
       }
     }
+    """
   }
 }

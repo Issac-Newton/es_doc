@@ -1,7 +1,11 @@
-GET /my_index/_search
+PUT my-index-000001/_doc/1
 {
-    "query": {
-        "match_all" : {}
-    },
-    "sort" : {"my_counter" : "desc"}
+  "region": "US",
+  "manager": {
+    "age":     30,
+    "name": {
+      "first": "John",
+      "last":  "Smith"
+    }
+  }
 }

@@ -1,18 +1,17 @@
-PUT /my-index-000001
+PUT keep_types_example
 {
   "settings": {
     "analysis": {
       "analyzer": {
-        "default": {
-          "tokenizer": "whitespace",
-          "filter": [ "my_custom_stop_words_filter" ]
+        "my_analyzer": {
+          "tokenizer": "standard",
+          "filter": [ "extract_alpha" ]
         }
       },
       "filter": {
-        "my_custom_stop_words_filter": {
-          "type": "stop",
-          "ignore_case": true,
-          "stopwords": [ "and", "is", "the" ]
+        "extract_alpha": {
+          "type": "keep_types",
+          "types": [ "<ALPHANUM>" ]
         }
       }
     }

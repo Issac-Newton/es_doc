@@ -1,6 +1,8 @@
-POST test/_update/1
+PUT _snapshot/my_s3_repository
 {
-  "doc": {
-    "name": "new_name"
+  "type": "s3",
+  "settings": {
+    "bucket": "my-bucket",
+    "client": "my-alternate-client"
   }
 }

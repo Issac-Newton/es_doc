@@ -1,9 +1,21 @@
-GET /my-index-000001/_eql/search
+POST /kibana_sample_data_ecommerce/_async_search
 {
-  "query": """
-    sequence by process.pid with maxspan=1h
-      [ process where process.name == "regsvr32.exe" ]
-      [ file where stringContains(file.name, "scrobj.dll") ]
-    until [ process where event.type == "termination" ]
-  """
+  "size": 0,
+  "aggs": {
+    "my_agg": {
+      "frequent_item_sets": {
+        "minimum_set_size": 3,
+        "fields": [
+          { "field": "category.keyword" },
+          { "field": "geoip.city_name" }
+        ],
+        "size": 3,
+        "filter": {
+          "term": {
+            "geoip.continent_name": "Europe"
+          }
+        }
+      }
+    }
+  }
 }

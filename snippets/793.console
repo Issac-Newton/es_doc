@@ -1,15 +1,17 @@
-GET /_search
+PUT /shirts
 {
-  "query": {
-    "common": {
-      "body": {
-        "query": "how not to be",
-        "cutoff_frequency": 0.001,
-        "minimum_should_match": {
-          "low_freq": 2,
-          "high_freq": 3
-        }
-      }
+  "mappings": {
+    "properties": {
+      "brand": { "type": "keyword"},
+      "color": { "type": "keyword"},
+      "model": { "type": "keyword"}
     }
   }
+}
+
+PUT /shirts/_doc/1?refresh
+{
+  "brand": "gucci",
+  "color": "red",
+  "model": "slim"
 }

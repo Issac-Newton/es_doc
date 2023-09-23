@@ -1,12 +1,11 @@
-GET /_search
+PUT _ingest/pipeline/my-pipeline
 {
-  "_source": {
-    "includes": [ "obj1.*", "obj2.*" ],
-    "excludes": [ "*.description" ]
-  },
-  "query": {
-    "term": {
-      "user.id": "kimchy"
+  "processors": [
+    {
+      "drop": {
+        "description": "Drop documents with 'network.name' of 'Guest'",
+        "if": "ctx?.network?.name == 'Guest'"
+      }
     }
-  }
+  ]
 }

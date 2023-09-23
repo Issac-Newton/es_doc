@@ -1,12 +1,13 @@
-GET /test/_search
+POST _render/template
 {
-  "query": {
-    "rank_feature": {
-      "field": "pagerank",
-      "sigmoid": {
-        "pivot": 7,
-        "exponent": 0.6
+  "source": {
+    "query": {
+      "match": {
+        "message": "{{^name_exists}}Hello World{{/name_exists}}"
       }
     }
+  },
+  "params": {
+     "name_exists": false
   }
 }

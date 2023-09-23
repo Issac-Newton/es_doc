@@ -1,18 +1,17 @@
-PUT length_custom_example
+PUT /asciifold_example
 {
   "settings": {
     "analysis": {
       "analyzer": {
-        "whitespace_length_2_to_10_char": {
-          "tokenizer": "whitespace",
-          "filter": [ "length_2_to_10_char" ]
+        "standard_asciifolding": {
+          "tokenizer": "standard",
+          "filter": [ "my_ascii_folding" ]
         }
       },
       "filter": {
-        "length_2_to_10_char": {
-          "type": "length",
-          "min": 2,
-          "max": 10
+        "my_ascii_folding": {
+          "type": "asciifolding",
+          "preserve_original": true
         }
       }
     }

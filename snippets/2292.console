@@ -1,4 +1,17 @@
-DELETE /_security/api_key
+POST test/_update/1
 {
-  "username" : "myuser"
+  "scripted_upsert": true,
+  "script": {
+    "source": """
+      if ( ctx.op == 'create' ) {
+        ctx._source.counter = params.count
+      } else {
+        ctx._source.counter += params.count
+      }
+    """,
+    "params": {
+      "count": 4
+    }
+  },
+  "upsert": {}
 }

@@ -1,20 +1,2 @@
-POST my-index-000001/_update_by_query
-{
-  "slice": {
-    "id": 0,
-    "max": 2
-  },
-  "script": {
-    "source": "ctx._source['extra'] = 'test'"
-  }
-}
-POST my-index-000001/_update_by_query
-{
-  "slice": {
-    "id": 1,
-    "max": 2
-  },
-  "script": {
-    "source": "ctx._source['extra'] = 'test'"
-  }
-}
+# PUT _snapshot/my_repository/<my_snapshot_{now/d}>
+PUT _snapshot/my_repository/%3Cmy_snapshot_%7Bnow%2Fd%7D%3E

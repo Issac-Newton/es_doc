@@ -1,5 +1,8 @@
-POST _analyze
+PUT idx
 {
-  "analyzer": "fingerprint",
-  "text": "Yes yes, Gödel said this sentence is consistent and."
+  "mappings": {
+    "_source": {
+      "mode": "synthetic"
+    }
+  }
 }

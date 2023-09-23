@@ -1,23 +1,28 @@
-POST /sales/_search
+POST /stackoverflow/_search?size=0
 {
-  "size": 0,
+  "query": {
+    "query_string": {
+      "query": "tags:kibana"
+    }
+  },
+  "runtime_mappings": {
+    "tags.hash": {
+      "type": "long",
+      "script": "emit(doc['tags'].hashCode())"
+    }
+  },
   "aggs": {
-    "sales_per_month": {
-      "date_histogram": {
-        "field": "date",
-        "calendar_interval": "month"
+    "my_unbiased_sample": {
+      "diversified_sampler": {
+        "shard_size": 200,
+        "max_docs_per_value": 3,
+        "field": "tags.hash"
       },
       "aggs": {
-        "sales": {
-          "sum": {
-            "field": "price"
-          }
-        },
-        "percent_of_total_sales": {
-          "normalize": {
-            "buckets_path": "sales",         
-            "method": "percent_of_sum",      
-            "format": "00.00%"               
+        "keywords": {
+          "significant_terms": {
+            "field": "tags",
+            "exclude": [ "kibana" ]
           }
         }
       }

@@ -1,14 +1,11 @@
-GET /_search
+GET /shirts/_search
 {
   "query": {
     "bool": {
-      "should": [
-        { "term": { "body": "how"}},
-        { "term": { "body": "not"}},
-        { "term": { "body": "to"}},
-        { "term": { "body": "be"}}
-      ],
-      "minimum_should_match": "3<50%"
+      "filter": [
+        { "term": { "color": "red"   }},
+        { "term": { "brand": "gucci" }}
+      ]
     }
   }
 }

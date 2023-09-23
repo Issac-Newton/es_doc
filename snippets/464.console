@@ -1,11 +1,11 @@
-PUT limit_example
+PUT /cjk_bigram_example
 {
   "settings": {
     "analysis": {
       "analyzer": {
-        "standard_one_token_limit": {
+        "standard_cjk_bigram": {
           "tokenizer": "standard",
-          "filter": [ "limit" ]
+          "filter": [ "cjk_bigram" ]
         }
       }
     }

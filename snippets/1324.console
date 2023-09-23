@@ -1,12 +1,16 @@
-PUT _ilm/policy/my_policy
+GET news/_search
 {
-  "policy": {
-    "phases": {
-      "hot": {
-        "actions": {
-          "rollover" : {
-            "max_size": "100GB"
-          }
+  "query": {
+    "match": { "content": "Bird flu" }
+  },
+  "aggregations": {
+    "my_sample": {
+      "sampler": {
+        "shard_size": 100
+      },
+      "aggregations": {
+        "keywords": {
+          "significant_text": { "field": "content" }
         }
       }
     }

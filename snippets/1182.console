@@ -1,9 +1,13 @@
-PUT /sales/_doc/1?refresh
+GET /my-index-000001/_search
 {
-  "tags": [ "car", "auto" ],
-  "comments": [
-    { "username": "baddriver007", "comment": "This car could have better brakes" },
-    { "username": "dr_who", "comment": "Where's the autopilot? Can't find it" },
-    { "username": "ilovemotorbikes", "comment": "This car has two extra wheels" }
-  ]
+  "aggs": {
+    "my-agg-name": {
+      "terms": {
+        "field": "my-field"
+      },
+      "meta": {
+        "my-metadata-field": "foo"
+      }
+    }
+  }
 }

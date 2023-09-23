@@ -1,6 +1,17 @@
-GET /my-index-000001/_eql/search
+POST /sales/_search?size=0&filter_path=aggregations
 {
-  "query": """
-    process where process.name == "regsvr32.exe"
-  """
+  "aggs": {
+    "hats": {
+      "filter": { "term": { "type": "hat" } },
+      "aggs": {
+        "avg_price": { "avg": { "field": "price" } }
+      }
+    },
+    "t_shirts": {
+      "filter": { "term": { "type": "t-shirt" } },
+      "aggs": {
+        "avg_price": { "avg": { "field": "price" } }
+      }
+    }
+  }
 }

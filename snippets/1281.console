@@ -1,9 +1,13 @@
-POST /_sql?format=txt
+GET /network-traffic/_search
 {
-  "query": "SELECT * FROM library",
-  "filter": {
-    "terms": {
-      "_routing": ["abc"]
+  "size": 0,
+  "aggs": {
+    "ipv4-subnets": {
+      "ip_prefix": {
+        "field": "ipv4",
+        "prefix_length": 24,
+        "keyed": true
+      }
     }
   }
 }

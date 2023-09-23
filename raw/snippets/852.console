@@ -1,17 +1,7 @@
-PUT /my-index-000001
+GET /_search
 {
-  "mappings": {
-    "properties": {
-      "my-join-field": {
-        "type": "join",
-        "relations": {
-          "parent": "child"
-        }
-      },
-      "tag": {
-        "type": "keyword"
-      }
-    }
+  "stored_fields" : [],
+  "query" : {
+    "term" : { "user" : "kimchy" }
   }
 }
-

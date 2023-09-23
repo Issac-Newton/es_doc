@@ -1,14 +1,17 @@
-PUT /products/_doc/0
+GET my_locations/_search
 {
-  "name": "LED TV",
-  "resellers": [
-    {
-      "reseller": "companyA",
-      "price": 350
-    },
-    {
-      "reseller": "companyB",
-      "price": 500
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "wkt": "BBOX (-74.1, -71.12, 40.73, 40.01)"
+          }
+        }
+      }
     }
-  ]
+  }
 }

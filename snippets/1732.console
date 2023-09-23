@@ -1,11 +1,10 @@
-PUT _ingest/pipeline/set-foo
+POST _security/role/slm-read-only
 {
-  "description" : "sets foo",
-  "processors" : [ {
-      "set" : {
-        "field": "foo",
-        "value": "bar"
-      }
-  } ]
+  "cluster": [ "read_slm" ],
+  "indices": [
+    {
+      "names": [ ".slm-history-*" ],
+      "privileges": [ "read" ]
+    }
+  ]
 }
-POST my-index-000001/_update_by_query?pipeline=set-foo

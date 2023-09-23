@@ -1,17 +1,37 @@
-PUT /_security/role_mapping/direct_pki_only
+POST /sales/_search?size=0
 {
-  "roles" : [ "role_for_pki1_direct" ],
-  "rules" : {
-    "all": [
-      {
-        "field": {"realm.name": "pki1"}
+  "aggs": {
+    "top_tags": {
+      "terms": {
+        "field": "type",
+        "size": 3
       },
-      {
-        "field": {
-          "metadata.pki_delegated_by_user": null
+      "aggs": {
+        "top_sales_hits": {
+          "top_hits": {
+            "sort": [
+              {
+                "date": {
+                  "order": "desc"
+                }
+              }
+            ],
+            "_source": {
+              "includes": [ "date", "price" ]
+            },
+            "size": 1
+          }
+        },
+        "having.top_salary": {
+          "bucket_selector": {
+            "buckets_path": {
+              "tp": "top_sales_hits[_source.price]"
+            },
+            "script": "params.tp < 180"
+          }
         }
       }
-    ]
-  },
-  "enabled": true
+    }
+  }
 }
+

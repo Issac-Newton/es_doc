@@ -1,28 +1,17 @@
-GET /shirts/_search
+POST _aliases
 {
-  "query": {
-    "bool": {
-      "filter": {
-        "term": { "brand": "gucci" }
+  "actions": [
+    {
+      "remove": {
+        "index": "logs-nginx.access-prod",
+        "alias": "logs"
       }
-    }
-  },
-  "aggs": {
-    "colors": {
-      "terms": { "field": "color" }
     },
-    "color_red": {
-      "filter": {
-        "term": { "color": "red" }
-      },
-      "aggs": {
-        "models": {
-          "terms": { "field": "model" }
-        }
+    {
+      "add": {
+        "index": "logs-my_app-default",
+        "alias": "logs"
       }
     }
-  },
-  "post_filter": {
-    "term": { "color": "red" }
-  }
+  ]
 }

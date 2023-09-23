@@ -8,7 +8,7 @@
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="index.html" title="Elasticsearch Guide"/>
 <link rel="prev" href="index.html" title="Elasticsearch Guide"/>
-<link rel="next" href="release-highlights.html" title="What&#8217;s new in 7.10"/>
+<link rel="next" href="release-highlights.html" title="What&#8217;s new in 8.9"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -26,12 +26,12 @@
 <span class="prev">
 </span>
 <span class="next">
-<a href="release-highlights.html">What&#8217;s new in 7.10 »</a>
+<a href="release-highlights.html">What&#8217;s new in 8.9 »</a>
 </span>
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h1 class="title"><a id="elasticsearch-intro"></a>What is Elasticsearch?<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h1>
+<h1 class="title"><a id="elasticsearch-intro"></a>What is Elasticsearch?<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h1>
 </div></div></div>
 <p><em><span class="strong strong"><strong>You know, for search (and analysis)</strong></span></em></p>
 <p>Elasticsearch is the distributed search and analytics engine at the heart of
@@ -79,7 +79,7 @@ problem, the way you work with your data, documents, and indices in Elasticsearc
 the same.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="documents-indices"></a>Data in: documents and indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h2>
+<h2 class="title"><a id="documents-indices"></a>Data in: documents and indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Elasticsearch is a distributed document store. Instead of storing information as rows of
 columnar data, Elasticsearch stores complex data structures that have been serialized
@@ -140,19 +140,19 @@ the same analysis before the terms are looked up in the index.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="search-analyze"></a>Information out: search and analyze<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h2>
+<h2 class="title"><a id="search-analyze"></a>Information out: search and analyze<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h2>
 </div></div></div>
 <p>While you can use Elasticsearch as a document store and retrieve documents and their
 metadata, the real power comes from being able to easily access the full suite
 of search capabilities built on the Apache Lucene search engine library.</p>
 <p>Elasticsearch provides a simple, coherent REST API for managing your cluster and indexing
-and searching your data.  For testing purposes, you can easily submit requests
+and searching your data. For testing purposes, you can easily submit requests
 directly from the command line or through the Developer Console in Kibana. From
 your applications, you can use the
 <a href="https://www.elastic.co/guide/en/elasticsearch/client/index.html" class="ulink" target="_top">Elasticsearch client</a>
 for your language of choice: Java, JavaScript, Go, .NET, PHP, Perl, Python
 or Ruby.</p>
-<h4><a id="search-data"></a>Searching your data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h4>
+<h4><a id="search-data"></a>Searching your data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h4>
 <p>The Elasticsearch REST APIs support structured queries, full text queries, and complex
 queries that combine the two. Structured queries are
 similar to the types of queries you can construct in SQL. For example, you
@@ -170,7 +170,7 @@ comprehensive JSON-style query language (<a class="xref" href="query-dsl.html" t
 construct <a class="xref" href="sql-overview.html" title="Overview">SQL-style queries</a> to search and aggregate data
 natively inside Elasticsearch, and JDBC and ODBC drivers enable a broad range of
 third-party applications to interact with Elasticsearch via SQL.</p>
-<h4><a id="analyze-data"></a>Analyzing your data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h4>
+<h4><a id="analyze-data"></a>Analyzing your data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h4>
 <p>Elasticsearch aggregations enable you to build complex summaries of your data and gain
 insight into key metrics, patterns, and trends. Instead of just finding the
 proverbial “needle in a haystack”, aggregations enable you to answer questions
@@ -213,9 +213,9 @@ context of a particular search, you’re not just displaying a count of all
 size 70 needles, you’re displaying a count of the size 70 needles
 that match your users' search criteria&#8212;&#8203;for example, all size 70 <em>non-stick
 embroidery</em> needles.</p>
-<h5><a id="more-features"></a>But wait, there’s more<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h5>
+<h5><a id="more-features"></a>But wait, there’s more<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h5>
 <p>Want to automate the analysis of your time series data? You can use
-<a href="https://www.elastic.co/guide/en/machine-learning/7.10/ml-overview.html" class="ulink" target="_top">machine learning</a> features to create accurate
+<a href="https://www.elastic.co/guide/en/machine-learning/8.9/ml-ad-overview.html" class="ulink" target="_top">machine learning</a> features to create accurate
 baselines of normal behavior in your data and identify anomalous patterns. With
 machine learning, you can detect:</p>
 <div class="ulist itemizedlist">
@@ -237,7 +237,7 @@ or other data science-related configurations.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="scalability"></a>Scalability and resilience: clusters, nodes, and shards<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h2>
+<h2 class="title"><a id="scalability"></a>Scalability and resilience: clusters, nodes, and shards<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Elasticsearch is built to be always available and to scale with your needs. It does this
@@ -261,7 +261,7 @@ like searching or retrieving a document.</p>
 <p>The number of primary shards in an index is fixed at the time that an index is
 created, but the number of replica shards can be changed at any time, without
 interrupting indexing or query operations.</p>
-<h4><a id="it-depends"></a>It depends&#8230;&#8203;<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h4>
+<h4><a id="it-depends"></a>It depends&#8230;&#8203;<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h4>
 <p>There are a number of performance considerations and trade offs with respect
 to shard size and the number of primary shards configured for an index. The more
 shards, the more overhead there is simply in maintaining those indices. The
@@ -288,13 +288,13 @@ shards per GB of heap space should be less than 20.
 <p>The best way to determine the optimal configuration for your use case is
 through <a href="https://www.elastic.co/elasticon/conf/2016/sf/quantitative-cluster-sizing" class="ulink" target="_top">
 testing with your own data and queries</a>.</p>
-<h4><a id="disaster-ccr"></a>In case of disaster<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h4>
-<p>For performance reasons, the nodes within a cluster need to be on the same
-network. Balancing shards in a cluster across nodes in different data centers
-simply takes too long. But high-availability architectures demand that you avoid
-putting all of your eggs in one basket. In the event of a major outage in one
-location, servers in another location need to be able to take over. Seamlessly.
-The answer? Cross-cluster replication (CCR).</p>
+<h4><a id="disaster-ccr"></a>In case of disaster<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h4>
+<p>A cluster&#8217;s nodes need good, reliable connections to each other. To provide
+better connections, you typically co-locate the nodes in the same data center or
+nearby data centers. However, to maintain high availability, you
+also need to avoid any single point of failure. In the event of a major outage
+in one location, servers in another location need to be able to take over. The
+answer? Cross-cluster replication (CCR).</p>
 <p>CCR provides a way to automatically synchronize indices from your primary cluster
 to a secondary remote cluster that can serve as a hot backup. If the primary
 cluster fails, the secondary cluster can take over. You can also use CCR to
@@ -302,10 +302,10 @@ create secondary clusters to serve read requests in geo-proximity to your users.
 <p>Cross-cluster replication is active-passive. The index on the primary cluster is
 the active leader index and handles all write requests. Indices replicated to
 secondary clusters are read-only followers.</p>
-<h4><a id="admin"></a>Care and feeding<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/intro.asciidoc">edit</a></h4>
+<h4><a id="admin"></a>Care and feeding<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/intro.asciidoc">edit</a></h4>
 <p>As with any enterprise system, you need tools to secure, manage, and
 monitor your Elasticsearch clusters. Security, monitoring, and administrative features
-that are integrated into Elasticsearch enable you to use <a href="https://www.elastic.co/guide/en/kibana/7.10/introduction.html" class="ulink" target="_top">Kibana</a>
+that are integrated into Elasticsearch enable you to use <a href="https://www.elastic.co/guide/en/kibana/8.9/introduction.html" class="ulink" target="_top">Kibana</a>
 as a control center for managing a cluster. Features like <a class="xref" href="xpack-rollup.html" title="Rolling up historical data">data rollups</a> and <a class="xref" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle">index lifecycle management</a>
 help you intelligently manage your data over time.</p>
 </div>
@@ -315,7 +315,7 @@ help you intelligently manage your data over time.</p>
 <span class="prev">
 </span>
 <span class="next">
-<a href="release-highlights.html">What&#8217;s new in 7.10 »</a>
+<a href="release-highlights.html">What&#8217;s new in 8.9 »</a>
 </span>
 </div>
 </div>

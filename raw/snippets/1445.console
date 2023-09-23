@@ -1,5 +1,11 @@
-POST /_security/saml/logout
+POST /test*/_search?filter_path=aggregations
 {
-  "token" : "46ToAxZVaXVVZTVKOVF5YU04ZFJVUDVSZlV3",
-  "refresh_token": "mJdXLtmvTUSpoLwMvdBt_w"
+  "aggs": {
+    "tm": {
+      "top_metrics": {
+        "metrics": {"field": "m"},
+        "sort": {"s": {"order": "asc", "numeric_type": "double"}}
+      }
+    }
+  }
 }

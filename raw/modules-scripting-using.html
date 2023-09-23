@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>How to use scripts | Elasticsearch Guide | Elastic</title>
-<meta class="elastic" name="content" content="How to use scripts | Elasticsearch Guide">
+<title>How to write scripts | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="How to write scripts | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="modules-scripting.html" title="Scripting"/>
-<link rel="prev" href="modules-scripting.html" title="Scripting"/>
-<link rel="next" href="modules-scripting-fields.html" title="Accessing document fields and special variables"/>
+<link rel="prev" href="modules-scripting-painless.html" title="Painless scripting language"/>
+<link rel="next" href="script-fields-api.html" title="Access fields in a document with the field API"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -25,78 +25,26 @@
 </div>
 <div class="navheader">
 <span class="prev">
-<a href="modules-scripting.html">« Scripting</a>
+<a href="modules-scripting-painless.html">« Painless scripting language</a>
 </span>
 <span class="next">
-<a href="modules-scripting-fields.html">Accessing document fields and special variables »</a>
+<a href="script-fields-api.html">Access fields in a document with the <code class="literal">field</code> API »</a>
 </span>
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="modules-scripting-using"></a>How to use scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/scripting/using.asciidoc">edit</a></h2>
+<h2 class="title"><a id="modules-scripting-using"></a>How to write scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/using.asciidoc">edit</a></h2>
 </div></div></div>
-<p>Wherever scripting is supported in the Elasticsearch API, the syntax follows
-the same pattern:</p>
+<p>Wherever scripting is supported in the Elasticsearch APIs, the syntax follows the same
+pattern; you specify the language of your script, provide the script logic (or
+source), and add parameters that are passed into the script:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">  "script": {
-    "lang":   "...",  <a id="CO463-1"></a><i class="conum" data-value="1"></i>
-    "source" | "id": "...", <a id="CO463-2"></a><i class="conum" data-value="2"></i>
-    "params": { ... } <a id="CO463-3"></a><i class="conum" data-value="3"></i>
+    "lang":   "...",
+    "source" | "id": "...",
+    "params": { ... }
   }</pre>
 </div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO463-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The language the script is written in, which defaults to <code class="literal">painless</code>.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO463-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The script itself which may be specified as <code class="literal">source</code> for an inline script or <code class="literal">id</code> for a stored script.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO463-3"><i class="conum" data-value="3"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>Any named parameters that should be passed into the script.</p>
-</td>
-</tr>
-</table>
-</div>
-<p>For example, the following script is used in a search request to return a
-<a class="xref" href="search-fields.html#script-fields" title="Script fields">scripted field</a>:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/1
-{
-  "my_field": 5
-}
-
-GET my-index-000001/_search
-{
-  "script_fields": {
-    "my_doubled_field": {
-      "script": {
-        "lang":   "expression",
-        "source": "doc['my_field'] * multiplier",
-        "params": {
-          "multiplier": 2
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/1287.console"></div>
-<h3><a id="_script_parameters"></a>Script parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/scripting/using.asciidoc">edit</a></h3>
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
@@ -105,7 +53,7 @@ GET my-index-000001/_search
 </span>
 </dt>
 <dd>
-Specifies the language the script is written in.  Defaults to <code class="literal">painless</code>.
+Specifies the language the script is written in. Defaults to <code class="literal">painless</code>.
 </dd>
 <dt>
 <span class="term">
@@ -113,9 +61,9 @@ Specifies the language the script is written in.  Defaults to <code class="liter
 </span>
 </dt>
 <dd>
-Specifies the source of the script.  An <code class="literal">inline</code> script is specified
-<code class="literal">source</code> as in the example above. A <code class="literal">stored</code> script is specified <code class="literal">id</code>
-and is retrieved from the cluster state (see <a class="xref" href="modules-scripting-using.html#modules-scripting-stored-scripts" title="Stored scripts">Stored Scripts</a>).
+The script itself, which you specify as <code class="literal">source</code> for an inline script or
+<code class="literal">id</code> for a stored script. Use the <a class="xref" href="script-apis.html#stored-script-apis" title="Stored script APIs">stored script APIs</a>
+to create and manage stored scripts.
 </dd>
 <dt>
 <span class="term">
@@ -124,100 +72,206 @@ and is retrieved from the cluster state (see <a class="xref" href="modules-scrip
 </dt>
 <dd>
 Specifies any named parameters that are passed into the script as
-variables.
+variables. <a class="xref" href="modules-scripting-using.html#prefer-params" title="Use parameters in your script">Use parameters</a> instead of hard-coded values to decrease compile time.
 </dd>
 </dl>
+</div>
+<h3><a id="hello-world-script"></a>Write your first script<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/using.asciidoc">edit</a></h3>
+<p><a class="xref" href="modules-scripting-painless.html" title="Painless scripting language">Painless</a> is the default scripting language
+for Elasticsearch. It is secure, performant, and provides a natural syntax for anyone
+with a little coding experience.</p>
+<p>A Painless script is structured as one or more statements and optionally
+has one or more user-defined functions at the beginning. A script must always
+have at least one statement.</p>
+<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/painless/8.9/painless-execute-api.html" class="ulink" target="_top">Painless execute API</a> provides the ability to
+test a script with simple user-defined parameters and receive a result. Let&#8217;s
+start with a complete script and review its constituent parts.</p>
+<p>First, index a document with a single field so that we have some data to work
+with:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/1
+{
+  "my_field": 5
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1554.console"></div>
+<p>We can then construct a script that operates on that field and run evaluate the
+script as part of a query. The following query uses the
+<a class="xref" href="search-fields.html#script-fields" title="Script fields"><code class="literal">script_fields</code></a> parameter of the search API to retrieve a
+script valuation. There&#8217;s a lot happening here, but we&#8217;ll break it down the
+components to understand them individually. For now, you only need to
+understand that this script takes <code class="literal">my_field</code> and operates on it.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index-000001/_search
+{
+  "script_fields": {
+    "my_doubled_field": {
+      "script": { <a id="CO508-1"></a><i class="conum" data-value="1"></i>
+        "source": "doc['my_field'].value * params['multiplier']", <a id="CO508-2"></a><i class="conum" data-value="2"></i>
+        "params": {
+          "multiplier": 2
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1555.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">script</code> object</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">script</code> source</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The <code class="literal">script</code> is a standard JSON object that defines scripts under most APIs
+in Elasticsearch. This object requires <code class="literal">source</code> to define the script itself. The
+script doesn&#8217;t specify a language, so it defaults to Painless.</p>
+<h3><a id="prefer-params"></a>Use parameters in your script<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/using.asciidoc">edit</a></h3>
+<p>The first time Elasticsearch sees a new script, it compiles the script and stores the
+compiled version in a cache. Compilation can be a heavy process. Rather than
+hard-coding values in your script, pass them as named <code class="literal">params</code> instead.</p>
+<p>For example, in the previous script, we could have just hard coded values and
+written a script that is seemingly less complex. We could just retrieve the
+first value for <code class="literal">my_field</code> and then multiply it by <code class="literal">2</code>:</p>
+<div class="pre_wrapper lang-painless">
+<pre class="programlisting prettyprint lang-painless">"source": "return doc['my_field'].value * 2"</pre>
+</div>
+<p>Though it works, this solution is pretty inflexible. We have to modify the
+script source to change the multiplier, and Elasticsearch has to recompile the script
+every time that the multiplier changes.</p>
+<p>Instead of hard-coding values, use named <code class="literal">params</code> to make scripts flexible, and
+also reduce compilation time when the script runs. You can now make changes to
+the <code class="literal">multiplier</code> parameter without Elasticsearch recompiling the script.</p>
+<div class="pre_wrapper lang-painless">
+<pre class="programlisting prettyprint lang-painless">"source": "doc['my_field'].value * params['multiplier']",
+"params": {
+  "multiplier": 2
+}</pre>
+</div>
+<p>You can compile up to 150 scripts per 5 minutes by default.
+For ingest contexts, the default script compilation rate is unlimited.</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">script.context.field.max_compilations_rate=100/10m</pre>
 </div>
 <div class="important admon">
 <div class="icon"></div>
 <div class="admon_content">
-<h3>Prefer parameters<a id="prefer-params"></a></h3>
-<p>The first time Elasticsearch sees a new script, it compiles it and stores the
-compiled version in a cache. Compilation can be a heavy process.</p>
-<p>If you need to pass variables into the script, you should pass them in as
-named <code class="literal">params</code> instead of hard-coding values into the script itself.  For
-example, if you want to be able to multiply a field value by different
-multipliers, don&#8217;t hard-code the multiplier into the script:</p>
-<div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">  "source": "doc['my_field'] * 2"</pre>
-</div>
-<p>Instead, pass it in as a named parameter:</p>
-<div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">  "source": "doc['my_field'] * multiplier",
-  "params": {
-    "multiplier": 2
-  }</pre>
-</div>
-<p>The first version has to be recompiled every time the multiplier changes.  The
-second version is only compiled once.</p>
-<p>If you compile too many unique scripts within a small amount of time,
-Elasticsearch will reject the new dynamic scripts with a
-<code class="literal">circuit_breaking_exception</code> error. For most contexts, you can compile up to 75
-scripts per 5 minutes by default. For ingest contexts, the default script
-compilation rate is unlimited. You can change these settings dynamically by
-setting <code class="literal">script.context.$CONTEXT.max_compilations_rate</code> eg.
-<code class="literal">script.context.field.max_compilations_rate=100/10m</code>.</p>
+<p>If you compile too many unique scripts within a short time, Elasticsearch
+rejects the new dynamic scripts with a <code class="literal">circuit_breaking_exception</code> error.</p>
 </div>
 </div>
-<h3><a id="modules-scripting-short-script-form"></a>Short script form<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/scripting/using.asciidoc">edit</a></h3>
-<p>A short script form can be used for brevity. In the short form, <code class="literal">script</code> is represented
-by a string instead of an object. This string contains the source of the script.</p>
-<p>Short form:</p>
-<div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">  "script": "ctx._source.my-int++"</pre>
+<h3><a id="script-shorten-syntax"></a>Shorten your script<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/using.asciidoc">edit</a></h3>
+<p>Using syntactic abilities that are native to Painless, you can reduce verbosity
+in your scripts and make them shorter. Here&#8217;s a simple script that we can make
+shorter:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index-000001/_search
+{
+  "script_fields": {
+    "my_doubled_field": {
+      "script": {
+        "lang":   "painless",
+        "source": "doc['my_field'].value * params.get('multiplier');",
+        "params": {
+          "multiplier": 2
+        }
+      }
+    }
+  }
+}</pre>
 </div>
-<p>The same script in the normal form:</p>
-<div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">  "script": {
-    "source": "ctx._source.my-int++"
-  }</pre>
+<div class="console_widget" data-snippet="snippets/1556.console"></div>
+<p>Let&#8217;s look at a shortened version of the script to see what improvements it
+includes over the previous iteration:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index-000001/_search
+{
+  "script_fields": {
+    "my_doubled_field": {
+      "script": {
+        "source": "field('my_field').get(null) * params['multiplier']",
+        "params": {
+          "multiplier": 2
+        }
+      }
+    }
+  }
+}</pre>
 </div>
-<h3><a id="modules-scripting-stored-scripts"></a>Stored scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/scripting/using.asciidoc">edit</a></h3>
-<p>Scripts may be stored in and retrieved from the cluster state using the
-<code class="literal">_scripts</code> end-point.</p>
-<p>If the Elasticsearch security features are enabled, you must have the following
-privileges to create, retrieve, and delete stored scripts:</p>
+<div class="console_widget" data-snippet="snippets/1557.console"></div>
+<p>This version of the script removes several components and simplifies the syntax
+significantly:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-cluster: <code class="literal">all</code> or <code class="literal">manage</code>
+The <code class="literal">lang</code> declaration. Because Painless is the default language, you don&#8217;t
+need to specify the language if you&#8217;re writing a Painless script.
+</li>
+<li class="listitem">
+The <code class="literal">return</code> keyword. Painless automatically uses the final statement in a
+script (when possible) to produce a return value in a script context that
+requires one.
+</li>
+<li class="listitem">
+The <code class="literal">get</code> method, which is replaced with brackets <code class="literal">[]</code>. Painless
+uses a shortcut specifically for the <code class="literal">Map</code> type that allows us to use brackets
+instead of the lengthier <code class="literal">get</code> method.
+</li>
+<li class="listitem">
+The semicolon at the end of the <code class="literal">source</code> statement. Painless does not
+require semicolons for the final statement of a block. However, it does require
+them in other cases to remove ambiguity.
 </li>
 </ul>
 </div>
-<p>For more information, see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.</p>
-<h4><a id="_request_examples"></a>Request examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/scripting/using.asciidoc">edit</a></h4>
-<p>The following are examples of using a stored script that lives at
-<code class="literal">/_scripts/{id}</code>.</p>
-<p>First, create the script called <code class="literal">calculate-score</code> in the cluster state:</p>
+<p>Use this abbreviated syntax anywhere that Elasticsearch supports scripts, such as
+when you&#8217;re creating <a class="xref" href="runtime.html#runtime-mapping-fields" title="Map a runtime field">runtime fields</a>.</p>
+<h3><a id="script-stored-scripts"></a>Store and retrieve scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/using.asciidoc">edit</a></h3>
+<p>You can store and retrieve scripts from the cluster state using the
+<a class="xref" href="script-apis.html#stored-script-apis" title="Stored script APIs">stored script APIs</a>. Stored scripts reduce compilation
+time and make searches faster.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Unlike regular scripts, stored scripts require that you specify a script
+language using the <code class="literal">lang</code> parameter.</p>
+</div>
+</div>
+<p>To create a script, use the <a class="xref" href="script-apis.html#create-stored-script-api" title="Create or update stored script API">create stored script
+API</a>. For example, the following request creates a stored script named
+<code class="literal">calculate-score</code>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _scripts/calculate-score
 {
   "script": {
     "lang": "painless",
-    "source": "Math.log(_score * 2) + params.my_modifier"
+    "source": "Math.log(_score * 2) + params['my_modifier']"
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1288.console"></div>
-<p>You may also specify a context as part of the url path to compile a
-stored script against that specific context in the form of
-<code class="literal">/_scripts/{id}/{context}</code>:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">POST _scripts/calculate-score/score
-{
-  "script": {
-    "lang": "painless",
-    "source": "Math.log(_score * 2) + params.my_modifier"
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/1289.console"></div>
-<p>This same script can be retrieved with:</p>
+<div class="console_widget" data-snippet="snippets/1558.console"></div>
+<p>You can retrieve that script by using the <a class="xref" href="script-apis.html#get-stored-script-api" title="Get stored script API">get stored
+script API</a>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET _scripts/calculate-score</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1290.console"></div>
-<p>Stored scripts can be used by specifying the <code class="literal">id</code> parameters as follows:</p>
+<div class="console_widget" data-snippet="snippets/1559.console"></div>
+<p>To use the stored script in a query, include the script <code class="literal">id</code> in the <code class="literal">script</code>
+declaration:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET my-index-000001/_search
 {
@@ -229,7 +283,7 @@ stored script against that specific context in the form of
         }
       },
       "script": {
-        "id": "calculate-score",
+        "id": "calculate-score", <a id="CO509-1"></a><i class="conum" data-value="1"></i>
         "params": {
           "my_modifier": 2
         }
@@ -238,77 +292,155 @@ stored script against that specific context in the form of
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1291.console"></div>
-<p>And deleted with:</p>
+<div class="console_widget" data-snippet="snippets/1560.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO509-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">id</code> of the stored script</p>
+</td>
+</tr>
+</table>
+</div>
+<p>To delete a stored script, submit a <a class="xref" href="script-apis.html#delete-stored-script-api" title="Delete stored script API">delete stored
+script API</a> request.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">DELETE _scripts/calculate-score</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1292.console"></div>
-<h3><a id="modules-scripting-search-templates"></a>Search templates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/scripting/using.asciidoc">edit</a></h3>
-<p>You can also use the <code class="literal">_scripts</code> API to store <span class="strong strong"><strong>search templates</strong></span>. Search
-templates save specific <a class="xref" href="search.html#search-search" title="Search API">search requests</a> with placeholder
-values, called template parameters.</p>
-<p>You can use stored search templates to run searches without writing out the
-entire query. Just provide the stored template&#8217;s ID and the template parameters.
-This is useful when you want to run a commonly used query quickly and without
-mistakes.</p>
-<p>Search templates use the <a href="https://mustache.github.io/mustache.5.html" class="ulink" target="_top">mustache
-templating language</a>. See <a class="xref" href="search.html#search-template" title="Search template API">Search template</a> for more information and examples.</p>
-<h3><a id="modules-scripting-using-caching"></a>Script caching<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/scripting/using.asciidoc">edit</a></h3>
-<p>All scripts are cached by default so that they only need to be recompiled
-when updates occur. By default, scripts do not have a time-based expiration, but
-you can configure the size of this cache using the
-<code class="literal">script.context.$CONTEXT.cache_expire</code> setting.
-By default, the cache size is <code class="literal">100</code> for all contexts except the <code class="literal">ingest</code> and the
-<code class="literal">processor_conditional</code> context, where it is <code class="literal">200</code>.</p>
-<div class="informaltable">
-<table border="1" cellpadding="4px">
-<colgroup>
-<col class="col_1"/>
-<col class="col_2"/>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Context</p></td>
-<td align="left" valign="top"><p>Default Cache Size</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p><code class="literal">ingest</code></p></td>
-<td align="left" valign="top"><p>200</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p><code class="literal">processor_conditional</code></p></td>
-<td align="left" valign="top"><p>200</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>default</p></td>
-<td align="left" valign="top"><p>100</p></td>
-</tr>
-</tbody>
-</table>
+<div class="console_widget" data-snippet="snippets/1561.console"></div>
+<h3><a id="scripts-update-scripts"></a>Update documents with scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/using.asciidoc">edit</a></h3>
+<p>You can use the <a class="xref" href="docs.html#docs-update" title="Update API">update API</a> to update documents with a specified
+script. The script can update, delete, or skip modifying the document. The
+update API also supports passing a partial document, which is merged into the
+existing document.</p>
+<p>First, let&#8217;s index a simple document:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/1
+{
+  "counter" : 1,
+  "tags" : ["red"]
+}</pre>
 </div>
+<div class="console_widget" data-snippet="snippets/1562.console"></div>
+<p>To increment the counter, you can submit an update request with the following
+script:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST my-index-000001/_update/1
+{
+  "script" : {
+    "source": "ctx._source.counter += params.count",
+    "lang": "painless",
+    "params" : {
+      "count" : 4
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1563.console"></div>
+<p>Similarly, you can use an update script to add a tag to the list of tags.
+Because this is just a list, the tag is added even it exists:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST my-index-000001/_update/1
+{
+  "script": {
+    "source": "ctx._source.tags.add(params['tag'])",
+    "lang": "painless",
+    "params": {
+      "tag": "blue"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1564.console"></div>
+<p>You can also remove a tag from the list of tags. The <code class="literal">remove</code> method of a Java
+<code class="literal">List</code> is available in Painless. It takes the index of the element you
+want to remove. To avoid a possible runtime error, you first need to make sure
+the tag exists. If the list contains duplicates of the tag, this script just
+removes one occurrence.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST my-index-000001/_update/1
+{
+  "script": {
+    "source": "if (ctx._source.tags.contains(params['tag'])) { ctx._source.tags.remove(ctx._source.tags.indexOf(params['tag'])) }",
+    "lang": "painless",
+    "params": {
+      "tag": "blue"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1565.console"></div>
+<p>You can also add and remove fields from a document. For example, this script
+adds the field <code class="literal">new_field</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST my-index-000001/_update/1
+{
+  "script" : "ctx._source.new_field = 'value_of_new_field'"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1566.console"></div>
+<p>Conversely, this script removes the field <code class="literal">new_field</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST my-index-000001/_update/1
+{
+  "script" : "ctx._source.remove('new_field')"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1567.console"></div>
+<p>Instead of updating the document, you can also change the operation that is
+executed from within the script. For example, this request deletes the document
+if the <code class="literal">tags</code> field contains <code class="literal">green</code>. Otherwise it does nothing (<code class="literal">noop</code>):</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST my-index-000001/_update/1
+{
+  "script": {
+    "source": "if (ctx._source.tags.contains(params['tag'])) { ctx.op = 'delete' } else { ctx.op = 'none' }",
+    "lang": "painless",
+    "params": {
+      "tag": "green"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1568.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="scripts-and-search-speed"></a>Scripts, caching, and search speed<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/using.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Elasticsearch performs a number of optimizations to make using scripts as fast as
+possible. One important optimization is a script cache. The compiled script is
+placed in a cache so that requests that reference the script do not incur a
+compilation penalty.</p>
+<p>Cache sizing is important. Your script cache should be large enough to hold all
+of the scripts that users need to be accessed concurrently.</p>
+<p>If you see a large number of script cache evictions and a rising number of
+compilations in <a class="xref" href="cluster.html#cluster-nodes-stats" title="Nodes stats API">node stats</a>, your cache might be too
+small.</p>
+<p>All scripts are cached by default so that they only need to be recompiled
+when updates occur. By default, scripts do not have a time-based expiration.
+You can change this behavior by using the <code class="literal">script.cache.expire</code> setting.
+Use the <code class="literal">script.cache.max_size</code> setting to configure the size of the cache.</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>The size of scripts is limited to 65,535 bytes. This can be
-changed by setting <code class="literal">script.max_size_in_bytes</code> setting to increase that soft
-limit, but if scripts are really large then a
-<a class="xref" href="modules-scripting-engine.html" title="Advanced scripts using script engines">native script engine</a> should be considered.</p>
+<p>The size of scripts is limited to 65,535 bytes. Set the value of <code class="literal">script.max_size_in_bytes</code> to increase that soft limit. If your scripts are
+really large, then consider using a
+<a class="xref" href="modules-scripting-engine.html" title="Advanced scripts using script engines">native script engine</a>.</p>
 </div>
 </div>
-<div class="section">
-<div class="titlepage"><div><div>
-<h2 class="title"><a id="scripts-and-search-speed"></a>Scripts and search speed<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/scripting/using.asciidoc">edit</a></h2>
-</div></div></div>
-<p>Scripts can&#8217;t make use of Elasticsearch&#8217;s index structures or related optimizations. This
-can sometimes result in slower search speeds.</p>
-<p>If you often use scripts to transform indexed data, you can speed up search by
-making these changes during ingest instead. However, that often means slower
-index speeds.</p>
-<details>
-<summary class="title"><span class="strong strong"><strong>Example</strong></span></summary>
-<div class="content">
-<p>An index, <code class="literal">my_test_scores</code>, contains two <code class="literal">long</code> fields:</p>
+<h4><a id="_improving_search_speed"></a>Improving search speed<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/using.asciidoc">edit</a></h4>
+<p>Scripts are incredibly useful, but can&#8217;t use Elasticsearch&#8217;s index structures or related
+optimizations. This relationship can sometimes result in slower search speeds.</p>
+<p>If you often use scripts to transform indexed data, you can make search faster
+by transforming data during ingest instead. However, that often means slower
+index speeds. Let&#8217;s look at a practical example to illustrate how you can
+increase search speed.</p>
+<p>When running searches, it&#8217;s common to sort results by the sum of two values.
+For example, consider an index named <code class="literal">my_test_scores</code> that contains test score
+data. This index includes two fields of type <code class="literal">long</code>:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -319,8 +451,11 @@ index speeds.</p>
 </li>
 </ul>
 </div>
-<p>When running searches, users often use a script to sort results by the sum of
-these two field&#8217;s values.</p>
+<p>You can run a query with a script that adds these values together. There&#8217;s
+nothing wrong with this approach, but the query will be slower because the
+script valuation occurs as part of the request. The following request returns
+documents where <code class="literal">grad_year</code> equals <code class="literal">2099</code>, and sorts by the results by the
+valuation of the script.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /my_test_scores/_search
 {
@@ -342,12 +477,12 @@ these two field&#8217;s values.</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1293.console"></div>
-<p>To speed up search, you can perform this calculation during ingest and index the
-sum to a field instead.</p>
-<p>First, <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">add a new field</a>, <code class="literal">total_score</code>, to the index. The
-<code class="literal">total_score</code> field will contain sum of the <code class="literal">math_score</code> and <code class="literal">verbal_score</code>
-field values.</p>
+<div class="console_widget" data-snippet="snippets/1569.console"></div>
+<p>If you&#8217;re searching a small index, then including the script as part of your
+search query can be a good solution. If you want to make search faster, you can
+perform this calculation during ingest and index the sum to a field instead.</p>
+<p>First, we&#8217;ll add a new field to the index named <code class="literal">total_score</code>, which will
+contain sum of the <code class="literal">math_score</code> and <code class="literal">verbal_score</code> field values.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT /my_test_scores/_mapping
 {
@@ -358,9 +493,9 @@ field values.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1294.console"></div>
-<p>Next, use an <a class="xref" href="ingest.html" title="Ingest node">ingest pipeline</a> containing the
-<a class="xref" href="ingest-processors.html#script-processor" title="Script processor"><code class="literal">script</code></a> processor to calculate the sum of <code class="literal">math_score</code> and
+<div class="console_widget" data-snippet="snippets/1570.console"></div>
+<p>Next, use an <a class="xref" href="ingest.html" title="Ingest pipelines">ingest pipeline</a> containing the
+<a class="xref" href="processors.html#script-processor" title="Script processor">script processor</a> to calculate the sum of <code class="literal">math_score</code> and
 <code class="literal">verbal_score</code> and index it in the <code class="literal">total_score</code> field.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT _ingest/pipeline/my_test_scores_pipeline
@@ -375,9 +510,9 @@ field values.</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1295.console"></div>
+<div class="console_widget" data-snippet="snippets/1571.console"></div>
 <p>To update existing data, use this pipeline to <a class="xref" href="docs.html#docs-reindex" title="Reindex API">reindex</a> any
-documents from <code class="literal">my_test_scores</code> to a new index, <code class="literal">my_test_scores_2</code>.</p>
+documents from <code class="literal">my_test_scores</code> to a new index named <code class="literal">my_test_scores_2</code>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /_reindex
 {
@@ -390,21 +525,22 @@ documents from <code class="literal">my_test_scores</code> to a new index, <code
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1296.console"></div>
+<div class="console_widget" data-snippet="snippets/1572.console"></div>
 <p>Continue using the pipeline to index any new documents to <code class="literal">my_test_scores_2</code>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /my_test_scores_2/_doc/?pipeline=my_test_scores_pipeline
 {
   "student": "kimchy",
   "grad_year": "2099",
-  "math_score": 800,
+  "math_score": 1200,
   "verbal_score": 800
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1297.console"></div>
-<p>These changes may slow indexing but allow for faster searches. Users can now
-sort searches made on <code class="literal">my_test_scores_2</code> using the <code class="literal">total_score</code> field instead
-of using a script.</p>
+<div class="console_widget" data-snippet="snippets/1573.console"></div>
+<p>These changes slow the index process, but allow for faster searches. Instead of
+using a script, you can sort searches made on <code class="literal">my_test_scores_2</code> using the
+<code class="literal">total_score</code> field. The response is near real-time! Though this process slows
+ingest time, it greatly increases queries at search time.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /my_test_scores_2/_search
 {
@@ -422,31 +558,595 @@ of using a script.</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1298.console"></div>
+<div class="console_widget" data-snippet="snippets/1574.console"></div>
 </div>
-</details>
-<p>We recommend testing and benchmarking any indexing changes before deploying them
-in production.</p>
-<h3><a id="modules-scripting-errors"></a>Script errors<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/scripting/using.asciidoc">edit</a></h3>
-<p>Elasticsearch returns error details when there is a compliation or runtime
-exception.  The contents of this response are useful for tracking down the
-problem.</p>
-<div class="warning admon">
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="dissect"></a>Dissecting data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/dissect-syntax.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Dissect matches a single text field against a defined pattern. A dissect
+pattern is defined by the parts of the string you want to discard. Paying
+special attention to each part of a string helps to build successful dissect
+patterns.</p>
+<p>If you don&#8217;t need the power of regular expressions, use dissect patterns instead
+of grok. Dissect uses a much simpler syntax than grok and is typically faster
+overall. The syntax for dissect is transparent: tell dissect what you want and
+it will return those results to you.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="dissect-syntax"></a>Dissect patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/dissect-syntax.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Dissect patterns are comprised of <em>variables</em> and <em>separators</em>. Anything
+defined by a percent sign and curly braces <code class="literal">%{}</code> is considered a variable,
+such as <code class="literal">%{clientip}</code>. You can assign variables to any part of data in a field,
+and then return only the parts that you want. Separators are any values between
+variables, which could be spaces, dashes, or other delimiters.</p>
+<p>For example, let&#8217;s say you have log data with a <code class="literal">message</code> field that looks like
+this:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">"message" : "247.37.0.0 - - [30/Apr/2020:14:31:22 -0500] \"GET /images/hm_nbg.jpg HTTP/1.0\" 304 0"</pre>
+</div>
+<p>You assign variables to each part of the data to construct a successful
+dissect pattern. Remember, tell dissect <em>exactly</em> what you want you want to
+match on.</p>
+<p>The first part of the data looks like an IP address, so you
+can assign a variable like <code class="literal">%{clientip}</code>. The next two characters are dashes
+with a space on either side. You can assign a variable for each dash, or a
+single variable to represent the dashes and spaces. Next are a set of brackets
+containing a timestamp. The brackets are a separator, so you include those in
+the dissect pattern. Thus far, the data and matching dissect pattern look like
+this:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">247.37.0.0 - - [30/Apr/2020:14:31:22 -0500]  <a id="CO510-1"></a><i class="conum" data-value="1"></i>
+
+%{clientip} %{ident} %{auth} [%{@timestamp}] <a id="CO510-2"></a><i class="conum" data-value="2"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO510-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The first chunks of data from the <code class="literal">message</code> field</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO510-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Dissect pattern to match on the selected data chunks</p>
+</td>
+</tr>
+</table>
+</div>
+<p>Using that same logic, you can create variables for the remaining chunks of
+data. Double quotation marks are separators, so include those in your dissect
+pattern. The pattern replaces <code class="literal">GET</code> with a <code class="literal">%{verb}</code> variable, but keeps <code class="literal">HTTP</code>
+as part of the pattern.</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">\"GET /images/hm_nbg.jpg HTTP/1.0\" 304 0
+
+"%{verb} %{request} HTTP/%{httpversion}" %{response} %{size}</pre>
+</div>
+<p>Combining the two patterns results in a dissect pattern that looks like this:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">%{clientip} %{ident} %{auth} [%{@timestamp}] \"%{verb} %{request} HTTP/%{httpversion}\" %{status} %{size}</pre>
+</div>
+<p>Now that you have a dissect pattern, how do you test and use it?</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="dissect-patterns-test"></a>Test dissect patterns with Painless<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/dissect-syntax.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can incorporate dissect patterns into Painless scripts to extract
+data. To test your script, use either the <a href="https://www.elastic.co/guide/en/elasticsearch/painless/8.9/painless-execute-api.html#painless-execute-runtime-field-context" class="ulink" target="_top">field contexts</a> of the Painless
+execute API or create a runtime field that includes the script. Runtime fields
+offer greater flexibility and accept multiple documents, but the Painless execute
+API is a great option if you don&#8217;t have write access on a cluster where you&#8217;re
+testing a script.</p>
+<p>For example, test your dissect pattern with the Painless execute API by
+including your Painless script and a single document that matches your data.
+Start by indexing the <code class="literal">message</code> field as a <code class="literal">wildcard</code> data type:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index
+{
+  "mappings": {
+    "properties": {
+      "message": {
+        "type": "wildcard"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1575.console"></div>
+<p>If you want to retrieve the HTTP response code, add your dissect pattern to a
+Painless script that extracts the <code class="literal">response</code> value. To extract values from a
+field, use this function:</p>
+<div class="pre_wrapper lang-painless">
+<pre class="programlisting prettyprint lang-painless">`.extract(doc["&lt;field_name&gt;"].value)?.&lt;field_value&gt;`</pre>
+</div>
+<p>In this example, <code class="literal">message</code> is the <code class="literal">&lt;field_name&gt;</code> and <code class="literal">response</code> is the
+<code class="literal">&lt;field_value&gt;</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_scripts/painless/_execute
+{
+  "script": {
+    "source": """
+      String response=dissect('%{clientip} %{ident} %{auth} [%{@timestamp}] "%{verb} %{request} HTTP/%{httpversion}" %{response} %{size}').extract(doc["message"].value)?.response;
+        if (response != null) emit(Integer.parseInt(response)); <a id="CO511-1"></a><i class="conum" data-value="1"></i>
+    """
+  },
+  "context": "long_field", <a id="CO511-2"></a><i class="conum" data-value="2"></i>
+  "context_setup": {
+    "index": "my-index",
+    "document": {          <a id="CO511-3"></a><i class="conum" data-value="3"></i>
+      "message": """247.37.0.0 - - [30/Apr/2020:14:31:22 -0500] "GET /images/hm_nbg.jpg HTTP/1.0" 304 0"""
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1576.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO511-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Runtime fields require the <code class="literal">emit</code> method to return values.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO511-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Because the response code is an integer, use the <code class="literal">long_field</code> context.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO511-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Include a sample document that matches your data.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The result includes the HTTP response code:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "result" : [
+    304
+  ]
+}</pre>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="dissect-patterns-runtime"></a>Use dissect patterns and scripts in runtime fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/dissect-syntax.asciidoc">edit</a></h3>
+</div></div></div>
+<p>If you have a functional dissect pattern, you can add it to a runtime field to
+manipulate data. Because runtime fields don&#8217;t require you to index fields, you
+have incredible flexibility to modify your script and how it functions. If you
+already <a class="xref" href="modules-scripting-using.html#dissect-patterns-test" title="Test dissect patterns with Painless">tested your dissect pattern</a> using the Painless
+execute API, you can use that <em>exact</em> Painless script in your runtime field.</p>
+<p>To start, add the <code class="literal">message</code> field as a <code class="literal">wildcard</code> type like in the previous
+section, but also add <code class="literal">@timestamp</code> as a <code class="literal">date</code> in case you want to operate on
+that field for <a class="xref" href="common-script-uses.html" title="Common scripting use cases">other use cases</a>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /my-index/
+{
+  "mappings": {
+    "properties": {
+      "@timestamp": {
+        "format": "strict_date_optional_time||epoch_second",
+        "type": "date"
+      },
+      "message": {
+        "type": "wildcard"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1577.console"></div>
+<p>If you want to extract the HTTP response code using your dissect pattern, you
+can create a runtime field like <code class="literal">http.response</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index/_mappings
+{
+  "runtime": {
+    "http.response": {
+      "type": "long",
+      "script": """
+        String response=dissect('%{clientip} %{ident} %{auth} [%{@timestamp}] "%{verb} %{request} HTTP/%{httpversion}" %{response} %{size}').extract(doc["message"].value)?.response;
+        if (response != null) emit(Integer.parseInt(response));
+      """
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1578.console"></div>
+<p>After mapping the fields you want to retrieve, index a few records from
+your log data into Elasticsearch. The following request uses the <a class="xref" href="docs.html#docs-bulk" title="Bulk API">bulk API</a>
+to index raw log data into <code class="literal">my-index</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /my-index/_bulk?refresh=true
+{"index":{}}
+{"timestamp":"2020-04-30T14:30:17-05:00","message":"40.135.0.0 - - [30/Apr/2020:14:30:17 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:30:53-05:00","message":"232.0.0.0 - - [30/Apr/2020:14:30:53 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:12-05:00","message":"26.1.0.0 - - [30/Apr/2020:14:31:12 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:19-05:00","message":"247.37.0.0 - - [30/Apr/2020:14:31:19 -0500] \"GET /french/splash_inet.html HTTP/1.0\" 200 3781"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:22-05:00","message":"247.37.0.0 - - [30/Apr/2020:14:31:22 -0500] \"GET /images/hm_nbg.jpg HTTP/1.0\" 304 0"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:27-05:00","message":"252.0.0.0 - - [30/Apr/2020:14:31:27 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:28-05:00","message":"not a valid apache log"}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1579.console"></div>
+<p>You can define a simple query to run a search for a specific HTTP response and
+return all related fields. Use the <code class="literal">fields</code> parameter of the search API to
+retrieve the <code class="literal">http.response</code> runtime field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+  "query": {
+    "match": {
+      "http.response": "304"
+    }
+  },
+  "fields" : ["http.response"]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1580.console"></div>
+<p>Alternatively, you can define the same runtime field but in the context of a
+search request. The runtime definition and the script are exactly the same as
+the one defined previously in the index mapping. Just copy that definition into
+the search request under the <code class="literal">runtime_mappings</code> section and include a query
+that matches on the runtime field. This query returns the same results as the
+search query previously defined for the <code class="literal">http.response</code> runtime field in your
+index mappings, but only in the context of this specific search:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+  "runtime_mappings": {
+    "http.response": {
+      "type": "long",
+      "script": """
+        String response=dissect('%{clientip} %{ident} %{auth} [%{@timestamp}] "%{verb} %{request} HTTP/%{httpversion}" %{response} %{size}').extract(doc["message"].value)?.response;
+        if (response != null) emit(Integer.parseInt(response));
+      """
+    }
+  },
+  "query": {
+    "match": {
+      "http.response": "304"
+    }
+  },
+  "fields" : ["http.response"]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1581.console"></div>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "hits" : {
+    "total" : {
+      "value" : 1,
+      "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "my-index",
+        "_id" : "D47UqXkBByC8cgZrkbOm",
+        "_score" : 1.0,
+        "_source" : {
+          "timestamp" : "2020-04-30T14:31:22-05:00",
+          "message" : "247.37.0.0 - - [30/Apr/2020:14:31:22 -0500] \"GET /images/hm_nbg.jpg HTTP/1.0\" 304 0"
+        },
+        "fields" : {
+          "http.response" : [
+            304
+          ]
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="grok"></a>Grokking grok<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/grok-syntax.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Grok is a regular expression dialect that supports reusable aliased expressions. Grok works really well with syslog logs, Apache and other webserver
+logs, mysql logs, and generally any log format that is written for humans and
+not computer consumption.</p>
+<p>Grok sits on top of the <a href="https://github.com/kkos/oniguruma/blob/master/doc/RE" class="ulink" target="_top">Oniguruma</a> regular expression library, so any regular expressions are
+valid in grok. Grok uses this regular expression language to allow naming
+existing patterns and combining them into more complex patterns that match your
+fields.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="grok-syntax"></a>Grok patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/grok-syntax.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The Elastic Stack ships with numerous <a href="https://github.com/elastic/elasticsearch/blob/master/libs/grok/src/main/resources/patterns/legacy/grok-patterns" class="ulink" target="_top">predefined grok patterns</a> that simplify working with grok. The syntax for reusing grok patterns
+takes one of the following forms:</p>
+<div class="informaltable">
+<table border="1" cellpadding="4px">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+<col class="col_3"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">%{SYNTAX}</code></p></td>
+<td align="left" valign="top"><p><code class="literal">%{SYNTAX:ID}</code></p></td>
+<td align="left" valign="top"><p><code class="literal">%{SYNTAX:ID:TYPE}</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">SYNTAX</code>
+</span>
+</dt>
+<dd>
+The name of the pattern that will match your text. For example, <code class="literal">NUMBER</code> and
+<code class="literal">IP</code> are both patterns that are provided within the default patterns set. The
+<code class="literal">NUMBER</code> pattern matches data like <code class="literal">3.44</code>, and the <code class="literal">IP</code> pattern matches data
+like <code class="literal">55.3.244.1</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">ID</code>
+</span>
+</dt>
+<dd>
+The identifier you give to the piece of text being matched. For  example, <code class="literal">3.44</code>
+could be the duration of an event, so you might call it <code class="literal">duration</code>. The string
+<code class="literal">55.3.244.1</code> might identify the <code class="literal">client</code> making a request.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">TYPE</code>
+</span>
+</dt>
+<dd>
+The data type you want to cast your named field. <code class="literal">int</code>, <code class="literal">long</code>, <code class="literal">double</code>,
+<code class="literal">float</code> and <code class="literal">boolean</code> are supported types.
+</dd>
+</dl>
+</div>
+<p>For example, let&#8217;s say you have message data that looks like this:</p>
+<div class="pre_wrapper lang-txt">
+<pre class="programlisting prettyprint lang-txt">3.44 55.3.244.1</pre>
+</div>
+<p>The first value is a number, followed by what appears to be an IP address. You
+can match this text by using the following grok expression:</p>
+<div class="pre_wrapper lang-txt">
+<pre class="programlisting prettyprint lang-txt">%{NUMBER:duration} %{IP:client}</pre>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="grok-ecs"></a>Migrating to Elastic Common Schema (ECS)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/grok-syntax.asciidoc">edit</a></h3>
+</div></div></div>
+<p>To ease migration to the <a href="https://www.elastic.co/guide/en/ecs/8.9" class="ulink" target="_top">Elastic Common Schema (ECS)</a>, a new set of
+ECS-compliant patterns is available in addition to the existing patterns. The
+new ECS pattern definitions capture event field names that are compliant with
+the schema.</p>
+<p>The ECS pattern set has all of the pattern definitions from the legacy set, and
+is a drop-in replacement. Use the
+<a href="https://www.elastic.co/guide/en/logstash/8.9/plugins-filters-grok.html#plugins-filters-grok-ecs_compatibility" class="ulink" target="_top"><code class="literal">ecs-compatability</code></a>
+setting to switch modes.</p>
+<p>New features and enhancements will be added to the ECS-compliant files. The
+legacy patterns may still receive bug fixes which are backwards compatible.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="grok-patterns"></a>Use grok patterns in Painless scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/grok-syntax.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can incorporate predefined grok patterns into Painless scripts to extract
+data. To test your script, use either the <a href="https://www.elastic.co/guide/en/elasticsearch/painless/8.9/painless-execute-api.html#painless-execute-runtime-field-context" class="ulink" target="_top">field contexts</a> of the Painless
+execute API or create a runtime field that includes the script. Runtime fields
+offer greater flexibility and accept multiple documents, but the Painless
+execute API is a great option if you don&#8217;t have write access on a cluster
+where you&#8217;re testing a script.</p>
+<div class="tip admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
+<p>If you need help building grok patterns to match your data, use the
+<a href="https://www.elastic.co/guide/en/kibana/8.9/xpack-grokdebugger.html" class="ulink" target="_top">Grok Debugger</a> tool in Kibana.</p>
 </div>
 </div>
-<p>The contents of <code class="literal">position</code> are experimental and subject to change.</p>
+<p>For example, if you&#8217;re working with Apache log data, you can use the
+<code class="literal">%{COMMONAPACHELOG}</code> syntax, which understands the structure of Apache logs. A
+sample document might look like this:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">"timestamp":"2020-04-30T14:30:17-05:00","message":"40.135.0.0 - -
+[30/Apr/2020:14:30:17 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"</pre>
+</div>
+<p>To extract the IP address from the <code class="literal">message</code> field, you can write a Painless
+script that incorporates the <code class="literal">%{COMMONAPACHELOG}</code> syntax. You can test this
+script using the <a href="https://www.elastic.co/guide/en/elasticsearch/painless/8.9/painless-execute-api.html#painless-runtime-ip" class="ulink" target="_top"><code class="literal">ip</code> field context</a> of the Painless execute API, but let&#8217;s use a runtime field
+instead.</p>
+<p>Based on the sample document, index the <code class="literal">@timestamp</code> and <code class="literal">message</code> fields. To
+remain flexible, use <code class="literal">wildcard</code> as the field type for <code class="literal">message</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /my-index/
+{
+  "mappings": {
+    "properties": {
+      "@timestamp": {
+        "format": "strict_date_optional_time||epoch_second",
+        "type": "date"
+      },
+      "message": {
+        "type": "wildcard"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1582.console"></div>
+<p>Next, use the <a class="xref" href="docs.html#docs-bulk" title="Bulk API">bulk API</a> to index some log data into
+<code class="literal">my-index</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /my-index/_bulk?refresh
+{"index":{}}
+{"timestamp":"2020-04-30T14:30:17-05:00","message":"40.135.0.0 - - [30/Apr/2020:14:30:17 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:30:53-05:00","message":"232.0.0.0 - - [30/Apr/2020:14:30:53 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:12-05:00","message":"26.1.0.0 - - [30/Apr/2020:14:31:12 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:19-05:00","message":"247.37.0.0 - - [30/Apr/2020:14:31:19 -0500] \"GET /french/splash_inet.html HTTP/1.0\" 200 3781"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:22-05:00","message":"247.37.0.0 - - [30/Apr/2020:14:31:22 -0500] \"GET /images/hm_nbg.jpg HTTP/1.0\" 304 0"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:27-05:00","message":"252.0.0.0 - - [30/Apr/2020:14:31:27 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"}
+{"index":{}}
+{"timestamp":"2020-04-30T14:31:28-05:00","message":"not a valid apache log"}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1583.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="grok-patterns-runtime"></a>Incorporate grok patterns and scripts in runtime fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/grok-syntax.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Now you can define a runtime field in the mappings that includes your Painless
+script and grok pattern. If the pattern matches, the script emits the value of
+the matching IP address. If the pattern doesn&#8217;t match (<code class="literal">clientip != null</code>), the
+script just returns the field value without crashing.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index/_mappings
+{
+  "runtime": {
+    "http.clientip": {
+      "type": "ip",
+      "script": """
+        String clientip=grok('%{COMMONAPACHELOG}').extract(doc["message"].value)?.clientip;
+        if (clientip != null) emit(clientip);
+      """
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1584.console"></div>
+<p>Alternatively, you can define the same runtime field but in the context of a
+search request. The runtime definition and the script are exactly the same as
+the one defined previously in the index mapping. Just copy that definition into
+the search request under the <code class="literal">runtime_mappings</code> section and include a query
+that matches on the runtime field. This query returns the same results as if
+you <a class="xref" href="modules-scripting-using.html#grok-pattern-results" title="Return calculated results">defined a search query</a> for the <code class="literal">http.clientip</code>
+runtime field in your index mappings, but only in the context of this specific
+search:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+  "runtime_mappings": {
+    "http.clientip": {
+      "type": "ip",
+      "script": """
+        String clientip=grok('%{COMMONAPACHELOG}').extract(doc["message"].value)?.clientip;
+        if (clientip != null) emit(clientip);
+      """
+    }
+  },
+  "query": {
+    "match": {
+      "http.clientip": "40.135.0.0"
+    }
+  },
+  "fields" : ["http.clientip"]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1585.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="grok-pattern-results"></a>Return calculated results<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/scripting/grok-syntax.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Using the <code class="literal">http.clientip</code> runtime field, you can define a simple query to run a
+search for a specific IP address and return all related fields. The <a class="xref" href="search-fields.html" title="Retrieve selected fields from a search"><code class="literal">fields</code></a> parameter on the <code class="literal">_search</code> API works for all fields,
+even those that weren&#8217;t sent as part of the original <code class="literal">_source</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_search
+{
+  "query": {
+    "match": {
+      "http.clientip": "40.135.0.0"
+    }
+  },
+  "fields" : ["http.clientip"]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1586.console"></div>
+<p>The response includes the specific IP address indicated in your search query.
+The grok pattern within the Painless script extracted this value from the
+<code class="literal">message</code> field at runtime.</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "hits" : {
+    "total" : {
+      "value" : 1,
+      "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "my-index",
+        "_id" : "1iN2a3kBw4xTzEDqyYE0",
+        "_score" : 1.0,
+        "_source" : {
+          "timestamp" : "2020-04-30T14:30:17-05:00",
+          "message" : "40.135.0.0 - - [30/Apr/2020:14:30:17 -0500] \"GET /images/hm_bg.jpg HTTP/1.0\" 200 24736"
+        },
+        "fields" : {
+          "http.clientip" : [
+            "40.135.0.0"
+          ]
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+</div>
+
 </div>
 
 </div>
 <div class="navfooter">
 <span class="prev">
-<a href="modules-scripting.html">« Scripting</a>
+<a href="modules-scripting-painless.html">« Painless scripting language</a>
 </span>
 <span class="next">
-<a href="modules-scripting-fields.html">Accessing document fields and special variables »</a>
+<a href="script-fields-api.html">Access fields in a document with the <code class="literal">field</code> API »</a>
 </span>
 </div>
 </div>

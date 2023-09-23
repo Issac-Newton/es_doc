@@ -1,11 +1,5 @@
-PUT index
+POST /_sql?format=yaml
 {
-  "mappings": {
-    "properties": {
-      "foo": {
-        "type": "text",
-        "norms": false
-      }
-    }
-  }
+  "query": "SELECT * FROM library ORDER BY page_count DESC",
+  "fetch_size": 5
 }

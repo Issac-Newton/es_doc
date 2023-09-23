@@ -1,15 +1,17 @@
-GET /products/_search
+GET my_locations/_search
 {
   "query": {
-    "match": { "name": "led tv" }
-  },
-  "aggs": {
-    "resellers": {
-      "nested": {
-        "path": "resellers"
+    "bool": {
+      "must": {
+        "match_all": {}
       },
-      "aggs": {
-        "min_price": { "min": { "field": "resellers.price" } }
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "top_left": "dr5r9ydj2y73",
+            "bottom_right": "drj7teegpus6"
+          }
+        }
       }
     }
   }

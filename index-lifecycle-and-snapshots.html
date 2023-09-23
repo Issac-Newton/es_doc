@@ -7,9 +7,9 @@
 <meta class="elastic" name="content" content="Restore a managed data stream or index | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle"/>
+<link rel="up" href="data-management.html" title="Data management"/>
 <link rel="prev" href="skipping-rollover.html" title="Skip rollover"/>
-<link rel="next" href="monitor-elasticsearch-cluster.html" title="Monitor a cluster"/>
+<link rel="next" href="data-tiers.html" title="Data tiers"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -105,20 +105,24 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index-lifecycle-management.html">ILM: Manage the index lifecycle</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="data-management.html">Data management</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
 <a href="skipping-rollover.html">« Skip rollover</a>
 </span>
 <span class="next">
-<a href="monitor-elasticsearch-cluster.html">Monitor a cluster »</a>
+<a href="data-tiers.html">Data tiers »</a>
 </span>
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="index-lifecycle-and-snapshots"></a>Restore a managed data stream or index<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/ilm-and-snapshots.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="index-lifecycle-and-snapshots"></a>Restore a managed data stream or index<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/ilm-and-snapshots.asciidoc">edit</a></h2>
 </div></div></div>
+<p>To <a class="xref" href="snapshot-restore-apis.html#restore-snapshot-api" title="Restore snapshot API">restore</a> managed indices, ensure that the ILM
+policies referenced by the indices exist. If necessary, you can restore
+ILM policies by setting
+<a class="xref" href="snapshot-restore-apis.html#restore-snapshot-api-request-body" title="Request body"><code class="literal">include_global_state</code></a> to <code class="literal">true</code>.</p>
 <p>When you restore a managed index or a data stream with managed backing indices,
 ILM automatically resumes executing the restored indices' policies.
 A restored index&#8217;s <code class="literal">min_age</code> is relative to when it was originally created or rolled over,
@@ -157,7 +161,7 @@ before ILM resumes policy execution.
 <a href="skipping-rollover.html">« Skip rollover</a>
 </span>
 <span class="next">
-<a href="monitor-elasticsearch-cluster.html">Monitor a cluster »</a>
+<a href="data-tiers.html">Data tiers »</a>
 </span>
 </div>
 </div>

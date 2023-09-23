@@ -1,5 +1,5 @@
-POST my-index-000001/_doc/1?refresh
+POST _snapshot/my_repository/my_snapshot_2099.05.06/_restore
 {
-  "text": "words words",
-  "flag": "foo"
+  "indices": "*",
+  "include_global_state": true
 }

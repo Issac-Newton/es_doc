@@ -1,1 +1,14 @@
-POST /_snapshot/my_repository/_cleanup
+GET latency/_search
+{
+  "size": 0,
+  "aggs": {
+    "load_time_outlier": {
+      "percentiles": {
+        "field": "load_time",
+        "tdigest": {
+          "compression": 200   
+        }
+      }
+    }
+  }
+}

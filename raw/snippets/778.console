@@ -1,12 +1,30 @@
-GET /_search
+POST _aliases
 {
-  "query": {
-    "bool": {
-      "should": [
-        { "match": { "title":          "quick brown fox" }},
-        { "match": { "title.original": "quick brown fox" }},
-        { "match": { "title.shingles": "quick brown fox" }}
-      ]
+  "actions": [
+    {
+      "add": {
+        "index": "my-index-2099.05.06-000001",
+        "alias": "my-alias",
+        "filter": {
+          "bool": {
+            "filter": [
+              {
+                "range": {
+                  "@timestamp": {
+                    "gte": "now-1d/d",
+                    "lt": "now/d"
+                  }
+                }
+              },
+              {
+                "term": {
+                  "user.id": "kimchy"
+                }
+              }
+            ]
+          }
+        }
+      }
     }
-  }
+  ]
 }

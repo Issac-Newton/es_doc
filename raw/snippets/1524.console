@@ -1,5 +1,6 @@
-PUT index/_doc/1
+GET /my-data-stream/_eql/search
 {
-  "designation": "spoon",
-  "price": 13
+  "query": """
+    process where process.name == "regsvr32.exe" and process.command_line.keyword != null
+  """
 }

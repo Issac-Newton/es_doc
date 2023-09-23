@@ -1,23 +1,26 @@
-PUT /my-index-000001
+PUT my-index-000001
 {
   "settings": {
     "analysis": {
       "analyzer": {
-        "my_custom_index_analyzer": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "filter": [
-            "my_custom_word_delimiter_graph_filter",
-            "flatten_graph"
-          ]
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer"
         }
       },
-      "filter": {
-        "my_custom_word_delimiter_graph_filter": {
-          "type": "word_delimiter_graph",
-          "catenate_all": true
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "-",
+          "replacement": "/",
+          "skip": 2
         }
       }
     }
   }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "one-two-three-four-five"
 }

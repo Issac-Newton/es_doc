@@ -1,1 +1,8 @@
-POST _tasks/oTUltX4IQMOUUVeiohTt8A:12345/_cancel
+PUT test-index
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1,
+    "index.lifecycle.name": "my_policy"
+  }
+}

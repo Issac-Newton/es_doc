@@ -1,6 +1,12 @@
-PUT /analyze_sample
+POST /_security/role/test_role4
 {
-  "settings" : {
-    "index.analyze.max_token_count" : 20000
-  }
+  "indices" : [
+    {
+      "names" : [ "*" ],
+      "privileges" : [ "read" ],
+      "field_security" : {
+        "grant" : [ "customer.*" ]
+      }
+    }
+  ]
 }

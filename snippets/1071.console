@@ -1,11 +1,25 @@
-GET /_search
+PUT /drivers
 {
-  "aggs": {
-    "products": {
-      "terms": {
-        "field": "product",
-        "size": 5,
-        "show_term_doc_count_error": true
+  "mappings": {
+    "properties": {
+      "driver": {
+        "type": "nested",
+        "properties": {
+          "last_name": {
+            "type": "text"
+          },
+          "vehicle": {
+            "type": "nested",
+            "properties": {
+              "make": {
+                "type": "text"
+              },
+              "model": {
+                "type": "text"
+              }
+            }
+          }
+        }
       }
     }
   }

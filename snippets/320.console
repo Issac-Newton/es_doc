@@ -1,5 +1,4 @@
-POST _analyze
+PUT idx/_doc/1
 {
-  "analyzer": "keyword",
-  "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
+  "foo.bar.baz": 1
 }

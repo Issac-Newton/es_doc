@@ -1,9 +1,12 @@
-GET my-index-000001/_search
+PUT /_index_template/my-data-stream-template
 {
-  "track_total_hits": true,
-  "query": {
-    "match" : {
-      "user.id" : "elkbee"
+  "index_patterns": [ "my-data-stream*" ],
+  "data_stream": { },
+  "priority": 500,
+  "template": {
+    "settings": {
+      "sort.field": [ "@timestamp"],            
+      "sort.order": [ "desc"]                   
     }
   }
 }

@@ -1,12 +1,9 @@
-POST /sales/_search?size=0
+GET /_search
 {
-  "aggs": {
-    "quantity": {
-      "histogram": {
-        "field": "quantity",
-        "interval": 10,
-        "missing": 0
-      }
+  "query": {
+    "simple_query_string": {
+      "query": "ny city",
+      "auto_generate_synonyms_phrase_query": false
     }
   }
 }

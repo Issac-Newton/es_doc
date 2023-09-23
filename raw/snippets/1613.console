@@ -1,1 +1,12 @@
-GET /_cluster/stats?human&pretty
+PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "delete": {
+        "actions": {
+          "delete" : { }
+        }
+      }
+    }
+  }
+}

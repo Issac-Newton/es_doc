@@ -1,15 +1,13 @@
-GET /_search
+GET /my-index-000001/_search
 {
   "query": {
-    "common": {
-      "body": {
-        "query": "nelly the elephant not as a cartoon",
-        "cutoff_frequency": 0.001,
-        "minimum_should_match": {
-          "low_freq": 2,
-          "high_freq": 3
-        }
-      }
+    "match": {
+      "message": "GET /search"
     }
-  }
+  },
+  "collapse": {
+    "field": "user.id"
+  },
+  "sort": [ "user.id" ],
+  "search_after": ["dd5ce1ad"]
 }

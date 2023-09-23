@@ -1,12 +1,10 @@
 GET /_search
 {
-  "size": 0,
-  "aggs": {
-    "my_buckets": {
-      "composite": {
-        "sources": [
-          { "histo": { "histogram": { "field": "price", "interval": 5 } } }
-        ]
+  "query": {
+    "function_score": {
+      "random_score": {
+        "seed": 10,
+        "field": "_seq_no"
       }
     }
   }

@@ -1,8 +1,12 @@
-PUT /_enrich/policy/postal_policy
+PUT _component_template/logs-foo_component1
 {
-  "geo_match": {
-    "indices": "postal_codes",
-    "match_field": "location",
-    "enrich_fields": [ "location", "postal_code" ]
+  "template": {
+    "mappings": {
+      "properties": {
+        "host.name": {
+          "type": "keyword"
+        }
+      }
+    }
   }
 }

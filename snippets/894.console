@@ -1,8 +1,9 @@
-GET /_search
+POST _render/template
 {
-  "query": {
-    "term" : {
-      "query.extraction_result" : "failed"
-    }
+  "id": "my-search-template",
+  "params": {
+    "query_string": "hello world",
+    "from": 20,
+    "size": 10
   }
 }

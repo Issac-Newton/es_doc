@@ -1,4 +1,13 @@
-POST /example/_doc
+PUT idx
 {
-  "location" : "BBOX (1000.0, 1002.0, 2000.0, 1000.0)"
+  "mappings": {
+    "_source": { "mode": "synthetic" },
+    "properties": {
+      "kwd": { "type": "keyword", "store": true }
+    }
+  }
+}
+PUT idx/_doc/1
+{
+  "kwd": ["foo", "foo", "bar", "baz"]
 }

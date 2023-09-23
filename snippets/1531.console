@@ -1,11 +1,5 @@
-PUT index
+POST /_sql?format=csv
 {
-  "mappings": {
-    "properties": {
-      "foo": {
-        "type": "keyword",
-        "eager_global_ordinals": true
-      }
-    }
-  }
+  "query": "SELECT * FROM library ORDER BY page_count DESC",
+  "fetch_size": 5
 }

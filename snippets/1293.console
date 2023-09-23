@@ -1,19 +1,18 @@
-GET /my_test_scores/_search
+PUT /products
 {
-  "query": {
-    "term": {
-      "grad_year": "2099"
-    }
-  },
-  "sort": [
-    {
-      "_script": {
-        "type": "number",
-        "script": {
-          "source": "doc['math_score'].value + doc['verbal_score'].value"
-        },
-        "order": "desc"
+  "mappings": {
+    "properties": {
+      "resellers": {
+        "type": "nested",
+        "properties": {
+          "reseller": {
+            "type": "keyword"
+          },
+          "price": {
+            "type": "double"
+          }
+        }
       }
     }
-  ]
+  }
 }

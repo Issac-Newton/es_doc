@@ -1,40 +1,32 @@
-POST /_search
+PUT _component_template/my-weather-sensor-mappings
 {
-   "query" : {
-      "match" : {
-         "message" : {
-            "operator" : "or",
-            "query" : "the quick brown"
-         }
+  "template": {
+    "mappings": {
+      "properties": {
+        "sensor_id": {
+          "type": "keyword",
+          "time_series_dimension": true
+        },
+        "location": {
+          "type": "keyword",
+          "time_series_dimension": true
+        },
+        "temperature": {
+          "type": "half_float",
+          "time_series_metric": "gauge"
+        },
+        "humidity": {
+          "type": "half_float",
+          "time_series_metric": "gauge"
+        },
+        "@timestamp": {
+          "type": "date",
+          "format": "strict_date_optional_time"
+        }
       }
-   },
-   "rescore" : [ {
-      "window_size" : 100,
-      "query" : {
-         "rescore_query" : {
-            "match_phrase" : {
-               "message" : {
-                  "query" : "the quick brown",
-                  "slop" : 2
-               }
-            }
-         },
-         "query_weight" : 0.7,
-         "rescore_query_weight" : 1.2
-      }
-   }, {
-      "window_size" : 10,
-      "query" : {
-         "score_mode": "multiply",
-         "rescore_query" : {
-            "function_score" : {
-               "script_score": {
-                  "script": {
-                    "source": "Math.log10(doc.count.value + 2)"
-                  }
-               }
-            }
-         }
-      }
-   } ]
+    }
+  },
+  "_meta": {
+    "description": "Mappings for weather sensor data"
+  }
 }

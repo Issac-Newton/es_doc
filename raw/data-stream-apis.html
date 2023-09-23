@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>Data stream APIs | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="Data stream APIs | Elasticsearch Guide">
 
@@ -33,7 +34,7 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="data-stream-apis"></a>Data stream APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/data-streams/data-stream-apis.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="data-stream-apis"></a>Data stream APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/data-streams/data-stream-apis.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The following APIs are available for managing <a class="xref" href="data-streams.html" title="Data streams">data streams</a>:</p>
 <div class="ulist itemizedlist">
@@ -48,33 +49,48 @@
 <a class="xref" href="data-stream-apis.html#indices-get-data-stream" title="Get data stream API">Get data stream</a>
 </li>
 <li class="listitem">
+<a class="xref" href="data-stream-apis.html#indices-migrate-to-data-stream" title="Migrate to data stream API">Migrate to data stream</a>
+</li>
+<li class="listitem">
 <a class="xref" href="data-stream-apis.html#data-stream-stats-api" title="Data stream stats API">Data stream stats</a>
+</li>
+<li class="listitem">
+<a class="xref" href="data-stream-apis.html#promote-data-stream-api" title="Promote data stream API">Promote data stream</a>
+</li>
+<li class="listitem">
+<a class="xref" href="data-stream-apis.html#modify-data-streams-api" title="Modify data streams API">Modify data streams</a>
+</li>
+</ul>
+</div>
+<p>The following API is available for <a class="xref" href="tsds.html" title="Time series data stream (TSDS)">time series data streams</a>:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="data-stream-apis.html#indices-downsample-data-stream" title="Downsample index API">Downsample</a>
 </li>
 </ul>
 </div>
 <p>For concepts and tutorials, see <a class="xref" href="data-streams.html" title="Data streams"><em>Data streams</em></a>.</p>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="indices-create-data-stream"></a>Create data stream API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/create-data-stream.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="indices-create-data-stream"></a>Create data stream API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/create-data-stream.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Creates a new <a class="xref" href="data-streams.html" title="Data streams">data stream</a>.</p>
-<p>Data streams require a matching <a class="xref" href="index-templates.html" title="Index templates">index template</a>.
-See <a class="xref" href="set-up-a-data-stream.html" title="Set up a data stream"><em>Set up a data stream</em></a>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT /_data_stream/my-data-stream</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1668.console"></div>
+<div class="console_widget" data-snippet="snippets/2230.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="indices-create-data-stream-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/create-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="indices-create-data-stream-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/create-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">PUT /_data_stream/&lt;data-stream&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="indices-create-data-stream-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/create-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="indices-create-data-stream-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/create-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -82,13 +98,17 @@ See <a class="xref" href="set-up-a-data-stream.html" title="Set up a data stream
 If the Elasticsearch security features are enabled, you must have the <code class="literal">create_index</code>
 or <code class="literal">manage</code> <a class="xref" href="authorization.html#privileges-list-indices" title="Indices privileges">index privilege</a> for the data stream.
 </li>
+<li class="listitem">
+A matching <a class="xref" href="index-templates.html" title="Index templates">index template</a> with data stream enabled.
+See <a class="xref" href="set-up-a-data-stream.html" title="Set up a data stream"><em>Set up a data stream</em></a>.
+</li>
 </ul>
 </div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="indices-create-data-stream-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/create-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="indices-create-data-stream-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/create-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -98,27 +118,26 @@ or <code class="literal">manage</code> <a class="xref" href="authorization.html#
 </span>
 </dt>
 <dd>
-<p>(Required, string) Name of the data stream to create.</p>
-<p>We recommend using the <a class="xref" href="set-up-a-data-stream.html#elastic-data-stream-naming-scheme" title="The Elastic data stream naming scheme">Elastic data stream
-naming scheme</a>. Data stream names must meet the following criteria:</p>
+<p>(Required, string) Name of the data stream to create. Data stream names must
+meet the following criteria:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
 Lowercase only
 </li>
 <li class="listitem">
-Cannot include <code class="literal">\</code>, <code class="literal">/</code>, <code class="literal">*</code>, <code class="literal">?</code>, <code class="literal">"</code>, <code class="literal">&lt;</code>, <code class="literal">&gt;</code>, <code class="literal">|</code>, ` ` (space character),
-<code class="literal">,</code>, <code class="literal">#</code>, <code class="literal">:</code>
+Cannot include <code class="literal">\</code>, <code class="literal">/</code>, <code class="literal">*</code>, <code class="literal">?</code>, <code class="literal">"</code>, <code class="literal">&lt;</code>, <code class="literal">&gt;</code>, <code class="literal">|</code>, <code class="literal">,</code>, <code class="literal">#</code>, <code class="literal">:</code>, or a
+space character
 </li>
 <li class="listitem">
-Cannot start with <code class="literal">-</code>, <code class="literal">_</code>, <code class="literal">+</code>, <code class="literal">.</code>
+Cannot start with <code class="literal">-</code>, <code class="literal">_</code>, <code class="literal">+</code>, or <code class="literal">.ds-</code>
 </li>
 <li class="listitem">
 Cannot be <code class="literal">.</code> or <code class="literal">..</code>
 </li>
 <li class="listitem">
-Cannot be longer than 255 bytes (note it is bytes, so multi-byte characters
-will count towards the 255 limit faster)
+Cannot be longer than 255 bytes. Multi-byte characters
+count towards this limit faster.
 </li>
 </ul>
 </div>
@@ -131,25 +150,25 @@ will count towards the 255 limit faster)
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="indices-delete-data-stream"></a>Delete data stream API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/delete-data-stream.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="indices-delete-data-stream"></a>Delete data stream API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/delete-data-stream.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Deletes one or more <a class="xref" href="data-streams.html" title="Data streams">data streams</a> and their backing
-indices. See <a class="xref" href="set-up-a-data-stream.html#delete-a-data-stream" title="Delete a data stream">Delete a data stream</a>.</p>
+indices. See <a class="xref" href="set-up-a-data-stream.html#delete-data-stream" title="Delete a data stream">Delete a data stream</a>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">DELETE /_data_stream/my-data-stream</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1669.console"></div>
+<div class="console_widget" data-snippet="snippets/2231.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-data-stream-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/delete-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="delete-data-stream-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/delete-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">DELETE /_data_stream/&lt;data-stream&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-data-stream-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/delete-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="delete-data-stream-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/delete-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -163,7 +182,7 @@ or <code class="literal">manage</code> <a class="xref" href="authorization.html#
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-data-stream-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/delete-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="delete-data-stream-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/delete-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -181,29 +200,78 @@ Wildcard (<code class="literal">*</code>) expressions are supported.
 </div>
 </div>
 
+<div class="section child_attributes">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="delete-data-stream-api-query-parms"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/delete-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">expand_wildcards</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string)
+Type of data stream that wildcard patterns can match. Supports
+comma-separated values, such as <code class="literal">open,hidden</code>. Valid values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">all</code>, <code class="literal">hidden</code>
+</span>
+</dt>
+<dd>
+Match any data stream, including <a class="xref" href="api-conventions.html#multi-hidden" title="Hidden data streams and indices">hidden</a> ones.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">open</code>, <code class="literal">closed</code>
+</span>
+</dt>
+<dd>
+Matches any non-hidden data stream. Data streams cannot be closed.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">none</code>
+</span>
+</dt>
+<dd>
+Wildcard patterns are not accepted.
+</dd>
+</dl>
+</div>
+<p>Defaults to <code class="literal">open</code>.</p>
+</dd>
+</dl>
+</div>
+</div>
+
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="indices-get-data-stream"></a>Get data stream API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/get-data-stream.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="indices-get-data-stream"></a>Get data stream API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/get-data-stream.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Retrieves information about one or more <a class="xref" href="data-streams.html" title="Data streams">data streams</a>.
-See <a class="xref" href="set-up-a-data-stream.html#get-info-about-a-data-stream" title="Get information about a data stream">Get information about a data stream</a>.</p>
+See <a class="xref" href="set-up-a-data-stream.html#get-info-about-data-stream" title="Get information about a data stream">Get information about a data stream</a>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_data_stream/my-data-stream</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1670.console"></div>
+<div class="console_widget" data-snippet="snippets/2232.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-data-stream-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-data-stream-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET /_data_stream/&lt;data-stream&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-data-stream-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-data-stream-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -218,7 +286,7 @@ for the data stream.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-data-stream-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-data-stream-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -239,7 +307,70 @@ returned.
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-data-stream-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-data-stream-api-query-parms"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">expand_wildcards</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string)
+Type of data stream that wildcard patterns can match. Supports
+comma-separated values, such as <code class="literal">open,hidden</code>. Valid values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">all</code>, <code class="literal">hidden</code>
+</span>
+</dt>
+<dd>
+Match any data stream, including <a class="xref" href="api-conventions.html#multi-hidden" title="Hidden data streams and indices">hidden</a> ones.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">open</code>, <code class="literal">closed</code>
+</span>
+</dt>
+<dd>
+Matches any non-hidden data stream. Data streams cannot be closed.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">none</code>
+</span>
+</dt>
+<dd>
+Wildcard patterns are not accepted.
+</dd>
+</dl>
+</div>
+<p>Defaults to <code class="literal">open</code>.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">include_defaults</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) Functionality in <span class="Admonishment Admonishment--preview">
+[<span class="Admonishment-title u-mono">preview</span>]
+<span class="Admonishment-detail">
+This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.
+</span>
+</span>. If <code class="literal">true</code>, return all default settings in the response.
+Defaults to <code class="literal">false</code>.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section child_attributes">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="get-data-stream-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -352,6 +483,17 @@ acts as a cumulative count of the stream&#8217;s rollovers, starting at <code cl
 </dd>
 <dt>
 <span class="term">
+<code class="literal">_meta</code>
+</span>
+</dt>
+<dd>
+(object)
+Custom metadata for the stream, copied from the <code class="literal">_meta</code> object of the
+stream&#8217;s matching <a class="xref" href="set-up-a-data-stream.html#create-index-template" title="Create an index template">index template</a>. If empty,
+the response omits this property.
+</dd>
+<dt>
+<span class="term">
 <code class="literal">status</code>
 </span>
 </dt>
@@ -369,7 +511,7 @@ the stream&#8217;s backing indices.</p>
 <dl class="variablelist">
 <dt>
 <span class="term">
-<code class="literal">green</code>
+<code class="literal">GREEN</code>
 </span>
 </dt>
 <dd>
@@ -377,7 +519,7 @@ All shards are assigned.
 </dd>
 <dt>
 <span class="term">
-<code class="literal">yellow</code>
+<code class="literal">YELLOW</code>
 </span>
 </dt>
 <dd>
@@ -386,7 +528,7 @@ unassigned.
 </dd>
 <dt>
 <span class="term">
-<code class="literal">red</code>
+<code class="literal">RED</code>
 </span>
 </dt>
 <dd>
@@ -408,7 +550,7 @@ One or more primary shards are unassigned, so some data is unavailable.
 Name of the index template used to create the data stream&#8217;s backing indices.
 </p>
 <p>The template&#8217;s index pattern must match the name of this data stream. See
-<a class="xref" href="set-up-a-data-stream.html#create-a-data-stream-template" title="Create an index template">Create an index template</a>.</p>
+<a class="xref" href="set-up-a-data-stream.html#create-index-template" title="Create an index template">create an index template</a>.</p>
 </dd>
 <dt>
 <span class="term">
@@ -432,6 +574,89 @@ use the <a class="xref" href="indices.html#indices-get-settings" title="Get inde
 </div>
 </div>
 </dd>
+<dt>
+<span class="term">
+<code class="literal">hidden</code>
+</span>
+</dt>
+<dd>
+(Boolean) If <code class="literal">true</code>, the data stream is <a class="xref" href="api-conventions.html#multi-hidden" title="Hidden data streams and indices">hidden</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">system</code>
+</span>
+</dt>
+<dd>
+(Boolean)
+If <code class="literal">true</code>, the data stream is created and managed by an Elastic stack component
+and cannot be modified through normal user interaction.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">allow_custom_routing</code>
+</span>
+</dt>
+<dd>
+(Boolean)
+If <code class="literal">true</code>, the data stream this data stream allows custom routing on write request.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">replicated</code>
+</span>
+</dt>
+<dd>
+(Boolean)
+If <code class="literal">true</code>, the data stream is created and managed by cross-cluster replication and the local
+cluster can not write into this data stream or change its mappings.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">lifecycle</code>
+</span>
+</dt>
+<dd>
+<p>
+(object)
+Functionality in <span class="Admonishment Admonishment--preview">
+[<span class="Admonishment-title u-mono">preview</span>]
+<span class="Admonishment-detail">
+This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.
+</span>
+</span>. Contains the configuration for the data lifecycle management of this data stream.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">lifecycle</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">data_retention</code>
+</span>
+</dt>
+<dd>
+(string)
+If defined, every document added to this data stream will be stored at least for this time frame. Any time after this
+duration the document could be deleted. When empty, every document in this data stream will be stored indefinitely.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">rollover</code>
+</span>
+</dt>
+<dd>
+(object)
+The conditions which will trigger the rollover of a backing index as configured by the cluster setting
+<code class="literal">cluster.lifecycle.default.rollover</code>. This property is an implementation detail and it will only be retrieved when the query
+param <code class="literal">include_defaults</code> is set to <code class="literal">true</code>. The contents of this field are subject to change.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
 </dl>
 </div>
 </div>
@@ -443,12 +668,12 @@ use the <a class="xref" href="indices.html#indices-get-settings" title="Get inde
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-data-stream-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-data-stream-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/get-data-stream.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET _data_stream/my-data-stream*</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1671.console"></div>
+<div class="console_widget" data-snippet="snippets/2233.console"></div>
 <p>The API returns the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -460,34 +685,48 @@ use the <a class="xref" href="indices.html#indices-get-settings" title="Get inde
       },
       "indices": [
         {
-          "index_name": ".ds-my-data-stream-000001",
+          "index_name": ".ds-my-data-stream-2099.03.07-000001",
           "index_uuid": "xCEhwsp8Tey0-FLNFYVwSg"
         },
         {
-          "index_name": ".ds-my-data-stream-000002",
+          "index_name": ".ds-my-data-stream-2099.03.08-000002",
           "index_uuid": "PA_JquKGSiKcAKBA8DJ5gw"
         }
       ],
       "generation": 2,
+      "_meta": {
+        "my-meta-field": "foo"
+      },
       "status": "GREEN",
       "template": "my-index-template",
-      "ilm_policy": "my-lifecycle-policy"
+      "ilm_policy": "my-lifecycle-policy",
+      "hidden": false,
+      "system": false,
+      "allow_custom_routing": false,
+      "replicated": false
     },
     {
-      "name": "my-data-stream_two",
+      "name": "my-data-stream-two",
       "timestamp_field": {
         "name": "@timestamp"
       },
       "indices": [
         {
-          "index_name": ".ds-my-data-stream_two-000001",
+          "index_name": ".ds-my-data-stream-two-2099.03.08-000001",
           "index_uuid": "3liBu2SYS5axasRt6fUIpA"
         }
       ],
       "generation": 1,
+      "_meta": {
+        "my-meta-field": "foo"
+      },
       "status": "YELLOW",
       "template": "my-index-template",
-      "ilm_policy": "my-lifecycle-policy"
+      "ilm_policy": "my-lifecycle-policy",
+      "hidden": false,
+      "system": false,
+      "allow_custom_routing": false,
+      "replicated": false
     }
   ]
 }</pre>
@@ -498,17 +737,93 @@ use the <a class="xref" href="indices.html#indices-get-settings" title="Get inde
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="data-stream-stats-api"></a>Data stream stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/data-stream-stats.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="indices-migrate-to-data-stream"></a>Migrate to data stream API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/migrate-to-data-stream.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Converts an <a class="xref" href="aliases.html" title="Aliases">index alias</a> to a <a class="xref" href="data-streams.html" title="Data streams">data stream</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_data_stream/_migrate/my-logs</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2234.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="indices-migrate-to-data-stream-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/migrate-to-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">POST /_data_stream/_migrate/&lt;alias&gt;</code></p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="indices-migrate-to-data-stream-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/migrate-to-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have the <code class="literal">manage</code>
+<a class="xref" href="authorization.html#privileges-list-indices" title="Indices privileges">index privilege</a> for the index alias.
+</li>
+<li class="listitem">
+A matching <a class="xref" href="index-templates.html" title="Index templates">index template</a> with data stream enabled.
+See <a class="xref" href="set-up-a-data-stream.html" title="Set up a data stream"><em>Set up a data stream</em></a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="indices-migrate-to-data-stream-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/migrate-to-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;alias&gt;</code>
+</span>
+</dt>
+<dd>
+<p>(Required, string)
+Name of the index alias to convert to a data stream. The alias must meet the
+following criteria:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The alias must have a <a class="xref" href="aliases.html#write-index" title="Write index">write index</a>.
+</li>
+<li class="listitem">
+All indices for the alias have a <code class="literal">@timestamp</code> field mapping of a <code class="literal">date</code> or <code class="literal">date_nanos</code> field type.
+</li>
+<li class="listitem">
+The alias must not have any <a class="xref" href="aliases.html#filter-alias" title="Filter an alias">filters</a>.
+</li>
+<li class="listitem">
+The alias must not use <a class="xref" href="aliases.html#alias-routing" title="Routing">custom routing</a>.
+</li>
+</ul>
+</div>
+<p>If successful, the request removes the alias and creates a data stream with the
+same name. The alias&#8217;s indices become hidden backing indices for the stream. The
+alias&#8217;s write index becomes the stream&#8217;s write index.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="data-stream-stats-api"></a>Data stream stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Retrieves statistics for one or more <a class="xref" href="data-streams.html" title="Data streams">data streams</a>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_data_stream/my-data-stream/_stats</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1672.console"></div>
+<div class="console_widget" data-snippet="snippets/2235.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="data-stream-stats-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="data-stream-stats-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -523,14 +838,14 @@ for the data stream.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="data-stream-stats-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="data-stream-stats-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
 </div></div></div>
-<p><code class="literal">GET /_data_stream/&lt;data-stream&gt;</code></p>
+<p><code class="literal">GET /_data_stream/&lt;data-stream&gt;/_stats</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="data-stream-stats-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="data-stream-stats-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -553,10 +868,49 @@ expressions (<code class="literal">*</code>) are supported.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="data-stream-stats-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="data-stream-stats-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">expand_wildcards</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string)
+Type of data stream that wildcard patterns can match. Supports
+comma-separated values, such as <code class="literal">open,hidden</code>. Valid values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">all</code>, <code class="literal">hidden</code>
+</span>
+</dt>
+<dd>
+Match any data stream, including <a class="xref" href="api-conventions.html#multi-hidden" title="Hidden data streams and indices">hidden</a> ones.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">open</code>, <code class="literal">closed</code>
+</span>
+</dt>
+<dd>
+Matches any non-hidden data stream. Data streams cannot be closed.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">none</code>
+</span>
+</dt>
+<dd>
+Wildcard patterns are not accepted.
+</dd>
+</dl>
+</div>
+<p>Defaults to <code class="literal">open</code>.</p>
+</dd>
 <dt>
 <span class="term">
 <code class="literal">human</code>
@@ -573,7 +927,7 @@ values</a>. Defaults to <code class="literal">false</code>.
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="data-stream-stats-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="data-stream-stats-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -644,7 +998,7 @@ Total number of backing indices for the selected data streams.
 </dd>
 <dt>
 <span class="term">
-<code class="literal">total_store_sizes</code>
+<code class="literal">total_store_size</code>
 </span>
 </dt>
 <dd>
@@ -755,12 +1109,12 @@ higher <code class="literal">@timestamp</code> values.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="data-stream-stats-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="data-stream-stats-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/data-stream-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_data_stream/my-data-stream*/_stats?human=true</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1673.console"></div>
+<div class="console_widget" data-snippet="snippets/2236.console"></div>
 <p>The API returns the following response.</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -791,6 +1145,409 @@ higher <code class="literal">@timestamp</code> values.
   ]
 }</pre>
 </div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="promote-data-stream-api"></a>Promote data stream API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/data-streams/promote-data-stream-api.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>The purpose of the promote data stream api is to turn
+a data stream that is replicated by CCR into a regular
+data stream.</p>
+<p>Via CCR Auto Following, a data stream from a remote cluster
+can be replicated to the local cluster. These data streams
+can&#8217;t be rolled over in the local cluster. Only if the upstream
+data stream rolls over then these replicated data streams roll
+over as well. In the event that the remote cluster is no longer
+available, the data stream in the local cluster can be promoted
+to a regular data stream, which allows these data streams to
+be rolled over in the local cluster.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_data_stream/_promote/my-data-stream</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2237.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="promote-data-stream-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/data-streams/promote-data-stream-api.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">POST /_data_stream/_promote/&lt;data-stream&gt;</code></p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="promote-data-stream-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/data-streams/promote-data-stream-api.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have the <code class="literal">manage_follow_index</code>
+<a class="xref" href="authorization.html#privileges-list-cluster" title="Cluster privileges">cluster privilege</a> to use this API.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="promote-data-stream-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/data-streams/promote-data-stream-api.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;data-stream&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string)
+The name of the data stream to promote.
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="modify-data-streams-api"></a>Modify data streams API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/data-streams/modify-data-streams-api.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Performs one or more data stream modification actions in a single atomic
+operation.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _data_stream/_modify
+{
+  "actions": [
+    {
+      "remove_backing_index": {
+        "data_stream": "my-logs",
+        "index": ".ds-my-logs-2099.01.01-000001"
+      }
+    },
+    {
+      "add_backing_index": {
+        "data_stream": "my-logs",
+        "index": "index-to-add"
+      }
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2238.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="modify-data-streams-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/data-streams/modify-data-streams-api.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">POST /_data_stream/_modify</code></p>
+</div>
+
+<div class="section child_attributes">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="modify-data-streams-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/data-streams/modify-data-streams-api.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">actions</code>
+</span>
+</dt>
+<dd>
+<p>
+(Required, array of objects) Actions to perform.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">actions</code> objects</summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;action&gt;</code>
+</span>
+</dt>
+<dd>
+<p>
+(Required, object) The key is the action type. At least one action is required.
+</p>
+<details open>
+<summary class="title">Valid <code class="literal">&lt;action&gt;</code> keys</summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">add_backing_index</code>
+</span>
+</dt>
+<dd>
+Adds an existing index as a backing index for a data stream. The index is
+hidden as part of this operation.
+</dd>
+</dl>
+</div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Adding indices with the <code class="literal">add_backing_index</code> action
+can potentially result in improper data stream behavior.
+This should be considered an expert level API.</p>
+</div>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">remove_backing_index</code>
+</span>
+</dt>
+<dd>
+Removes a backing index from a data stream. The index is unhidden
+as part of this operation. A data stream&#8217;s write index cannot be removed.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+<p>The object body contains options for the action.</p>
+<details open>
+<summary class="title">Properties of <code class="literal">&lt;action&gt;</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">data_stream</code>
+</span>
+</dt>
+<dd>
+(Required*, string) Data stream targeted by the action.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">index</code>
+</span>
+</dt>
+<dd>
+(Required*, string) Index for the action.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="indices-downsample-data-stream"></a>Downsample index API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/downsample-data-stream.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Aggregates a time series (TSDS) index and stores
+pre-computed statistical summaries (<code class="literal">min</code>, <code class="literal">max</code>, <code class="literal">sum</code>, <code class="literal">value_count</code> and
+<code class="literal">avg</code>) for each metric field grouped by a configured time interval. For example,
+a TSDS index that contains metrics sampled every 10 seconds can be downsampled
+to an hourly index. All documents within an hour interval are summarized and
+stored as a single document in the downsample index.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /my-time-series-index/_downsample/my-downsampled-time-series-index
+{
+    "fixed_interval": "1d"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2239.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="downsample-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/downsample-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">POST /&lt;source-index&gt;/_downsample/&lt;output-downsampled-index&gt;</code></p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="downsample-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/downsample-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Only indices in a <a class="xref" href="tsds.html" title="Time series data stream (TSDS)">time series data stream</a> are supported.
+</li>
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have the <code class="literal">all</code>
+or <code class="literal">manage</code> <a class="xref" href="authorization.html#privileges-list-indices" title="Indices privileges">index privilege</a> for the data stream.
+</li>
+<li class="listitem">
+Neither <a class="xref" href="authorization.html#field-and-document-access-control" title="Setting up field and document level security">field nor document level security</a> can be defined on the source index.
+</li>
+<li class="listitem">
+The source index must be read only (<code class="literal">index.blocks.write: true</code>).
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="downsample-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/downsample-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;source-index&gt;</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Name of the time series index to downsample.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">&lt;output-downsampled_index&gt;</code>
+</span>
+</dt>
+<dd>
+<p>(Required, string) Name of the index to create.</p>
+<p>Index names must meet the following criteria:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Lowercase only
+</li>
+<li class="listitem">
+Cannot include <code class="literal">\</code>, <code class="literal">/</code>, <code class="literal">*</code>, <code class="literal">?</code>, <code class="literal">"</code>, <code class="literal">&lt;</code>, <code class="literal">&gt;</code>, <code class="literal">|</code>, ` ` (space character), <code class="literal">,</code>, <code class="literal">#</code>
+</li>
+<li class="listitem">
+Indices prior to 7.0 could contain a colon (<code class="literal">:</code>), but that&#8217;s been deprecated and won&#8217;t be supported in 7.0+
+</li>
+<li class="listitem">
+Cannot start with <code class="literal">-</code>, <code class="literal">_</code>, <code class="literal">+</code>
+</li>
+<li class="listitem">
+Cannot be <code class="literal">.</code> or <code class="literal">..</code>
+</li>
+<li class="listitem">
+Cannot be longer than 255 bytes (note it is bytes, so multi-byte characters will count towards the 255 limit faster)
+</li>
+<li class="listitem">
+Names starting with <code class="literal">.</code> are deprecated, except for <a class="xref" href="index-modules.html#index-hidden">hidden indices</a> and internal indices managed by plugins
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section child_attributes">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="downsample-api-query-parms"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/downsample-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">fixed_interval</code>
+</span>
+</dt>
+<dd>
+<p>
+(Required, <a class="xref" href="api-conventions.html#time-units" title="Time units">time units</a>) The interval at which
+to aggregate the original time series index. For example, <code class="literal">60m</code> produces a
+document for each 60 minute (hourly) interval. This follows standard time
+formatting syntax as used elsewhere in Elasticsearch.
+</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Smaller, more granular intervals take up proportionally more space.</p>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="downsample-api-process"></a>The downsampling process<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/downsample-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The downsampling operation traverses the source TSDS index and performs the
+following steps:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+Creates a new document for each value of the <code class="literal">_tsid</code> field and each
+<code class="literal">@timestamp</code> value, rounded to the <code class="literal">fixed_interval</code> defined in the downsample
+configuration.
+</li>
+<li class="listitem">
+For each new document, copies all <a class="xref" href="tsds.html#time-series-dimension" title="Dimensions">time
+series dimensions</a> from the source index to the target index. Dimensions in a
+TSDS are constant, so this is done only once per bucket.
+</li>
+<li class="listitem">
+<p>For each <a class="xref" href="tsds.html#time-series-metric" title="Metrics">time series metric</a> field, computes aggregations
+for all documents in the bucket. Depending on the metric type of each metric
+field a different set of pre-aggregated results is stored:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">gauge</code>: The <code class="literal">min</code>, <code class="literal">max</code>, <code class="literal">sum</code>, and <code class="literal">value_count</code> are stored; <code class="literal">value_count</code>
+is stored as type <code class="literal">aggregate_metric_double</code>.
+</li>
+<li class="listitem">
+<code class="literal">counter</code>: The <code class="literal">last_value</code> is stored.
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+For all other fields, the most recent value is copied to the target index.
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="downsample-api-mappings"></a>Source and target index field mappings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/downsample-data-stream.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Fields in the target, downsampled index are created based on fields in the
+original source index, as follows:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+All fields mapped with the <code class="literal">time-series-dimension</code> parameter are created in
+the target downsample index with the same mapping as in the source index.
+</li>
+<li class="listitem">
+All fields mapped with the <code class="literal">time_series_metric</code> parameter are created
+in the target downsample index with the same mapping as in the source
+index. An exception is that for fields mapped as <code class="literal">time_series_metric: gauge</code>
+the field type is changed to <code class="literal">aggregate_metric_double</code>.
+</li>
+<li class="listitem">
+All other fields that are neither dimensions nor metrics (that is, label
+fields), are created in the target downsample index with the same mapping
+that they had in the source index.
+</li>
+</ol>
+</div>
+<p>Check the <a class="xref" href="tsds.html#downsampling" title="Downsampling a time series data stream">Downsampling</a> documentation for an overview and
+examples of running downsampling manually and as part of an ILM policy.</p>
 </div>
 
 </div>

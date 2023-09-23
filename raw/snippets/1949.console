@@ -1,10 +1,1 @@
-PUT /my-index-000001
-{
-  "mappings": {
-    "properties": {
-      "user_identifier": {
-        "type": "keyword"
-      }
-    }
-  }
-}
+GET _cat/nodes?v&s=master,name&h=name,master,node.role,heap.percent,disk.used_percent,cpu

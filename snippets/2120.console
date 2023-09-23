@@ -1,1 +1,1 @@
-GET /logstash-*/_migration/deprecations
+GET /_cat/fielddata?v=true

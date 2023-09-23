@@ -1,22 +1,21 @@
-GET /my-index-00001/_search
+POST _render/template
 {
-  "query": {
-    "percolate": {
-      "field": "query",
-      "documents": [
-        {
-          "message": "bonsai tree"
-        },
-        {
-          "message": "new tree"
-        },
-        {
-          "message": "the office"
-        },
-        {
-          "message": "office tree"
-        }
-      ]
+  "source": {
+    "query": {
+      "range": {
+        "user.effective.date": {
+          "gte": "{{date.min}}",
+          "lte": "{{date.max}}",
+          "format": "{{#join delimiter='||'}}date.formats{{/join delimiter='||'}}"
+	      }
+      }
+    }
+  },
+  "params": {
+    "date": {
+      "min": "2098",
+      "max": "06/05/2099",
+      "formats": ["dd/MM/yyyy", "yyyy"]
     }
   }
 }

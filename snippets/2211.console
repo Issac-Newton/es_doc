@@ -1,15 +1,3 @@
-GET my-index-000001/_validate/query
+POST /<follower_index>/_ccr/resume_follow
 {
-  "query" : {
-    "bool" : {
-      "must" : {
-        "query_string" : {
-          "query" : "*:*"
-        }
-      },
-      "filter" : {
-        "term" : { "user.id" : "kimchy" }
-      }
-    }
-  }
 }

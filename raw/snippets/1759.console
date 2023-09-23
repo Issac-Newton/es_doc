@@ -1,26 +1,6 @@
-POST _reindex
+POST _snapshot/my_repository/my_snapshot_2099.05.06/_restore
 {
-  "source": {
-    "index": "my-index-000001",
-    "slice": {
-      "id": 0,
-      "max": 2
-    }
-  },
-  "dest": {
-    "index": "my-new-index-000001"
-  }
-}
-POST _reindex
-{
-  "source": {
-    "index": "my-index-000001",
-    "slice": {
-      "id": 1,
-      "max": 2
-    }
-  },
-  "dest": {
-    "index": "my-new-index-000001"
-  }
+  "feature_states": [ "geoip" ],
+  "include_global_state": false,   
+  "indices": "-*"                  
 }

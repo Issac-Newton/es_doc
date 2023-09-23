@@ -1,11 +1,17 @@
-GET /my-index-000001/_search
+PUT my-index
 {
-  "aggs": {
-    "my-agg-name": {
-      "histogram": {
-        "field": "my-field",
-        "interval": 1000,
-        "script": "_value / 1000"
+  "mappings": {
+    "_source": {
+      "excludes": [
+        "ml.tokens"
+      ]
+    },
+    "properties": {
+      "ml.tokens": {
+        "type": "rank_features"
+      },
+      "text": {
+        "type": "text"
       }
     }
   }

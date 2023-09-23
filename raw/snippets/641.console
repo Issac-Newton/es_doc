@@ -1,17 +1,18 @@
-PUT /shirts
+POST /_reindex
 {
-  "mappings": {
-    "properties": {
-      "brand": { "type": "keyword"},
-      "color": { "type": "keyword"},
-      "model": { "type": "keyword"}
+  "source": {
+    "index": "my-data-stream",
+    "query": {
+      "range": {
+        "@timestamp": {
+          "gte": "now-7d/d",
+          "lte": "now/d"
+        }
+      }
     }
+  },
+  "dest": {
+    "index": "new-data-stream",
+    "op_type": "create"
   }
-}
-
-PUT /shirts/_doc/1?refresh
-{
-  "brand": "gucci",
-  "color": "red",
-  "model": "slim"
 }

@@ -1,12 +1,3 @@
-POST music/_search?pretty
-{
-  "suggest": {
-    "song-suggest": {
-      "prefix": "nor",
-      "completion": {
-        "field": "suggest",
-        "skip_duplicates": true
-      }
-    }
-  }
-}
+GET _tasks
+GET _tasks?nodes=nodeId1,nodeId2
+GET _tasks?nodes=nodeId1,nodeId2&actions=cluster:*

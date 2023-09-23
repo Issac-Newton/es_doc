@@ -1,13 +1,13 @@
-POST /_sql?format=txt
+GET /network-traffic/_search
 {
-  "query": "SELECT * FROM library ORDER BY page_count DESC",
-  "filter": {
-    "range": {
-      "page_count": {
-        "gte" : 100,
-        "lte" : 200
+  "size": 0,
+  "aggs": {
+    "ipv6-subnets": {
+      "ip_prefix": {
+        "field": "ipv6",
+        "prefix_length": 64,
+        "is_ipv6": true
       }
     }
-  },
-  "fetch_size": 5
+  }
 }

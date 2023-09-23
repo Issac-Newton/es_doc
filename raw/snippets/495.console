@@ -1,6 +1,12 @@
 GET /_analyze
 {
   "tokenizer": "standard",
-  "filter": [ "stemmer" ],
-  "text": "the foxes jumping quickly"
+  "filter": [
+    {
+      "type": "synonym_graph",
+      "synonyms": [ "dns, domain name system" ]
+    },
+    "flatten_graph"
+  ],
+  "text": "domain name system is fragile"
 }

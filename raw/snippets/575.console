@@ -1,1 +1,13 @@
-GET /_data_stream/my-data-stream
+PUT custom_unique_example
+{
+  "settings" : {
+    "analysis" : {
+      "analyzer" : {
+        "standard_truncate" : {
+        "tokenizer" : "standard",
+        "filter" : ["unique"]
+        }
+      }
+    }
+  }
+}

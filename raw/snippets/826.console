@@ -1,19 +1,4 @@
-GET /my_locations/_search
+DELETE /_pit
 {
-  "query": {
-    "bool": {
-      "must": {
-        "match_all": {}
-      },
-      "filter": {
-        "geo_distance": {
-          "distance": "12km",
-          "pin.location": {
-            "lat": 40,
-            "lon": -70
-          }
-        }
-      }
-    }
-  }
+    "id" : "46ToAwMDaWR5BXV1aWQyKwZub2RlXzMAAAAAAAAAACoBYwADaWR4BXV1aWQxAgZub2RlXzEAAAAAAAAAAAEBYQADaWR5BXV1aWQyKgZub2RlXzIAAAAAAAAAAAwBYgACBXV1aWQyAAAFdXVpZDEAAQltYXRjaF9hbGw_gAAAAA=="
 }

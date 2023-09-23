@@ -1,11 +1,9 @@
-GET /_search
+GET /my-index-000001/_search
 {
-  "aggs": {
-    "tags": {
-      "terms": {
-        "field": "tags",
-        "execution_hint": "map"
+  "query": {
+      "parent_id": {
+          "type": "my-child",
+          "id": "1"
       }
-    }
   }
 }

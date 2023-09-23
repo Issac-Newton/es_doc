@@ -1,13 +1,12 @@
 GET /_search
 {
-  "query": {
-    "query_string": {
-      "fields": [
-        "title",
-        "content"
-      ],
-      "query": "this OR that OR thus",
-      "minimum_should_match": 2
+  "query" : {
+    "match": { "user.id": "kimchy" }
+  },
+  "highlight" : {
+    "require_field_match": false,
+    "fields": {
+      "body" : { "pre_tags" : ["<em>"], "post_tags" : ["</em>"] }
     }
   }
 }

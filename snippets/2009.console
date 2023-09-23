@@ -1,1 +1,1 @@
-GET /_resolve/index/f*,remoteCluster1:bar*?expand_wildcards=all
+GET _cluster/settings?include_defaults&filter_path=*.cluster.routing.allocation.disk.watermark.high*

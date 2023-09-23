@@ -1,10 +1,10 @@
-POST /index_long,index_double/_search
+PUT /networks
 {
-   "sort" : [
-      {
-        "field" : {
-            "numeric_type" : "double"
-        }
-      }
-   ]
+  "mappings": {
+    "properties": {
+      "range": { "type": "ip_range" },
+      "name": { "type": "keyword" },
+      "department": { "type": "keyword" }
+    }
+  }
 }

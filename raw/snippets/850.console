@@ -1,14 +1,16 @@
-GET /_search
+GET my-index-000001/_search
 {
   "query": {
-    "has_child": {
-      "type": "child",
-      "query": {
-        "match_all": {}
-      },
-      "max_children": 10,
-      "min_children": 2,
-      "score_mode": "min"
+    "match": {
+      "user.id": "kimchy"
     }
-  }
+  },
+  "docvalue_fields": [
+    "user.id",
+    "http.response.*",
+    {
+      "field": "date",
+      "format": "epoch_millis"
+    }
+  ]
 }

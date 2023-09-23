@@ -1,1 +1,1 @@
-DELETE /_snapshot/my_repository/snapshot_2,snapshot_3
+POST my-new-index-000001/_search?size=0&filter_path=hits.total

@@ -1,24 +1,15 @@
-PUT /my_locations
+GET /_search
 {
-  "mappings": {
-    "properties": {
-      "pin": {
-        "properties": {
-          "location": {
-            "type": "geo_point"
-          }
-        }
+  "query": {
+    "match": { "user.id": "kimchy" }
+  },
+  "highlight": {
+    "fields": {
+      "comment": {
+        "fragment_size": 150,
+        "number_of_fragments": 3,
+        "no_match_size": 150
       }
-    }
-  }
-}
-
-PUT /my_locations/_doc/1
-{
-  "pin": {
-    "location": {
-      "lat": 40.12,
-      "lon": -71.34
     }
   }
 }

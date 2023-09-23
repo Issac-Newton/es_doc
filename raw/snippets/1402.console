@@ -1,8 +1,12 @@
-PUT _snapshot/my_src_only_repository
+GET latency/_search
 {
-  "type": "source",
-  "settings": {
-    "delegate_type": "fs",
-    "location": "my_backup_location"
+  "size": 0,
+  "aggs": {
+    "load_time_outlier": {
+      "percentiles": {
+        "field": "load_time",
+        "percents": [ 95, 99, 99.9 ]
+      }
+    }
   }
 }

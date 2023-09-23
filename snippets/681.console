@@ -1,24 +1,19 @@
-GET /my-index-000001/_search?scroll=1m
+# Creates a component template for index settings
+PUT _component_template/logs-my_app-settings
 {
-  "slice": {
-    "id": 0,                     
-    "max": 2                     
-  },
-  "query": {
-    "match": {
-      "message": "foo"
+  "template": {
+    "settings": {
+      "index.default_pipeline": "logs-my_app-default",
+      "index.lifecycle.name": "logs"
     }
   }
 }
-GET /my-index-000001/_search?scroll=1m
+
+# Creates an index template matching `logs-my_app-*`
+PUT _index_template/logs-my_app-template
 {
-  "slice": {
-    "id": 1,
-    "max": 2
-  },
-  "query": {
-    "match": {
-      "message": "foo"
-    }
-  }
+  "index_patterns": ["logs-my_app-*"],
+  "data_stream": { },
+  "priority": 500,
+  "composed_of": ["logs-my_app-settings", "logs-my_app-mappings"]
 }

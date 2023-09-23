@@ -6,7 +6,7 @@
 <meta class="elastic" name="content" content="SQL Language | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="xpack-sql.html" title="SQL access"/>
+<link rel="up" href="xpack-sql.html" title="SQL"/>
 <link rel="prev" href="sql-client-apps.html" title="SQL Client Applications"/>
 <link rel="next" href="sql-functions.html" title="Functions and Operators"/>
 <meta class="elastic" name="product_version" content=""/>
@@ -21,7 +21,7 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-sql.html">SQL access</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-sql.html">SQL</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
@@ -33,7 +33,7 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-spec"></a>SQL Language<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-spec"></a>SQL Language<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/index.asciidoc">edit</a></h2>
 </div></div></div>
 <p>This chapter describes the SQL syntax and semantics supported namely:</p>
 <div class="variablelist">
@@ -74,14 +74,14 @@ Index patterns
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-lexical-structure"></a>Lexical Structure<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-lexical-structure"></a>Lexical Structure<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h2>
 </div></div></div>
 <p>This section covers the major lexical structure of SQL, which for the most part, is going to resemble that of ANSI SQL itself hence why low-levels details are not discussed in depth.</p>
 <p>Elasticsearch SQL currently accepts only one <em>command</em> at a time. A command is a sequence of <em>tokens</em> terminated by the end of input stream.</p>
 <p>A token can be a <em>key word</em>, an <em>identifier</em> (<em>quoted</em> or <em>unquoted</em>), a <em>literal</em> (or constant) or a special character symbol (typically a delimiter). Tokens are typically separated by whitespace (be it space, tab) though in some cases, where there is no ambiguity (typically due to a character symbol) this is not needed - however for readability purposes this should be avoided.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-keywords"></a>Key Words<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-keywords"></a>Key Words<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Take the following example:</p>
 <div class="pre_wrapper lang-sql">
@@ -99,27 +99,27 @@ Do note that key words are case-insensitive meaning the previous example can be 
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-identifiers"></a>Identifiers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-identifiers"></a>Identifiers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Identifiers can be of two types: <em>quoted</em> and <em>unquoted</em>:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SELECT ip_address FROM "hosts-*"</pre>
 </div>
-<p>This query has two identifiers, <code class="literal">ip_address</code> and <code class="literal">hosts-*</code> (an <a class="xref" href="api-conventions.html#multi-index" title="Multi-target syntax">index pattern</a>). As <code class="literal">ip_address</code> does not clash with any key words it can be used verbatim, <code class="literal">hosts-*</code> on the other hand cannot as it clashes with <code class="literal">-</code> (minus operation) and <code class="literal">*</code> hence the double quotes.</p>
+<p>This query has two identifiers, <code class="literal">ip_address</code> and <code class="literal">hosts-*</code> (an <a class="xref" href="api-conventions.html#api-multi-index" title="Multi-target syntax">index pattern</a>). As <code class="literal">ip_address</code> does not clash with any key words it can be used verbatim, <code class="literal">hosts-*</code> on the other hand cannot as it clashes with <code class="literal">-</code> (minus operation) and <code class="literal">*</code> hence the double quotes.</p>
 <p>Another example:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SELECT "from" FROM "&lt;logstash-{now/d}&gt;"</pre>
 </div>
-<p>The first identifier from needs to quoted as otherwise it clashes with the <code class="literal">FROM</code> key word (which is case insensitive as thus can be written as <code class="literal">from</code>) while the second identifier using Elasticsearch <a class="xref" href="api-conventions.html#date-math-index-names" title="Date math support in index names">Date math support in index names</a> would have otherwise confuse the parser.</p>
+<p>The first identifier from needs to quoted as otherwise it clashes with the <code class="literal">FROM</code> key word (which is case insensitive as thus can be written as <code class="literal">from</code>) while the second identifier using Elasticsearch <a class="xref" href="api-conventions.html#api-date-math-index-names" title="Date math support in index and index alias names">Date math support in index and index alias names</a> would have otherwise confuse the parser.</p>
 <p>Hence why in general, <span class="strong strong"><strong>especially</strong></span> when dealing with user input it is <span class="strong strong"><strong>highly</strong></span> recommended to use quotes for identifiers. It adds minimal increase to your queries and in return offers clarity and disambiguation.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-literals"></a>Literals (Constants)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-literals"></a>Literals (Constants)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Elasticsearch SQL supports two kind of <em>implicitly-typed</em> literals: strings and numbers.</p>
-<h5><a id="sql-syntax-string-literals"></a>String Literals<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h5>
+<h5><a id="sql-syntax-string-literals"></a>String Literals<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h5>
 <p>A string literal is an arbitrary number of characters bounded by single quotes <code class="literal">'</code>: <code class="literal">'Giant Robot'</code>.
 To include a single quote in the string, escape it using another single quote: <code class="literal">'Captain EO''s Voyage'</code>.</p>
 <div class="note admon">
@@ -128,7 +128,7 @@ To include a single quote in the string, escape it using another single quote: <
 <p>An escaped single quote is <span class="strong strong"><strong>not</strong></span> a double quote (<code class="literal">"</code>), but a single quote <code class="literal">'</code> <em>repeated</em> (<code class="literal">''</code>).</p>
 </div>
 </div>
-<h5><a id="_numeric_literals"></a>Numeric Literals<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h5>
+<h5><a id="_numeric_literals"></a>Numeric Literals<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h5>
 <p>Numeric literals are accepted both in decimal and scientific notation with exponent marker (<code class="literal">e</code> or <code class="literal">E</code>), starting either with a digit or decimal point <code class="literal">.</code>:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">1969    -- integer notation
@@ -138,7 +138,7 @@ To include a single quote in the string, escape it using another single quote: <
 1.2e-3  -- scientific notation with decimal point</pre>
 </div>
 <p>Numeric literals that contain a decimal point are always interpreted as being of type <code class="literal">double</code>. Those without are considered <code class="literal">integer</code> if they fit otherwise their type is <code class="literal">long</code> (or <code class="literal">BIGINT</code> in ANSI SQL types).</p>
-<h5><a id="sql-syntax-generic-literals"></a>Generic Literals<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h5>
+<h5><a id="sql-syntax-generic-literals"></a>Generic Literals<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h5>
 <p>When dealing with arbitrary type literal, one creates the object by casting, typically, the string representation to the desired type. This can be achieved through the dedicated <a class="xref" href="sql-functions.html#sql-operators-cast" title="Cast Operators">cast operator</a> and <a class="xref" href="sql-functions.html#sql-functions-type-conversion" title="Type Conversion Functions">functions</a>:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">123::LONG                                   -- cast 123 to a LONG
@@ -150,22 +150,22 @@ CONVERT('10.0.0.1', IP)                     -- cast '10.0.0.1' to an IP</pre>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-single-vs-double-quotes"></a>Single vs Double Quotes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-single-vs-double-quotes"></a>Single vs Double Quotes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
 </div></div></div>
 <p>It is worth pointing out that in SQL, single quotes <code class="literal">'</code> and double quotes <code class="literal">"</code> have different meaning and <span class="strong strong"><strong>cannot</strong></span> be used interchangeably.
 Single quotes are used to declare a <a class="xref" href="sql-spec.html#sql-syntax-string-literals" title="String Literals">string literal</a> while double quotes for <a class="xref" href="sql-spec.html#sql-syntax-identifiers" title="Identifiers">identifiers</a>.</p>
 <p>To wit:</p>
 <div class="pre_wrapper lang-sql">
-<pre class="programlisting prettyprint lang-sql">SELECT "first_name" <a id="CO341-1"></a><i class="conum" data-value="1"></i>
-  FROM "musicians"  <a id="CO341-2"></a><i class="conum" data-value="1"></i>
- WHERE "last_name"  <a id="CO341-3"></a><i class="conum" data-value="1"></i>
-     = 'Carroll'    <a id="CO341-4"></a><i class="conum" data-value="2"></i></pre>
+<pre class="programlisting prettyprint lang-sql">SELECT "first_name" <a id="CO385-1"></a><i class="conum" data-value="1"></i>
+  FROM "musicians"  <a id="CO385-2"></a><i class="conum" data-value="1"></i>
+ WHERE "last_name"  <a id="CO385-3"></a><i class="conum" data-value="1"></i>
+     = 'Carroll'    <a id="CO385-4"></a><i class="conum" data-value="2"></i></pre>
 </div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO341-1"><i class="conum" data-value="1"></i></a><a href="#CO341-2"></a><a href="#CO341-3"></a></p>
+<p><a href="#CO385-1"><i class="conum" data-value="1"></i></a><a href="#CO385-2"></a><a href="#CO385-3"></a></p>
 </td>
 <td align="left" valign="top">
 <p>Double quotes <code class="literal">"</code> used for column and table identifiers</p>
@@ -173,7 +173,7 @@ Single quotes are used to declare a <a class="xref" href="sql-spec.html#sql-synt
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO341-4"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO385-4"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Single quotes <code class="literal">'</code> used for a string literal</p>
@@ -192,7 +192,7 @@ Single quotes are used to declare a <a class="xref" href="sql-spec.html#sql-synt
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-special-chars"></a>Special characters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-special-chars"></a>Special characters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
 </div></div></div>
 <p>A few characters that are not alphanumeric have a dedicated meaning different from that of an operator. For completeness these are specified below:</p>
 <div class="informaltable">
@@ -229,7 +229,7 @@ Single quotes are used to declare a <a class="xref" href="sql-spec.html#sql-synt
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-operators"></a>Operators<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-operators"></a>Operators<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Most operators in Elasticsearch SQL have the same precedence and are left-associative. As this is done at parsing time, parenthesis need to be used to enforce a different precedence.</p>
 <p>The following table indicates the supported operators and their precedence (highest to lowest);</p>
@@ -303,7 +303,7 @@ Single quotes are used to declare a <a class="xref" href="sql-spec.html#sql-synt
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-comments"></a>Comments<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-comments"></a>Comments<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/lexic/index.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Elasticsearch SQL allows comments which are sequence of characters ignored by the parsers.</p>
 <p>Two styles are supported:</p>
@@ -341,7 +341,7 @@ Comments that start with <code class="literal">/*</code> and end with <code clas
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-commands"></a>SQL Commands<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-commands"></a>SQL Commands<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/index.asciidoc">edit</a></h2>
 </div></div></div>
 <p>This section contains the list of SQL commands supported by Elasticsearch SQL along with their syntax:</p>
 <div class="variablelist">
@@ -361,6 +361,14 @@ Describe a table.
 </dt>
 <dd>
 Retrieve rows from zero or more tables.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="sql-spec.html#sql-syntax-show-catalogs" title="SHOW CATALOGS">SHOW CATALOGS</a>
+</span>
+</dt>
+<dd>
+List available catalogs.
 </dd>
 <dt>
 <span class="term">
@@ -392,56 +400,48 @@ List tables available.
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-syntax-describe-table"></a>DESCRIBE TABLE<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/describe-table.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-syntax-describe-table"></a>DESCRIBE TABLE<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/describe-table.asciidoc">edit</a></h2>
 </div></div></div>
 <p><strong>Synopsis:</strong></p>
 <div class="pre_wrapper lang-sql">
-<pre class="programlisting prettyprint lang-sql">DESCRIBE
-    [table identifier | <a id="CO342-1"></a><i class="conum" data-value="1"></i>
-    [LIKE pattern]]     <a id="CO342-2"></a><i class="conum" data-value="2"></i></pre>
+<pre class="programlisting prettyprint lang-sql">DESCRIBE | DESC
+    [CATALOG identifier]? <a id="CO386-1"></a><i class="conum" data-value="1"></i>
+    [INCLUDE FROZEN]?     <a id="CO386-2"></a><i class="conum" data-value="2"></i>
+    [table_identifier |   <a id="CO386-3"></a><i class="conum" data-value="3"></i>
+     LIKE pattern]        <a id="CO386-4"></a><i class="conum" data-value="4"></i></pre>
 </div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO342-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO386-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>single table identifier or double quoted es multi index</p>
+<p>Catalog (cluster) identifier. Supports wildcards (<code class="literal">*</code>).</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO342-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO386-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>SQL LIKE pattern</p>
-</td>
-</tr>
-</table>
-</div>
-<p>or</p>
-<div class="pre_wrapper lang-sql">
-<pre class="programlisting prettyprint lang-sql">DESC
-    [table identifier | <a id="CO343-1"></a><i class="conum" data-value="1"></i>
-    [LIKE pattern]]     <a id="CO343-2"></a><i class="conum" data-value="2"></i></pre>
-</div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO343-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>single table identifier or double quoted es multi index</p>
+<p>Whether or not to include frozen indices.</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO343-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO386-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>SQL LIKE pattern</p>
+<p>Single table (index or data stream) identifier or double-quoted multi-target pattern.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO386-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>SQL LIKE pattern matching table names.</p>
 </td>
 </tr>
 </table>
@@ -467,13 +467,14 @@ hire_date           |TIMESTAMP      |datetime
 languages           |TINYINT        |byte
 last_name           |VARCHAR        |text
 last_name.keyword   |VARCHAR        |keyword
+name                |VARCHAR        |keyword
 salary              |INTEGER        |integer</pre>
 </div>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-syntax-select"></a>SELECT<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-syntax-select"></a>SELECT<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h2>
 </div></div></div>
 <p><strong>Synopsis:</strong></p>
 <div class="pre_wrapper lang-sql">
@@ -512,7 +513,7 @@ If the <code class="literal">LIMIT</code> or <code class="literal">TOP</code> is
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-select-list"></a><code class="literal">SELECT</code> List<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-select-list"></a><code class="literal">SELECT</code> List<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">SELECT</code> list, namely the expressions between <code class="literal">SELECT</code> and <code class="literal">FROM</code>, represent the output rows of the <code class="literal">SELECT</code> statement.</p>
 <p>As with a table, every output column of a <code class="literal">SELECT</code> has a name which can be either specified per column through the <code class="literal">AS</code> keyword :</p>
@@ -545,22 +546,22 @@ which is why it is recommended to specify it.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-select-wildcard"></a>Wildcard<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-select-wildcard"></a>Wildcard<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To select all the columns in the source, one can use <code class="literal">*</code>:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SELECT * FROM emp LIMIT 1;
 
-     birth_date     |    emp_no     |  first_name   |    gender     |     hire_date      |   languages   |   last_name   |    salary
---------------------+---------------+---------------+---------------+--------------------+---------------+---------------+---------------
-1953-09-02T00:00:00Z|10001          |Georgi         |M              |1986-06-26T00:00:00Z|2              |Facello        |57305</pre>
+     birth_date     |    emp_no     |  first_name   |    gender     |       hire_date        |   languages   |   last_name   |     name      |    salary
+--------------------+---------------+---------------+---------------+------------------------+---------------+---------------+---------------+---------------
+1953-09-02T00:00:00Z|10001          |Georgi         |M              |1986-06-26T00:00:00.000Z|2              |Facello        |Georgi Facello |57305</pre>
 </div>
 <p>which essentially returns all(top-level fields, sub-fields, such as multi-fields are ignored] columns found.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-top"></a>TOP<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-top"></a>TOP<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">TOP</code> clause can be used before the <a class="xref" href="sql-spec.html#sql-syntax-select-list" title="SELECT List"><code class="literal">SELECT</code> list</a> or the &lt;&lt;sql-syntax-select-wildcard, <code class="literal">wildcard</code>&gt; to
 restrict (limit) the number of rows returned using the format:</p>
@@ -599,7 +600,7 @@ Bezalel        |Simmel         |10002</pre>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-from"></a>FROM Clause<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-from"></a>FROM Clause<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">FROM</code> clause specifies one table for the <code class="literal">SELECT</code> and has the following syntax:</p>
 <div class="pre_wrapper lang-sql">
@@ -622,13 +623,30 @@ Represents the name (optionally qualified) of an existing table, either a concre
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SELECT * FROM "emp" LIMIT 1;
 
-     birth_date     |    emp_no     |  first_name   |    gender     |     hire_date      |   languages   |   last_name   |    salary
---------------------+---------------+---------------+---------------+--------------------+---------------+---------------+---------------
-1953-09-02T00:00:00Z|10001          |Georgi         |M              |1986-06-26T00:00:00Z|2              |Facello        |57305</pre>
+     birth_date     |    emp_no     |  first_name   |    gender     |       hire_date        |   languages   |   last_name   |     name      |    salary
+--------------------+---------------+---------------+---------------+------------------------+---------------+---------------+---------------+---------------
+1953-09-02T00:00:00Z|10001          |Georgi         |M              |1986-06-26T00:00:00.000Z|2              |Facello        |Georgi Facello |57305</pre>
 </div>
-<p>The name can be a <a class="xref" href="api-conventions.html#multi-index" title="Multi-target syntax">pattern</a> pointing to multiple indices (likely requiring quoting as mentioned above) with the restriction that <span class="strong strong"><strong>all</strong></span> resolved concrete tables have <span class="strong strong"><strong>exact mapping</strong></span>.</p>
+<p>The name can be a <a class="xref" href="api-conventions.html#api-multi-index" title="Multi-target syntax">pattern</a> pointing to multiple indices (likely requiring quoting as mentioned above) with the restriction that <span class="strong strong"><strong>all</strong></span> resolved concrete tables have <span class="strong strong"><strong>exact mapping</strong></span>.</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SELECT emp_no FROM "e*p" LIMIT 1;
+
+    emp_no
+---------------
+10001</pre>
+</div>
+<p><span class="Admonishment Admonishment--preview">
+[<span class="Admonishment-title u-mono">preview</span>]
+<span class="Admonishment-detail">
+This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.
+</span>
+</span> To run a <a class="xref" href="modules-cross-cluster-search.html" title="Search across clusters">cross-cluster search</a>, specify a
+cluster name using the <code class="literal">&lt;remote_cluster&gt;:&lt;target&gt;</code> syntax, where
+<code class="literal">&lt;remote_cluster&gt;</code> maps to a SQL catalog (cluster) and <code class="literal">&lt;target&gt;</code> to a table
+(index or data stream). The <code class="literal">&lt;remote_cluster&gt;</code> supports wildcards (<code class="literal">*</code>)
+and <code class="literal">&lt;target&gt;</code> can be an <a class="xref" href="sql-spec.html#sql-index-patterns" title="Index patterns">index pattern</a>.</p>
+<div class="pre_wrapper lang-sql">
+<pre class="programlisting prettyprint lang-sql">SELECT emp_no FROM "my*cluster:*emp" LIMIT 1;
 
     emp_no
 ---------------
@@ -657,7 +675,7 @@ A substitute name for the <code class="literal">FROM</code> item containing the 
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-where"></a>WHERE Clause<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-where"></a>WHERE Clause<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The optional <code class="literal">WHERE</code> clause is used to filter rows from the query and has the following syntax:</p>
 <div class="pre_wrapper lang-sql">
@@ -687,7 +705,7 @@ Facello</pre>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-group-by"></a>GROUP BY<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-group-by"></a>GROUP BY<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">GROUP BY</code> clause is used to divide the results into groups of rows on matching values from the designated columns. It has the following syntax:</p>
 <div class="pre_wrapper lang-sql">
@@ -790,7 +808,7 @@ M              |57</pre>
        g       |    salary
 ---------------+---------------
 null           |253
-F              |260
+F              |259
 M              |259</pre>
 </div>
 <p>Multiple aggregates used:</p>
@@ -812,7 +830,7 @@ as shown <a class="xref" href="sql-functions.html#sql-functions-conditional-case
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="sql-syntax-group-by-implicit"></a>Implicit Grouping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h4>
+<h4 class="title"><a id="sql-syntax-group-by-implicit"></a>Implicit Grouping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h4>
 </div></div></div>
 <p>When an aggregation is used without an associated <code class="literal">GROUP BY</code>, an <em>implicit grouping</em> is applied, meaning all selected rows are considered to form a single default, or implicit group.
 As such, the query emits only a single row (as there is only a single group).</p>
@@ -838,7 +856,7 @@ As such, the query emits only a single row (as there is only a single group).</p
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-having"></a>HAVING<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-having"></a>HAVING<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">HAVING</code> clause can be used <em>only</em> along aggregate functions (and thus <code class="literal">GROUP BY</code>) to filter what groups are kept or not and has the following syntax:</p>
 <div class="pre_wrapper lang-sql">
@@ -893,7 +911,7 @@ Represents an expression that evaluates to a <code class="literal">boolean</code
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="sql-syntax-having-group-by-implicit"></a>Implicit Grouping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h4>
+<h4 class="title"><a id="sql-syntax-having-group-by-implicit"></a>Implicit Grouping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h4>
 </div></div></div>
 <p>As indicated above, it is possible to have a <code class="literal">HAVING</code> clause without a <code class="literal">GROUP BY</code>. In this case, the so-called <a class="xref" href="sql-spec.html#sql-syntax-group-by-implicit" title="Implicit Grouping"><em>implicit grouping</em></a> is applied, meaning all selected rows are considered to form a single group and <code class="literal">HAVING</code> can be applied on any of the aggregate functions specified on this group.
 As such, the query emits only a single row (as there is only a single group) and <code class="literal">HAVING</code> condition returns either one row (the group) or zero if the condition fails.</p>
@@ -911,7 +929,7 @@ As such, the query emits only a single row (as there is only a single group) and
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-order-by"></a>ORDER BY<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-order-by"></a>ORDER BY<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">ORDER BY</code> clause is used to sort the results of <code class="literal">SELECT</code> by one or more expressions:</p>
 <div class="pre_wrapper lang-sql">
@@ -954,7 +972,7 @@ James S.A. Corey |Leviathan Wakes     |561            |2011-06-02T00:00:00Z</pre
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-order-by-grouping"></a>Order By and Grouping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-order-by-grouping"></a>Order By and Grouping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>For queries that perform grouping, ordering can be applied either on the grouping columns (by default ascending) or on aggregate functions.</p>
 <div class="note admon">
@@ -1018,7 +1036,7 @@ of results.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-order-by-score"></a>Order By Score<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-order-by-score"></a>Order By Score<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>When doing full-text queries in the <code class="literal">WHERE</code> clause, results can be returned based on their
 <a href="https://www.elastic.co/guide/en/elasticsearch/guide/2.x/relevance-intro.html" class="ulink" target="_top">score</a> or <em>relevance</em> to the given query.</p>
@@ -1060,7 +1078,7 @@ all are equally relevant.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-limit"></a>LIMIT<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-limit"></a>LIMIT<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">LIMIT</code> clause restricts (limits) the number of rows returned using the format:</p>
 <div class="pre_wrapper lang-sql">
@@ -1105,7 +1123,7 @@ Georgi         |Facello        |10001</pre>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-syntax-pivot"></a>PIVOT<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-syntax-pivot"></a>PIVOT<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/select.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">PIVOT</code> clause performs a cross tabulation on the results of the query: it aggregates the results and rotates rows into columns. The rotation is done by turning unique values from one column in the expression - the pivoting column - into multiple columns in the output. The column values are aggregations on the remaining columns specified in the expression.</p>
 <p>The clause can be broken down in three parts: the aggregation, the <code class="literal">FOR</code>- and the <code class="literal">IN</code>-subclause.</p>
@@ -1116,13 +1134,13 @@ Georgi         |Facello        |10001</pre>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SELECT * FROM test_emp PIVOT (SUM(salary) FOR languages IN (1, 2)) LIMIT 5;
 
-     birth_date      |    emp_no     |  first_name   |    gender     |      hire_date      |   last_name   |       1       |       2
----------------------+---------------+---------------+---------------+---------------------+---------------+---------------+---------------
-null                 |10041          |Uri            |F              |1989-11-12 00:00:00.0|Lenart         |56415          |null
-null                 |10043          |Yishay         |M              |1990-10-20 00:00:00.0|Tzvieli        |34341          |null
-null                 |10044          |Mingsen        |F              |1994-05-21 00:00:00.0|Casley         |39728          |null
-1952-04-19 00:00:00.0|10009          |Sumant         |F              |1985-02-18 00:00:00.0|Peac           |66174          |null
-1953-01-07 00:00:00.0|10067          |Claudi         |M              |1987-03-04 00:00:00.0|Stavenow       |null           |52044</pre>
+       birth_date    |    emp_no     |  first_name   |    gender     |     hire_date       |   last_name   |       name       |       1       |       2
+---------------------+---------------+---------------+---------------+---------------------+---------------+------------------+---------------+---------------
+null                 |10041          |Uri            |F              |1989-11-12 00:00:00.0|Lenart         |Uri Lenart        |56415          |null
+null                 |10043          |Yishay         |M              |1990-10-20 00:00:00.0|Tzvieli        |Yishay Tzvieli    |34341          |null
+null                 |10044          |Mingsen        |F              |1994-05-21 00:00:00.0|Casley         |Mingsen Casley    |39728          |null
+1952-04-19 00:00:00.0|10009          |Sumant         |F              |1985-02-18 00:00:00.0|Peac           |Sumant Peac       |66174          |null
+1953-01-07 00:00:00.0|10067          |Claudi         |M              |1987-03-04 00:00:00.0|Stavenow       |Claudi Stavenow   |null           |52044</pre>
 </div>
 <p>The query execution could logically be broken down in the following steps:</p>
 <div class="olist orderedlist">
@@ -1186,30 +1204,68 @@ null           |48396.28571428572|62140.666666666664
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-syntax-show-columns"></a>SHOW COLUMNS<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/show-columns.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-syntax-show-catalogs"></a>SHOW CATALOGS<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/show-catalogs.asciidoc">edit</a></h2>
 </div></div></div>
 <p><strong>Synopsis:</strong></p>
 <div class="pre_wrapper lang-sql">
-<pre class="programlisting prettyprint lang-sql">SHOW COLUMNS [ FROM | IN ]?
-    [table identifier | <a id="CO344-1"></a><i class="conum" data-value="1"></i>
-    [LIKE pattern] ]    <a id="CO344-2"></a><i class="conum" data-value="2"></i></pre>
+<pre class="programlisting prettyprint lang-sql">SHOW CATALOGS</pre>
+</div>
+<p><span class="strong strong"><strong>Description</strong></span>: List the available catalogs and their types.</p>
+<div class="pre_wrapper lang-sql">
+<pre class="programlisting prettyprint lang-sql">SHOW CATALOGS;
+
+     name         |     type
+------------------+---------------
+javaRestTest         |local
+my_remote_cluster |remote</pre>
+</div>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="sql-syntax-show-columns"></a>SHOW COLUMNS<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/show-columns.asciidoc">edit</a></h2>
+</div></div></div>
+<p><strong>Synopsis:</strong></p>
+<div class="pre_wrapper lang-sql">
+<pre class="programlisting prettyprint lang-sql">SHOW COLUMNS
+    [CATALOG identifier]? <a id="CO387-1"></a><i class="conum" data-value="1"></i>
+    [INCLUDE FROZEN]?     <a id="CO387-2"></a><i class="conum" data-value="2"></i>
+    [FROM | IN]
+    [table_identifier |   <a id="CO387-3"></a><i class="conum" data-value="3"></i>
+     LIKE pattern]        <a id="CO387-4"></a><i class="conum" data-value="4"></i></pre>
 </div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO344-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO387-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>single table identifier or double quoted es multi index</p>
+<p>Catalog (cluster) identifier. Supports wildcards (<code class="literal">*</code>).</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO344-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO387-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>SQL LIKE pattern</p>
+<p>Whether or not to include frozen indices.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO387-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Single table (index or data stream) identifier or double-quoted multi-target pattern.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO387-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>SQL LIKE pattern matching table names.</p>
 </td>
 </tr>
 </table>
@@ -1237,23 +1293,24 @@ hire_date           |TIMESTAMP      |datetime
 languages           |TINYINT        |byte
 last_name           |VARCHAR        |text
 last_name.keyword   |VARCHAR        |keyword
+name                |VARCHAR        |keyword
 salary              |INTEGER        |integer</pre>
 </div>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-syntax-show-functions"></a>SHOW FUNCTIONS<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/show-functions.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-syntax-show-functions"></a>SHOW FUNCTIONS<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/show-functions.asciidoc">edit</a></h2>
 </div></div></div>
 <p><strong>Synopsis:</strong></p>
 <div class="pre_wrapper lang-sql">
-<pre class="programlisting prettyprint lang-sql">SHOW FUNCTIONS [LIKE pattern?]? <a id="CO345-1"></a><i class="conum" data-value="1"></i></pre>
+<pre class="programlisting prettyprint lang-sql">SHOW FUNCTIONS [LIKE pattern]? <a id="CO388-1"></a><i class="conum" data-value="1"></i></pre>
 </div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO345-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO388-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>SQL match pattern</p>
@@ -1309,6 +1366,7 @@ DATETIME_PARSE   |SCALAR
 DATETRUNC        |SCALAR
 DATE_ADD         |SCALAR
 DATE_DIFF        |SCALAR
+DATE_FORMAT      |SCALAR
 DATE_PARSE       |SCALAR
 DATE_PART        |SCALAR
 DATE_TRUNC       |SCALAR
@@ -1353,6 +1411,7 @@ TIMESTAMP_ADD    |SCALAR
 TIMESTAMP_DIFF   |SCALAR
 TIME_PARSE       |SCALAR
 TODAY            |SCALAR
+TO_CHAR          |SCALAR
 WEEK             |SCALAR
 WEEK_OF_YEAR     |SCALAR
 YEAR             |SCALAR
@@ -1484,39 +1543,57 @@ TODAY          |SCALAR</pre>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-syntax-show-tables"></a>SHOW TABLES<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/syntax/commands/show-tables.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-syntax-show-tables"></a>SHOW TABLES<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/syntax/commands/show-tables.asciidoc">edit</a></h2>
 </div></div></div>
 <p><strong>Synopsis:</strong></p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES
-    [INCLUDE FROZEN]?   <a id="CO346-1"></a><i class="conum" data-value="1"></i>
-    [table identifier | <a id="CO346-2"></a><i class="conum" data-value="2"></i>
-    [LIKE pattern ]]?   <a id="CO346-3"></a><i class="conum" data-value="3"></i></pre>
+    [CATALOG [catalog_identifier | <a id="CO389-1"></a><i class="conum" data-value="1"></i>
+              LIKE pattern]]?      <a id="CO389-2"></a><i class="conum" data-value="2"></i>
+    [INCLUDE FROZEN]?              <a id="CO389-3"></a><i class="conum" data-value="3"></i>
+    [table_identifier |            <a id="CO389-4"></a><i class="conum" data-value="4"></i>
+     LIKE pattern]?                <a id="CO389-5"></a><i class="conum" data-value="5"></i></pre>
 </div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO346-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO389-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>Whether or not to include frozen indices</p>
+<p>Catalog (cluster) identifier. Supports wildcards (<code class="literal">*</code>).</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO346-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO389-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>single table identifier or double quoted es multi index</p>
+<p>SQL LIKE pattern matching catalog names.</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO346-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO389-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>SQL LIKE pattern</p>
+<p>Whether or not to include frozen indices.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO389-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Single table (index or data stream) identifier or double-quoted multi-target pattern.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO389-5"><i class="conum" data-value="5"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>SQL LIKE pattern matching table names.</p>
 </td>
 </tr>
 </table>
@@ -1527,61 +1604,70 @@ patterns.</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES;
 
-     name      | type     |     kind
----------------+----------+---------------
-emp            |TABLE     |INDEX
-employees      |VIEW      |ALIAS
-library        |TABLE     |INDEX</pre>
+ catalog       |     name      | type     |     kind
+---------------+---------------+----------+---------------
+javaRestTest      |emp            |TABLE     |INDEX
+javaRestTest      |employees      |VIEW      |ALIAS
+javaRestTest      |library        |TABLE     |INDEX</pre>
 </div>
-<p>Match multiple indices by using Elasticsearch <a class="xref" href="api-conventions.html#multi-index" title="Multi-target syntax">multi-target syntax</a>
+<p>Match multiple indices by using Elasticsearch <a class="xref" href="api-conventions.html#api-multi-index" title="Multi-target syntax">multi-target syntax</a>
 notation:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES "*,-l*";
 
-     name      | type     |     kind
----------------+----------+---------------
-emp            |TABLE     |INDEX
-employees      |VIEW      |ALIAS</pre>
+ catalog       |     name      | type     |     kind
+---------------+---------------+----------+---------------
+javaRestTest      |emp            |TABLE     |INDEX
+javaRestTest      |employees      |VIEW      |ALIAS</pre>
 </div>
 <p>One can also use the <code class="literal">LIKE</code> clause to restrict the list of names to the given pattern.</p>
 <p>The pattern can be an exact match:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES LIKE 'emp';
 
-     name      | type     |     kind
----------------+----------+---------------
-emp            |TABLE     |INDEX</pre>
+ catalog       |     name      | type     |     kind
+---------------+---------------+----------+---------------
+javaRestTest      |emp            |TABLE     |INDEX</pre>
 </div>
 <p>Multiple chars:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES LIKE 'emp%';
 
-     name      | type     |     kind
----------------+----------+---------------
-emp            |TABLE     |INDEX
-employees      |VIEW      |ALIAS</pre>
+ catalog       |     name      | type     |     kind
+---------------+---------------+----------+---------------
+javaRestTest      |emp            |TABLE     |INDEX
+javaRestTest      |employees      |VIEW      |ALIAS</pre>
 </div>
 <p>A single char:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES LIKE 'em_';
 
-     name      | type     |     kind
----------------+----------+---------------
-emp            |TABLE     |INDEX</pre>
+ catalog       |     name      | type     |     kind
+---------------+---------------+----------+---------------
+javaRestTest      |emp            |TABLE     |INDEX</pre>
 </div>
 <p>Or a mixture of single and multiple chars:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES LIKE '%em_';
 
-     name      | type     |     kind
----------------+----------+---------------
-emp            |TABLE     |INDEX</pre>
+ catalog       |     name      | type     |     kind
+---------------+---------------+----------+---------------
+javaRestTest      |emp            |TABLE     |INDEX</pre>
+</div>
+<p>List tables within remote clusters whose names are matched by a wildcard:</p>
+<div class="pre_wrapper lang-sql">
+<pre class="programlisting prettyprint lang-sql">SHOW TABLES CATALOG 'my_*' LIKE 'test_emp%';
+
+     catalog     |     name      |     type      |     kind
+-----------------+---------------+---------------+---------------
+my_remote_cluster|test_emp       |TABLE          |INDEX
+my_remote_cluster|test_emp_copy  |TABLE          |INDEX</pre>
 </div>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-data-types"></a>Data Types<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/data-types.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-data-types"></a>Data Types<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/data-types.asciidoc">edit</a></h2>
 </div></div></div>
 <div class="informaltable">
 <table border="1" cellpadding="4px">
@@ -1638,6 +1724,17 @@ emp            |TABLE     |INDEX</pre>
 <td align="center" valign="top"><p>19</p></td>
 </tr>
 <tr>
+<td align="center" valign="top"><p><a class="xref" href="mapping-types.html#number" title="Numeric field types"><code class="literal">unsigned_long</code></a></p></td>
+<td align="center" valign="top"><p><code class="literal"><span class="Admonishment Admonishment--preview">
+[<span class="Admonishment-title u-mono">preview</span>]
+<span class="Admonishment-detail">
+This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.
+</span>
+</span> unsigned_long</code></p></td>
+<td align="center" valign="top"><p>BIGINT</p></td>
+<td align="center" valign="top"><p>20</p></td>
+</tr>
+<tr>
 <td align="center" valign="top"><p><a class="xref" href="mapping-types.html#number" title="Numeric field types"><code class="literal">double</code></a></p></td>
 <td align="center" valign="top"><p><code class="literal">double</code></p></td>
 <td align="center" valign="top"><p>DOUBLE</p></td>
@@ -1662,19 +1759,13 @@ emp            |TABLE     |INDEX</pre>
 <td align="center" valign="top"><p>15</p></td>
 </tr>
 <tr>
-<td align="center" valign="top"><p><a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a></p></td>
+<td align="center" valign="top"><p><a class="xref" href="mapping-types.html#keyword" title="Keyword type family">keyword type family</a></p></td>
 <td align="center" valign="top"><p><code class="literal">keyword</code></p></td>
 <td align="center" valign="top"><p>VARCHAR</p></td>
 <td align="center" valign="top"><p>32,766</p></td>
 </tr>
 <tr>
-<td align="center" valign="top"><p><a class="xref" href="mapping-types.html#constant-keyword-field-type" title="Constant keyword field type"><code class="literal">constant_keyword</code></a></p></td>
-<td align="center" valign="top"><p><code class="literal">constant_keyword</code></p></td>
-<td align="center" valign="top"><p>VARCHAR</p></td>
-<td align="center" valign="top"><p>32,766</p></td>
-</tr>
-<tr>
-<td align="center" valign="top"><p><a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a></p></td>
+<td align="center" valign="top"><p><a class="xref" href="mapping-types.html#text" title="Text type family"><code class="literal">text</code></a></p></td>
 <td align="center" valign="top"><p><code class="literal">text</code></p></td>
 <td align="center" valign="top"><p>VARCHAR</p></td>
 <td align="center" valign="top"><p>2,147,483,647</p></td>
@@ -1696,6 +1787,12 @@ emp            |TABLE     |INDEX</pre>
 <td align="center" valign="top"><p><code class="literal">ip</code></p></td>
 <td align="center" valign="top"><p>VARCHAR</p></td>
 <td align="center" valign="top"><p>39</p></td>
+</tr>
+<tr>
+<td align="center" valign="top"><p><a class="xref" href="mapping-types.html#version" title="Version field type"><code class="literal">version</code></a></p></td>
+<td align="center" valign="top"><p><code class="literal">version</code></p></td>
+<td align="center" valign="top"><p>VARCHAR</p></td>
+<td align="center" valign="top"><p>32,766</p></td>
 </tr>
 <tr>
 <td align="center" colspan="4" valign="top"><p><span class="strong strong"><strong>Complex types</strong></span></p></td>
@@ -1827,11 +1924,11 @@ Such types cannot be loaded from Elasticsearch (as it does not know about them) 
 </tbody>
 </table>
 </div>
-<h4><a id="sql-multi-field"></a>SQL and multi-fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/data-types.asciidoc">edit</a></h4>
+<h4><a id="sql-multi-field"></a>SQL and multi-fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/data-types.asciidoc">edit</a></h4>
 <p>A core concept in Elasticsearch is that of an <code class="literal">analyzed</code> field, that is a full-text value that is interpreted in order
-to be effectively indexed. These fields are of type <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> and are not used for sorting or aggregations as their actual value depends on the <a class="xref" href="mapping-params.html#analyzer" title="analyzer"><code class="literal">analyzer</code></a> used hence why Elasticsearch also offers the <a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> type for storing the <em>exact</em>
+to be effectively indexed. These fields are of type <a class="xref" href="mapping-types.html#text" title="Text type family"><code class="literal">text</code></a> and are not used for sorting or aggregations as their actual value depends on the <a class="xref" href="mapping-params.html#analyzer" title="analyzer"><code class="literal">analyzer</code></a> used hence why Elasticsearch also offers the <a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> type for storing the <em>exact</em>
 value.</p>
-<p>In most case, and the default actually, is to use both types for strings which Elasticsearch supports through <a class="xref" href="mapping-params.html#multi-fields" title="fields">multi fields</a>, that is the ability to index the same string in multiple ways; for example index it both as <code class="literal">text</code> for search but also as <code class="literal">keyword</code> for sorting and aggregations.</p>
+<p>In most case, and the default actually, is to use both types for strings which Elasticsearch supports through <a class="xref" href="mapping-params.html#multi-fields" title="fields">multi-fields</a>, that is the ability to index the same string in multiple ways; for example index it both as <code class="literal">text</code> for search but also as <code class="literal">keyword</code> for sorting and aggregations.</p>
 <p>As SQL requires exact values, when encountering a <code class="literal">text</code> field Elasticsearch SQL will search for an exact multi-field that it can use for comparisons, sorting and aggregations.
 To do that, it will search for the first <code class="literal">keyword</code> that it can find that is <em>not</em> normalized and use that as the original field <em>exact</em> value.</p>
 <p>Consider the following <code class="literal">string</code> mapping:</p>
@@ -1860,20 +1957,20 @@ To do that, it will search for the first <code class="literal">keyword</code> th
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-index-patterns"></a>Index patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/indices.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-index-patterns"></a>Index patterns<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/indices.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Elasticsearch SQL supports two types of patterns for matching multiple indices or tables:</p>
-<h4><a id="sql-index-patterns-multi"></a>Elasticsearch multi-index<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/indices.asciidoc">edit</a></h4>
-<p>The Elasticsearch notation for enumerating, including or excluding <a class="xref" href="api-conventions.html#multi-index" title="Multi-target syntax">multi-target syntax</a>
+<h4><a id="sql-index-patterns-multi"></a>Elasticsearch multi-target syntax<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/indices.asciidoc">edit</a></h4>
+<p>The Elasticsearch notation for enumerating, including or excluding <a class="xref" href="api-conventions.html#api-multi-index" title="Multi-target syntax">multi-target syntax</a>
 is supported <em>as long</em> as it is quoted or escaped as a table identifier.</p>
 <p>For example:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES "*,-l*";
 
-     name      | type     |     kind
----------------+----------+---------------
-emp            |TABLE     |INDEX
-employees      |VIEW      |ALIAS</pre>
+ catalog       |     name      | type     |     kind
+---------------+---------------+----------+---------------
+javaRestTest      |emp            |TABLE     |INDEX
+javaRestTest      |employees      |VIEW      |ALIAS</pre>
 </div>
 <p>Notice the pattern is surrounded by double quotes <code class="literal">"</code>. It enumerated <code class="literal">*</code> meaning all indices however
 it excludes (due to <code class="literal">-</code>) all indices that start with <code class="literal">l</code>.
@@ -1894,25 +1991,43 @@ the target naming convention.</p>
 <p>There is the restriction that all resolved concrete tables have the exact same mapping.</p>
 </div>
 </div>
-<h4><a id="sql-index-patterns-like"></a>SQL <code class="literal">LIKE</code> notation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/indices.asciidoc">edit</a></h4>
+<p><span class="Admonishment Admonishment--preview">
+[<span class="Admonishment-title u-mono">preview</span>]
+<span class="Admonishment-detail">
+This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.
+</span>
+</span> To run a <a class="xref" href="modules-cross-cluster-search.html" title="Search across clusters">cross-cluster search</a>, specify a
+cluster name using the <code class="literal">&lt;remote_cluster&gt;:&lt;target&gt;</code> syntax, where
+<code class="literal">&lt;remote_cluster&gt;</code> maps to a SQL catalog (cluster) and <code class="literal">&lt;target&gt;</code> to a table
+(index or data stream). The <code class="literal">&lt;remote_cluster&gt;</code> supports wildcards (<code class="literal">*</code>)
+and <code class="literal">&lt;target&gt;</code> can be an index pattern.</p>
+<p>For example:</p>
+<div class="pre_wrapper lang-sql">
+<pre class="programlisting prettyprint lang-sql">SELECT emp_no FROM "my*cluster:*emp" LIMIT 1;
+
+    emp_no
+---------------
+10001</pre>
+</div>
+<h4><a id="sql-index-patterns-like"></a>SQL <code class="literal">LIKE</code> notation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/indices.asciidoc">edit</a></h4>
 <p>The common <code class="literal">LIKE</code> statement (including escaping if needed) to match a wildcard pattern, based on one <code class="literal">_</code>
 or multiple <code class="literal">%</code> characters.</p>
 <p>Using <code class="literal">SHOW TABLES</code> command again:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES LIKE 'emp%';
 
-     name      | type     |     kind
----------------+----------+---------------
-emp            |TABLE     |INDEX
-employees      |VIEW      |ALIAS</pre>
+ catalog       |     name      | type     |     kind
+---------------+---------------+----------+---------------
+javaRestTest      |emp            |TABLE     |INDEX
+javaRestTest      |employees      |VIEW      |ALIAS</pre>
 </div>
 <p>The pattern matches all tables that start with <code class="literal">emp</code>.</p>
 <p>This command supports <em>escaping</em> as well, for example:</p>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES LIKE 'emp!%' ESCAPE '!';
 
-     name      |     type      |     kind
----------------+---------------+---------------</pre>
+ catalog       |     name      |     type      |     kind
+---------------+---------------+---------------+---------------</pre>
 </div>
 <p>Notice how now <code class="literal">emp%</code> does not match any tables because <code class="literal">%</code>, which means match zero or more characters,
 has been escaped by <code class="literal">!</code> and thus becomes an regular char. And since there is no table named <code class="literal">emp%</code>,
@@ -1981,13 +2096,10 @@ requires the keyword <code class="literal">LIKE</code> for SQL <code class="lite
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-index-frozen"></a>Frozen Indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/language/indices.asciidoc">edit</a></h2>
+<h2 class="title"><a id="sql-index-frozen"></a>Frozen Indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/language/indices.asciidoc">edit</a></h2>
 </div></div></div>
-<p>Elasticsearch <a class="xref" href="frozen-indices.html" title="Frozen indices">frozen indices</a> are a useful and powerful tool for hot/warm architecture introduced in Elasticsearch 6.6,
-essentially by trading speed for memory.
-Elasticsearch SQL supports frozen indices and similar to Elasticsearch, due to their performance characteristics, allows searches on them only
-when explicitly told so by user - in other words, by default, frozen indices are not included in searches.</p>
-<p>One can toggle the use of frozen indices through:</p>
+<p>By default, Elasticsearch SQL doesn&#8217;t search <a class="xref" href="indices.html#unfreeze-index-api" title="Unfreeze index API">frozen indices</a>. To
+search frozen indices, use one of the following features:</p>
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
@@ -1996,7 +2108,7 @@ dedicated configuration parameter
 </span>
 </dt>
 <dd>
-Set to <code class="literal">true</code> properties <code class="literal">index_include_frozen</code> in the <a class="xref" href="sql-rest.html" title="SQL REST API"><em>SQL REST API</em></a> or <code class="literal">index.include.frozen</code> in the drivers to include frozen indices.
+Set to <code class="literal">true</code> properties <code class="literal">index_include_frozen</code> in the <a class="xref" href="sql-apis.html#sql-search-api" title="SQL search API">SQL search API</a> or <code class="literal">index.include.frozen</code> in the drivers to include frozen indices.
 </dd>
 <dt>
 <span class="term">
@@ -2011,12 +2123,12 @@ Explicitly perform the inclusion through the dedicated <code class="literal">FRO
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SHOW TABLES INCLUDE FROZEN;
 
-     name      | type     |     kind
----------------+----------+---------------
-archive        |TABLE     |FROZEN INDEX
-emp            |TABLE     |INDEX
-employees      |VIEW      |ALIAS
-library        |TABLE     |INDEX</pre>
+ catalog       |     name      | type     |     kind
+---------------+---------------+----------+---------------
+javaRestTest      |archive        |TABLE     |FROZEN INDEX
+javaRestTest      |emp            |TABLE     |INDEX
+javaRestTest      |employees      |VIEW      |ALIAS
+javaRestTest      |library        |TABLE     |INDEX</pre>
 </div>
 <div class="pre_wrapper lang-sql">
 <pre class="programlisting prettyprint lang-sql">SELECT * FROM FROZEN archive LIMIT 1;

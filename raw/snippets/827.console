@@ -1,16 +1,9 @@
-GET /my_locations/_search
+POST /my-index-000001/_search?scroll=1m
 {
+  "size": 100,
   "query": {
-    "bool": {
-      "must": {
-        "match_all": {}
-      },
-      "filter": {
-        "geo_distance": {
-          "distance": "12km",
-          "pin.location": [ -70, 40 ]
-        }
-      }
+    "match": {
+      "message": "foo"
     }
   }
 }

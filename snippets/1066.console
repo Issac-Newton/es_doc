@@ -1,17 +1,19 @@
-GET news/_search
+PUT /example
 {
-  "query": {
-    "simple_query_string": {
-      "query": "+elasticsearch  +pozmantier"
+  "mappings": {
+    "properties": {
+      "geometry": {
+        "type": "shape"
+      }
     }
-  },
-  "_source": [
-    "title",
-    "source"
-  ],
-  "highlight": {
-    "fields": {
-      "content": {}
-    }
+  }
+}
+
+PUT /example/_doc/1?refresh=wait_for
+{
+  "name": "Lucky Landing",
+  "geometry": {
+    "type": "point",
+    "coordinates": [ 1355.400544, 5255.530286 ]
   }
 }

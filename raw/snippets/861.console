@@ -1,6 +1,1 @@
-GET /_search
-{
-  "query": {
-    "match_none": {}
-  }
-}
+GET /_async_search/FklQYndoTDJ2VEFlMEVBTzFJMGhJVFEaLVlKYndBWWZSMUdicUc4WVlEaFl4ZzoxNTU=

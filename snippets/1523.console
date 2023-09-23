@@ -1,18 +1,7 @@
-PUT movies
+GET /my-data-stream/_eql/search?filter_path=-hits.events   
 {
-  "mappings": {
-    "properties": {
-      "name_and_plot": {
-        "type": "text"
-      },
-      "name": {
-        "type": "text",
-        "copy_to": "name_and_plot"
-      },
-      "plot": {
-        "type": "text",
-        "copy_to": "name_and_plot"
-      }
-    }
-  }
+  "query": """
+    any where process.name == "regsvr32.exe"               
+  """,
+  "size": 200                                              
 }

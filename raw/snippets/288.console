@@ -1,51 +1,24 @@
-PUT my-index-000001
+PUT idx
 {
-  "settings": {
-    "analysis": {
-      "filter": {
-        "autocomplete_filter": {
-          "type": "edge_ngram",
-          "min_gram": 1,
-          "max_gram": 20
-        }
-      },
-      "analyzer": {
-        "autocomplete": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "filter": [
-            "lowercase",
-            "autocomplete_filter"
-          ]
-        }
-      }
-    }
-  },
   "mappings": {
+    "_source": { "mode": "synthetic" },
     "properties": {
       "text": {
         "type": "text",
-        "analyzer": "autocomplete",
-        "search_analyzer": "standard"
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        }
       }
     }
   }
 }
-
-PUT my-index-000001/_doc/1
+PUT idx/_doc/1
 {
-  "text": "Quick Brown Fox"
+  "text": [
+    "the quick brown fox",
+    "the quick brown fox",
+    "jumped over the lazy dog"
+  ]
 }
-
-GET my-index-000001/_search
-{
-  "query": {
-    "match": {
-      "text": {
-        "query": "Quick Br",
-        "operator": "and"
-      }
-    }
-  }
-}
-

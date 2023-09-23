@@ -1,1 +1,1 @@
-GET _ml/trained_models/_stats
+GET _cat/ml/data_frame/analytics?v=true

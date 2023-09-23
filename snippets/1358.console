@@ -1,1 +1,12 @@
-GET /_template/.monitoring-*
+GET latency/_search
+{
+  "size": 0,
+  "aggs": {
+    "load_time_boxplot": {
+      "boxplot": {
+        "field": "load_time",
+        "execution_hint": "high_accuracy"   
+      }
+    }
+  }
+}

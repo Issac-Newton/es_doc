@@ -1,16 +1,8 @@
-GET /my-index-00001/_search
+POST _render/template
 {
-  "query": {
-    "percolate": {
-      "field": "query",
-      "document": {
-        "message": "The quick brown fox jumps over the lazy dog"
-      }
-    }
-  },
-  "highlight": {
-    "fields": {
-      "message": {}
-    }
+  "source": "{ \"query\": { \"bool\": { \"filter\": [ {{#year_scope}} { \"range\": { \"@timestamp\": { \"gte\": \"now-1y/d\", \"lt\": \"now/d\" } } }, {{/year_scope}} { \"term\": { \"user.id\": \"{{user_id}}\" }}]}}}",
+  "params": {
+    "year_scope": false,
+    "user_id": "kimchy"
   }
 }

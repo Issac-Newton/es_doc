@@ -1,8 +1,6 @@
-PUT /index_double
+PUT /networks/_doc/1?refresh=wait_for
 {
-  "mappings": {
-    "properties": {
-      "field": { "type": "date" }
-    }
-  }
+  "range": "10.100.0.0/16",
+  "name": "production",
+  "department": "OPS"
 }

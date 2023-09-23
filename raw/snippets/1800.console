@@ -1,8 +1,9 @@
-PUT /_enrich/policy/my-policy
+PUT /_security/role_mapping/native1_users?refresh=true
 {
-  "match": {
-    "indices": "users",
-    "match_field": "email",
-    "enrich_fields": ["first_name", "last_name", "city", "zip", "state"]
-  }
+  "roles" : [ "user" ],
+  "rules" : { "all" : [
+      { "field": { "realm.name": "native1" } },
+      { "field": { "username": "principalname1" } }
+  ] },
+  "enabled": true
 }

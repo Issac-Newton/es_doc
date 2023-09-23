@@ -1,5 +1,14 @@
-POST _analyze
+PUT /keyword_example
 {
-  "tokenizer": "keyword",
-  "text": "New York"
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "rebuilt_keyword": {
+          "tokenizer": "keyword",
+          "filter": [        
+          ]
+        }
+      }
+    }
+  }
 }

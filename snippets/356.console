@@ -1,23 +1,51 @@
-PUT /thai_example
+PUT my-index-000001
 {
   "settings": {
     "analysis": {
       "filter": {
-        "thai_stop": {
-          "type":       "stop",
-          "stopwords":  "_thai_"
+        "autocomplete_filter": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 20
         }
       },
       "analyzer": {
-        "rebuilt_thai": {
-          "tokenizer":  "thai",
+        "autocomplete": {
+          "type": "custom",
+          "tokenizer": "standard",
           "filter": [
             "lowercase",
-            "decimal_digit",
-            "thai_stop"
+            "autocomplete_filter"
           ]
         }
       }
     }
+  },
+  "mappings": {
+    "properties": {
+      "text": {
+        "type": "text",
+        "analyzer": "autocomplete",
+        "search_analyzer": "standard"
+      }
+    }
   }
 }
+
+PUT my-index-000001/_doc/1
+{
+  "text": "Quick Brown Fox"
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "match": {
+      "text": {
+        "query": "Quick Br",
+        "operator": "and"
+      }
+    }
+  }
+}
+

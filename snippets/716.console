@@ -1,15 +1,14 @@
-PUT /my-index-000001/_doc/1?refresh
+PUT /_ingest/pipeline/user_lookup
 {
-   "product": "chocolate",
-   "price": [20, 4]
-}
-
-POST /_search
-{
-   "query" : {
-      "term" : { "product" : "chocolate" }
-   },
-   "sort" : [
-      {"price" : {"order" : "asc", "mode" : "avg"}}
-   ]
+  "processors" : [
+    {
+      "enrich" : {
+        "description": "Add 'user' data based on 'email'",
+        "policy_name": "users-policy",
+        "field" : "email",
+        "target_field": "user",
+        "max_matches": "1"
+      }
+    }
+  ]
 }

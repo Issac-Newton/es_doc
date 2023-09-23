@@ -1,1 +1,13 @@
-POST /my-data-stream/_rollover/
+PUT /my-index-000001
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "whitespace",
+          "filter": [ "stemmer" ]
+        }
+      }
+    }
+  }
+}

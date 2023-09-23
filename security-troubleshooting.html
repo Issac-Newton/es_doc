@@ -7,8 +7,8 @@
 <meta class="elastic" name="content" content="Troubleshooting security | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="secure-cluster.html" title="Secure a cluster"/>
-<link rel="prev" href="encrypting-internode-communications.html" title="Tutorial: Encrypting communications"/>
+<link rel="up" href="secure-cluster.html" title="Secure the Elastic Stack"/>
+<link rel="prev" href="operator-privileges.html" title="Operator privileges"/>
 <link rel="next" href="security-limitations.html" title="Security limitations"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
@@ -105,11 +105,11 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="secure-cluster.html">Secure a cluster</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="secure-cluster.html">Secure the Elastic Stack</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
-<a href="encrypting-internode-communications.html">« Tutorial: Encrypting communications</a>
+<a href="operator-privileges.html">« Operator privileges</a>
 </span>
 <span class="next">
 <a href="security-limitations.html">Security limitations »</a>
@@ -117,7 +117,7 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="security-troubleshooting"></a>Troubleshooting security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="security-troubleshooting"></a>Troubleshooting security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Use the information in this section to troubleshoot common problems and find
@@ -169,13 +169,13 @@ a ticket in the
 Or post in the <a href="https://discuss.elastic.co/" class="ulink" target="_top">Elastic forum</a>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="security-trb-settings"></a>Some settings are not returned via the nodes settings API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="security-trb-settings"></a>Some settings are not returned via the nodes settings API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-When you use the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-info.html" class="ulink" target="_top">nodes info API</a> to retrieve
+When you use the <a class="xref" href="cluster.html#cluster-nodes-info" title="Nodes info API">nodes info API</a> to retrieve
 settings for a node, some information is missing.
 </li>
 </ul>
@@ -197,7 +197,7 @@ xpack.security.authc.realms.ad1.*</pre>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="security-trb-roles"></a>Authorization exceptions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="security-trb-roles"></a>Authorization exceptions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
@@ -222,13 +222,13 @@ the users. Any unknown roles are marked with <code class="literal">*</code>.</p>
 <pre class="programlisting prettyprint lang-shell">bin/elasticsearch-users list
 rdeniro        : admin
 alpacino       : power_user
-jacknich       : monitoring,unknown_role* <a id="CO551-1"></a><i class="conum" data-value="1"></i></pre>
+jacknich       : monitoring,unknown_role* <a id="CO591-1"></a><i class="conum" data-value="1"></i></pre>
 </div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO551-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO591-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p><code class="literal">unknown_role</code> was not found in <code class="literal">roles.yml</code></p>
@@ -237,7 +237,7 @@ jacknich       : monitoring,unknown_role* <a id="CO551-1"></a><i class="conum" d
 </table>
 </div>
 <p>For more information about this command, see the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/users-command.html" class="ulink" target="_top"><code class="literal">elasticsearch-users</code> command</a>.</p>
+<a class="xref" href="users-command.html" title="elasticsearch-users"><code class="literal">elasticsearch-users</code> command</a>.</p>
 </li>
 <li class="listitem">
 <p>If you are authenticating to LDAP, a number of configuration options can cause
@@ -252,7 +252,7 @@ this error.</p>
 <tr>
 <td align="left" valign="top"><p><em>group identification</em></p></td>
 <td align="left" valign="top"><p>Groups are located by either an LDAP search or by the "memberOf" attribute on
-the user.  Also, If subtree search is turned off, it will search only one
+the user. Also, If subtree search is turned off, it will search only one
 level deep. For all the options, see <a class="xref" href="settings.html#ref-ldap-settings" title="LDAP realm settings">LDAP realm settings</a>.
 There are many options here and sticking to the defaults will not work for all
 scenarios.</p></td>
@@ -260,7 +260,7 @@ scenarios.</p></td>
 <tr>
 <td align="left" valign="top"><p><em>group to role mapping</em></p></td>
 <td align="left" valign="top"><p>Either the <code class="literal">role_mapping.yml</code> file or the location for this file could be
-misconfigured. For more information, see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-files.html" class="ulink" target="_top">Security files</a>.</p></td>
+misconfigured. For more information, see <a class="xref" href="manually-configure-security.html#security-files" title="Security files">Security files</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><em>role definition</em></p></td>
@@ -269,12 +269,25 @@ misconfigured. For more information, see <a href="https://www.elastic.co/guide/e
 </tbody>
 </table>
 </div>
-<p>To help track down these possibilities, add the following lines to the end of
+<p>To help track down these possibilities, enable additional logging to troubleshoot further.
+You can enable debug logging by configuring the following persistent setting:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_cluster/settings
+{
+  "persistent": {
+    "logger.org.elasticsearch.xpack.security.authc": "debug"
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1850.console"></div>
+<p>Alternatively, you can add the following lines to the end of
 the <code class="literal">log4j2.properties</code> configuration file in the <code class="literal">ES_PATH_CONF</code>:</p>
 <div class="pre_wrapper lang-properties">
 <pre class="programlisting prettyprint lang-properties">logger.authc.name = org.elasticsearch.xpack.security.authc
 logger.authc.level = DEBUG</pre>
 </div>
+<p>Refer to <a class="xref" href="settings.html#configuring-logging-levels" title="Configuring logging levels">configuring logging levels</a> for more
+information.</p>
 <p>A successful authentication should produce debug statements that list groups and
 role mappings.</p>
 </li>
@@ -284,7 +297,7 @@ role mappings.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="security-trb-extraargs"></a>Users command fails due to extra arguments<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="security-trb-extraargs"></a>Users command fails due to extra arguments<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
@@ -304,12 +317,12 @@ translated to <code class="literal">-r role1 role2</code> and the <code class="l
 recognizes <code class="literal">role1</code> as an expected parameter. The solution here is to quote the
 parameter: <code class="literal">-r "role1,role2"</code>.</p>
 <p>For more information about this command, see
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/users-command.html" class="ulink" target="_top"><code class="literal">elasticsearch-users</code> command</a>.</p>
+<a class="xref" href="users-command.html" title="elasticsearch-users"><code class="literal">elasticsearch-users</code> command</a>.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="trouble-shoot-active-directory"></a>Users are frequently locked out of Active Directory<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="trouble-shoot-active-directory"></a>Users are frequently locked out of Active Directory<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
@@ -341,7 +354,7 @@ entry for the domain should always point to an available domain controller.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="trb-security-maccurl"></a>Certificate verification fails for curl on Mac<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="trb-security-maccurl"></a>Certificate verification fails for curl on Mac<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
@@ -365,7 +378,7 @@ signing CA&#8217;s certificate and not the server&#8217;s certificate.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="trb-security-sslhandshake"></a>SSLHandshakeException causes connections to fail<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="trb-security-sslhandshake"></a>SSLHandshakeException causes connections to fail<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
@@ -389,7 +402,7 @@ below with tips on how to resolve these issues.
 <p>Indicates that a client connection was made to <code class="literal">node01.example.com</code> but the
 certificate returned did not contain the name <code class="literal">node01.example.com</code>. In most
 cases, the issue can be resolved by ensuring the name is specified during
-certificate creation. For more information, see <a class="xref" href="encrypting-communications.html#ssl-tls" title="Setting up TLS on a cluster">Setting up TLS on a cluster</a>. Another scenario is
+certificate creation. For more information, see <a class="xref" href="manually-configure-security.html#encrypt-internode-communication" title="Encrypt internode communications with TLS">Encrypt internode communications with TLS</a>. Another scenario is
 when the environment does not wish to use DNS names in certificates at all. In
 this scenario, all settings in <code class="literal">elasticsearch.yml</code> should only use IP addresses
 including the <code class="literal">network.publish_host</code> setting.</p>
@@ -405,7 +418,7 @@ certificate did not contain any <code class="literal">SubjectAlternativeName</co
 are only used for hostname verification if they are specified as a
 <code class="literal">SubjectAlternativeName</code> during certificate creation. If the intent was to use
 IP addresses for hostname verification, then the certificate will need to be
-regenerated with the appropriate IP address. See <a class="xref" href="encrypting-communications.html#ssl-tls" title="Setting up TLS on a cluster">Setting up TLS on a cluster</a>.</p>
+regenerated with the appropriate IP address. See <a class="xref" href="manually-configure-security.html#encrypt-internode-communication" title="Encrypt internode communications with TLS">Encrypt internode communications with TLS</a>.</p>
 </dd>
 <dt>
 <span class="term">
@@ -447,7 +460,7 @@ Verify the contents of each of the files you are using for your configured certi
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="trb-security-ssl"></a>Common SSL/TLS exceptions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="trb-security-ssl"></a>Common SSL/TLS exceptions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
@@ -484,7 +497,7 @@ and tries to connect to nodes that are using encrypted communication. Please
 verify that all nodes are using the same setting for
 <code class="literal">xpack.security.transport.ssl.enabled</code>.</p>
 <p>For more information about this setting, see
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security Settings in Elasticsearch</a>.</p>
+<a class="xref" href="settings.html#security-settings" title="Security settings in Elasticsearch">Security settings</a>.</p>
 </dd>
 <dt>
 <span class="term">
@@ -497,7 +510,7 @@ format. This can happen when a node with encrypted communication enabled
 connects to a node that has encrypted communication disabled. Please verify that
 all nodes are using the same setting for <code class="literal">xpack.security.transport.ssl.enabled</code>.</p>
 <p>For more information about this setting, see
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security Settings in Elasticsearch</a>.</p>
+<a class="xref" href="settings.html#security-settings" title="Security settings in Elasticsearch">Security settings</a>.</p>
 </dd>
 <dt>
 <span class="term">
@@ -512,7 +525,7 @@ is in <code class="literal">elasticsearch.yml</code>:</p>
 <pre class="programlisting prettyprint lang-yaml">xpack.security.http.ssl.enabled: true</pre>
 </div>
 <p>For more information about this setting, see
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security Settings in Elasticsearch</a>.</p>
+<a class="xref" href="settings.html#security-settings" title="Security settings in Elasticsearch">Security settings</a>.</p>
 </dd>
 <dt>
 <span class="term">
@@ -529,7 +542,7 @@ documentation for details on how to enable the PKCS11 provider.</p>
 <p>Another common source of this error is requesting cipher suites that use
 encrypting with a key length greater than 128 bits when running on an Oracle JDK.
 In this case, you must install the
-<a class="xref" href="encrypting-communications.html#ciphers" title="Enabling cipher suites for stronger encryption">JCE Unlimited Strength Jurisdiction Policy Files</a>.</p>
+<a class="xref" href="manually-configure-security.html#ciphers" title="Enabling cipher suites for stronger encryption">JCE Unlimited Strength Jurisdiction Policy Files</a>.</p>
 </dd>
 </dl>
 </div>
@@ -537,7 +550,7 @@ In this case, you must install the
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="trb-security-kerberos"></a>Common Kerberos exceptions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="trb-security-kerberos"></a>Common Kerberos exceptions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
@@ -631,18 +644,18 @@ module use following Kerberos realm setting:</p>
 <div class="pre_wrapper lang-yaml">
 <pre class="programlisting prettyprint lang-yaml">xpack.security.authc.realms.kerberos.&lt;realm-name&gt;.krb.debug: true</pre>
 </div>
-<p>For detailed information, see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html#ref-kerberos-settings" class="ulink" target="_top">Kerberos realm settings</a>.</p>
+<p>For detailed information, see <a class="xref" href="settings.html#ref-kerberos-settings" title="Kerberos realm settings">Kerberos realm settings</a>.</p>
 <p>Sometimes you may need to go deeper to understand the problem during SPNEGO
 GSS context negotiation or look at the Kerberos message exchange. To enable
 Kerberos/SPNEGO debug logging on JVM, add following JVM system properties:</p>
 <p><code class="literal">-Dsun.security.krb5.debug=true</code></p>
 <p><code class="literal">-Dsun.security.spnego.debug=true</code></p>
-<p>For more information about JVM system properties, see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/jvm-options.html" class="ulink" target="_top">configuring JVM options</a>.</p>
+<p>For more information about JVM system properties, see <a class="xref" href="settings.html#set-jvm-options" title="Set JVM options">Set JVM options</a>.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="trb-security-saml"></a>Common SAML issues<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="trb-security-saml"></a>Common SAML issues<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Some of the common SAML problems are shown below with tips on how to resolve
 these issues.</p>
@@ -653,7 +666,7 @@ these issues.</p>
 <p>Authentication in Kibana fails and the following error is printed in the Elasticsearch
 logs:</p>
 <pre class="literallayout">Cannot find any matching realm for [SamlPrepareAuthenticationRequest{realmName=saml1,
-assertionConsumerServiceURL=https://my.kibana.url/api/security/v1/saml}]</pre>
+assertionConsumerServiceURL=https://my.kibana.url/api/security/saml/callback}]</pre>
 
 <p><span class="strong strong"><strong>Resolution:</strong></span></p>
 <p>In order to initiate a SAML authentication, Kibana needs to know which SAML realm
@@ -672,8 +685,10 @@ Elasticsearch configuration.</p>
 <p>Authentication in Kibana fails and the following error is printed in the
 Elasticsearch logs:</p>
 <pre class="literallayout">Authentication to realm saml1 failed - Provided SAML response is not valid for realm
-saml/saml1 (Caused by ElasticsearchSecurityException[Conditions [https://some-url-here...]
-do not match required audience [https://my.kibana.url]])</pre>
+saml/saml1 (Caused by ElasticsearchSecurityException[Conditions
+[https://5aadb9778c594cc3aad0efc126a0f92e.kibana.company....ple.com/]
+do not match required audience
+[https://5aadb9778c594cc3aad0efc126a0f92e.kibana.company.example.com]])</pre>
 
 <p><span class="strong strong"><strong>Resolution:</strong></span></p>
 <p>We received a SAML response that is addressed to another SAML Service Provider.
@@ -682,6 +697,18 @@ This usually means that the configured SAML Service Provider Entity ID in
 the SAML Service Provider Entity ID in the SAML Identity Provider documentation.</p>
 <p>To resolve this issue, ensure that both the saml realm in Elasticsearch and the IdP are
 configured with the same string for the SAML Entity ID of the Service Provider.</p>
+<p>In the Elasticsearch log, just before the exception message (above), there will also be
+one or more <code class="literal">INFO</code> level messages of the form</p>
+<pre class="literallayout">Audience restriction
+[https://5aadb9778c594cc3aad0efc126a0f92e.kibana.company.example.com/]
+does not match required audience
+[https://5aadb9778c594cc3aad0efc126a0f92e.kibana.company.example.com]
+(difference starts at character [#68] [/] vs [])</pre>
+
+<p>This log message can assist in determining the difference between the value that
+was received from the IdP and the value at has been configured in Elasticsearch.
+The text in parentheses that describes the difference between the two audience
+identifiers will only be shown if the two strings are considered to be similar.</p>
 <div class="tip admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -748,10 +775,10 @@ Identity Provider sent. In this example, Elasticsearch is configured as follows:
 <pre class="literallayout">xpack.security.authc.realms.saml.&lt;saml-realm-name&gt;.attributes.principal: AttributeName0</pre>
 
 <p>This configuration means that Elasticsearch expects to find a SAML Attribute with the name <code class="literal">AttributeName0</code> or a <code class="literal">NameID</code> with the appropriate format in the SAML
-response so that <a class="xref" href="saml-guide.html#saml-attribute-mapping" title="Attribute mapping">it can map it</a> to the <code class="literal">principal</code> user property. The <code class="literal">principal</code> user property is a
+response so that <a class="xref" href="setting-up-authentication.html#saml-attributes-mapping" title="Attribute mapping">it can map it</a> to the <code class="literal">principal</code> user property. The <code class="literal">principal</code> user property is a
 mandatory one, so if this mapping can&#8217;t happen, the authentication fails.</p>
 <p>If you are attempting to map a <code class="literal">NameID</code>, make sure that the expected <code class="literal">NameID</code> format matches the one that is sent.
-See <a class="xref" href="saml-guide.html#saml-attribute-mapping-nameid" title="Special attribute names">Special attribute names</a> for more details.</p>
+See <a class="xref" href="setting-up-authentication.html#saml-attribute-mapping-nameid" title="Special attribute names">Special attribute names</a> for more details.</p>
 <p>If you are attempting to map a SAML attribute and it is not part of the list in the error message, it might mean
 that you have misspelled the attribute name, or that the IdP is not sending this particular attribute. You might
 be able to use another attribute from the list to map to <code class="literal">principal</code> or consult with your IdP administrator to
@@ -801,7 +828,7 @@ the SAML Identity Provider will hopefully offer much more information.
 <code class="literal">urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy</code>: The SAML Identity Provider cannot support
 releasing a NameID with the requested format. When creating SAML Authentication Requests, Elasticsearch sets
 the NameIDPolicy element of the Authentication request with the appropriate value. This is controlled
-by the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html#ref-saml-settings" class="ulink" target="_top"><code class="literal">nameid_format</code></a> configuration parameter in
+by the <a class="xref" href="settings.html#ref-saml-settings" title="SAML realm settings"><code class="literal">nameid_format</code></a> configuration parameter in
 <code class="literal">elasticsearch.yml</code>, which if not set defaults to <code class="literal">urn:oasis:names:tc:SAML:2.0:nameid-format:transient</code>.
  This instructs the Identity Provider to return a NameID with that specific format in the SAML Response. If
 the SAML Identity Provider cannot grant that request, for example because it is configured to release a
@@ -862,32 +889,53 @@ SAML is enabled.</p>
 <p>If you want your users to be able to use local credentials to authenticate to
 Kibana in addition to using the SAML realm for Single Sign-On, you must enable
 the <code class="literal">basic</code> <code class="literal">authProvider</code> in Kibana. The process is documented in the
-<a class="xref" href="saml-guide.html#saml-kibana-basic" title="Supporting SAML and basic authentication in Kibana">SAML Guide</a></p>
+<a class="xref" href="setting-up-authentication.html#saml-kibana-basic" title="Supporting SAML and basic authentication in Kibana">SAML Guide</a></p>
+</li>
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>No SAML request ID values are being passed from Kibana to Elasticsearch:</p>
+<pre class="literallayout">Caused by org.elasticsearch.ElasticsearchSecurityException: SAML content is in-response-to [_A1B2C3D4E5F6G8H9I0] but expected one of []</pre>
+
+<p><span class="strong strong"><strong>Resolution:</strong></span>
+This error indicates that Elasticsearch received a SAML response tied to a particular SAML request, but Kibana
+didn&#8217;t explicitly specify ID of that request. This usually means that Kibana cannot find the user session where
+it previously stored the SAML request ID.</p>
+<p>To resolve this issue, ensure that in your Kibana configuration <code class="literal">xpack.security.sameSiteCookies</code> is not set to <code class="literal">Strict</code>.
+Depending on your configuration, you may be able to rely on the default value or explicitly set the value to <code class="literal">None</code>.</p>
+<p>For further information,
+please read <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite" class="ulink" target="_top">MDN SameSite cookies</a></p>
+<p>If you serve multiple Kibana installations behind a load balancer make sure to use the
+<a href="https://www.elastic.co/guide/en/kibana/current/production.html#load-balancing-kibana" class="ulink" target="_top">same security configuration</a>
+for all installations.</p>
 </li>
 </ol>
 </div>
 <p><span class="strong strong"><strong>Logging:</strong></span></p>
-<p>Very detailed trace logging can be enabled specifically for the SAML realm by
-setting the following transient setting:</p>
-<div class="pre_wrapper lang-shell">
-<pre class="programlisting prettyprint lang-shell">PUT /_cluster/settings
+<p>If the previous resolutions do not solve your issue, enable additional
+logging for the SAML realm to troubleshoot further. You can enable debug
+logging by configuring the following persistent setting:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_cluster/settings
 {
-  "transient": {
-    "logger.org.elasticsearch.xpack.security.authc.saml": "trace"
+  "persistent": {
+    "logger.org.elasticsearch.xpack.security.authc.saml": "debug"
   }
 }</pre>
 </div>
+<div class="console_widget" data-snippet="snippets/1851.console"></div>
 <p>Alternatively, you can add the following lines to the end of the
 <code class="literal">log4j2.properties</code> configuration file in the <code class="literal">ES_PATH_CONF</code>:</p>
 <div class="pre_wrapper lang-properties">
 <pre class="programlisting prettyprint lang-properties">logger.saml.name = org.elasticsearch.xpack.security.authc.saml
-logger.saml.level = TRACE</pre>
+logger.saml.level = DEBUG</pre>
 </div>
+<p>Refer to <a class="xref" href="settings.html#configuring-logging-levels" title="Configuring logging levels">configuring logging levels</a> for more
+information.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="trb-security-internalserver"></a>Internal Server Error in Kibana<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="trb-security-internalserver"></a>Internal Server Error in Kibana<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
@@ -906,9 +954,9 @@ Otherwise, Kibana cannot connect to Elasticsearch.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="trb-security-setup"></a>Setup-passwords command fails due to connection failure<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="trb-security-setup"></a>Setup-passwords command fails due to connection failure<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
-<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/setup-passwords.html" class="ulink" target="_top">elasticsearch-setup-passwords command</a> sets
+<p>The <a class="xref" href="setup-passwords.html" title="elasticsearch-setup-passwords">elasticsearch-setup-passwords command</a> sets
 passwords for the built-in users by sending user management API requests. If
 your cluster uses SSL/TLS for the HTTP (REST) interface, the command attempts to
 establish a connection with the HTTPS protocol. If the connection attempt fails,
@@ -984,12 +1032,12 @@ If hostname verification fails, you can disable this verification by setting
 </ol>
 </div>
 <p>For more information about these settings, see
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security Settings in Elasticsearch</a>.</p>
+<a class="xref" href="settings.html#security-settings" title="Security settings in Elasticsearch">Security settings</a>.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="trb-security-path"></a>Failures due to relocation of the configuration files<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="trb-security-path"></a>Failures due to relocation of the configuration files<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
 </div></div></div>
 <p><span class="strong strong"><strong>Symptoms:</strong></span></p>
 <div class="ulist itemizedlist">
@@ -1005,7 +1053,7 @@ log that indicate a config file is in a deprecated location.
 <p>By default, in 6.2 and earlier releases, the security configuration files are
 located in the <code class="literal">ES_PATH_CONF/x-pack</code> directory, where <code class="literal">ES_PATH_CONF</code> is an
 environment variable that defines the location of the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/settings.html#config-files-location" class="ulink" target="_top">config directory</a>.</p>
+<a class="xref" href="settings.html#config-files-location" title="Config files location">config directory</a>.</p>
 <p>In 6.3 and later releases, the config directory no longer contains an <code class="literal">x-pack</code>
 directory. The files that were stored in this folder, such as the
 <code class="literal">log4j2.properties</code>, <code class="literal">role_mapping.yml</code>, <code class="literal">roles.yml</code>, <code class="literal">users</code>, and <code class="literal">users_roles</code>
@@ -1021,13 +1069,13 @@ deprecated, however, and you should move your files out of that folder.</p>
 <p>In 6.3 and later releases, settings such as <code class="literal">files.role_mapping</code> default to
 <code class="literal">ES_PATH_CONF/role_mapping.yml</code>. If you do not want to use the default locations,
 you must update the settings appropriately. See
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security settings in Elasticsearch</a>.</p>
+<a class="xref" href="settings.html#security-settings" title="Security settings in Elasticsearch">Security settings</a>.</p>
 </div>
 
 </div>
 <div class="navfooter">
 <span class="prev">
-<a href="encrypting-internode-communications.html">« Tutorial: Encrypting communications</a>
+<a href="operator-privileges.html">« Operator privileges</a>
 </span>
 <span class="next">
 <a href="security-limitations.html">Security limitations »</a>

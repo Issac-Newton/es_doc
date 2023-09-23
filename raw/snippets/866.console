@@ -1,10 +1,26 @@
 GET /_search
 {
   "query": {
-    "span_multi": {
-      "match": {
-        "prefix": { "user.id": { "value": "ki", "boost": 1.08 } }
-      }
+    "match": {
+      "user.id": "kimchy"
+    }
+  }
+}
+
+GET /_all/_search
+{
+  "query": {
+    "match": {
+      "user.id": "kimchy"
+    }
+  }
+}
+
+GET /*/_search
+{
+  "query": {
+    "match": {
+      "user.id": "kimchy"
     }
   }
 }

@@ -9,7 +9,7 @@
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="high-availability.html" title="Set up a cluster for high availability"/>
 <link rel="prev" href="high-availability.html" title="Set up a cluster for high availability"/>
-<link rel="next" href="backup-cluster.html" title="Back up a cluster"/>
+<link rel="next" href="xpack-ccr.html" title="Cross-cluster replication"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -112,12 +112,12 @@
 <a href="high-availability.html">« Set up a cluster for high availability</a>
 </span>
 <span class="next">
-<a href="backup-cluster.html">Back up a cluster »</a>
+<a href="xpack-ccr.html">Cross-cluster replication »</a>
 </span>
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="high-availability-cluster-design"></a>Designing for resilience<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h2>
+<h2 class="title"><a id="high-availability-cluster-design"></a>Designing for resilience<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Distributed systems like Elasticsearch are designed to keep working even if some of
 their components have failed. As long as there are enough well-connected
@@ -149,7 +149,8 @@ At least three master-eligible nodes
 At least two nodes of each role
 </li>
 <li class="listitem">
-At least two copies of each shard (one primary and one or more replicas)
+At least two copies of each shard (one primary and one or more replicas,
+unless the index is a <a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshot index</a>)
 </li>
 </ul>
 </div>
@@ -184,14 +185,14 @@ building resilient clusters of various sizes:</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="high-availability-cluster-small-clusters"></a>Resilience in small clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h2>
+<h2 class="title"><a id="high-availability-cluster-small-clusters"></a>Resilience in small clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h2>
 </div></div></div>
 <p>In smaller clusters, it is most important to be resilient to single-node
 failures. This section gives some guidance on making your cluster as resilient
 as possible to the failure of an individual node.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-one-node"></a>One-node clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-one-node"></a>One-node clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If your cluster consists of one node, that single node must do everything.
 To accommodate this, Elasticsearch assigns nodes every role by default.</p>
@@ -202,29 +203,30 @@ required for a <a class="xref" href="cluster.html#cluster-health" title="Cluster
 cluster can report a <code class="literal">green</code> status, override the default by setting
 <a class="xref" href="index-modules.html#dynamic-index-settings" title="Dynamic index settings"><code class="literal">index.number_of_replicas</code></a> to <code class="literal">0</code> on every index.</p>
 <p>If the node fails, you may need to restore an older copy of any lost indices
-from a <a class="xref" href="getting-started-modify-data.html#modules-snapshots" title="Snapshot module">snapshot</a>.</p>
+from a <a class="xref" href="snapshot-restore.html" title="Snapshot and restore">snapshot</a>.</p>
 <p>Because they are not resilient to any failures, we do not recommend using
 one-node clusters in production.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-two-nodes"></a>Two-node clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-two-nodes"></a>Two-node clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If you have two nodes, we recommend they both be data nodes. You should also
 ensure every shard is stored redundantly on both nodes by setting
-<a class="xref" href="index-modules.html#dynamic-index-settings" title="Dynamic index settings"><code class="literal">index.number_of_replicas</code></a> to <code class="literal">1</code> on every index.
-This is the default number of replicas but may be overridden by an
-<a class="xref" href="index-templates.html" title="Index templates">index template</a>. <a class="xref" href="index-modules.html#dynamic-index-settings" title="Dynamic index settings">Auto-expand
-replicas</a> can also achieve the same thing, but it&#8217;s not necessary to use this
-feature in such a small cluster.</p>
-<p>We recommend you set <code class="literal">node.master: false</code> on one of your two nodes so that it is
-not <a class="xref" href="settings.html#master-node" title="Master-eligible node">master-eligible</a>. This means you can be certain which of your
+<a class="xref" href="index-modules.html#dynamic-index-settings" title="Dynamic index settings"><code class="literal">index.number_of_replicas</code></a> to <code class="literal">1</code> on every index
+that is not a <a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshot index</a>. This is the
+default behaviour but may be overridden by an <a class="xref" href="index-templates.html" title="Index templates">index
+template</a>. <a class="xref" href="index-modules.html#dynamic-index-settings" title="Dynamic index settings">Auto-expand replicas</a> can also achieve
+the same thing, but it&#8217;s not necessary to use this feature in such a small
+cluster.</p>
+<p>We recommend you set only one of your two nodes to be
+<a class="xref" href="settings.html#master-node" title="Master-eligible node">master-eligible</a>. This means you can be certain which of your
 nodes is the elected master of the cluster. The cluster can tolerate the loss of
-the other master-ineligible node. If you don&#8217;t set <code class="literal">node.master: false</code> on one
-node, both nodes are master-eligible. This means both nodes are required for a
-master election. Since the election will fail if either node is unavailable,
-your cluster cannot reliably tolerate the loss of either node.</p>
+the other master-ineligible node. If you set both nodes to master-eligible, two
+nodes are required for a master election. Since the election will fail if either
+node is unavailable, your cluster cannot reliably tolerate the loss of either
+node.</p>
 <p>By default, each node is assigned every role. We recommend you assign both nodes
 all other roles except master eligibility. If one node fails, the other node can
 handle its tasks.</p>
@@ -241,7 +243,7 @@ cluster in production.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-two-nodes-plus"></a>Two-node clusters with a tiebreaker<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-two-nodes-plus"></a>Two-node clusters with a tiebreaker<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Because master elections are majority-based, the two-node cluster described
 above is tolerant to the loss of one of its nodes but not the
@@ -290,14 +292,15 @@ cluster that is suitable for production deployments.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-three-nodes"></a>Three-node clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-three-nodes"></a>Three-node clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
-<p>If you have three nodes, we recommend they all be <a class="xref" href="settings.html#data-node" title="Data node">data
-nodes</a> and every index should have at least one replica. Nodes are data nodes
-by default. You may prefer for some indices to have two replicas so that each
-node has a copy of each shard in those indices. You should also configure each
-node to be <a class="xref" href="settings.html#master-node" title="Master-eligible node">master-eligible</a> so that any two of them can hold a
-master election without needing to communicate with the third node. Nodes are
+<p>If you have three nodes, we recommend they all be <a class="xref" href="settings.html#data-node" title="Data node">data nodes</a> and
+every index that is not a <a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshot index</a>
+should have at least one replica. Nodes are data nodes by default. You may
+prefer for some indices to have two replicas so that each node has a copy of
+each shard in those indices. You should also configure each node to be
+<a class="xref" href="settings.html#master-node" title="Master-eligible node">master-eligible</a> so that any two of them can hold a master
+election without needing to communicate with the third node. Nodes are
 master-eligible by default. This cluster will be resilient to the loss of any
 single node.</p>
 <p>You should avoid sending client requests to just one of your nodes. If you do,
@@ -312,14 +315,14 @@ service provides such a load balancer.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-three-plus-nodes"></a>Clusters with more than three nodes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-three-plus-nodes"></a>Clusters with more than three nodes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Once your cluster grows to more than three nodes, you can start to specialise
 these nodes according to their responsibilities, allowing you to scale their
 resources independently as needed. You can have as many <a class="xref" href="settings.html#data-node" title="Data node">data
-nodes</a>, <a class="xref" href="ingest.html" title="Ingest node">ingest nodes</a>, <a class="xref" href="settings.html#ml-node" title="Machine learning node">machine learning nodes</a>, etc. as needed to
+nodes</a>, <a class="xref" href="ingest.html" title="Ingest pipelines">ingest nodes</a>, <a class="xref" href="settings.html#ml-node" title="Machine learning node">machine learning nodes</a>, etc. as needed to
 support your workload. As your cluster grows larger, we recommend using
-dedicated nodes for each role. This lets you to independently scale resources
+dedicated nodes for each role. This allows you to independently scale resources
 for each task.</p>
 <p>However, it is good practice to limit the number of master-eligible nodes in
 the cluster to three. Master nodes do not scale like other node types since
@@ -340,7 +343,7 @@ never become the master itself.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-small-cluster-summary"></a>Summary<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-small-cluster-summary"></a>Summary<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The cluster will be resilient to the loss of any node as long as:</p>
 <div class="ulist itemizedlist">
@@ -352,8 +355,8 @@ The <a class="xref" href="cluster.html#cluster-health" title="Cluster health API
 There are at least two data nodes.
 </li>
 <li class="listitem">
-Every index has at least one replica of each shard, in addition to the
-primary.
+Every index that is not a <a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshot index</a>
+has at least one replica of each shard, in addition to the primary.
 </li>
 <li class="listitem">
 The cluster has at least three master-eligible nodes, as long as at least two
@@ -373,25 +376,44 @@ a load balancer.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="high-availability-cluster-design-large-clusters"></a>Resilience in larger clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h2>
+<h2 class="title"><a id="high-availability-cluster-design-large-clusters"></a>Resilience in larger clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h2>
 </div></div></div>
-<p>It is not unusual for nodes to share some common infrastructure, such as a power
-supply or network router. If so, you should plan for the failure of this
+<p>It&#8217;s not unusual for nodes to share common infrastructure, such as network
+interconnects or a power supply. If so, you should plan for the failure of this
 infrastructure and ensure that such a failure would not affect too many of your
 nodes. It is common practice to group all the nodes sharing some infrastructure
 into <em>zones</em> and to plan for the failure of any whole zone at once.</p>
-<p>Your cluster’s zones should all be contained within a single data centre. Elasticsearch
-expects its node-to-node connections to be reliable and have low latency and
-high bandwidth. Connections between data centres typically do not meet these
-expectations. Although Elasticsearch will behave correctly on an unreliable or slow
-network, it will not necessarily behave optimally. It may take a considerable
-length of time for a cluster to fully recover from a network partition since it
-must resynchronize any missing data and rebalance the cluster once the
-partition heals. If you want your data to be available in multiple data centres,
-deploy a separate cluster in each data centre and use
-<a class="xref" href="modules-cross-cluster-search.html" title="Search across clusters">cross-cluster search</a> or <a class="xref" href="xpack-ccr.html" title="Cross-cluster replication">cross-cluster replication</a> to link the
+<p>Elasticsearch expects node-to-node connections to be reliable, have low latency, and
+have adequate bandwidth. Many Elasticsearch tasks require multiple round-trips between
+nodes. A slow or unreliable interconnect may have a significant effect on the
+performance and stability of your cluster.</p>
+<p>For example, a few milliseconds of latency added to each round-trip can quickly
+accumulate into a noticeable performance penalty. An unreliable network may
+have frequent network partitions. Elasticsearch will automatically recover from a
+network partition as quickly as it can but your cluster may be partly
+unavailable during a partition and will need to spend time and resources to
+resynchronize any missing data and rebalance itself once the partition heals.
+Recovering from a failure may involve copying a large amount of data between
+nodes so the recovery time is often determined by the available bandwidth.</p>
+<p>If you&#8217;ve divided your cluster into zones, the network connections within each
+zone are typically of higher quality than the connections between the zones.
+Ensure the network connections between zones are of sufficiently high quality.
+You will see the best results by locating all your zones within a single data
+center with each zone having its own independent power supply and other
+supporting infrastructure. You can also <em>stretch</em> your cluster across nearby
+data centers as long as the network interconnection between each pair of data
+centers is good enough.</p>
+<p><a id="high-availability-cluster-design-min-network-perf"></a>There is no specific minimum network performance required to run a healthy Elasticsearch
+cluster. In theory, a cluster will work correctly even if the round-trip
+latency between nodes is several hundred milliseconds. In practice, if your
+network is that slow then the cluster performance will be very poor. In
+addition, slow networks are often unreliable enough to cause network partitions
+that lead to periods of unavailability.</p>
+<p>If you want your data to be available in multiple data centers that are further
+apart or not well connected, deploy a separate cluster in each data center and
+use <a class="xref" href="modules-cross-cluster-search.html" title="Search across clusters">cross-cluster search</a> or <a class="xref" href="xpack-ccr.html" title="Cross-cluster replication">cross-cluster replication</a> to link the
 clusters together. These features are designed to perform well even if the
-cluster-to-cluster connections are less reliable or slower than the network
+cluster-to-cluster connections are less reliable or performant than the network
 within each cluster.</p>
 <p>After losing a whole zone&#8217;s worth of nodes, a properly-designed cluster may be
 functional but running with significantly reduced capacity. You may need
@@ -399,19 +421,19 @@ to provision extra nodes to restore acceptable performance in your
 cluster when handling such a failure.</p>
 <p>For resilience against whole-zone failures, it is important that there is a copy
 of each shard in more than one zone, which can be achieved by placing data
-nodes in multiple zones and configuring <a class="xref" href="getting-started-modify-data.html#allocation-awareness" title="Shard allocation awareness">shard allocation
+nodes in multiple zones and configuring <a class="xref" href="settings.html#shard-allocation-awareness" title="Shard allocation awareness">shard allocation
 awareness</a>. You should also ensure that client requests are sent to nodes in
 more than one zone.</p>
 <p>You should consider all node roles and ensure that each role is split
 redundantly across two or more zones. For instance, if you are using
-<a class="xref" href="ingest.html" title="Ingest node">ingest pipelines</a> or machine learning, you should have ingest or machine learning nodes in two
+<a class="xref" href="ingest.html" title="Ingest pipelines">ingest pipelines</a> or machine learning, you should have ingest or machine learning nodes in two
 or more zones. However, the placement of master-eligible nodes requires a little
 more care because a resilient cluster needs at least two of the three
 master-eligible nodes in order to function. The following sections explore the
 options for placing master-eligible nodes across multiple zones.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-two-zones"></a>Two-zone clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-two-zones"></a>Two-zone clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If you have two zones, you should have a different number of
 master-eligible nodes in each zone so that the zone with more nodes will
@@ -426,7 +448,7 @@ the loss of either zone.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-two-zones-plus"></a>Two-zone clusters with a tiebreaker<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-two-zones-plus"></a>Two-zone clusters with a tiebreaker<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The two-zone deployment described above is tolerant to the loss of one of its
 zones but not to the loss of the other one because master elections are
@@ -451,38 +473,42 @@ master-eligible node</a>, also known as a dedicated tiebreaker. A dedicated
 tiebreaker need not be as powerful as the other two nodes since it has no other
 roles and will not perform any searches nor coordinate any client requests nor
 be elected as the master of the cluster.</p>
-<p>You should use <a class="xref" href="getting-started-modify-data.html#allocation-awareness" title="Shard allocation awareness">shard allocation awareness</a> to ensure
+<p>You should use <a class="xref" href="settings.html#shard-allocation-awareness" title="Shard allocation awareness">shard allocation awareness</a> to ensure
 that there is a copy of each shard in each zone. This means either zone remains
 fully available if the other zone fails.</p>
-<p>All master-eligible nodes, including voting-only nodes, are on the critical path
-for publishing cluster state updates. Because of this, these nodes require
-reasonably fast persistent storage and a reliable, low-latency network
-connection to the rest of the cluster. If you add a tiebreaker node in a third
-independent zone then you must make sure it has adequate resources and good
-connectivity to the rest of the cluster.</p>
+<p>All master-eligible nodes, including voting-only nodes, are on the critical
+path for <a class="xref" href="modules-discovery.html#cluster-state-publishing" title="Publishing the cluster state">publishing cluster state updates</a>. Cluster
+state updates are usually independent of performance-critical workloads such as
+indexing or searches, but they are involved in management activities such as
+index creation and rollover, mapping updates, and recovery after a failure. The
+performance characteristics of these activities are a function of the speed of
+the storage on each master-eligible node, as well as the reliability and
+latency of the network interconnections between all nodes in the cluster. You
+must therefore ensure that the storage and networking available to the
+nodes in your cluster are good enough to meet your performance goals.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-three-zones"></a>Clusters with three or more zones<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-three-zones"></a>Clusters with three or more zones<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If you have three zones then you should have one master-eligible node in each
 zone. If you have more than three zones then you should choose three of the
 zones and put a master-eligible node in each of these three zones. This will
 mean that the cluster can still elect a master even if one of the zones fails.</p>
-<p>As always, your indices should have at least one replica in case a node fails.
-You should also use <a class="xref" href="getting-started-modify-data.html#allocation-awareness" title="Shard allocation awareness">shard allocation awareness</a> to
-limit the number of copies of each shard in each zone. For instance, if you have
-an index with one or two replicas configured then allocation awareness will
-ensure that the replicas of the shard are in a different zone from the primary.
-This means that a copy of every shard will still be available if one zone
-fails. The availability of this shard will not be affected by such a
-failure.</p>
+<p>As always, your indices should have at least one replica in case a node fails,
+unless they are <a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshot indices</a>. You
+should also use <a class="xref" href="settings.html#shard-allocation-awareness" title="Shard allocation awareness">shard allocation awareness</a> to limit
+the number of copies of each shard in each zone. For instance, if you have an
+index with one or two replicas configured then allocation awareness will ensure
+that the replicas of the shard are in a different zone from the primary. This
+means that a copy of every shard will still be available if one zone fails. The
+availability of this shard will not be affected by such a failure.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="high-availability-cluster-design-large-cluster-summary"></a>Summary<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
+<h3 class="title"><a id="high-availability-cluster-design-large-cluster-summary"></a>Summary<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/high-availability/cluster-design.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The cluster will be resilient to the loss of any zone as long as:</p>
 <div class="ulist itemizedlist">
@@ -494,8 +520,8 @@ The <a class="xref" href="cluster.html#cluster-health" title="Cluster health API
 There are at least two zones containing data nodes.
 </li>
 <li class="listitem">
-Every index has at least one replica of each shard, in addition to the
-primary.
+Every index that is not a <a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshot index</a>
+has at least one replica of each shard, in addition to the primary.
 </li>
 <li class="listitem">
 Shard allocation awareness is configured to avoid concentrating all copies of
@@ -524,7 +550,7 @@ a load balancer.
 <a href="high-availability.html">« Set up a cluster for high availability</a>
 </span>
 <span class="next">
-<a href="backup-cluster.html">Back up a cluster »</a>
+<a href="xpack-ccr.html">Cross-cluster replication »</a>
 </span>
 </div>
 </div>

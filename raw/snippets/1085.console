@@ -1,19 +1,5 @@
-GET /_search
+PUT /my-index-000001/_doc/1?refresh
 {
-  "aggs": {
-    "actors": {
-      "terms": {
-        "field": "actors",
-        "size": 10
-      },
-      "aggs": {
-        "costars": {
-          "terms": {
-            "field": "actors",
-            "size": 5
-          }
-        }
-      }
-    }
-  }
+  "text": "This is a parent document.",
+  "my-join-field": "my-parent"
 }

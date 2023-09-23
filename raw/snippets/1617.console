@@ -1,6 +1,12 @@
-PUT /_cluster/settings
+PUT _ilm/policy/my_policy
 {
-  "transient" : {
-    "indices.recovery.max_bytes_per_sec" : null
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "readonly" : { }
+        }
+      }
+    }
   }
 }

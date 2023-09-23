@@ -1,8 +1,11 @@
-PUT test-index
+GET /_search
 {
-  "settings": {
-    "number_of_shards": 1,
-    "number_of_replicas": 1,
-    "index.lifecycle.name": "my_policy"
+  "aggs": {
+    "tags": {
+      "terms": {
+        "field": "tags",
+        "min_doc_count": 10
+      }
+    }
   }
 }

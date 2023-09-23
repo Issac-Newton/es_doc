@@ -1,11 +1,25 @@
-GET /_search
+POST _ingest/pipeline/_simulate
 {
-  "query": {
-    "match": {
-      "message": {
-        "query": "this is a test",
-        "operator": "and"
+  "pipeline": {
+    "processors": [
+      {
+        "redact": {
+          "field": "message",
+          "patterns": [
+            "%{GITHUB_NAME:GITHUB_NAME}"
+          ],
+          "pattern_definitions": {
+            "GITHUB_NAME": "@%{USERNAME}"
+          }
+        }
+      }
+    ]
+  },
+  "docs": [
+    {
+      "_source": {
+        "message": "@elastic-data-management the PR is ready for review"
       }
     }
-  }
+  ]
 }

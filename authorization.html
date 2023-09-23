@@ -7,9 +7,9 @@
 <meta class="elastic" name="content" content="User authorization | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="secure-cluster.html" title="Secure a cluster"/>
-<link rel="prev" href="oidc-guide.html" title="Configuring single sign-on to the Elastic Stack using OpenID Connect"/>
-<link rel="next" href="enable-audit-logging.html" title="Enabling audit logging"/>
+<link rel="up" href="secure-cluster.html" title="Secure the Elastic Stack"/>
+<link rel="prev" href="setting-up-authentication.html" title="User authentication"/>
+<link rel="next" href="enable-audit-logging.html" title="Enable audit logging"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -105,25 +105,25 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="secure-cluster.html">Secure a cluster</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="secure-cluster.html">Secure the Elastic Stack</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
-<a href="oidc-guide.html">« Configuring single sign-on to the Elastic Stack using OpenID Connect</a>
+<a href="setting-up-authentication.html">« User authentication</a>
 </span>
 <span class="next">
-<a href="enable-audit-logging.html">Enabling audit logging »</a>
+<a href="enable-audit-logging.html">Enable audit logging »</a>
 </span>
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="authorization"></a>User authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/overview.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="authorization"></a>User authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/overview.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The Elastic Stack security features add <em>authorization</em>, which is the process of determining whether the user behind an incoming request is allowed to execute
 the request.</p>
 <p>This process takes place after the user is successfully identified and
 <a class="xref" href="setting-up-authentication.html" title="User authentication">authenticated</a>.</p>
-<h3><a id="roles"></a>Role-based access control<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/overview.asciidoc">edit</a></h3>
+<h3><a id="roles"></a>Role-based access control<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/overview.asciidoc">edit</a></h3>
 <p>The security features provide a role-based access control (RBAC) mechanism,
 which enables you to authorize users by assigning privileges to roles and
 assigning roles to users or groups.</p>
@@ -221,7 +221,7 @@ to that user. Likewise, the total set of permissions that a user has is defined
 by the union of the permissions in all its roles.</p>
 <p>The method for assigning roles to users varies depending on which realms you use
 to authenticate users. For more information, see <a class="xref" href="authorization.html#mapping-roles" title="Mapping users and groups to roles">Mapping users and groups to roles</a>.</p>
-<h3><a id="attributes"></a>Attribute-based access control<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/overview.asciidoc">edit</a></h3>
+<h3><a id="attributes"></a>Attribute-based access control<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/overview.asciidoc">edit</a></h3>
 <p>The security features also provide an attribute-based access control (ABAC)
 mechanism, which enables you to use attributes to restrict access to documents
 in search queries and aggregations. For example, you can assign attributes to
@@ -232,7 +232,7 @@ attributes.</p>
 <a href="https://www.elastic.co/blog/attribute-based-access-control-with-xpack" class="ulink" target="_top">Document-level attribute-based access control with X-Pack 6.1</a>.</p>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="built-in-roles"></a>Built-in roles<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/built-in-roles.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="built-in-roles"></a>Built-in roles<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/built-in-roles.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The Elastic Stack security features apply a default role to all users, including
 <a class="xref" href="setting-up-authentication.html#anonymous-access" title="Enabling anonymous access">anonymous users</a>. The default role enables users to access
@@ -259,6 +259,12 @@ Grants access necessary for the APM system user to send system-level data
 <dd>
 Grants the privileges required for APM users (such as <code class="literal">read</code> and
 <code class="literal">view_index_metadata</code> privileges on the <code class="literal">apm-*</code> and <code class="literal">.ml-anomalies*</code> indices).
+<span class="Admonishment Admonishment--change">
+[<span class="Admonishment-version u-mono u-strikethrough">7.13.0</span>]
+<span class="Admonishment-detail">
+Deprecated in 7.13.0. See <a href="https://www.elastic.co/guide/en/kibana/8.9/apm-app-users.html" class="ulink" target="_top">APM app users and privileges</a> for alternatives.
+</span>
+</span>.
 </dd>
 <dt>
 <span class="term">
@@ -305,7 +311,7 @@ suitable for writing beats output to Elasticsearch.
 <dd>
 Grants <code class="literal">manage_data_frame_transforms</code> cluster privileges, which enable you to
 manage transforms. This role also includes all
-<a href="https://www.elastic.co/guide/en/kibana/7.10/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the machine learning features.
+<a href="https://www.elastic.co/guide/en/kibana/8.9/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the machine learning features.
 <span class="Admonishment Admonishment--change">
 [<span class="Admonishment-version u-mono u-strikethrough">7.5.0</span>]
 <span class="Admonishment-detail">
@@ -321,7 +327,7 @@ Deprecated in 7.5.0. Replaced by <a class="xref" href="authorization.html#built-
 <dd>
 Grants <code class="literal">monitor_data_frame_transforms</code> cluster privileges, which enable you to
 use transforms. This role also includes all
-<a href="https://www.elastic.co/guide/en/kibana/7.10/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the machine learning features.
+<a href="https://www.elastic.co/guide/en/kibana/8.9/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the machine learning features.
 <span class="Admonishment Admonishment--change">
 [<span class="Admonishment-version u-mono u-strikethrough">7.5.0</span>]
 <span class="Admonishment-detail">
@@ -331,12 +337,41 @@ Deprecated in 7.5.0. Replaced by <a class="xref" href="authorization.html#built-
 </dd>
 <dt>
 <span class="term">
+<a id="built-in-roles-editor"></a> <code class="literal">editor</code>
+</span>
+</dt>
+<dd>
+<p>
+Grants full access to all features in Kibana (including Solutions) and read-only access to data indices.
+</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+This role provides read access to any index that is not prefixed with a dot.
+</li>
+<li class="listitem">
+This role automatically grants full access to new Kibana features as soon as they are released.
+</li>
+<li class="listitem">
+Some Kibana features may also require creation or write access to data indices. Machine learning data frame analytics jobs
+is an example. For such features those privileges must be defined in a separate role.
+</li>
+</ul>
+</div>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
 <a id="built-in-roles-enrich-user"></a> <code class="literal">enrich_user</code>
 </span>
 </dt>
 <dd>
 Grants access to manage <span class="strong strong"><strong>all</strong></span> enrich indices (<code class="literal">.enrich-*</code>) and <span class="strong strong"><strong>all</strong></span> operations on
-ingest node pipelines.
+ingest pipelines.
 </dd>
 <dt>
 <span class="term">
@@ -362,10 +397,10 @@ must be defined in a separate role.</p>
 </dt>
 <dd>
 (This role is deprecated, please use
-<a href="https://www.elastic.co/guide/en/kibana/7.10/kibana-privileges.html#kibana-feature-privileges" class="ulink" target="_top">Kibana feature privileges</a>
+<a href="https://www.elastic.co/guide/en/kibana/8.9/kibana-privileges.html#kibana-feature-privileges" class="ulink" target="_top">Kibana feature privileges</a>
 instead).
 Grants read-only access to the Kibana Dashboard in every
-<a href="https://www.elastic.co/guide/en/kibana/7.10/xpack-spaces.html" class="ulink" target="_top">space in Kibana</a>.
+<a href="https://www.elastic.co/guide/en/kibana/8.9/xpack-spaces.html" class="ulink" target="_top">space in Kibana</a>.
 This role does not have access to editing tools in Kibana.
 </dd>
 <dt>
@@ -377,9 +412,12 @@ This role does not have access to editing tools in Kibana.
 <p>
 Grants access necessary for the Kibana system user to read from and write to the
 Kibana indices, manage index templates and tokens, and check the availability of
-the Elasticsearch cluster. This role grants read access to the <code class="literal">.monitoring-*</code> indices
-and read and write access to the <code class="literal">.reporting-*</code> indices. For more information,
-see <a href="https://www.elastic.co/guide/en/kibana/7.10/using-kibana-with-security.html" class="ulink" target="_top">Configuring Security in Kibana</a>.
+the Elasticsearch cluster. It also permits
+activating, searching, and retrieving user profiles,
+as well as updating user profile data for the <code class="literal">kibana-*</code> namespace.
+This role grants read access to the <code class="literal">.monitoring-*</code> indices and read and write
+access to the <code class="literal">.reporting-*</code> indices. For more information,
+see <a href="https://www.elastic.co/guide/en/kibana/8.9/using-kibana-with-security.html" class="ulink" target="_top">Configuring Security in Kibana</a>.
 </p>
 <div class="note admon">
 <div class="icon"></div>
@@ -396,7 +434,7 @@ change between releases.</p>
 </dt>
 <dd>
 Grants access to all features in Kibana. For more information on Kibana authorization,
-see <a href="https://www.elastic.co/guide/en/kibana/7.10/xpack-security-authorization.html" class="ulink" target="_top">Kibana authorization</a>.
+see <a href="https://www.elastic.co/guide/en/kibana/8.9/xpack-security-authorization.html" class="ulink" target="_top">Kibana authorization</a>.
 </dd>
 <dt>
 <span class="term">
@@ -407,7 +445,7 @@ see <a href="https://www.elastic.co/guide/en/kibana/7.10/xpack-security-authoriz
 (This role is deprecated, please use the
 <a class="xref" href="authorization.html#built-in-roles-kibana-admin"><code class="literal">kibana_admin</code></a> role instead.)
 Grants access to all features in Kibana. For more information on Kibana authorization,
-see <a href="https://www.elastic.co/guide/en/kibana/7.10/xpack-security-authorization.html" class="ulink" target="_top">Kibana authorization</a>.
+see <a href="https://www.elastic.co/guide/en/kibana/8.9/xpack-security-authorization.html" class="ulink" target="_top">Kibana authorization</a>.
 </dd>
 <dt>
 <span class="term">
@@ -427,7 +465,7 @@ necessary access for logstash-specific APIs exposed by the logstash x-pack plugi
 <p>
 Grants access necessary for the Logstash system user to send system-level data
 (such as monitoring) to Elasticsearch. For more information, see
-<a href="https://www.elastic.co/guide/en/logstash/7.10/ls-security.html" class="ulink" target="_top">Configuring Security in Logstash</a>.
+<a href="https://www.elastic.co/guide/en/logstash/8.9/ls-security.html" class="ulink" target="_top">Configuring Security in Logstash</a>.
 </p>
 <div class="note admon">
 <div class="icon"></div>
@@ -458,7 +496,7 @@ use of the machine learning APIs. Grants <code class="literal">manage_ml</code> 
 <code class="literal">.ml-anomalies*</code>, <code class="literal">.ml-notifications*</code>, <code class="literal">.ml-state*</code>, <code class="literal">.ml-meta*</code> indices and
 write access to <code class="literal">.ml-annotations*</code> indices. Machine learning administrators also need
 index privileges for source and destination indices and roles that grant
-access to Kibana. See <a href="https://www.elastic.co/guide/en/machine-learning/7.10/setup.html#setup-privileges" class="ulink" target="_top">Machine learning security privileges</a>.
+access to Kibana. See <a href="https://www.elastic.co/guide/en/machine-learning/8.9/setup.html#setup-privileges" class="ulink" target="_top">Machine learning security privileges</a>.
 </dd>
 <dt>
 <span class="term">
@@ -471,7 +509,17 @@ status, and work with results. This role grants <code class="literal">monitor_ml
 read access to the <code class="literal">.ml-notifications</code> and <code class="literal">.ml-anomalies*</code> indices
 (which store machine learning results), and write access to <code class="literal">.ml-annotations*</code> indices.
 Machine learning users also need index privileges for source and destination
-indices and roles that grant access to Kibana. See <a href="https://www.elastic.co/guide/en/machine-learning/7.10/setup.html#setup-privileges" class="ulink" target="_top">Machine learning security privileges</a>.
+indices and roles that grant access to Kibana. See <a href="https://www.elastic.co/guide/en/machine-learning/8.9/setup.html#setup-privileges" class="ulink" target="_top">Machine learning security privileges</a>.
+</dd>
+<dt>
+<span class="term">
+<a id="built-in-roles-manage-enrich"></a> <code class="literal">manage_enrich</code>
+</span>
+</dt>
+<dd>
+Grants privileges to access and use all of the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/enrich-apis.html" class="ulink" target="_top">enrich APIs</a>.
+Users with this role can manage enrich policies that add data from your existing
+indices to incoming documents during ingest.
 </dd>
 <dt>
 <span class="term">
@@ -482,9 +530,9 @@ indices and roles that grant access to Kibana. See <a href="https://www.elastic.
 Grants the minimum privileges required for any user of X-Pack monitoring other than those
 required to use Kibana. This role grants access to the monitoring indices and grants
 privileges necessary for reading basic cluster information. This role also includes
-all <a href="https://www.elastic.co/guide/en/kibana/7.10/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the Elastic Stack monitoring features.
+all <a href="https://www.elastic.co/guide/en/kibana/8.9/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the Elastic Stack monitoring features.
 Monitoring users should also be assigned the <code class="literal">kibana_admin</code> role, or another role
-with <a href="https://www.elastic.co/guide/en/kibana/7.10/xpack-security-authorization.html" class="ulink" target="_top">access to the Kibana instance</a>.
+with <a href="https://www.elastic.co/guide/en/kibana/8.9/xpack-security-authorization.html" class="ulink" target="_top">access to the Kibana instance</a>.
 </dd>
 <dt>
 <span class="term">
@@ -514,8 +562,24 @@ Grants the specific privileges required for users of X-Pack reporting other than
 required to use Kibana. This role grants access to the reporting indices; each
 user has access to only their own reports.
 Reporting users should also be assigned additional roles that grant
-<a href="https://www.elastic.co/guide/en/kibana/7.10/xpack-security-authorization.html" class="ulink" target="_top">access to Kibana</a> as well as read
+<a href="https://www.elastic.co/guide/en/kibana/8.9/xpack-security-authorization.html" class="ulink" target="_top">access to Kibana</a> as well as read
 access to the <a class="xref" href="authorization.html#roles-indices-priv" title="Indices Privileges">indices</a> that will be used to generate reports.
+</dd>
+<dt>
+<span class="term">
+<a id="built-in-roles-rollup-admin"></a> <code class="literal">rollup_admin</code>
+</span>
+</dt>
+<dd>
+Grants <code class="literal">manage_rollup</code> cluster privileges, which enable you to manage and execute all rollup actions.
+</dd>
+<dt>
+<span class="term">
+<a id="built-in-roles-rollup-user"></a> <code class="literal">rollup_user</code>
+</span>
+</dt>
+<dd>
+Grants <code class="literal">monitor_rollup</code> cluster privileges, which enable you to perform read-only operations related to rollups.
 </dd>
 <dt>
 <span class="term">
@@ -535,10 +599,20 @@ to change index settings or to read or update data stream or index data.
 </span>
 </dt>
 <dd>
-Grants full access to the cluster, including all indices and data. A user with
-the <code class="literal">superuser</code> role can also manage users and roles and
-<a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">impersonate</a> any other user in the system. Due to the
-permissive nature of this role, take extra care when assigning it to a user.
+<p>
+Grants full access to cluster management and data indices. This role also grants
+direct read-only access to restricted indices like <code class="literal">.security</code>. A user with the
+<code class="literal">superuser</code> role can <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">impersonate</a> any other user in the system.
+</p>
+<p>On Elastic Cloud, all standard users, including those with the <code class="literal">superuser</code> role are
+restricted from performing <a class="xref" href="operator-privileges.html#operator-only-functionality" title="Operator-only functionality">operator-only</a> actions.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This role can manage security and create roles with unlimited privileges.
+Take extra care when assigning it to a user.</p>
+</div>
+</div>
 </dd>
 <dt>
 <span class="term">
@@ -548,7 +622,7 @@ permissive nature of this role, take extra care when assigning it to a user.
 <dd>
 Grants <code class="literal">manage_transform</code> cluster privileges, which enable you to manage
 transforms. This role also includes all
-<a href="https://www.elastic.co/guide/en/kibana/7.10/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the machine learning features.
+<a href="https://www.elastic.co/guide/en/kibana/8.9/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the machine learning features.
 </dd>
 <dt>
 <span class="term">
@@ -556,9 +630,9 @@ transforms. This role also includes all
 </span>
 </dt>
 <dd>
-Grants <code class="literal">monitor_transform</code> cluster privileges, which enable you to use
-transforms. This role also includes all
-<a href="https://www.elastic.co/guide/en/kibana/7.10/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the machine learning features.
+Grants <code class="literal">monitor_transform</code> cluster privileges, which enable you to perform
+read-only operations related to transforms. This role also includes all
+<a href="https://www.elastic.co/guide/en/kibana/8.9/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a> for the machine learning features.
 </dd>
 <dt>
 <span class="term">
@@ -585,12 +659,38 @@ However, this role does not grant permission to view the data in all indices.</p
 </dd>
 <dt>
 <span class="term">
+<a id="built-in-roles-viewer"></a> <code class="literal">viewer</code>
+</span>
+</dt>
+<dd>
+<p>
+Grants read-only access to all features in Kibana (including Solutions) and to data indices.
+</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+This role provides read access to any index that is not prefixed with a dot.
+</li>
+<li class="listitem">
+This role automatically grants read-only access to new Kibana features as soon as they are available.
+</li>
+</ul>
+</div>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
 <a id="built-in-roles-watcher-admin"></a> <code class="literal">watcher_admin</code>
 </span>
 </dt>
 <dd>
-<p>Grants read access to the <code class="literal">.watches</code> index, read access to the watch history and
-the triggered watches index and allows to execute all watcher actions.</p>
+<p>Allows users to create and execute all Watcher actions. Grants read access to
+the <code class="literal">.watches</code> index. Also grants read access to the watch history and the
+triggered watches index.</p>
 </dd>
 <dt>
 <span class="term">
@@ -607,16 +707,16 @@ stats.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="defining-roles"></a>Defining roles<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="defining-roles"></a>Defining roles<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h2>
 </div></div></div>
 <p>A role is defined by the following JSON structure:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
-  "run_as": [ ... ], <a id="CO526-1"></a><i class="conum" data-value="1"></i>
-  "cluster": [ ... ], <a id="CO526-2"></a><i class="conum" data-value="2"></i>
-  "global": { ... }, <a id="CO526-3"></a><i class="conum" data-value="3"></i>
-  "indices": [ ... ], <a id="CO526-4"></a><i class="conum" data-value="4"></i>
-  "applications": [ ... ] <a id="CO526-5"></a><i class="conum" data-value="5"></i>
+  "run_as": [ ... ], <a id="CO581-1"></a><i class="conum" data-value="1"></i>
+  "cluster": [ ... ], <a id="CO581-2"></a><i class="conum" data-value="2"></i>
+  "global": { ... }, <a id="CO581-3"></a><i class="conum" data-value="3"></i>
+  "indices": [ ... ], <a id="CO581-4"></a><i class="conum" data-value="4"></i>
+  "applications": [ ... ] <a id="CO581-5"></a><i class="conum" data-value="5"></i>
 
 }</pre>
 </div>
@@ -624,7 +724,7 @@ stats.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO526-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO581-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>A list of usernames the owners of this role can <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">impersonate</a>.</p>
@@ -632,7 +732,7 @@ stats.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO526-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO581-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>A list of cluster privileges. These privileges define the
@@ -643,7 +743,7 @@ permissions).</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO526-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO581-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>An object defining global privileges. A global privilege is a form of
@@ -651,12 +751,12 @@ cluster privilege that is request sensitive. A standard cluster privilege
 makes authorization decisions based solely on the action being executed.
 A global privilege also considers the parameters included in the request.
 Support for global privileges is currently limited to the management of
-application privileges.  This field is optional.</p>
+application privileges. This field is optional.</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO526-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO581-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>A list of indices permissions entries. This field is optional (missing <code class="literal">indices</code>
@@ -665,7 +765,7 @@ privileges effectively mean no index level permissions).</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO526-5"><i class="conum" data-value="5"></i></a></p>
+<p><a href="#CO581-5"><i class="conum" data-value="5"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>A list of application privilege entries. This field is optional.</p>
@@ -677,7 +777,7 @@ privileges effectively mean no index level permissions).</p>
 <div class="icon"></div>
 <div class="admon_content">
 <a id="valid-role-name"></a>
-<p>Role names must be at least 1 and no more than 1024 characters. They can
+<p>Role names must be at least 1 and no more than 507 characters. They can
       contain alphanumeric characters (<code class="literal">a-z</code>, <code class="literal">A-Z</code>, <code class="literal">0-9</code>), spaces,
       punctuation, and printable symbols in the <a href="https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)" class="ulink" target="_top">Basic Latin (ASCII) block</a>.
       Leading or trailing whitespace is not allowed.</p>
@@ -685,32 +785,32 @@ privileges effectively mean no index level permissions).</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="roles-indices-priv"></a>Indices Privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
+<h3 class="title"><a id="roles-indices-priv"></a>Indices Privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following describes the structure of an indices permissions entry:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
-  "names": [ ... ], <a id="CO527-1"></a><i class="conum" data-value="1"></i>
-  "privileges": [ ... ], <a id="CO527-2"></a><i class="conum" data-value="2"></i>
-  "field_security" : { ... }, <a id="CO527-3"></a><i class="conum" data-value="3"></i>
-  "query": "..." <a id="CO527-4"></a><i class="conum" data-value="4"></i>
-  "allow_restricted_indices": false <a id="CO527-5"></a><i class="conum" data-value="5"></i>
+  "names": [ ... ], <a id="CO582-1"></a><i class="conum" data-value="1"></i>
+  "privileges": [ ... ], <a id="CO582-2"></a><i class="conum" data-value="2"></i>
+  "field_security" : { ... }, <a id="CO582-3"></a><i class="conum" data-value="3"></i>
+  "query": "..." <a id="CO582-4"></a><i class="conum" data-value="4"></i>
+  "allow_restricted_indices": false <a id="CO582-5"></a><i class="conum" data-value="5"></i>
 }</pre>
 </div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO527-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO582-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>A list of data streams, indices, and index aliases to which the permissions
-in this entry apply. Wildcard (<code class="literal">*</code>) expressions are supported.</p>
+<p>A list of data streams, indices, and aliases to which the permissions
+in this entry apply. Supports wildcards (<code class="literal">*</code>).</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO527-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO582-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The index level privileges the owners of the role have on the associated
@@ -719,7 +819,7 @@ data streams and indices specified in the <code class="literal">names</code> arg
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO527-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO582-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Specification for document fields the owners of the role have read access to.
@@ -728,7 +828,7 @@ See <a class="xref" href="authorization.html#field-and-document-access-control" 
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO527-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO582-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>A search query that defines the documents the owners of the role have read
@@ -738,17 +838,17 @@ in order for it to be accessible by the owners of the role.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO527-5"><i class="conum" data-value="5"></i></a></p>
+<p><a href="#CO582-5"><i class="conum" data-value="5"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Restricted indices are a special category of indices that are used
-internally to store configuration data. Only internal system
-roles should normally grant privileges over the restricted indices.
-<span class="strong strong"><strong>Toggling this flag is most discouraged because it could effectively grant
-superuser privileges.</strong></span> If however, for administrative purposes, you need to
-create a role with privileges covering restricted indices, you must set
-this field to <code class="literal">true</code> (default  is <code class="literal">false</code>), and then the <code class="literal">names</code> field will
-cover the restricted indices as well.</p>
+internally to store configuration data and should not be directly accessed.
+Only internal system roles should normally grant privileges over the restricted indices.
+<span class="strong strong"><strong>Toggling this flag is very strongly discouraged because it could effectively grant unrestricted
+operations on critical data, making the entire system unstable or leaking sensitive information.</strong></span>
+If however, for administrative purposes, you need to create a role with privileges covering
+restricted indices, you must set this field to <code class="literal">true</code> (default is <code class="literal">false</code>), and then the
+<code class="literal">names</code> field will cover the restricted indices as well.</p>
 </td>
 </tr>
 </table>
@@ -757,7 +857,7 @@ cover the restricted indices as well.</p>
 <div class="icon"></div>
 <div class="admon_content">
 <p>The <code class="literal">names</code> parameter accepts wildcard and regular expressions that may refer to
-multiple data streams, indices, and index aliases.</p>
+multiple data streams, indices, and aliases.</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -788,14 +888,19 @@ forward slashes (<code class="literal">/</code>). Any pattern starting with <cod
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="roles-global-priv"></a>Global Privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
+<h3 class="title"><a id="roles-global-priv"></a>Global Privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
 </div></div></div>
-<p>The following describes the structure of a global privileges entry:</p>
+<p>The following describes the structure of the global privileges entry:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
   "application": {
-    "manage": {    <a id="CO528-1"></a><i class="conum" data-value="1"></i>
-        "applications": [ ... ] <a id="CO528-2"></a><i class="conum" data-value="2"></i>
+    "manage": {    <a id="CO583-1"></a><i class="conum" data-value="1"></i>
+      "applications": [ ... ] <a id="CO583-2"></a><i class="conum" data-value="2"></i>
+    }
+  },
+  "profile": {
+    "write": { <a id="CO583-3"></a><i class="conum" data-value="3"></i>
+      "applications": [ ... ] <a id="CO583-4"></a><i class="conum" data-value="4"></i>
     }
   }
 }</pre>
@@ -804,21 +909,37 @@ forward slashes (<code class="literal">/</code>). Any pattern starting with <cod
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO528-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO583-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>The only supported global privilege is the ability to manage application
-privileges</p>
+<p>The privilege for the ability to manage application privileges</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO528-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO583-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The list of application names that may be managed. This list supports
 wildcards (e.g. <code class="literal">"myapp-*"</code>) and regular expressions (e.g.
 <code class="literal">"/app[0-9]*/"</code>)</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO583-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The privilege for the ability to write the <code class="literal">access</code> and <code class="literal">data</code> of any user profile</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO583-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The list of names, wildcards and regular expressions to which the write
+privilege is restricted to</p>
 </td>
 </tr>
 </table>
@@ -827,21 +948,21 @@ wildcards (e.g. <code class="literal">"myapp-*"</code>) and regular expressions 
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="roles-application-priv"></a>Application Privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
+<h3 class="title"><a id="roles-application-priv"></a>Application Privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following describes the structure of an application privileges entry:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
-  "application": "my_app", <a id="CO529-1"></a><i class="conum" data-value="1"></i>
-  "privileges": [ ... ],   <a id="CO529-2"></a><i class="conum" data-value="2"></i>
-  "resources": [ ... ]     <a id="CO529-3"></a><i class="conum" data-value="3"></i>
+  "application": "my_app", <a id="CO584-1"></a><i class="conum" data-value="1"></i>
+  "privileges": [ ... ],   <a id="CO584-2"></a><i class="conum" data-value="2"></i>
+  "resources": [ ... ]     <a id="CO584-3"></a><i class="conum" data-value="3"></i>
 }</pre>
 </div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO529-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO584-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The name of the application.</p>
@@ -849,7 +970,7 @@ wildcards (e.g. <code class="literal">"myapp-*"</code>) and regular expressions 
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO529-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO584-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The list of the names of the application privileges to grant to this role.</p>
@@ -857,7 +978,7 @@ wildcards (e.g. <code class="literal">"myapp-*"</code>) and regular expressions 
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO529-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO584-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The resources to which those privileges apply. These are handled in the same
@@ -868,17 +989,17 @@ have any special meaning to the Elasticsearch security features.</p>
 </table>
 </div>
 <p>For details about the validation rules for these fields, see the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-put-privileges.html" class="ulink" target="_top">add application privileges API</a>.</p>
+<a class="xref" href="security-api.html#security-api-put-privileges" title="Create or update application privileges API">add application privileges API</a>.</p>
 <p>A role may refer to application privileges that do not exist - that is, they
 have not yet been defined through the add application privileges API (or they
 were defined, but have since been deleted). In this case, the privilege has
 no effect, and will not grant any actions in the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-has-privileges.html" class="ulink" target="_top">has privileges API</a>.</p>
+<a class="xref" href="security-api.html#security-api-has-privileges" title="Has privileges API">has privileges API</a>.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_example_8"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_example_9"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following snippet shows an example definition of a <code class="literal">clicks_admin</code> role:</p>
 <div class="pre_wrapper lang-console">
@@ -898,7 +1019,7 @@ no effect, and will not grant any actions in the
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1454.console"></div>
+<div class="console_widget" data-snippet="snippets/1821.console"></div>
 <p>Based on the above definition, users owning the <code class="literal">clicks_admin</code> role can:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -928,18 +1049,18 @@ fields.
 </div>
 <p>There are two available mechanisms to define roles: using the <em>Role Management APIs</em>
 or in local files on the Elasticsearch nodes. You can also implement
-custom roles providers.  If you need to integrate with another system to retrieve
+custom roles providers. If you need to integrate with another system to retrieve
 user roles, you can build a custom roles provider plugin. For more information,
-see <a class="xref" href="authorization.html#custom-roles-authorization" title="Customizing roles and authorization">Customizing Roles and Authorization</a>.</p>
-<h3><a id="roles-management-ui"></a>Role management UI<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
+see <a class="xref" href="authorization.html#custom-roles-authorization" title="Customizing roles and authorization">Customizing roles and authorization</a>.</p>
+<h3><a id="roles-management-ui"></a>Role management UI<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
 <p>You can manage users and roles easily in Kibana. To
 manage roles, log in to Kibana and go to <span class="strong strong"><strong>Management / Security / Roles</strong></span>.</p>
-<h3><a id="roles-management-api"></a>Role management API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
+<h3><a id="roles-management-api"></a>Role management API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
 <p>The <em>Role Management APIs</em> enable you to add, update, remove and retrieve roles
 dynamically. When you use the APIs to manage roles in the <code class="literal">native</code> realm, the
 roles are stored in an internal Elasticsearch index. For more information and examples,
-see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api.html#security-role-apis" class="ulink" target="_top">role management APIs</a>.</p>
-<h3><a id="roles-management-file"></a>File-based role management<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
+see <a class="xref" href="security-api.html#security-role-apis" title="Roles">Roles</a>.</p>
+<h3><a id="roles-management-file"></a>File-based role management<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/managing-roles.asciidoc">edit</a></h3>
 <p>Apart from the <em>Role Management APIs</em>, roles can also be defined in local
 <code class="literal">roles.yml</code> file located in <code class="literal">ES_PATH_CONF</code>. This is a YAML file where each
 role definition is keyed by its name.</p>
@@ -995,59 +1116,79 @@ up and applies any changes to it.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="stack-management"></a>Granting access to Stack Management features<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/stack-management.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="role-restriction"></a>Role restriction<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/role-restriction.asciidoc">edit</a></h2>
 </div></div></div>
-<p>You <a class="xref" href="authorization.html#defining-roles" title="Defining roles">define roles</a> and set user privileges at different levels
-to grant access to each of the Elastic Stack features.</p>
+<p>Role restriction can be used to specify conditions under which a role should be effective.
+When conditions are not met, the role will be disabled, which will result in access being denied.
+Not specifying restriction means the role is not restricted and thus always effective.
+This is the default behaviour.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Currently, the role restriction is only supported for <a class="xref" href="security-api.html#security-api-create-api-key" title="Create API key API">API keys</a>,
+with limitation that the API key can only have a single role descriptor.</p>
+</div>
+</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="stack-management-ccr"></a>Cross-cluster replication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/stack-management.asciidoc">edit</a></h3>
+<h3 class="title"><a id="workflows-restriction"></a>Workflows<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/role-restriction.asciidoc">edit</a></h3>
 </div></div></div>
-<p>The cross-cluster replication user requires different cluster and index privileges on the remote
-cluster and local cluster.</p>
-<p><a id="stack-management-ccr-remote"></a>On the remote cluster that contains the leader index, the cross-cluster replication user requires
-<code class="literal">read_ccr</code> cluster privilege and <code class="literal">monitor</code> and <code class="literal">read</code> privileges on the
-leader index.</p>
-<div class="pre_wrapper lang-yml">
-<pre class="programlisting prettyprint lang-yml">ccr_user:
-  cluster:
-    - read_ccr
-  indices:
-    - names: [ 'leader-index' ]
-      privileges:
-        - monitor
-        - read</pre>
+<p>Workflows allow to restrict the role to be effective exclusively when calling certain REST APIs.
+Calling a REST API that is not allowed by a workflow, will result in the role being disabled.
+The below section lists workflows that you can restrict the role to:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">search_application_query</code>
+</span>
+</dt>
+<dd>
+This workflow restricts the role to the <a class="xref" href="search-application-apis.html#search-application-search" title="Search Application Search">Search Application Search API</a> only.
+</dd>
+</dl>
 </div>
-<p><a id="stack-management-ccr-local"></a>On the local cluster that contains the follower index, the cross-cluster replication user requires the <code class="literal">manage_ccr</code> cluster privilege and <code class="literal">monitor</code>, <code class="literal">read</code>, <code class="literal">write</code> and
-<code class="literal">manage_follow_index</code> privileges on the follower index.</p>
-<div class="pre_wrapper lang-yml">
-<pre class="programlisting prettyprint lang-yml">ccr_user:
-  cluster:
-    - manage_ccr
-  indices:
-    - names: [ 'follower-index' ]
-      privileges:
-        - monitor
-        - read
-        - write
-        - manage_follow_index</pre>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Workflow names are case-sensitive.</p>
 </div>
-<p>If you are managing
-<a class="xref" href="xpack-ccr.html#ccr-getting-started-remote-cluster" title="Connect to a remote cluster">connecting to the remote cluster</a> using
-the cluster update settings API, you will also need a user with the <code class="literal">all</code>
-cluster privilege.</p>
+</div>
+<h4><a id="_examples_3"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/role-restriction.asciidoc">edit</a></h4>
+<p>The following example creates an API key with a <a class="xref" href="authorization.html#role-restriction" title="Role restriction">restriction</a> to the <code class="literal">search_application_query</code> workflow,
+which allows to call only <a class="xref" href="search-application-apis.html#search-application-search" title="Search Application Search">Search Application Search API</a>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/api_key
+{
+  "name": "my-restricted-api-key",
+  "role_descriptors": {
+    "my-restricted-role-descriptor": {
+      "indices": [
+        {
+          "names": ["my-search-app"],
+          "privileges": ["read"]
+        }
+      ],
+      "restriction":  {
+        "workflows": ["search_application_query"]
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1822.console"></div>
 </div>
 
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="security-privileges"></a>Security privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="security-privileges"></a>Security privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a></h2>
 </div></div></div>
 <p>This section lists the privileges that you can assign to a role.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="privileges-list-cluster"></a>Cluster privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a></h3>
+<h3 class="title"><a id="privileges-list-cluster"></a>Cluster privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -1066,6 +1207,19 @@ cluster privilege.</p>
 <p>
 All cluster administration operations, like snapshotting, node shutdown/restart,
 settings update, rerouting, or managing users and roles.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">cancel_task</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Privileges to cancel tasks and delete async searches.
+See <a class="xref" href="search.html#delete-async-search" title="Delete async search">delete async search</a> API for more informations.
 </p>
 </td>
 </tr>
@@ -1097,18 +1251,6 @@ Privileges to create Elasticsearch API keys on behalf of other users.
 <tr>
 <td valign="top">
 <p>
-<code class="literal">monitor_snapshot</code>
-</p>
-</td>
-<td valign="top">
-<p>
-Privileges to list and view details on existing repositories and snapshots.
-</p>
-</td>
-</tr>
-<tr>
-<td valign="top">
-<p>
 <code class="literal">manage</code>
 </p>
 </td>
@@ -1132,7 +1274,10 @@ ability to manage security.
 <p>
 All security-related operations on Elasticsearch API keys including
 <a class="xref" href="security-api.html#security-api-create-api-key" title="Create API key API">creating new API keys</a>,
-<a class="xref" href="security-api.html#security-api-get-api-key" title="Get API key information API">retrieving information about API keys</a>, and
+<a class="xref" href="security-api.html#security-api-get-api-key" title="Get API key information API">retrieving information about API keys</a>,
+<a class="xref" href="security-api.html#security-api-query-api-key" title="Query API key information API">querying API keys</a>,
+<a class="xref" href="security-api.html#security-api-update-api-key" title="Update API key API">updating API key</a>,
+<a class="xref" href="security-api.html#security-api-bulk-update-api-keys" title="Bulk update API keys API">bulk updating API keys</a>, and
 <a class="xref" href="security-api.html#security-api-invalidate-api-key" title="Invalidate API key API">invalidating API keys</a>.
 </p>
 <div class="note admon">
@@ -1202,7 +1347,7 @@ All operations on index templates.
 </td>
 <td valign="top">
 <p>
-All operations on ingest node pipelines.
+All operations on ingest pipelines.
 </p>
 </td>
 </tr>
@@ -1245,6 +1390,22 @@ roles of the user who created or updated them.</p>
 <tr>
 <td valign="top">
 <p>
+<code class="literal">manage_oidc</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Enables the use of Elasticsearch APIs
+(<a class="xref" href="security-api.html#security-api-oidc-prepare-authentication" title="OpenID Connect prepare authentication API">OpenID connect prepare authentication</a>,
+<a class="xref" href="security-api.html#security-api-oidc-authenticate" title="OpenID Connect authenticate API">OpenID connect authenticate</a>, and
+<a class="xref" href="security-api.html#security-api-oidc-logout" title="OpenID Connect logout API">OpenID connect logout</a>)
+to initiate and manage OpenID Connect authentication on behalf of other users.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
 <code class="literal">manage_own_api_key</code>
 </p>
 </td>
@@ -1253,7 +1414,10 @@ roles of the user who created or updated them.</p>
 All security-related operations on Elasticsearch API keys that are owned by the current
 authenticated user. The operations include
 <a class="xref" href="security-api.html#security-api-create-api-key" title="Create API key API">creating new API keys</a>,
-<a class="xref" href="security-api.html#security-api-get-api-key" title="Get API key information API">retrieving information about API keys</a>, and
+<a class="xref" href="security-api.html#security-api-get-api-key" title="Get API key information API">retrieving information about API keys</a>,
+<a class="xref" href="security-api.html#security-api-query-api-key" title="Query API key information API">querying API keys</a>,
+<a class="xref" href="security-api.html#security-api-update-api-key" title="Update API key API">updating API key</a>,
+<a class="xref" href="security-api.html#security-api-bulk-update-api-keys" title="Bulk update API keys API">bulk updating API keys</a>, and
 <a class="xref" href="security-api.html#security-api-invalidate-api-key" title="Invalidate API key API">invalidating API keys</a>.
 </p>
 </td>
@@ -1299,6 +1463,18 @@ on behalf of other users.
 <tr>
 <td valign="top">
 <p>
+<code class="literal">manage_search_application</code>
+</p>
+</td>
+<td valign="top">
+<p>
+All CRUD operations on <a class="xref" href="search-application-apis.html" title="Search Application APIs">search applications</a>.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
 <code class="literal">manage_security</code>
 </p>
 </td>
@@ -1306,6 +1482,21 @@ on behalf of other users.
 <p>
 All security-related operations such as CRUD operations on users and roles and
 cache clearing.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">manage_service_account</code>
+</p>
+</td>
+<td valign="top">
+<p>
+All security-related operations on Elasticsearch service accounts including
+<a class="xref" href="security-api.html#security-api-get-service-accounts" title="Get service accounts API">Get service accounts</a>,
+<a class="xref" href="security-api.html#security-api-create-service-token" title="Create service account token API">Create service account tokens</a>, <a class="xref" href="security-api.html#security-api-delete-service-token" title="Delete service account tokens API">Delete service account token</a>,
+and <a class="xref" href="security-api.html#security-api-get-service-credentials" title="Get service account credentials API">Get service account credentials</a>.
 </p>
 </td>
 </tr>
@@ -1350,6 +1541,48 @@ All operations related to managing transforms.
 <tr>
 <td valign="top">
 <p>
+<code class="literal">manage_autoscaling</code>
+</p>
+</td>
+<td valign="top">
+<p>
+All operations related to managing autoscaling policies.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">manage_data_frame_transforms</code>
+</p>
+</td>
+<td valign="top">
+<p>
+All operations related to managing transforms.
+<span class="Admonishment Admonishment--change">
+[<span class="Admonishment-version u-mono u-strikethrough">7.5</span>]
+<span class="Admonishment-detail">
+Deprecated in 7.5.
+</span>
+</span> Use <code class="literal">manage_transform</code> instead.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">manage_enrich</code>
+</p>
+</td>
+<td valign="top">
+<p>
+All operations related to managing and executing enrich policies.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
 <code class="literal">manage_watcher</code>
 </p>
 </td>
@@ -1386,18 +1619,6 @@ node info, node and cluster stats, and pending cluster tasks.
 <tr>
 <td valign="top">
 <p>
-<code class="literal">monitor_transform</code>
-</p>
-</td>
-<td valign="top">
-<p>
-All read-only operations related to transforms.
-</p>
-</td>
-</tr>
-<tr>
-<td valign="top">
-<p>
 <code class="literal">monitor_ml</code>
 </p>
 </td>
@@ -1418,6 +1639,42 @@ model snapshots, or results.
 <p>
 All read-only rollup operations, such as viewing the list of historical and
 currently running rollup jobs and their capabilities.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">monitor_snapshot</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Privileges to list and view details on existing repositories and snapshots.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">monitor_text_structure</code>
+</p>
+</td>
+<td valign="top">
+<p>
+All read-only operations related to the <a class="xref" href="find-structure.html" title="Find structure API">find structure API</a>.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">monitor_transform</code>
+</p>
+</td>
+<td valign="top">
+<p>
+All read-only operations related to transforms.
 </p>
 </td>
 </tr>
@@ -1464,6 +1721,18 @@ status of index lifecycle management
 <tr>
 <td valign="top">
 <p>
+<code class="literal">read_pipeline</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Read-only access to ingest pipline (get, simulate).
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
 <code class="literal">read_slm</code>
 </p>
 </td>
@@ -1477,13 +1746,28 @@ SLM status.
 <tr>
 <td valign="top">
 <p>
+<code class="literal">read_security</code>
+</p>
+</td>
+<td valign="top">
+<p>
+All read-only security-related operations, such as getting users, user profiles,
+Elasticsearch API keys, Elasticsearch service accounts, roles and role mappings.
+Allows <a class="xref" href="security-api.html#security-api-query-api-key" title="Query API key information API">querying</a> and <a class="xref" href="security-api.html#security-api-get-api-key" title="Get API key information API">retrieving information</a>
+on all Elasticsearch API keys.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
 <code class="literal">transport_client</code>
 </p>
 </td>
 <td valign="top">
 <p>
-All privileges necessary for a transport client to connect.  Required by the remote
-cluster to enable <a class="xref" href="ccs-clients-integrations.html#cross-cluster-configuring" title="Cross cluster search and security">Cross Cluster Search</a>.
+All privileges necessary for a transport client to connect. Required by the remote
+cluster to enable <a class="xref" href="remote-clusters.html#remote-clusters-security" title="Configure remote clusters with security">cross-cluster search</a>.
 </p>
 </td>
 </tr>
@@ -1494,7 +1778,7 @@ cluster to enable <a class="xref" href="ccs-clients-integrations.html#cross-clus
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="privileges-list-indices"></a>Indices privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a></h3>
+<h3 class="title"><a id="privileges-list-indices"></a>Indices privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -1531,7 +1815,7 @@ non-existent index or data stream rather than an explicit
 auto-update of mappings on indices and data streams if they do not contradict
 existing mappings. An auto-update mapping action is the result of an index or
 bulk request on an index or data stream that contains new fields that may
-be mapped rather than an explicit <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">put mapping</a> request.
+be mapped rather than an explicit <a class="xref" href="indices.html#indices-put-mapping" title="Update mapping API">update mapping</a> request.
 </p>
 </td>
 </tr>
@@ -1544,18 +1828,18 @@ be mapped rather than an explicit <a class="xref" href="indices.html#indices-put
 <td valign="top">
 <p>
 <p>
-Privilege to index documents, allowing overwriting any existing document, but
-not permitting updating one.
+Privilege to index documents.
 </p>
 <p><span class="Admonishment Admonishment--change">
-[<span class="Admonishment-version u-mono u-strikethrough">7.9</span>]
+[<span class="Admonishment-version u-mono u-strikethrough">8.0</span>]
 <span class="Admonishment-detail">
-Deprecated in 7.9.
+Deprecated in 8.0.
 </span>
-</span> Also grants the permission to update the index mapping (but not
-the data stream mapping), using the update mapping action, or relying on
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/dynamic-mapping.html" class="ulink" target="_top">dynamic mappings</a>. In the next major release,
-this privilege will not grant any mapping update permission.</p>
+</span> Also grants the permission to update the index mapping (but
+not the data streams mapping), using
+the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/indices-put-mapping.html" class="ulink" target="_top">updating mapping API</a> or by relying on
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/dynamic-mapping.html" class="ulink" target="_top">dynamic field mapping</a>. In a future major release,
+this privilege will not grant any mapping update permissions.</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -1577,18 +1861,19 @@ privilege for an alternative.</p>
 <td valign="top">
 <p>
 <p>
-Privilege to index new documents, without allowing overwriting or updating
-existing ones.
+Privilege to index documents.
+It does not grant the permission to update or overwrite existing documents.
 </p>
 <p><span class="Admonishment Admonishment--change">
-[<span class="Admonishment-version u-mono u-strikethrough">7.9</span>]
+[<span class="Admonishment-version u-mono u-strikethrough">8.0</span>]
 <span class="Admonishment-detail">
-Deprecated in 7.9.
+Deprecated in 8.0.
 </span>
-</span> Also grants the permission to update the index mapping (but not
-the data stream mapping), using the update mapping action, or relying on
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/dynamic-mapping.html" class="ulink" target="_top">dynamic mappings</a>. In the next major release,
-this privilege will not grant any mapping update permission.</p>
+</span> Also grants the permission to update the index mapping (but
+not the data streams mapping), using
+the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/indices-put-mapping.html" class="ulink" target="_top">updating mapping API</a> or by relying on
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/dynamic-mapping.html" class="ulink" target="_top">dynamic field mapping</a>. In a future major release,
+this privilege will not grant any mapping update permissions.</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -1662,17 +1947,18 @@ Privilege to delete an index or data stream.
 <td valign="top">
 <p>
 <p>
-Privilege to index (overwriting included) and update documents.
+Privilege to index and update documents.
 </p>
 <p><span class="Admonishment Admonishment--change">
-[<span class="Admonishment-version u-mono u-strikethrough">7.9</span>]
+[<span class="Admonishment-version u-mono u-strikethrough">8.0</span>]
 <span class="Admonishment-detail">
-Deprecated in 7.9.
+Deprecated in 8.0.
 </span>
-</span> Also grants the permission to update the index mapping (but not
-the data stream mapping), using the update mapping action, or relying on
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/dynamic-mapping.html" class="ulink" target="_top">dynamic mappings</a>. In the next major release,
-this privilege will not grant any mapping update permission.</p>
+</span> Also grants the permission to update the index mapping (but
+not the data streams mapping), using
+the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/indices-put-mapping.html" class="ulink" target="_top">updating mapping API</a> or by relying on
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/dynamic-mapping.html" class="ulink" target="_top">dynamic field mapping</a>. In a future major release,
+this privilege will not grant any mapping update permissions.</p>
 </p>
 </td>
 </tr>
@@ -1698,8 +1984,8 @@ No privilege to read or write index data or otherwise manage the index.
 <td valign="top">
 <p>
 All <code class="literal">monitor</code> privileges plus index and data stream administration (aliases,
-analyze, cache clear, close, delete, exists, flush, mapping, open, force merge,
-refresh, settings, search shards, templates, validate).
+analyze, cache clear, close, delete, exists, flush, mapping, open, field capabilities,
+force merge, refresh, settings, search shards, validate query).
 </p>
 </td>
 </tr>
@@ -1740,7 +2026,7 @@ a policy from an index or data stream.
 <td valign="top">
 <p>
 All actions that are required to manage the lifecycle of a leader index, which
-includes <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-post-forget-follower.html" class="ulink" target="_top">forgetting a follower</a>. This
+includes <a class="xref" href="ccr-apis.html#ccr-post-forget-follower" title="Forget follower API">forgetting a follower</a>. This
 privilege is necessary only on clusters that contain leader indices.
 </p>
 </td>
@@ -1780,7 +2066,7 @@ clear_scroll, search, suggest, tv).
 </td>
 <td valign="top">
 <p>
-Read-only access to the search action from a <a class="xref" href="ccs-clients-integrations.html#cross-cluster-configuring" title="Cross cluster search and security">remote cluster</a>.
+Read-only access to the search action from a <a class="xref" href="remote-clusters.html#remote-clusters-security" title="Configure remote clusters with security">remote cluster</a>.
 </p>
 </td>
 </tr>
@@ -1792,10 +2078,10 @@ Read-only access to the search action from a <a class="xref" href="ccs-clients-i
 </td>
 <td valign="top">
 <p>
-Read-only access to index and data stream metadata (aliases, aliases exists,
-get index, get data stream, exists, field mappings, mappings, search shards,
-type exists, validate, warmers, settings, ilm). This privilege is available
-for use primarily by Kibana users.
+Read-only access to index and data stream metadata (aliases, exists,
+field capabilities, field mappings, get index, get data stream, ilm explain,
+mappings, search shards, settings, validate query).
+This privilege is available for use primarily by Kibana users.
 </p>
 </td>
 </tr>
@@ -1810,16 +2096,16 @@ for use primarily by Kibana users.
 <p>
 Privilege to perform all write operations to documents, which includes the
 permission to index, update, and delete documents as well as performing bulk
-operations, and allows the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/dynamic-mapping.html" class="ulink" target="_top">dynamic mapping updates</a>
-as a result of these.
+operations, while also allowing to dynamically update the index mapping.
 </p>
 <p><span class="Admonishment Admonishment--change">
-[<span class="Admonishment-version u-mono u-strikethrough">7.9</span>]
+[<span class="Admonishment-version u-mono u-strikethrough">8.0</span>]
 <span class="Admonishment-detail">
-Deprecated in 7.9.
+Deprecated in 8.0.
 </span>
-</span> Until the next major release, this also grants access to the
-update mapping action, but only on indices, not on data streams.</p>
+</span> It also grants the permission to update the index mapping (but
+not the data streams mapping), using the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/indices-put-mapping.html" class="ulink" target="_top">updating mapping API</a>.
+This will be retracted in a future major release.</p>
 </p>
 </td>
 </tr>
@@ -1830,18 +2116,18 @@ update mapping action, but only on indices, not on data streams.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_run_as_privilege"></a>Run as privilege<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_run_as_privilege"></a>Run as privilege<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">run_as</code> permission enables an authenticated user to submit requests on
 behalf of another user. The value can be a user name or a comma-separated list
 of user names. (You can also specify users as an array of strings or a YAML
 sequence.) For more information, see
-<a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">Submitting Requests on Behalf of Other Users</a>.</p>
+<a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">Submitting requests on behalf of other users</a>.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="application-privileges"></a>Application privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a></h3>
+<h3 class="title"><a id="application-privileges"></a>Application privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/privileges.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Application privileges are managed within Elasticsearch and can be retrieved with the
 <a class="xref" href="security-api.html#security-api-has-privileges" title="Has privileges API">has privileges API</a> and the
@@ -1859,7 +2145,7 @@ then associate these application privileges with roles, as described in
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="document-level-security"></a>Document level security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/document-level-security.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="document-level-security"></a>Document level security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/document-level-security.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Document level security restricts the documents that users have read access to.
 In particular, it restricts which documents can be accessed from document-based
@@ -1908,7 +2194,7 @@ belong to the <code class="literal">click</code> category within all the <code c
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1455.console"></div>
+<div class="console_widget" data-snippet="snippets/1823.console"></div>
 <p>You can write this same query using nested JSON syntax:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _security/role/click_role
@@ -1926,7 +2212,7 @@ belong to the <code class="literal">click</code> category within all the <code c
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1456.console"></div>
+<div class="console_widget" data-snippet="snippets/1824.console"></div>
 <p>The following role grants read access only to the documents whose
 <code class="literal">department_id</code> equals <code class="literal">12</code>:</p>
 <div class="pre_wrapper lang-console">
@@ -1943,12 +2229,12 @@ belong to the <code class="literal">click</code> category within all the <code c
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1457.console"></div>
+<div class="console_widget" data-snippet="snippets/1825.console"></div>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="field-level-security"></a>Field level security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/field-level-security.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="field-level-security"></a>Field level security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/field-level-security.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Field level security restricts the fields that users have read access to.
 In particular, it restricts which fields can be accessed from document-based
@@ -1973,7 +2259,7 @@ thus bound to a well-defined set of data streams or indices (and potentially a s
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1458.console"></div>
+<div class="console_widget" data-snippet="snippets/1826.console"></div>
 <p>Access to the following metadata fields is always allowed: <code class="literal">_id</code>,
 <code class="literal">_type</code>, <code class="literal">_parent</code>, <code class="literal">_routing</code>, <code class="literal">_timestamp</code>, <code class="literal">_ttl</code>, <code class="literal">_size</code> and <code class="literal">_index</code>. If
 you specify an empty list of fields, only these metadata fields are accessible.</p>
@@ -1999,7 +2285,7 @@ example grants read access to all fields that start with an <code class="literal
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1459.console"></div>
+<div class="console_widget" data-snippet="snippets/1827.console"></div>
 <p>Use the dot notations to refer to nested fields in more complex documents. For
 example, assuming the following document:</p>
 <div class="pre_wrapper lang-js">
@@ -2027,7 +2313,7 @@ field:</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1460.console"></div>
+<div class="console_widget" data-snippet="snippets/1828.console"></div>
 <p>This is where wildcard support shines. For example, use <code class="literal">customer.*</code> to enable
 only read access to the <code class="literal">customer</code> data:</p>
 <div class="pre_wrapper lang-console">
@@ -2044,7 +2330,7 @@ only read access to the <code class="literal">customer</code> data:</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1461.console"></div>
+<div class="console_widget" data-snippet="snippets/1829.console"></div>
 <p>You can deny permission to access fields with the following syntax:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /_security/role/test_role5
@@ -2061,7 +2347,7 @@ only read access to the <code class="literal">customer</code> data:</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1462.console"></div>
+<div class="console_widget" data-snippet="snippets/1830.console"></div>
 <p>The following rules apply:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -2095,7 +2381,7 @@ those which match the pattern in the denied fields.
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1463.console"></div>
+<div class="console_widget" data-snippet="snippets/1831.console"></div>
 <p>In the above example, users can read all fields with the prefix "customer."
 except for "customer.handle".</p>
 <p>An empty array for <code class="literal">grant</code> (for example, <code class="literal">"grant" : []</code>) means that access has
@@ -2132,7 +2418,7 @@ POST /_security/role/test_role8
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1464.console"></div>
+<div class="console_widget" data-snippet="snippets/1832.console"></div>
 <p>The resulting permission is equal to:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
@@ -2153,7 +2439,8 @@ POST /_security/role/test_role8
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>Field-level security should not be set on <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/alias.html" class="ulink" target="_top"><code class="literal">alias</code></a> fields. To secure a
+<p>Field-level security should not be set on <a class="xref" href="mapping-types.html#field-alias" title="Alias field type"><code class="literal">alias</code></a> fields.
+To secure a
 concrete field, its field name must be used directly.</p>
 </div>
 </div>
@@ -2162,23 +2449,20 @@ concrete field, its field name must be used directly.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="securing-aliases"></a>Granting privileges for data streams and index aliases<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/alias-privileges.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="securing-aliases"></a>Granting privileges for data streams and aliases<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/alias-privileges.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Elasticsearch security features allow you to secure operations executed against
-<a class="xref" href="data-streams.html" title="Data streams">data streams</a> and <a class="xref" href="indices.html#indices-aliases" title="Update index alias API">index aliases</a>.</p>
+<a class="xref" href="data-streams.html" title="Data streams">data streams</a> and <a class="xref" href="aliases.html" title="Aliases">aliases</a>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="data-stream-privileges"></a>Data stream privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/alias-privileges.asciidoc">edit</a></h3>
+<h3 class="title"><a id="data-stream-privileges"></a>Data stream privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/alias-privileges.asciidoc">edit</a></h3>
 </div></div></div>
-<p>A data stream consists of one or more backing indices, which store the stream&#8217;s
-data. Most requests sent to a data stream are routed to one or more of these
+<p>Use <a class="xref" href="authorization.html#privileges-list-indices" title="Indices privileges">index privileges</a> to control access to a data
+stream. Granting privileges on a data stream grants the same privileges on its
 backing indices.</p>
-<p>Similar to an index, you can use <a class="xref" href="authorization.html#privileges-list-indices" title="Indices privileges">indices privileges</a>
-to control access to a data stream. Any role or user granted privileges to a
-data stream are automatically granted the same privileges to its backing
-indices.</p>
 <p>For example, <code class="literal">my-data-stream</code> consists of two backing indices:
-<code class="literal">.ds-my-data-stream-000001</code> and <code class="literal">.ds-my-data-stream-000002</code>.</p>
+<code class="literal">.ds-my-data-stream-2099.03.07-000001</code> and
+<code class="literal">.ds-my-data-stream-2099.03.08-000002</code>.</p>
 <p>A user is granted the <code class="literal">read</code> privilege to <code class="literal">my-data-stream</code>.</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
@@ -2188,107 +2472,81 @@ indices.</p>
 </div>
 <p>Because the user is automatically granted the same privileges to the stream&#8217;s
 backing indices, the user can retrieve a document directly from
-<code class="literal">.ds-my-data-stream-000002</code>:</p>
+<code class="literal">.ds-my-data-stream-2099.03.08-000002</code>:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /.ds-my-data-stream-000002/_doc/2</pre>
+<pre class="programlisting prettyprint lang-console">GET .ds-my-data-stream-2099.03.08-000002/_doc/2</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1465.console"></div>
+<div class="console_widget" data-snippet="snippets/1833.console"></div>
 <p>Later <code class="literal">my-data-stream</code> <a class="xref" href="use-a-data-stream.html#manually-roll-over-a-data-stream" title="Manually roll over a data stream">rolls over</a>. This
-creates a new backing index: <code class="literal">.ds-my-data-stream-000003</code>. Because the user still
-has the <code class="literal">read</code> privilege for <code class="literal">my-data-stream</code>, the user can retrieve
-documents directly from <code class="literal">.ds-my-data-stream-000003</code>:</p>
+creates a new backing index: <code class="literal">.ds-my-data-stream-2099.03.09-000003</code>. Because the
+user still has the <code class="literal">read</code> privilege for <code class="literal">my-data-stream</code>, the user can retrieve
+documents directly from <code class="literal">.ds-my-data-stream-2099.03.09-000003</code>:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /.ds-my-data-stream-000003/_doc/2</pre>
+<pre class="programlisting prettyprint lang-console">GET .ds-my-data-stream-2099.03.09-000003/_doc/2</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1466.console"></div>
+<div class="console_widget" data-snippet="snippets/1834.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="index-alias-privileges"></a>Index alias privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/alias-privileges.asciidoc">edit</a></h3>
+<h3 class="title"><a id="index-alias-privileges"></a>Alias privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/alias-privileges.asciidoc">edit</a></h3>
 </div></div></div>
-<p>An index alias points to one or more indices,
-holds metadata and potentially a filter. The Elasticsearch security features treat
-aliases and indices
-the same. Privileges for indices actions are granted on specific indices or
-aliases. In order for an indices action to be authorized, the user that executes
-it needs to have permissions for that action on all the specific indices or
-aliases that the request relates to.</p>
-<p>Let&#8217;s look at an example. Assuming we have an index called <code class="literal">2015</code>, an alias that
-points to it called <code class="literal">current_year</code>, and a user with the following role:</p>
+<p>Use <a class="xref" href="authorization.html#privileges-list-indices" title="Indices privileges">index privileges</a> to control access to an
+<a class="xref" href="aliases.html" title="Aliases">alias</a>. Privileges on an index or data stream do not grant privileges
+on its aliases. For information about managing aliases, see <a class="xref" href="aliases.html" title="Aliases"><em>Aliases</em></a>.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Don&#8217;t use <a class="xref" href="aliases.html#filter-alias" title="Filter an alias">filtered aliases</a> in place of
+<a class="xref" href="authorization.html#document-level-security" title="Document level security">document level security</a>. Elasticsearch doesn&#8217;t always apply
+alias filters.</p>
+</div>
+</div>
+<p>For example, the <code class="literal">current_year</code> alias points only to the <code class="literal">2015</code> index. A user is
+granted the <code class="literal">read</code> privilege for the <code class="literal">2015</code> index.</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
   "names" : [ "2015" ],
   "privileges" : [ "read" ]
 }</pre>
 </div>
-<p>The user attempts to retrieve a document from <code class="literal">current_year</code>:</p>
+<p>When the user attempts to retrieve a document from the <code class="literal">current_year</code> alias,
+Elasticsearch rejects the request.</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /current_year/event/1</pre>
+<pre class="programlisting prettyprint lang-console">GET current_year/_doc/1</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1467.console"></div>
-<p>The above request gets rejected, although the user has <code class="literal">read</code> privilege on the
-concrete index that the <code class="literal">current_year</code> alias points to. The correct permission
-would be as follows:</p>
+<div class="console_widget" data-snippet="snippets/1835.console"></div>
+<p>To retrieve documents from <code class="literal">current_year</code>, the user must have the <code class="literal">read</code> index
+privilege for the alias.</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
   "names" : [ "current_year" ],
   "privileges" : [ "read" ]
 }</pre>
 </div>
-<h4><a id="_managing_aliases"></a>Managing aliases<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/alias-privileges.asciidoc">edit</a></h4>
-<p>Unlike creating indices, which requires the <code class="literal">create_index</code> privilege, adding,
-removing and retrieving aliases requires the <code class="literal">manage</code> permission. Aliases can be
-added to an index directly as part of the index creation:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /2015
-{
-  "aliases": {
-    "current_year": {}
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/1468.console"></div>
-<p>or via the dedicated aliases api if the index already exists:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">POST /_aliases
-{
-  "actions" : [
-    { "add" : { "index" : "2015", "alias" : "current_year" } }
-  ]
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/1469.console"></div>
-<p>The above requests both require the <code class="literal">manage</code> privilege on the alias name as well
-as the targeted index, as follows:</p>
-<div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">{
-  "names" : [ "20*", "current_year" ],
-  "privileges" : [ "manage" ]
-}</pre>
-</div>
-<p>The index aliases api also allows also to delete aliases from existing indices.
-The privileges required for such a request are the same as above. Both index and
-alias need the <code class="literal">manage</code> permission.</p>
-<h4><a id="_filtered_aliases"></a>Filtered aliases<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/alias-privileges.asciidoc">edit</a></h4>
-<p>Aliases can hold a filter, which allows to select a subset of documents that can
-be accessed out of all the documents that the physical index contains. These
-filters are not always applied and should not be used in place of
-<a class="xref" href="authorization.html#document-level-security" title="Document level security">document level security</a>.</p>
 </div>
 
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="mapping-roles"></a>Mapping users and groups to roles<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="mapping-roles"></a>Mapping users and groups to roles<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h2>
 </div></div></div>
-<p>If you authenticate users with the <code class="literal">native</code> or <code class="literal">file</code> realms, you can manage
-role assignment by using the <a class="xref" href="setting-up-authentication.html#managing-native-users" title="Managing native users">User Management APIs</a> or
-the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/users-command.html" class="ulink" target="_top">users</a> command-line tool respectively.</p>
-<p>For other types of realms, you must create <em>role-mappings</em> that define which
-roles should be assigned to each user based on their username, groups, or
-other metadata.</p>
+<p>Role mapping is supported by all realms except <code class="literal">native</code> and <code class="literal">file</code>.</p>
+<p>The native and file realms assign roles directly to users.
+Native realms use <a class="xref" href="setting-up-authentication.html#managing-native-users" title="Managing native users">user management APIs</a>.
+File realms use <a class="xref" href="authorization.html#roles-management-file" title="File-based role management">File-based role management</a>.</p>
+<p>You can map roles through the
+<a class="xref" href="authorization.html#mapping-roles-api" title="Using the role mapping API">Role mapping API</a> (recommended) or a <a class="xref" href="authorization.html#mapping-roles-file" title="Using role mapping files">Role mapping file</a>.</p>
+<p>The PKI, LDAP, AD, Kerberos, OpenID Connect, JWT, and SAML realms support the
+<a class="xref" href="authorization.html#mapping-roles-api" title="Using the role mapping API">Role mapping API</a>. Only PKI, LDAP, and AD realms
+support <a class="xref" href="authorization.html#mapping-roles-file" title="Using role mapping files">Role mapping files</a>.</p>
+<p>The PKI, LDAP, AD, Kerberos, OpenID Connect, JWT, and
+SAML realms also support <a class="xref" href="setting-up-authentication.html#authorization_realms" title="Delegating authorization to another realm">delegated authorization</a>.
+You can either map roles for a realm or use delegated authorization; you cannot use both simultaneously.</p>
+<p>To use role mapping, you create roles and role mapping rules.
+Role mapping rules can be based on realm name, realm type, username, groups,
+other user metadata, or combinations of those values.</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -2296,7 +2554,11 @@ other metadata.</p>
 of the anonymous user are assigned to all the other users as well.</p>
 </div>
 </div>
-<p>You can define role-mappings via an
+<p>If there are role-mapping rules created through the API as well as a role mapping file,
+the rules are combined.
+It&#8217;s possible for a single user to have some roles that were mapped through the API,
+and others assigned based on the role mapping file.
+You can define role-mappings via an
 <a class="xref" href="authorization.html#mapping-roles-api" title="Using the role mapping API">API</a> or manage them through <a class="xref" href="authorization.html#mapping-roles-file" title="Using role mapping files">files</a>.
 These two sources of role-mapping are combined inside of the Elasticsearch
 security features, so it is
@@ -2305,34 +2567,31 @@ the API, and other roles that are mapped through files.</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>Users with no roles assigned will be unauthorized for any action.</p>
+<p>Users with no roles assigned will be unauthorized for any action.
+In other words, they may be able to authenticate, but they will have no roles.
+No roles means no privileges, and no privileges means no authorizations to
+make requests.</p>
 </div>
 </div>
-<p>When you use role-mappings, you assign existing roles to users.
+<p>When you use role mappings to assign roles to users, the roles must exist.
+There are two sources of roles.
 The available roles should either be added using the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api.html#security-role-apis" class="ulink" target="_top">role management APIs</a> or defined in the
+<a class="xref" href="security-api.html#security-role-apis" title="Roles">role management APIs</a> or defined in the
 <a class="xref" href="authorization.html#roles-management-file" title="File-based role management">roles file</a>. Either role-mapping method can use
 either role management method. For example, when you use the role mapping API,
 you are able to map users to both API-managed roles and file-managed roles
 (and likewise for file-based role-mappings).</p>
-<div class="tip admon">
-<div class="icon"></div>
-<div class="admon_content">
-<p>The PKI, LDAP, Kerberos, OpenID Connect, and SAML realms support using
-<a class="xref" href="setting-up-authentication.html#authorization_realms" title="Delegating authorization to another realm">authorization realms</a> as an alternative to role mapping.</p>
-</div>
-</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="mapping-roles-api"></a>Using the role mapping API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h3>
+<h3 class="title"><a id="mapping-roles-api"></a>Using the role mapping API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h3>
 </div></div></div>
 <p>You can define role-mappings through the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-put-role-mapping.html" class="ulink" target="_top">add role mapping API</a>.</p>
+<a class="xref" href="security-api.html#security-api-put-role-mapping" title="Create or update role mappings API">add role mapping API</a>.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="mapping-roles-file"></a>Using role mapping files<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h3>
+<h3 class="title"><a id="mapping-roles-file"></a>Using role mapping files<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To use file based role-mappings, you must configure the mappings in a YAML file
 and copy it to each node in the cluster. Tools like Puppet or Chef can help with
@@ -2355,7 +2614,7 @@ You can change this default behavior by changing the
 this is a common setting in Elasticsearch, changing its value might effect other
 schedules in the system.</p>
 <p>While the <em>role mapping APIs</em> is the preferred way to manage role mappings, using
-the <code class="literal">role_mappings.yml</code> file becomes useful in a couple of use cases:</p>
+the <code class="literal">role_mapping.yml</code> file becomes useful in a couple of use cases:</p>
 <div class="olist orderedlist">
 <ol class="orderedlist">
 <li class="listitem">
@@ -2370,7 +2629,7 @@ administrator role so that they can perform corrective actions.
 </li>
 </ol>
 </div>
-<p>Please note however, that the role_mappings.yml file is provided
+<p>Please note however, that the <code class="literal">role_mapping.yml</code> file is provided
 as a minimal administrative function and is not intended to cover and be used to
 define roles for all use cases.</p>
 <div class="important admon">
@@ -2384,9 +2643,9 @@ mapping files by using the role mapping APIs.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_realm_specific_details"></a>Realm specific details<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_realm_specific_details"></a>Realm specific details<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h3>
 </div></div></div>
-<h5><a id="ldap-role-mapping"></a>Active Directory and LDAP realms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h5>
+<h5><a id="ldap-role-mapping"></a>Active Directory and LDAP realms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h5>
 <p>To specify users and groups in the role mappings, you use their
 <em>Distinguished Names</em> (DNs). A DN is a string that uniquely identifies the user
 or group, for example <code class="literal">"cn=John Doe,cn=contractors,dc=example,dc=com"</code>.</p>
@@ -2401,10 +2660,10 @@ You cannot map distribution groups to roles.</p>
 <code class="literal">admins</code> group to the <code class="literal">monitoring</code> role and map the <code class="literal">John Doe</code> user, the
 <code class="literal">users</code> group, and the <code class="literal">admins</code> group to the <code class="literal">user</code> role.</p>
 <div class="pre_wrapper lang-yaml">
-<pre class="programlisting prettyprint lang-yaml">monitoring: <a id="CO530-1"></a><i class="conum" data-value="1"></i>
-  - "cn=admins,dc=example,dc=com" <a id="CO530-2"></a><i class="conum" data-value="2"></i>
+<pre class="programlisting prettyprint lang-yaml">monitoring: <a id="CO585-1"></a><i class="conum" data-value="1"></i>
+  - "cn=admins,dc=example,dc=com" <a id="CO585-2"></a><i class="conum" data-value="2"></i>
 user:
-  - "cn=John Doe,cn=contractors,dc=example,dc=com" <a id="CO530-3"></a><i class="conum" data-value="3"></i>
+  - "cn=John Doe,cn=contractors,dc=example,dc=com" <a id="CO585-3"></a><i class="conum" data-value="3"></i>
   - "cn=users,dc=example,dc=com"
   - "cn=admins,dc=example,dc=com"</pre>
 </div>
@@ -2412,7 +2671,7 @@ user:
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO530-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO585-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The name of a role.</p>
@@ -2420,7 +2679,7 @@ user:
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO530-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO585-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The distinguished name of an LDAP group or an Active Directory security group.</p>
@@ -2428,7 +2687,7 @@ user:
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO530-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO585-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The distinguished name of an LDAP or Active Directory user.</p>
@@ -2445,7 +2704,7 @@ user:
   "enabled": true
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1470.console"></div>
+<div class="console_widget" data-snippet="snippets/1836.console"></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT /_security/role_mapping/basic_users
 {
@@ -2457,8 +2716,8 @@ user:
   "enabled": true
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1471.console"></div>
-<h5><a id="pki-role-mapping"></a>PKI realms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h5>
+<div class="console_widget" data-snippet="snippets/1837.console"></div>
+<h5><a id="pki-role-mapping"></a>PKI realms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/mapping-roles.asciidoc">edit</a></h5>
 <p>PKI realms support mapping users to roles, but you cannot map groups as
 the PKI realm has no notion of a group.</p>
 <p>This is an example using a file-based mapping:</p>
@@ -2477,7 +2736,7 @@ user:
   "enabled": true
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1472.console"></div>
+<div class="console_widget" data-snippet="snippets/1838.console"></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT /_security/role_mapping/basic_user
 {
@@ -2486,14 +2745,14 @@ user:
   "enabled": true
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1473.console"></div>
+<div class="console_widget" data-snippet="snippets/1839.console"></div>
 </div>
 
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="field-and-document-access-control"></a>Setting up field and document level security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/field-and-document-access-control.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="field-and-document-access-control"></a>Setting up field and document level security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/field-and-document-access-control.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can control access to data within a data stream or index by adding field and document level
 security permissions to a role.
@@ -2521,16 +2780,9 @@ grant wider access than intended. Each user has a single set of field level and
 document level permissions per data stream or index. See <a class="xref" href="authorization.html#multiple-roles-dls-fls" title="Multiple roles with document and field level security">Multiple roles with document and field level security</a>.</p>
 </div>
 </div>
-<div class="note admon">
-<div class="icon"></div>
-<div class="admon_content">
-<p>Document- and field-level security disables the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/shard-request-cache.html" class="ulink" target="_top">shard request cache</a>.</p>
-</div>
-</div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="multiple-roles-dls-fls"></a>Multiple roles with document and field level security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/field-and-document-access-control.asciidoc">edit</a></h3>
+<h3 class="title"><a id="multiple-roles-dls-fls"></a>Multiple roles with document and field level security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/field-and-document-access-control.asciidoc">edit</a></h3>
 </div></div></div>
 <p>A user can have many roles and each role can define different permissions on the
 same data stream or index. It is important to understand the behavior of document and field
@@ -2560,7 +2812,7 @@ documents by index instead.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="templating-role-query"></a>Templating a role query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/role-templates.asciidoc">edit</a></h3>
+<h3 class="title"><a id="templating-role-query"></a>Templating a role query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/role-templates.asciidoc">edit</a></h3>
 </div></div></div>
 <p>When you create a role, you can specify a query that defines the
 <a class="xref" href="authorization.html#document-level-security" title="Document level security">document level security permissions</a>. You can
@@ -2589,7 +2841,7 @@ of the current authenticated user:</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1474.console"></div>
+<div class="console_widget" data-snippet="snippets/1840.console"></div>
 <p>You can access the following information through the <code class="literal">_user</code> variable:</p>
 <div class="informaltable">
 <table border="1" cellpadding="4px">
@@ -2648,7 +2900,7 @@ based on the <code class="literal">group.id</code> field in your documents:</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1475.console"></div>
+<div class="console_widget" data-snippet="snippets/1841.console"></div>
 <p>If your metadata field contains an object or array, you can access it using the
 <code class="literal">{{#toJson}}parameter{{/toJson}}</code> function.</p>
 <div class="pre_wrapper lang-console">
@@ -2667,18 +2919,18 @@ based on the <code class="literal">group.id</code> field in your documents:</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1476.console"></div>
+<div class="console_widget" data-snippet="snippets/1842.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="set-security-user-processor"></a>Pre-processing documents to add security details<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/set-security-user.asciidoc">edit</a></h3>
+<h3 class="title"><a id="set-security-user-processor"></a>Pre-processing documents to add security details<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/set-security-user.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To guarantee that a user reads only their own documents, it makes sense to set up
 document level security. In this scenario, each document must have the username
 or role name associated with it, so that this information can be used by the
 role query for document level security. This is a situation where the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ingest-node-set-security-user-processor.html" class="ulink" target="_top">Set Security User Processor</a> ingest processor can help.</p>
+<a class="xref" href="processors.html#ingest-node-set-security-user-processor" title="Set security user processor">set security user processor</a> ingest processor can help.</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -2688,61 +2940,245 @@ users' documents. The ingest processor just adds properties for the current
 authenticated user to the documents that are being indexed.</p>
 </div>
 </div>
-<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ingest-node-set-security-user-processor.html" class="ulink" target="_top">set security user processor</a> attaches user-related details (such as
+<p>The <a class="xref" href="processors.html#ingest-node-set-security-user-processor" title="Set security user processor">set security user processor</a> attaches user-related details (such as
 <code class="literal">username</code>,  <code class="literal">roles</code>, <code class="literal">email</code>, <code class="literal">full_name</code> and <code class="literal">metadata</code> ) from the current
 authenticated user to the current document by pre-processing the ingest. When
 you index data with an ingest pipeline, user details are automatically attached
-to the document.</p>
-<p>For more information see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ingest.html" class="ulink" target="_top">Ingest node</a> and <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ingest-node-set-security-user-processor.html" class="ulink" target="_top">Set security user processor</a>.</p>
+to the document. If the authenticating credential is an API key, the API key
+<code class="literal">id</code>, <code class="literal">name</code> and <code class="literal">metadata</code> (if it exists and is non-empty) are also attached to
+the document.</p>
+<p>For more information see <a class="xref" href="ingest.html" title="Ingest pipelines">Ingest pipelines</a> and
+<a class="xref" href="processors.html#ingest-node-set-security-user-processor" title="Set security user processor">Set security user</a></p>
 </div>
 
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="run-as-privilege"></a>Submitting requests on behalf of other users<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/run-as-privilege.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="run-as-privilege"></a>Submitting requests on behalf of other users<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/run-as-privilege.asciidoc">edit</a></h2>
 </div></div></div>
-<p>The Elasticsearch security features support a permission that enables an authenticated
-user to submit requests on behalf of other users. If your application already
-authenticates users, you can use the <em>run as</em> mechanism to restrict data access
-according to Elasticsearch permissions without having to re-authenticate each user.</p>
-<p>To "run as" (impersonate) another user, that user must exist in a realm that
-supports the <em>run as</em> mechanism. Both the internal <code class="literal">native</code> and <code class="literal">file</code> realms
-support this out of the box. The LDAP realm must be configured to run in
-<a class="xref" href="setting-up-authentication.html#ldap-realm-configuration" title="Configuring an LDAP realm"><em>user search</em> mode</a>. The Active Directory realm must
-be <a class="xref" href="settings.html#ref-ad-settings" title="Active Directory realm settings">configured with a <code class="literal">bind_dn</code> and <code class="literal">secure_bind_password</code></a> to
-support <em>run as</em>. The Kerberos, OpenID Connect, PKI, and SAML realms do not
-support <em>run as</em>.</p>
+<p>Elasticsearch roles support a <code class="literal">run_as</code> privilege that enables an authenticated user to
+submit requests on behalf of other users. For example, if your external
+application is trusted to authenticate users, Elasticsearch can authenticate the external
+application and use the <em>run as</em> mechanism to issue authorized requests as
+other users without having to re-authenticate each user.</p>
+<p>To "run as" (impersonate) another user, the first user (the authenticating user)
+must be authenticated by a mechanism that supports run-as delegation. The second
+user (the <code class="literal">run_as</code> user) must be authorized by a mechanism that supports
+delegated run-as lookups by username.</p>
+<p>The <code class="literal">run_as</code> privilege essentially operates like a secondary form of
+<a class="xref" href="setting-up-authentication.html#authorization_realms" title="Delegating authorization to another realm">delegated authorization</a>. Delegated authorization applies
+to the authenticating user, and the <code class="literal">run_as</code> privilege applies to the user who
+is being impersonated.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+Authenticating user
+</span>
+</dt>
+</dl>
+</div>
+<p>For the authenticating user, the following realms (plus API keys) all support
+<code class="literal">run_as</code> delegation: <code class="literal">native</code>, <code class="literal">file</code>, Active Directory, JWT, Kerberos, LDAP and
+PKI.</p>
+<p>Service tokens, the Elasticsearch Token Service, SAML 2.0, and OIDC 1.0 do not
+support <code class="literal">run_as</code> delegation.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">run_as</code> user
+</span>
+</dt>
+</dl>
+</div>
+<p>Elasticsearch supports <code class="literal">run_as</code> for any realm that supports user lookup.
+Not all realms support user lookup. Refer to the list of <a class="xref" href="setting-up-authentication.html#user-lookup" title="Looking up users without authentication">supported realms</a>
+and ensure that the realm you wish to use is configured in a manner that
+supports user lookup.</p>
+<p>The <code class="literal">run_as</code> user must be retrieved from a <a class="xref" href="setting-up-authentication.html#realms" title="Realms">realm</a> - it is not
+possible to run as a
+<a class="xref" href="setting-up-authentication.html#service-accounts" title="Service accounts">service account</a>,
+<a class="xref" href="setting-up-authentication.html#token-authentication-api-key">API key</a> or
+<a class="xref" href="setting-up-authentication.html#token-authentication-access-token">access token</a>.</p>
 <p>To submit requests on behalf of other users, you need to have the <code class="literal">run_as</code>
-permission. For example, the following role grants permission to submit request
-on behalf of <code class="literal">jacknich</code> or <code class="literal">redeniro</code>:</p>
-<div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">{
-  "run_as" : [ "jacknich", "rdeniro" ]
+privilege in your <a class="xref" href="authorization.html#defining-roles" title="Defining roles">roles</a>. For example, the following request
+creates a <code class="literal">my_director</code> role that grants permission to submit request on behalf
+of <code class="literal">jacknich</code> or <code class="literal">redeniro</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/role/my_director?refresh=true
+{
+  "cluster": ["manage"],
+  "indices": [
+    {
+      "names": [ "index1", "index2" ],
+      "privileges": [ "manage" ]
+    }
+  ],
+  "run_as": [ "jacknich", "rdeniro" ],
+  "metadata" : {
+    "version" : 1
+  }
 }</pre>
 </div>
+<div class="console_widget" data-snippet="snippets/1843.console"></div>
 <p>To submit a request as another user, you specify the user in the
 <code class="literal">es-security-runas-user</code> request header. For example:</p>
-<div class="pre_wrapper lang-shell">
-<pre class="programlisting prettyprint lang-shell">curl -H "es-security-runas-user: jacknich"  -u es_admin -XGET 'http://localhost:9200/'</pre>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">curl -H "es-security-runas-user: jacknich" -u es-admin -X GET http://localhost:9200/</pre>
 </div>
+<p>The <code class="literal">run_as</code> user passed in through the <code class="literal">es-security-runas-user</code> header must be
+available from a realm that supports delegated authorization lookup by username.
+Realms that don&#8217;t support user lookup can&#8217;t be used by <code class="literal">run_as</code> delegation from
+other realms.</p>
+<p>For example, JWT realms can authenticate external users specified in JWTs, and
+execute requests as a <code class="literal">run_as</code> user in the <code class="literal">native</code> realm. Elasticsearch will retrieve the
+indicated <code class="literal">runas</code> user and execute the request as that user using their roles.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="run-as-privilege-apply"></a>Apply the <code class="literal">run_as</code> privilege to roles<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/run-as-privilege.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can apply the <code class="literal">run_as</code> privilege when creating roles with the
+<a class="xref" href="security-api.html#security-api-put-role" title="Create or update roles API">create or update roles API</a>. Users who are assigned
+a role that contains the <code class="literal">run_as</code> privilege inherit all privileges from their
+role, and can also submit requests on behalf of the indicated users.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Roles for the authenticated user and the <code class="literal">run_as</code> user are not merged. If
+a user authenticates without specifying the <code class="literal">run_as</code> parameter, only the
+authenticated user&#8217;s roles are used. If a user authenticates and their roles
+include the <code class="literal">run_as</code> parameter, only the <code class="literal">run_as</code> user&#8217;s roles are used.</p>
+</div>
+</div>
+<p>After a user successfully authenticates to Elasticsearch, an authorization process determines whether the user behind an incoming request is allowed to run
+that request. If the authenticated user has the <code class="literal">run_as</code> privilege in their list
+of permissions and specifies the run-as header, Elasticsearch <em>discards</em> the authenticated
+user and associated roles. It then looks in each of the configured realms in the
+realm chain until it finds the username that&#8217;s associated with the <code class="literal">run_as</code> user,
+and uses those roles to execute any requests.</p>
+<p>Consider an admin role and an analyst role. The admin role has higher privileges,
+but might also want to submit requests as another user to test and verify their
+permissions.</p>
+<p>First, we&#8217;ll create an admin role named <code class="literal">my_admin_role</code>. This role has <code class="literal">manage</code>
+<a class="xref" href="authorization.html#security-privileges" title="Security privileges">privileges</a> on the entire cluster, and on a subset of
+indices. This role also contains the <code class="literal">run_as</code> privilege, which enables any user
+with this role to submit requests on behalf of the specified <code class="literal">analyst_user</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/role/my_admin_role?refresh=true
+{
+  "cluster": ["manage"],
+  "indices": [
+    {
+      "names": [ "index1", "index2" ],
+      "privileges": [ "manage" ]
+    }
+  ],
+  "applications": [
+    {
+      "application": "myapp",
+      "privileges": [ "admin", "read" ],
+      "resources": [ "*" ]
+    }
+  ],
+  "run_as": [ "analyst_user" ],
+  "metadata" : {
+    "version" : 1
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1844.console"></div>
+<p>Next, we&#8217;ll create an analyst role named <code class="literal">my_analyst_role</code>, which has more
+restricted <code class="literal">monitor</code> cluster privileges and <code class="literal">manage</code> privileges on a subset of
+indices.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/role/my_analyst_role?refresh=true
+{
+  "cluster": [ "monitor"],
+  "indices": [
+    {
+      "names": [ "index1", "index2" ],
+      "privileges": ["manage"]
+    }
+  ],
+  "applications": [
+    {
+      "application": "myapp",
+      "privileges": [ "read" ],
+      "resources": [ "*" ]
+    }
+  ],
+  "metadata" : {
+    "version" : 1
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1845.console"></div>
+<p>We&#8217;ll create an administrator user and assign them the role named <code class="literal">my_admin_role</code>,
+which allows this user to submit requests as the <code class="literal">analyst_user</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/user/admin_user?refresh=true
+{
+  "password": "l0ng-r4nd0m-p@ssw0rd",
+  "roles": [ "my_admin_role" ],
+  "full_name": "Eirian Zola",
+  "metadata": { "intelligence" : 7}
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1846.console"></div>
+<p>We can also create an analyst user and assign them the role named
+<code class="literal">my_analyst_role</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/user/analyst_user?refresh=true
+{
+  "password": "l0nger-r4nd0mer-p@ssw0rd",
+  "roles": [ "my_analyst_role" ],
+  "full_name": "Monday Jaffe",
+  "metadata": { "innovation" : 8}
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1847.console"></div>
+<p>You can then authenticate to Elasticsearch as the <code class="literal">admin_user</code> or <code class="literal">analyst_user</code>. However, the <code class="literal">admin_user</code> could optionally submit requests on
+behalf of the <code class="literal">analyst_user</code>. The following request authenticates to Elasticsearch with a
+<code class="literal">Basic</code> authorization token and submits the request as the <code class="literal">analyst_user</code>:</p>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">curl -s -X GET -H "Authorization: Basic YWRtaW5fdXNlcjpsMG5nLXI0bmQwbS1wQHNzdzByZA==" -H "es-security-runas-user: analyst_user" https://localhost:9200/_security/_authenticate</pre>
+</div>
+<p>The response indicates that the <code class="literal">analyst_user</code> submitted this request, using the
+<code class="literal">my_analyst_role</code> that&#8217;s assigned to that user. When the <code class="literal">admin_user</code> submitted
+the request, Elasticsearch authenticated that user, discarded their roles, and then used
+the roles of the <code class="literal">run_as</code> user.</p>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">{"username":"analyst_user","roles":["my_analyst_role"],"full_name":"Monday Jaffe","email":null,
+"metadata":{"innovation":8},"enabled":true,"authentication_realm":{"name":"native",
+"type":"native"},"lookup_realm":{"name":"native","type":"native"},"authentication_type":"realm"}
+%</pre>
+</div>
+<p>The <code class="literal">authentication_realm</code> and <code class="literal">lookup_realm</code> in the response both specify
+the <code class="literal">native</code> realm because both the <code class="literal">admin_user</code> and <code class="literal">analyst_user</code> are from
+that realm. If the two users are in different realms, the values for
+<code class="literal">authentication_realm</code> and <code class="literal">lookup_realm</code> are different (such as <code class="literal">pki</code> and
+<code class="literal">native</code>).</p>
+</div>
+
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="configuring-authorization-delegation"></a>Configuring authorization delegation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/configuring-authorization-delegation.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="configuring-authorization-delegation"></a>Configuring authorization delegation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/configuring-authorization-delegation.asciidoc">edit</a></h2>
 </div></div></div>
 <p>In some cases, after the user has been authenticated by a realm, we may
 want to delegate user lookup and assignment of roles to another realm.
-Any realm that supports retrieving users (without needing their credentials)
-can be used as an authorization realm.</p>
+Any realm that supports <a class="xref" href="setting-up-authentication.html#user-lookup" title="Looking up users without authentication">user lookup</a> (without needing the
+user&#8217;s credentials) can be used as an authorization realm.</p>
 <p>For example, a user that is authenticated by the Kerberos realm can be looked up
 in the LDAP realm. The LDAP realm takes on responsibility for searching the user
 in LDAP and determining the role. In this case, the LDAP realm acts as an
 <em>authorization realm</em>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_ldap_realm_as_an_authorization_realm"></a>LDAP realm as an authorization realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/configuring-authorization-delegation.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_ldap_realm_as_an_authorization_realm"></a>LDAP realm as an authorization realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/configuring-authorization-delegation.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Following is an example configuration for the LDAP realm that can be used as
 an <em>authorization realm</em>. This LDAP realm is configured in user search mode
@@ -2756,7 +3192,7 @@ with a specified filter.</p>
         ldap:
           ldap1:
             order: 0
-            authentication.enabled: true <a id="CO531-1"></a><i class="conum" data-value="1"></i>
+            authentication.enabled: true <a id="CO586-1"></a><i class="conum" data-value="1"></i>
             user_search:
               base_dn: "dc=example,dc=org"
               filter: "(cn={0})"
@@ -2770,7 +3206,7 @@ with a specified filter.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO531-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO586-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Here, we explicitly allow the LDAP realm to be used for authentication
@@ -2785,7 +3221,7 @@ If we wanted this LDAP realm to be used for authorization only, then we
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_kerberos_realm_configured_to_delegate_authorization"></a>Kerberos realm configured to delegate authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/configuring-authorization-delegation.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_kerberos_realm_configured_to_delegate_authorization"></a>Kerberos realm configured to delegate authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/configuring-authorization-delegation.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Following is an example configuration where the Kerberos realm authenticates a
 user and then delegates authorization to the LDAP realm. The
@@ -2810,7 +3246,7 @@ This username is used to do a user lookup by the configured authorization realms
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_pki_realm_configured_to_delegate_authorization"></a>PKI realm configured to delegate authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/configuring-authorization-delegation.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_pki_realm_configured_to_delegate_authorization"></a>PKI realm configured to delegate authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/configuring-authorization-delegation.asciidoc">edit</a></h3>
 </div></div></div>
 <p>We can similarly configure PKI realm to delegate authorization to LDAP realm.
 The user is authenticated by the PKI realm and the authorization is delegated to
@@ -2836,7 +3272,7 @@ authorization realms (which have the capability to lookup users by the username 
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="custom-roles-authorization"></a>Customizing roles and authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="custom-roles-authorization"></a>Customizing roles and authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a></h2>
 </div></div></div>
 <p>If you need to retrieve user roles from a system not supported out-of-the-box
 or if the authorization system that is provided by the Elasticsearch security features
@@ -2845,7 +3281,7 @@ customize role retrieval and/or the authorization system. The SPI loaded
 security extension is part of an ordinary elasticsearch plugin.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="implementing-custom-roles-provider"></a>Implementing a custom roles provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a></h3>
+<h3 class="title"><a id="implementing-custom-roles-provider"></a>Implementing a custom roles provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To create a custom roles provider:</p>
 <div class="olist orderedlist">
@@ -2858,7 +3294,7 @@ role descriptors are passed on as the response.
 </li>
 <li class="listitem">
 The custom roles provider implementation must take special care to not block on any I/O
-operations.  It is the responsibility of the implementation to ensure asynchronous behavior
+operations. It is the responsibility of the implementation to ensure asynchronous behavior
 and non-blocking calls, which is made easier by the fact that the <code class="literal">ActionListener</code> is
 provided on which to send the response when the roles have been resolved and the response
 is ready.
@@ -2881,8 +3317,8 @@ getRolesProviders(Settings settings, ResourceWatcherService resourceWatcherServi
 </div>
 <p>The <code class="literal">getRolesProviders</code> method is used to provide a list of custom roles providers that
 will be used to resolve role names, if the role names could not be resolved by the reserved
-roles or native roles stores.   The list should be returned in the order that the custom role
-providers should be invoked to resolve roles.  For example, if <code class="literal">getRolesProviders</code> returns two
+roles or native roles stores. The list should be returned in the order that the custom role
+providers should be invoked to resolve roles. For example, if <code class="literal">getRolesProviders</code> returns two
 instances of roles providers, and both of them are able to resolve role <code class="literal">A</code>, then the resolved
 role descriptor that will be used for role <code class="literal">A</code> will be the one resolved by the first roles
 provider in the list.</p>
@@ -2893,7 +3329,7 @@ provider in the list.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="implementing-authorization-engine"></a>Implementing an authorization engine<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a></h3>
+<h3 class="title"><a id="implementing-authorization-engine"></a>Implementing an authorization engine<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To create an authorization engine, you need to:</p>
 <div class="olist orderedlist">
@@ -2935,7 +3371,7 @@ own authorization engine.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="packing-extension-plugin"></a>Implement an elasticsearch plugin<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a></h3>
+<h3 class="title"><a id="packing-extension-plugin"></a>Implement an elasticsearch plugin<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a></h3>
 </div></div></div>
 <p>In order to register the security extension for your custom roles provider or
 authorization engine, you need to also implement an elasticsearch plugin that
@@ -2950,7 +3386,7 @@ Create a build configuration file for the plugin; Gradle is our recommendation.
 </li>
 <li class="listitem">
 Create a <code class="literal">plugin-descriptor.properties</code> file as described in
-<a href="https://www.elastic.co/guide/en/elasticsearch/plugins/7.10/plugin-authors.html" class="ulink" target="_top">Help for plugin authors</a>.
+<a href="https://www.elastic.co/guide/en/elasticsearch/plugins/8.9/plugin-authors.html" class="ulink" target="_top">Help for plugin authors</a>.
 </li>
 <li class="listitem">
 Create a <code class="literal">META-INF/services/org.elasticsearch.xpack.core.security.SecurityExtension</code> descriptor file for the
@@ -2965,7 +3401,7 @@ Bundle all in a single zip file.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="using-security-extension"></a>Using the security extension<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a></h3>
+<h3 class="title"><a id="using-security-extension"></a>Using the security extension<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/security/authorization/custom-authorization.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To use a security extension:</p>
 <div class="olist orderedlist">
@@ -2980,7 +3416,7 @@ pointing to the zip file that contains the extension. For example:</p>
 </li>
 <li class="listitem">
 <p>Add any configuration parameters for implementations in the extension to the
-<code class="literal">elasticsearch.yml</code> file.  The settings are not namespaced and you have access to any
+<code class="literal">elasticsearch.yml</code> file. The settings are not namespaced and you have access to any
 settings when constructing the extensions, although it is recommended to have a
 namespacing convention for extensions to keep your <code class="literal">elasticsearch.yml</code>
 configuration easy to understand.</p>
@@ -3007,10 +3443,10 @@ Restart Elasticsearch.
 </div>
 <div class="navfooter">
 <span class="prev">
-<a href="oidc-guide.html">« Configuring single sign-on to the Elastic Stack using OpenID Connect</a>
+<a href="setting-up-authentication.html">« User authentication</a>
 </span>
 <span class="next">
-<a href="enable-audit-logging.html">Enabling audit logging »</a>
+<a href="enable-audit-logging.html">Enable audit logging »</a>
 </span>
 </div>
 </div>

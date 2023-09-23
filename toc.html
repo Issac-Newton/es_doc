@@ -2,31 +2,17 @@
 <ul class="toc">
 <li><span class="chapter"><a href="elasticsearch-intro.html">What is Elasticsearch?</a></span>
 </li>
-<li><span class="chapter"><a href="release-highlights.html">What&#8217;s new in 7.10</a></span>
-</li>
-<li><span class="part"><a href="getting-started.html">Getting started with Elasticsearch</a></span>
-<ul>
-<li><span class="chapter"><a href="getting-started-install.html">Get Elasticsearch up and running</a></span>
-</li>
-<li><span class="chapter"><a href="getting-started-index.html">Index some documents</a></span>
-</li>
-<li><span class="chapter"><a href="getting-started-search.html">Start searching</a></span>
-</li>
-<li><span class="chapter"><a href="getting-started-aggregations.html">Analyze results with aggregations</a></span>
-</li>
-<li><span class="chapter"><a href="getting-started-next-steps.html">Where to go from here</a></span>
-</li>
-</ul>
+<li><span class="chapter"><a href="release-highlights.html">What&#8217;s new in 8.9</a></span>
 </li>
 <li><span class="part"><a href="setup.html">Set up Elasticsearch</a></span>
 <ul>
 <li><span class="chapter"><a href="install-elasticsearch.html">Installing Elasticsearch</a></span>
 </li>
+<li><span class="chapter"><a href="run-elasticsearch-locally.html">Run Elasticsearch locally</a></span>
+</li>
 <li><span class="chapter"><a href="settings.html">Configuring Elasticsearch</a></span>
 </li>
-<li><span class="chapter"><a href="important-settings.html">Important Elasticsearch configuration</a></span>
-</li>
-<li><span class="chapter"><a href="system-config.html">Important System Configuration</a></span>
+<li><span class="chapter"><a href="system-config.html">Important system configuration</a></span>
 </li>
 <li><span class="chapter"><a href="bootstrap-checks.html">Bootstrap Checks</a></span>
 </li>
@@ -42,11 +28,7 @@
 </li>
 <li><span class="chapter"><a href="restart-cluster.html">Full-cluster restart and rolling restart</a></span>
 </li>
-<li><span class="chapter"><a href="modules-remote-clusters.html">Remote clusters</a></span>
-</li>
-<li><span class="chapter"><a href="setup-xpack.html">Set up X-Pack</a></span>
-</li>
-<li><span class="chapter"><a href="setup-xpack-client.html">Configuring X-Pack Java Clients</a></span>
+<li><span class="chapter"><a href="remote-clusters.html">Remote clusters</a></span>
 </li>
 <li><span class="chapter"><a href="modules-plugins.html">Plugins</a></span>
 </li>
@@ -54,11 +36,9 @@
 </li>
 <li><span class="part"><a href="setup-upgrade.html">Upgrade Elasticsearch</a></span>
 <ul>
-<li><span class="chapter"><a href="rolling-upgrades.html">Rolling upgrades</a></span>
+<li><span class="chapter"><a href="archived-settings.html">Archived settings</a></span>
 </li>
-<li><span class="chapter"><a href="restart-upgrade.html">Full cluster restart upgrade</a></span>
-</li>
-<li><span class="chapter"><a href="reindex-upgrade.html">Reindex before upgrading</a></span>
+<li><span class="chapter"><a href="archive-indices.html">Reading indices from older Elasticsearch versions</a></span>
 </li>
 </ul>
 </li>
@@ -92,7 +72,11 @@
 </li>
 <li><span class="part"><a href="mapping.html">Mapping</a></span>
 <ul>
-<li><span class="chapter"><a href="removal-of-types.html">Removal of mapping types</a></span>
+<li><span class="chapter"><a href="dynamic-mapping.html">Dynamic mapping</a></span>
+</li>
+<li><span class="chapter"><a href="explicit-mapping.html">Explicit mapping</a></span>
+</li>
+<li><span class="chapter"><a href="runtime.html">Runtime fields</a></span>
 </li>
 <li><span class="chapter"><a href="mapping-types.html">Field data types</a></span>
 </li>
@@ -100,7 +84,9 @@
 </li>
 <li><span class="chapter"><a href="mapping-params.html">Mapping parameters</a></span>
 </li>
-<li><span class="chapter"><a href="dynamic-mapping.html">Dynamic Mapping</a></span>
+<li><span class="chapter"><a href="mapping-settings-limit.html">Mapping limit settings</a></span>
+</li>
+<li><span class="chapter"><a href="removal-of-types.html">Removal of mapping types</a></span>
 </li>
 </ul>
 </li>
@@ -128,6 +114,8 @@
 <ul>
 <li><span class="chapter"><a href="simulate-multi-component-templates.html">Simulate multi-component templates</a></span>
 </li>
+<li><span class="chapter"><a href="ignore_missing_component_templates.html">Config ignore_missing_component_templates</a></span>
+</li>
 </ul>
 </li>
 <li><span class="part"><a href="data-streams.html">Data streams</a></span>
@@ -136,25 +124,23 @@
 </li>
 <li><span class="chapter"><a href="use-a-data-stream.html">Use a data stream</a></span>
 </li>
-<li><span class="chapter"><a href="data-streams-change-mappings-and-settings.html">Change mappings and settings for a data stream</a></span>
+<li><span class="chapter"><a href="modify-data-streams.html">Modify a data stream</a></span>
+</li>
+<li><span class="chapter"><a href="tsds.html">Time series data stream (TSDS)</a></span>
 </li>
 </ul>
 </li>
-<li><span class="part"><a href="ingest.html">Ingest node</a></span>
+<li><span class="part"><a href="ingest.html">Ingest pipelines</a></span>
 <ul>
-<li><span class="chapter"><a href="pipeline.html">Pipeline Definition</a></span>
-</li>
-<li><span class="chapter"><a href="accessing-data-in-pipelines.html">Accessing Data in Pipelines</a></span>
-</li>
-<li><span class="chapter"><a href="ingest-conditionals.html">Conditional Execution in Pipelines</a></span>
-</li>
-<li><span class="chapter"><a href="handling-failure-in-pipelines.html">Handling Failures in Pipelines</a></span>
+<li><span class="chapter"><a href="common-log-format-example.html">Example: Parse logs</a></span>
 </li>
 <li><span class="chapter"><a href="ingest-enriching-data.html">Enrich your data</a></span>
 </li>
-<li><span class="chapter"><a href="ingest-processors.html">Processors</a></span>
+<li><span class="chapter"><a href="processors.html">Processor reference</a></span>
 </li>
 </ul>
+</li>
+<li><span class="chapter"><a href="aliases.html">Aliases</a></span>
 </li>
 <li><span class="part"><a href="search-your-data.html">Search your data</a></span>
 <ul>
@@ -180,7 +166,13 @@
 </li>
 <li><span class="chapter"><a href="search-shard-routing.html">Search shard routing</a></span>
 </li>
+<li><span class="chapter"><a href="search-template.html">Search templates</a></span>
+</li>
 <li><span class="chapter"><a href="sort-search-results.html">Sort search results</a></span>
+</li>
+<li><span class="chapter"><a href="knn-search.html">kNN search</a></span>
+</li>
+<li><span class="chapter"><a href="semantic-search.html">Semantic search</a></span>
 </li>
 </ul>
 </li>
@@ -206,6 +198,8 @@
 </li>
 <li><span class="chapter"><a href="term-level-queries.html">Term-level queries</a></span>
 </li>
+<li><span class="chapter"><a href="query-dsl-text-expansion-query.html">Text expansion</a></span>
+</li>
 <li><span class="chapter"><a href="query-dsl-minimum-should-match.html"><code class="literal">minimum_should_match</code> parameter</a></span>
 </li>
 <li><span class="chapter"><a href="query-dsl-multi-term-rewrite.html"><code class="literal">rewrite</code> parameter</a></span>
@@ -224,6 +218,8 @@
 </li>
 </ul>
 </li>
+<li><span class="chapter"><a href="geospatial-analysis.html">Geospatial analysis</a></span>
+</li>
 <li><span class="part"><a href="eql.html">EQL</a></span>
 <ul>
 <li><span class="chapter"><a href="eql-syntax.html">Syntax reference</a></span>
@@ -236,7 +232,7 @@
 </li>
 </ul>
 </li>
-<li><span class="part"><a href="xpack-sql.html">SQL access</a></span>
+<li><span class="part"><a href="xpack-sql.html">SQL</a></span>
 <ul>
 <li><span class="chapter"><a href="sql-overview.html">Overview</a></span>
 </li>
@@ -270,13 +266,17 @@
 </li>
 <li><span class="part"><a href="modules-scripting.html">Scripting</a></span>
 <ul>
-<li><span class="chapter"><a href="modules-scripting-using.html">How to use scripts</a></span>
+<li><span class="chapter"><a href="modules-scripting-painless.html">Painless scripting language</a></span>
+</li>
+<li><span class="chapter"><a href="modules-scripting-using.html">How to write scripts</a></span>
+</li>
+<li><span class="chapter"><a href="script-fields-api.html">Access fields in a document</a></span>
+</li>
+<li><span class="chapter"><a href="common-script-uses.html">Common scripting use cases</a></span>
 </li>
 <li><span class="chapter"><a href="modules-scripting-fields.html">Accessing document fields and special variables</a></span>
 </li>
 <li><span class="chapter"><a href="modules-scripting-security.html">Scripting and security</a></span>
-</li>
-<li><span class="chapter"><a href="modules-scripting-painless.html">Painless scripting language</a></span>
 </li>
 <li><span class="chapter"><a href="modules-scripting-expression.html">Lucene expressions language</a></span>
 </li>
@@ -286,29 +286,25 @@
 </li>
 <li><span class="part"><a href="data-management.html">Data management</a></span>
 <ul>
-<li><span class="chapter"><a href="data-tiers.html">Data tiers</a></span>
+<li><span class="chapter"><a href="index-lifecycle-management.html">ILM: Manage the index lifecycle</a></span>
 </li>
-<li><span class="chapter"><a href="index-mgmt.html">Index management</a></span>
+<li><span class="chapter"><a href="example-using-index-lifecycle-policy.html">Tutorial: Customize built-in policies</a></span>
 </li>
-</ul>
+<li><span class="chapter"><a href="getting-started-index-lifecycle-management.html">Tutorial: Automate rollover</a></span>
 </li>
-<li><span class="part"><a href="index-lifecycle-management.html">ILM: Manage the index lifecycle</a></span>
-<ul>
+<li><span class="chapter"><a href="index-mgmt.html">Index management in Kibana</a></span>
+</li>
 <li><span class="chapter"><a href="overview-index-lifecycle-management.html">Overview</a></span>
 </li>
 <li><span class="chapter"><a href="ilm-concepts.html">Concepts</a></span>
 </li>
-<li><span class="chapter"><a href="getting-started-index-lifecycle-management.html">Automate rollover</a></span>
-</li>
-<li><span class="chapter"><a href="example-using-index-lifecycle-policy.html">Manage Filebeat time-based indices</a></span>
-</li>
 <li><span class="chapter"><a href="ilm-actions.html">Index lifecycle actions</a></span>
 </li>
-<li><span class="chapter"><a href="set-up-lifecycle-policy.html">Configure a lifecycle policy <a id="ilm-policy-definition"></a></a></span>
+<li><span class="chapter"><a href="set-up-lifecycle-policy.html">Configure a lifecycle policy</a></span>
 </li>
 <li><span class="chapter"><a href="migrate-index-allocation-filters.html">Migrate index allocation filters to node roles</a></span>
 </li>
-<li><span class="chapter"><a href="index-lifecycle-error-handling.html">Resolve lifecycle policy execution errors</a></span>
+<li><span class="chapter"><a href="index-lifecycle-error-handling.html">Troubleshooting index lifecycle management errors</a></span>
 </li>
 <li><span class="chapter"><a href="start-stop-ilm.html">Start and stop index lifecycle management</a></span>
 </li>
@@ -317,6 +313,14 @@
 <li><span class="chapter"><a href="skipping-rollover.html">Skip rollover</a></span>
 </li>
 <li><span class="chapter"><a href="index-lifecycle-and-snapshots.html">Restore a managed data stream or index</a></span>
+</li>
+<li><span class="chapter"><a href="data-tiers.html">Data tiers</a></span>
+</li>
+</ul>
+</li>
+<li><span class="part"><a href="xpack-autoscaling.html">Autoscaling</a></span>
+<ul>
+<li><span class="chapter"><a href="autoscaling-deciders.html">Autoscaling deciders</a></span>
 </li>
 </ul>
 </li>
@@ -328,25 +332,15 @@
 </li>
 <li><span class="chapter"><a href="monitoring-production.html">Monitoring in a production environment</a></span>
 </li>
+<li><span class="chapter"><a href="configuring-elastic-agent.html">Collecting monitoring data with Elastic Agent</a></span>
+</li>
 <li><span class="chapter"><a href="configuring-metricbeat.html">Collecting monitoring data with Metricbeat</a></span>
 </li>
 <li><span class="chapter"><a href="configuring-filebeat.html">Collecting log data with Filebeat</a></span>
 </li>
-<li><span class="chapter"><a href="config-monitoring-indices.html">Configuring indices for monitoring</a></span>
+<li><span class="chapter"><a href="config-monitoring-indices.html">Configuring data streams/indices for monitoring</a></span>
 </li>
 <li><span class="chapter"><a href="collecting-monitoring-data.html">Legacy collection methods</a></span>
-</li>
-<li><span class="chapter"><a href="monitoring-troubleshooting.html">Troubleshooting</a></span>
-</li>
-</ul>
-</li>
-<li><span class="part"><a href="frozen-indices.html">Frozen indices</a></span>
-<ul>
-<li><span class="chapter"><a href="best_practices.html">Best practices</a></span>
-</li>
-<li><span class="chapter"><a href="searching_a_frozen_index.html">Searching a frozen index</a></span>
-</li>
-<li><span class="chapter"><a href="monitoring_frozen_indices.html">Monitoring frozen indices</a></span>
 </li>
 </ul>
 </li>
@@ -362,55 +356,43 @@
 <ul>
 <li><span class="chapter"><a href="high-availability-cluster-design.html">Designing for resilience</a></span>
 </li>
-<li><span class="chapter"><a href="backup-cluster.html">Back up a cluster</a></span>
-</li>
 <li><span class="chapter"><a href="xpack-ccr.html">Cross-cluster replication</a></span>
 </li>
 </ul>
 </li>
 <li><span class="part"><a href="snapshot-restore.html">Snapshot and restore</a></span>
 <ul>
-<li><span class="chapter"><a href="snapshots-register-repository.html">Register repository</a></span>
+<li><span class="chapter"><a href="snapshots-register-repository.html">Register a repository</a></span>
 </li>
 <li><span class="chapter"><a href="snapshots-take-snapshot.html">Create a snapshot</a></span>
 </li>
 <li><span class="chapter"><a href="snapshots-restore-snapshot.html">Restore a snapshot</a></span>
 </li>
-<li><span class="chapter"><a href="snapshots-monitor-snapshot-restore.html">Monitor snapshot and restore</a></span>
-</li>
-<li><span class="chapter"><a href="delete-snapshots.html">Delete a snapshot</a></span>
-</li>
-<li><span class="chapter"><a href="snapshot-lifecycle-management.html">SLM: Manage the snapshot lifecycle</a></span>
-</li>
 <li><span class="chapter"><a href="searchable-snapshots.html">Searchable snapshots</a></span>
 </li>
 </ul>
 </li>
-<li><span class="part"><a href="secure-cluster.html">Secure a cluster</a></span>
+<li><span class="part"><a href="secure-cluster.html">Secure the Elastic Stack</a></span>
 <ul>
-<li><span class="chapter"><a href="elasticsearch-security.html">Overview</a></span>
+<li><span class="chapter"><a href="es-security-principles.html">Elasticsearch security principles</a></span>
 </li>
-<li><span class="chapter"><a href="configuring-security.html">Configuring security</a></span>
+<li><span class="chapter"><a href="configuring-stack-security.html">Start the Elastic Stack with security enabled automatically</a></span>
+</li>
+<li><span class="chapter"><a href="manually-configure-security.html">Manually configure security</a></span>
+</li>
+<li><span class="chapter"><a href="update-node-certs.html">Updating node security certificates</a></span>
 </li>
 <li><span class="chapter"><a href="setting-up-authentication.html">User authentication</a></span>
 </li>
-<li><span class="chapter"><a href="saml-guide.html">Configuring SAML single-sign-on on the Elastic Stack</a></span>
-</li>
-<li><span class="chapter"><a href="oidc-guide.html">Configuring single sign-on to the Elastic Stack using OpenID Connect</a></span>
-</li>
 <li><span class="chapter"><a href="authorization.html">User authorization</a></span>
 </li>
-<li><span class="chapter"><a href="enable-audit-logging.html">Enabling audit logging</a></span>
-</li>
-<li><span class="chapter"><a href="encrypting-communications.html">Encrypting communications</a></span>
+<li><span class="chapter"><a href="enable-audit-logging.html">Enable audit logging</a></span>
 </li>
 <li><span class="chapter"><a href="ip-filtering.html">Restricting connections with IP filtering</a></span>
 </li>
-<li><span class="chapter"><a href="ccs-clients-integrations.html">Cross cluster search, clients, and integrations</a></span>
+<li><span class="chapter"><a href="security-clients-integrations.html">Securing clients and integrations</a></span>
 </li>
-<li><span class="chapter"><a href="security-getting-started.html">Tutorial: Getting started with security</a></span>
-</li>
-<li><span class="chapter"><a href="encrypting-internode-communications.html">Tutorial: Encrypting communications</a></span>
+<li><span class="chapter"><a href="operator-privileges.html">Operator privileges</a></span>
 </li>
 <li><span class="chapter"><a href="security-troubleshooting.html">Troubleshooting</a></span>
 </li>
@@ -418,7 +400,7 @@
 </li>
 </ul>
 </li>
-<li><span class="part"><a href="xpack-alerting.html">Watch for cluster and index events</a></span>
+<li><span class="part"><a href="xpack-alerting.html">Watcher</a></span>
 <ul>
 <li><span class="chapter"><a href="watcher-getting-started.html">Getting started with Watcher</a></span>
 </li>
@@ -436,13 +418,9 @@
 </li>
 <li><span class="chapter"><a href="transform.html">Transforms</a></span>
 </li>
-<li><span class="chapter"><a href="api-java.html">Java API</a></span>
-</li>
 <li><span class="chapter"><a href="managing-watches.html">Managing watches</a></span>
 </li>
 <li><span class="chapter"><a href="example-watches.html">Example watches</a></span>
-</li>
-<li><span class="chapter"><a href="watcher-troubleshooting.html">Troubleshooting</a></span>
 </li>
 <li><span class="chapter"><a href="watcher-limitations.html">Limitations</a></span>
 </li>
@@ -454,15 +432,21 @@
 </li>
 <li><span class="chapter"><a href="certutil.html">elasticsearch-certutil</a></span>
 </li>
+<li><span class="chapter"><a href="create-enrollment-token.html">elasticsearch-create-enrollment-token</a></span>
+</li>
 <li><span class="chapter"><a href="elasticsearch-croneval.html">elasticsearch-croneval</a></span>
 </li>
 <li><span class="chapter"><a href="elasticsearch-keystore.html">elasticsearch-keystore</a></span>
 </li>
-<li><span class="chapter"><a href="migrate-tool.html">elasticsearch-migrate</a></span>
-</li>
 <li><span class="chapter"><a href="node-tool.html">elasticsearch-node</a></span>
 </li>
+<li><span class="chapter"><a href="reconfigure-node.html">elasticsearch-reconfigure-node</a></span>
+</li>
+<li><span class="chapter"><a href="reset-password.html">elasticsearch-reset-password</a></span>
+</li>
 <li><span class="chapter"><a href="saml-metadata.html">elasticsearch-saml-metadata</a></span>
+</li>
+<li><span class="chapter"><a href="service-tokens-command.html">elasticsearch-service-tokens</a></span>
 </li>
 <li><span class="chapter"><a href="setup-passwords.html">elasticsearch-setup-passwords</a></span>
 </li>
@@ -474,7 +458,7 @@
 </li>
 </ul>
 </li>
-<li><span class="part"><a href="how-to.html">How To</a></span>
+<li><span class="part"><a href="how-to.html">How to</a></span>
 <ul>
 <li><span class="chapter"><a href="general-recommendations.html">General recommendations</a></span>
 </li>
@@ -484,17 +468,81 @@
 </li>
 <li><span class="chapter"><a href="tune-for-search-speed.html">Tune for search speed</a></span>
 </li>
+<li><span class="chapter"><a href="tune-knn-search.html">Tune approximate kNN search</a></span>
+</li>
 <li><span class="chapter"><a href="tune-for-disk-usage.html">Tune for disk usage</a></span>
 </li>
 <li><span class="chapter"><a href="size-your-shards.html">Size your shards</a></span>
 </li>
+<li><span class="chapter"><a href="use-elasticsearch-for-time-series-data.html">Use Elasticsearch for time series data</a></span>
+</li>
 </ul>
 </li>
-<li><span class="glossary"><a href="glossary.html">Glossary of terms</a></span>
+<li><span class="part"><a href="troubleshooting.html">Troubleshooting</a></span>
+<ul>
+<li><span class="chapter"><a href="fix-common-cluster-issues.html">Fix common cluster issues</a></span>
+</li>
+<li><span class="chapter"><a href="diagnose-unassigned-shards.html">Diagnose unassigned shards</a></span>
+</li>
+<li><span class="chapter"><a href="add-tier.html">Add a missing tier to the system</a></span>
+</li>
+<li><span class="chapter"><a href="allow-all-cluster-allocation.html">Allow Elasticsearch to allocate the data in the system</a></span>
+</li>
+<li><span class="chapter"><a href="allow-all-index-allocation.html">Allow Elasticsearch to allocate the index</a></span>
+</li>
+<li><span class="chapter"><a href="troubleshoot-migrate-to-tiers.html">Indices mix index allocation filters with data tiers node roles to move through data tiers</a></span>
+</li>
+<li><span class="chapter"><a href="increase-tier-capacity.html">Not enough nodes to allocate all shard replicas</a></span>
+</li>
+<li><span class="chapter"><a href="increase-shard-limit.html">Total number of shards for an index on a single node exceeded</a></span>
+</li>
+<li><span class="chapter"><a href="increase-cluster-shard-limit.html">Total number of shards per node has been reached</a></span>
+</li>
+<li><span class="chapter"><a href="corruption-troubleshooting.html">Troubleshooting corruption</a></span>
+</li>
+<li><span class="chapter"><a href="fix-data-node-out-of-disk.html">Fix data nodes out of disk</a></span>
+</li>
+<li><span class="chapter"><a href="fix-master-node-out-of-disk.html">Fix master nodes out of disk</a></span>
+</li>
+<li><span class="chapter"><a href="fix-other-node-out-of-disk.html">Fix other role nodes out of disk</a></span>
+</li>
+<li><span class="chapter"><a href="start-ilm.html">Start index lifecycle management</a></span>
+</li>
+<li><span class="chapter"><a href="start-slm.html">Start Snapshot Lifecycle Management</a></span>
+</li>
+<li><span class="chapter"><a href="restore-from-snapshot.html">Restore from snapshot</a></span>
+</li>
+<li><span class="chapter"><a href="add-repository.html">Multiple deployments writing to the same snapshot repository</a></span>
+</li>
+<li><span class="chapter"><a href="repeated-snapshot-failures.html">Addressing repeated snapshot policy failures</a></span>
+</li>
+<li><span class="chapter"><a href="troubleshooting-unstable-cluster.html">Troubleshooting an unstable cluster</a></span>
+</li>
+<li><span class="chapter"><a href="discovery-troubleshooting.html">Troubleshooting discovery</a></span>
+</li>
+<li><span class="chapter"><a href="monitoring-troubleshooting.html">Troubleshooting monitoring</a></span>
+</li>
+<li><span class="chapter"><a href="transform-troubleshooting.html">Troubleshooting transforms</a></span>
+</li>
+<li><span class="chapter"><a href="watcher-troubleshooting.html">Troubleshooting Watcher</a></span>
+</li>
+<li><span class="chapter"><a href="troubleshooting-searches.html">Troubleshooting searches</a></span>
+</li>
+<li><span class="chapter"><a href="troubleshooting-shards-capacity-issues.html">Troubleshooting shards capacity health issues</a></span>
+</li>
+</ul>
 </li>
 <li><span class="part"><a href="rest-apis.html">REST APIs</a></span>
 <ul>
 <li><span class="chapter"><a href="api-conventions.html">API conventions</a></span>
+</li>
+<li><span class="chapter"><a href="common-options.html">Common options</a></span>
+</li>
+<li><span class="chapter"><a href="rest-api-compatibility.html">REST API compatibility</a></span>
+</li>
+<li><span class="chapter"><a href="autoscaling-apis.html">Autoscaling APIs</a></span>
+</li>
+<li><span class="chapter"><a href="behavioral-analytics-apis.html">Behavioral Analytics APIs</a></span>
 </li>
 <li><span class="chapter"><a href="cat.html">Compact and aligned text (CAT) APIs</a></span>
 </li>
@@ -508,6 +556,14 @@
 </li>
 <li><span class="chapter"><a href="enrich-apis.html">Enrich APIs</a></span>
 </li>
+<li><span class="chapter"><a href="eql-apis.html">EQL APIs</a></span>
+</li>
+<li><span class="chapter"><a href="features-apis.html">Features APIs</a></span>
+</li>
+<li><span class="chapter"><a href="fleet-apis.html">Fleet APIs</a></span>
+</li>
+<li><span class="chapter"><a href="find-structure.html">Find structure API</a></span>
+</li>
 <li><span class="chapter"><a href="graph-explore-api.html">Graph explore API</a></span>
 </li>
 <li><span class="chapter"><a href="indices.html">Index APIs</a></span>
@@ -520,11 +576,19 @@
 </li>
 <li><span class="chapter"><a href="licensing-apis.html">Licensing APIs</a></span>
 </li>
-<li><span class="chapter"><a href="ml-apis.html">Machine learning anomaly detection APIs</a></span>
+<li><span class="chapter"><a href="logstash-apis.html">Logstash APIs</a></span>
+</li>
+<li><span class="chapter"><a href="ml-apis.html">Machine learning APIs</a></span>
+</li>
+<li><span class="chapter"><a href="ml-ad-apis.html">Machine learning anomaly detection APIs</a></span>
 </li>
 <li><span class="chapter"><a href="ml-df-analytics-apis.html">Machine learning data frame analytics APIs</a></span>
 </li>
+<li><span class="chapter"><a href="ml-df-trained-models-apis.html">Machine learning trained model APIs</a></span>
+</li>
 <li><span class="chapter"><a href="migration-api.html">Migration APIs</a></span>
+</li>
+<li><span class="chapter"><a href="node-lifecycle-api.html">Node lifecycle APIs</a></span>
 </li>
 <li><span class="chapter"><a href="indices-reload-analyzers.html">Reload search analyzers API</a></span>
 </li>
@@ -532,7 +596,11 @@
 </li>
 <li><span class="chapter"><a href="rollup-apis.html">Rollup APIs</a></span>
 </li>
+<li><span class="chapter"><a href="script-apis.html">Script APIs</a></span>
+</li>
 <li><span class="chapter"><a href="search.html">Search APIs</a></span>
+</li>
+<li><span class="chapter"><a href="search-application-apis.html">Search Application APIs</a></span>
 </li>
 <li><span class="chapter"><a href="searchable-snapshots-apis.html">Searchable snapshots APIs</a></span>
 </li>
@@ -541,6 +609,8 @@
 <li><span class="chapter"><a href="snapshot-restore-apis.html">Snapshot and restore APIs</a></span>
 </li>
 <li><span class="chapter"><a href="snapshot-lifecycle-management-api.html">Snapshot lifecycle management APIs</a></span>
+</li>
+<li><span class="chapter"><a href="sql-apis.html">SQL APIs</a></span>
 </li>
 <li><span class="chapter"><a href="transform-apis.html">Transform APIs</a></span>
 </li>
@@ -554,97 +624,105 @@
 </li>
 <li><span class="part"><a href="breaking-changes.html">Migration guide</a></span>
 <ul>
-<li><span class="chapter"><a href="migrating-7.10.html">7.10</a></span>
+<li><span class="chapter"><a href="migrating-8.9.html">8.9</a></span>
 </li>
-<li><span class="chapter"><a href="breaking-changes-7.9.html">7.9</a></span>
+<li><span class="chapter"><a href="migrating-8.8.html">8.8</a></span>
 </li>
-<li><span class="chapter"><a href="breaking-changes-7.8.html">7.8</a></span>
+<li><span class="chapter"><a href="migrating-8.7.html">8.7</a></span>
 </li>
-<li><span class="chapter"><a href="breaking-changes-7.7.html">7.7</a></span>
+<li><span class="chapter"><a href="migrating-8.6.html">8.6</a></span>
 </li>
-<li><span class="chapter"><a href="breaking-changes-7.6.html">7.6</a></span>
+<li><span class="chapter"><a href="migrating-8.5.html">8.5</a></span>
 </li>
-<li><span class="chapter"><a href="breaking-changes-7.5.html">7.5</a></span>
+<li><span class="chapter"><a href="migrating-8.4.html">8.4</a></span>
 </li>
-<li><span class="chapter"><a href="breaking-changes-7.4.html">7.4</a></span>
+<li><span class="chapter"><a href="migrating-8.3.html">8.3</a></span>
 </li>
-<li><span class="chapter"><a href="breaking-changes-7.3.html">7.3</a></span>
+<li><span class="chapter"><a href="migrating-8.2.html">8.2</a></span>
 </li>
-<li><span class="chapter"><a href="breaking-changes-7.2.html">7.2</a></span>
+<li><span class="chapter"><a href="migrating-8.1.html">8.1</a></span>
 </li>
-<li><span class="chapter"><a href="breaking-changes-7.1.html">7.1</a></span>
-</li>
-<li><span class="chapter"><a href="breaking-changes-7.0.html">7.0</a></span>
+<li><span class="chapter"><a href="migrating-8.0.html">8.0</a></span>
 </li>
 </ul>
 </li>
 <li><span class="part"><a href="es-release-notes.html">Release notes</a></span>
 <ul>
-<li><span class="chapter"><a href="release-notes-7.10.2.html">Elasticsearch version 7.10.2</a></span>
+<li><span class="chapter"><a href="release-notes-8.9.2.html">Elasticsearch version 8.9.2</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.10.1.html">Elasticsearch version 7.10.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.9.1.html">Elasticsearch version 8.9.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.10.0.html">Elasticsearch version 7.10.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.9.0.html">Elasticsearch version 8.9.0</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.9.3.html">Elasticsearch version 7.9.3</a></span>
+<li><span class="chapter"><a href="release-notes-8.8.2.html">Elasticsearch version 8.8.2</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.9.2.html">Elasticsearch version 7.9.2</a></span>
+<li><span class="chapter"><a href="release-notes-8.8.1.html">Elasticsearch version 8.8.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.9.1.html">Elasticsearch version 7.9.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.8.0.html">Elasticsearch version 8.8.0</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.9.0.html">Elasticsearch version 7.9.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.7.1.html">Elasticsearch version 8.7.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.8.1.html">Elasticsearch version 7.8.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.7.0.html">Elasticsearch version 8.7.0</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.8.0.html">Elasticsearch version 7.8.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.6.2.html">Elasticsearch version 8.6.2</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.7.1.html">Elasticsearch version 7.7.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.6.1.html">Elasticsearch version 8.6.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.7.0.html">Elasticsearch version 7.7.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.6.0.html">Elasticsearch version 8.6.0</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.6.2.html">Elasticsearch version 7.6.2</a></span>
+<li><span class="chapter"><a href="release-notes-8.5.3.html">Elasticsearch version 8.5.3</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.6.1.html">Elasticsearch version 7.6.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.5.2.html">Elasticsearch version 8.5.2</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.6.0.html">Elasticsearch version 7.6.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.5.1.html">Elasticsearch version 8.5.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.5.2.html">Elasticsearch version 7.5.2</a></span>
+<li><span class="chapter"><a href="release-notes-8.5.0.html">Elasticsearch version 8.5.0</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.5.1.html">Elasticsearch version 7.5.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.4.3.html">Elasticsearch version 8.4.3</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.5.0.html">Elasticsearch version 7.5.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.4.2.html">Elasticsearch version 8.4.2</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.4.2.html">Elasticsearch version 7.4.2</a></span>
+<li><span class="chapter"><a href="release-notes-8.4.1.html">Elasticsearch version 8.4.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.4.1.html">Elasticsearch version 7.4.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.4.0.html">Elasticsearch version 8.4.0</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.4.0.html">Elasticsearch version 7.4.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.3.3.html">Elasticsearch version 8.3.3</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.3.2.html">Elasticsearch version 7.3.2</a></span>
+<li><span class="chapter"><a href="release-notes-8.3.2.html">Elasticsearch version 8.3.2</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.3.1.html">Elasticsearch version 7.3.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.3.1.html">Elasticsearch version 8.3.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.3.0.html">Elasticsearch version 7.3.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.3.0.html">Elasticsearch version 8.3.0</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.2.1.html">Elasticsearch version 7.2.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.2.3.html">Elasticsearch version 8.2.3</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.2.0.html">Elasticsearch version 7.2.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.2.2.html">Elasticsearch version 8.2.2</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.1.1.html">Elasticsearch version 7.1.1</a></span>
+<li><span class="chapter"><a href="release-notes-8.2.1.html">Elasticsearch version 8.2.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.1.0.html">Elasticsearch version 7.1.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.2.0.html">Elasticsearch version 8.2.0</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.0.0.html">Elasticsearch version 7.0.0</a></span>
+<li><span class="chapter"><a href="release-notes-8.1.3.html">Elasticsearch version 8.1.3</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.0.0-rc2.html">Elasticsearch version 7.0.0-rc2</a></span>
+<li><span class="chapter"><a href="release-notes-8.1.2.html">Elasticsearch version 8.1.2</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.0.0-rc1.html">Elasticsearch version 7.0.0-rc1</a></span>
+<li><span class="chapter"><a href="release-notes-8.1.1.html">Elasticsearch version 8.1.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.0.0-beta1.html">Elasticsearch version 7.0.0-beta1</a></span>
+<li><span class="chapter"><a href="release-notes-8.1.0.html">Elasticsearch version 8.1.0</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.0.0-alpha2.html">Elasticsearch version 7.0.0-alpha2</a></span>
+<li><span class="chapter"><a href="release-notes-8.0.1.html">Elasticsearch version 8.0.1</a></span>
 </li>
-<li><span class="chapter"><a href="release-notes-7.0.0-alpha1.html">Elasticsearch version 7.0.0-alpha1</a></span>
+<li><span class="chapter"><a href="release-notes-8.0.0.html">Elasticsearch version 8.0.0</a></span>
+</li>
+<li><span class="chapter"><a href="release-notes-8.0.0-rc2.html">Elasticsearch version 8.0.0-rc2</a></span>
+</li>
+<li><span class="chapter"><a href="release-notes-8.0.0-rc1.html">Elasticsearch version 8.0.0-rc1</a></span>
+</li>
+<li><span class="chapter"><a href="release-notes-8.0.0-beta1.html">Elasticsearch version 8.0.0-beta1</a></span>
+</li>
+<li><span class="chapter"><a href="release-notes-8.0.0-alpha2.html">Elasticsearch version 8.0.0-alpha2</a></span>
+</li>
+<li><span class="chapter"><a href="release-notes-8.0.0-alpha1.html">Elasticsearch version 8.0.0-alpha1</a></span>
 </li>
 </ul>
 </li>

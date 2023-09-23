@@ -1,17 +1,30 @@
-PUT /asciifold_example
+PUT /romanian_example
 {
   "settings": {
     "analysis": {
-      "analyzer": {
-        "standard_asciifolding": {
-          "tokenizer": "standard",
-          "filter": [ "my_ascii_folding" ]
+      "filter": {
+        "romanian_stop": {
+          "type":       "stop",
+          "stopwords":  "_romanian_"
+        },
+        "romanian_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["exemplu"]
+        },
+        "romanian_stemmer": {
+          "type":       "stemmer",
+          "language":   "romanian"
         }
       },
-      "filter": {
-        "my_ascii_folding": {
-          "type": "asciifolding",
-          "preserve_original": true
+      "analyzer": {
+        "rebuilt_romanian": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "romanian_stop",
+            "romanian_keywords",
+            "romanian_stemmer"
+          ]
         }
       }
     }

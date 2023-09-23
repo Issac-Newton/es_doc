@@ -1,16 +1,16 @@
-GET /_search
+PUT _index_template/my-weather-sensor-index-template
 {
-  "query" : {
-    "match": { "user.id": "kimchy" }
-  },
-  "highlight" : {
-    "number_of_fragments" : 3,
-    "fragment_size" : 150,
-    "fields" : {
-      "body" : { "pre_tags" : ["<em>"], "post_tags" : ["</em>"] },
-      "blog.title" : { "number_of_fragments" : 0 },
-      "blog.author" : { "number_of_fragments" : 0 },
-      "blog.comment" : { "number_of_fragments" : 5, "order" : "score" }
+  "index_patterns": ["metrics-weather_sensors-*"],
+  "data_stream": { },
+  "template": {
+    "settings": {
+      "index.mode": "time_series",
+      "index.routing_path": [ "sensor_id", "location" ]
     }
+  },
+  "composed_of": [ "my-weather-sensor-mappings", "my-weather-sensor-settings" ],
+  "priority": 500,
+  "_meta": {
+    "description": "Template for my weather sensor data"
   }
 }

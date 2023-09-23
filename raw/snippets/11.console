@@ -1,4 +1,6 @@
-GET /bank/_search
+PUT _cluster/settings
 {
-  "query": { "match_phrase": { "address": "mill lane" } }
+  "persistent": {
+    "cluster.routing.allocation.exclude._ip": "192.168.2.*"
+  }
 }

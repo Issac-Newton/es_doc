@@ -1,25 +1,32 @@
-PUT my-index-000001
+PUT /galician_example
 {
   "settings": {
     "analysis": {
-      "analyzer": {
-        "my_analyzer": {
-          "tokenizer": "my_tokenizer"
+      "filter": {
+        "galician_stop": {
+          "type":       "stop",
+          "stopwords":  "_galician_"
+        },
+        "galician_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["exemplo"]
+        },
+        "galician_stemmer": {
+          "type":       "stemmer",
+          "language":   "galician"
         }
       },
-      "tokenizer": {
-        "my_tokenizer": {
-          "type": "pattern",
-          "pattern": "\"((?:\\\\\"|[^\"]|\\\\\")+)\"",
-          "group": 1
+      "analyzer": {
+        "rebuilt_galician": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "galician_stop",
+            "galician_keywords",
+            "galician_stemmer"
+          ]
         }
       }
     }
   }
-}
-
-POST my-index-000001/_analyze
-{
-  "analyzer": "my_analyzer",
-  "text": "\"value\", \"value with embedded \\\" quote\""
 }

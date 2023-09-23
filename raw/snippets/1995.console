@@ -1,12 +1,6 @@
-POST /_aliases
+PUT _cluster/settings
 {
-  "actions": [
-    {
-      "add": {
-        "index": "test",
-        "alias": "alias1",
-        "routing": "1"
-      }
-    }
-  ]
+  "persistent" : {
+    "cluster.routing.allocation.total_shards_per_node" : 400
+  }
 }

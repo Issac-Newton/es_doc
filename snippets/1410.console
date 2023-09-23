@@ -1,9 +1,20 @@
-POST /_snapshot/my_backup/snapshot_1/_restore
+GET sales/_search
 {
-  "indices": "data_stream_1,index_1,index_2",
-  "ignore_unavailable": true,
-  "include_global_state": false,             
-  "rename_pattern": "index_(.+)",
-  "rename_replacement": "restored_index_$1",
-  "include_aliases": false
+  "size": 0,
+  "aggs": {
+    "by_date": {
+      "date_histogram": {
+        "field": "date",
+        "calendar_interval": "month" 
+      },
+      "aggs": {
+        "avg_price": {
+          "rate": {
+            "field": "price",
+            "unit": "day" 
+          }
+        }
+      }
+    }
+  }
 }

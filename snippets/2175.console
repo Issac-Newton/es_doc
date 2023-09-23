@@ -1,17 +1,8 @@
-POST test/_search
+POST _nodes/reload_secure_settings
 {
-  "suggest": {
-    "text" : "obel prize",
-    "simple_phrase" : {
-      "phrase" : {
-        "field" : "title.trigram",
-        "size" : 1,
-        "smoothing" : {
-          "laplace" : {
-            "alpha" : 0.7
-          }
-        }
-      }
-    }
-  }
+  "secure_settings_password":"keystore-password"
+}
+POST _nodes/nodeId1,nodeId2/reload_secure_settings
+{
+  "secure_settings_password":"keystore-password"
 }

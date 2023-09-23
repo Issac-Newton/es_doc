@@ -1,40 +1,19 @@
-PUT my-index-000001
+# Example documents
+PUT my-index-000001/_doc/1
 {
-  "settings": {
-    "analysis": {
-      "analyzer": {
-        "std_english": {
-          "type":      "standard",
-          "stopwords": "_english_"
-        }
-      }
-    }
-  },
-  "mappings": {
-    "properties": {
-      "my_text": {
-        "type":     "text",
-        "analyzer": "standard",
-        "fields": {
-          "english": {
-            "type":     "text",
-            "analyzer": "std_english"
-          }
-        }
-      }
+  "text": "Document with ID 1"
+}
+
+PUT my-index-000001/_doc/2?refresh=true
+{
+  "text": "Document with ID 2"
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "terms": {
+      "_id": [ "1", "2" ]
     }
   }
 }
-
-POST my-index-000001/_analyze
-{
-  "field": "my_text",
-  "text": "The old brown cow"
-}
-
-POST my-index-000001/_analyze
-{
-  "field": "my_text.english",
-  "text": "The old brown cow"
-}
-

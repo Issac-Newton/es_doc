@@ -1,4 +1,7 @@
-PUT my-index-000001/_doc/1?refresh
+POST /example/_doc
 {
-  "my_field": "quick brown fox jump lazy dog"
+  "location" : {
+    "type" : "envelope",
+    "coordinates" : [ [100.0, 1.0], [101.0, 0.0] ]
+  }
 }

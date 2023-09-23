@@ -1,14 +1,11 @@
-PUT /_cluster/settings
+POST /sales/_search
 {
-  "persistent" : {
-    "cluster" : {
-      "remote" : {
-        "leader" : {
-          "seeds" : [
-            "127.0.0.1:9300"
-          ]
-        }
+  "aggs" : {
+      "grade_max" : {
+          "max" : {
+              "field" : "grade",
+              "missing": 10      
+          }
       }
-    }
   }
 }

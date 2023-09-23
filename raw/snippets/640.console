@@ -1,24 +1,10 @@
-GET /my-index-000001/_search
+POST /_reindex
 {
-  "query": {
-    "match": {
-      "message": "GET /search"
-    }
+  "source": {
+    "index": ".ds-my-data-stream-2099.03.07-000001"
   },
-  "collapse": {
-    "field": "user.id",                     
-      "inner_hits": [
-      {
-        "name": "largest_responses",        
-        "size": 3,
-        "sort": [ "http.response.bytes" ]
-      },
-      {
-        "name": "most_recent",              
-        "size": 3,
-        "sort": [ { "@timestamp": "asc" } ]
-      }
-    ]
-  },
-  "sort": [ "http.response.bytes" ]
+  "dest": {
+    "index": "new-data-stream",
+    "op_type": "create"
+  }
 }

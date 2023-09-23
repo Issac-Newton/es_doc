@@ -1,10 +1,18 @@
-GET /_search
+POST _aliases
 {
-  "query": {
-    "multi_match" : {
-      "query":      "quick brown fox",
-      "type":       "most_fields",
-      "fields":     [ "title", "title.original", "title.shingles" ]
+  "actions": [
+    {
+      "add": {
+        "index": "logs-nginx.access-prod",
+        "alias": "logs"
+      }
+    },
+    {
+      "add": {
+        "index": "logs-my_app-default",
+        "alias": "logs",
+        "is_write_index": true
+      }
     }
-  }
+  ]
 }

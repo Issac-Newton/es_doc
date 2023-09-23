@@ -1,19 +1,17 @@
-PUT /example
+POST my-index-000001/_search
 {
-  "mappings": {
-    "properties": {
-      "geometry": {
-        "type": "shape"
-      }
+  "query": {
+    "match": {
+      "user.id": "kimchy"
     }
-  }
-}
-
-PUT /example/_doc/1?refresh=wait_for
-{
-  "name": "Lucky Landing",
-  "geometry": {
-    "type": "point",
-    "coordinates": [ 1355.400544, 5255.530286 ]
-  }
+  },
+  "fields": [
+    "user.id",
+    "http.response.*",        
+    {
+      "field": "@timestamp",
+      "format": "epoch_millis"
+    }
+  ],
+  "_source": false
 }

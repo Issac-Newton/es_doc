@@ -1,11 +1,6 @@
-GET my-index-000001/_search
+POST bug_reports/_search
 {
   "query": {
-    "bool": {
-      "must": [
-        { "match": { "user.first": "Alice" }},
-        { "match": { "user.last":  "Smith" }}
-      ]
-    }
+    "term": {"labels": "urgent"}
   }
 }

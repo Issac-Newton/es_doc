@@ -1,17 +1,13 @@
-POST /_mtermvectors
+PUT /_security/role_mapping/basic_users
 {
-   "docs": [
-      {
-         "_index": "my-index-000001",
-         "doc" : {
-            "message" : "test test test"
-         }
-      },
-      {
-         "_index": "my-index-000001",
-         "doc" : {
-           "message" : "Another test ..."
-         }
-      }
-   ]
+  "roles" : [ "user" ],
+  "rules" : { "any": [
+    { "field" : {
+      "groups" : "cn=users,dc=example,dc=com"
+    } },
+    { "field" : {
+      "dn" : "cn=John Doe,cn=contractors,dc=example,dc=com"
+    } }
+  ] },
+  "enabled": true
 }

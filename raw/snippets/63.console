@@ -1,1 +1,6 @@
-POST _flush/synced
+PUT _cluster/settings
+{
+  "persistent": {
+    "archived.*": null
+  }
+}

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Autoscaling deciders | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Autoscaling deciders | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="xpack-autoscaling.html" title="Autoscaling"/>
+<link rel="prev" href="xpack-autoscaling.html" title="Autoscaling"/>
+<link rel="next" href="monitor-elasticsearch-cluster.html" title="Monitor a cluster"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-autoscaling.html">Autoscaling</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="xpack-autoscaling.html">« Autoscaling</a>
+</span>
+<span class="next">
+<a href="monitor-elasticsearch-cluster.html">Monitor a cluster »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="autoscaling-deciders"></a>Autoscaling deciders<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/autoscaling-deciders.asciidoc">edit</a></h2>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<a class="xref" href="autoscaling-deciders.html#autoscaling-reactive-storage-decider" title="Reactive storage decider">Reactive storage decider</a>
+</span>
+</dt>
+<dd>
+Estimates required storage capacity of current data set. Available for policies
+governing data nodes.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="autoscaling-deciders.html#autoscaling-proactive-storage-decider" title="Proactive storage decider">Proactive storage decider</a>
+</span>
+</dt>
+<dd>
+Estimates required storage capacity based on current ingestion into hot nodes.
+Available for policies governing hot data nodes.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="autoscaling-deciders.html#autoscaling-frozen-shards-decider" title="Frozen shards decider">Frozen shards decider</a>
+</span>
+</dt>
+<dd>
+Estimates required memory capacity based on the number of partially mounted shards.
+Available for policies governing frozen data nodes.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="autoscaling-deciders.html#autoscaling-frozen-storage-decider" title="Frozen storage decider">Frozen storage decider</a>
+</span>
+</dt>
+<dd>
+Estimates required storage capacity as a percentage of the total data set of
+partially mounted indices.
+Available for policies governing frozen data nodes.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="autoscaling-deciders.html#autoscaling-frozen-existence-decider" title="Frozen existence decider">Frozen existence decider</a>
+</span>
+</dt>
+<dd>
+Estimates a minimum require frozen memory and storage capacity when any index is
+in the frozen <a class="xref" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle">ILM</a> phase.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="autoscaling-deciders.html#autoscaling-machine-learning-decider" title="Machine learning decider">Machine learning decider</a>
+</span>
+</dt>
+<dd>
+Estimates required memory capacity based on machine learning jobs.
+Available for policies governing machine learning nodes.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="autoscaling-deciders.html#autoscaling-fixed-decider" title="Fixed decider">Fixed decider</a>
+</span>
+</dt>
+<dd>
+Responds with a fixed required capacity. This decider is intended for testing only.
+</dd>
+</dl>
+</div>
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="autoscaling-reactive-storage-decider"></a>Reactive storage decider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/reactive-storage-decider.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The reactive storage decider (<code class="literal">reactive_storage</code>) calculates the storage required to contain
+the current data set. It signals that additional storage capacity is necessary
+when existing capacity has been exceeded (reactively).</p>
+<p>The reactive storage decider is enabled for all policies governing data nodes and has no configuration options.</p>
+<p>The decider relies partially on using <a class="xref" href="data-tiers.html#data-tier-allocation" title="Data tier index allocation">data tier preference</a>
+allocation rather than node attributes. In particular, scaling a data tier into
+existence (starting the first node in a tier) will result in starting a node in
+any data tier that is empty if not using allocation based on data tier preference.
+Using the <a class="xref" href="ilm-actions.html#ilm-migrate" title="Migrate">ILM migrate</a> action to migrate between tiers is the
+preferred way of allocating to tiers and fully supports scaling a tier into
+existence.</p>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="autoscaling-proactive-storage-decider"></a>Proactive storage decider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/proactive-storage-decider.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The proactive storage decider (<code class="literal">proactive_storage</code>) calculates the storage required to contain
+the current data set plus an estimated amount of expected additional data.</p>
+<p>The proactive storage decider is enabled for all policies governing nodes with the <code class="literal">data_hot</code> role.</p>
+<p>The estimation of expected additional data is based on past indexing that
+occurred within the <code class="literal">forecast_window</code>.
+Only indexing into data streams contributes to the estimate.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="autoscaling-proactive-storage-decider-settings"></a>Configuration settings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/proactive-storage-decider.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">forecast_window</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>)
+The window of time to use for forecasting. Defaults to 30 minutes.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="autoscaling-proactive-storage-decider-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/proactive-storage-decider.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example puts an autoscaling policy named <code class="literal">my_autoscaling_policy</code>, overriding
+the proactive decider&#8217;s <code class="literal">forecast_window</code> to be 10 minutes.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_autoscaling/policy/my_autoscaling_policy
+{
+  "roles" : [ "data_hot" ],
+  "deciders": {
+    "proactive_storage": {
+      "forecast_window": "10m"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1658.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged": true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="autoscaling-frozen-shards-decider"></a>Frozen shards decider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/frozen-shards-decider.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The frozen shards decider (<code class="literal">frozen_shards</code>) calculates the memory required to search
+the current set of partially mounted indices in the frozen tier. Based on a
+required memory amount per shard, it calculates the necessary memory in the frozen tier.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="autoscaling-frozen-shards-decider-settings"></a>Configuration settings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/frozen-shards-decider.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">memory_per_shard</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>)
+The memory needed per shard, in bytes. Defaults to 2000 shards per 64 GB node (roughly 32 MB per shard).
+Notice that this is total memory, not heap, assuming that the Elasticsearch default heap sizing
+mechanism is used and that nodes are not bigger than 64 GB.
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="autoscaling-frozen-storage-decider"></a>Frozen storage decider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/frozen-storage-decider.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The frozen storage decider (<code class="literal">frozen_storage</code>) calculates the local storage
+required to search the current set of partially mounted indices based on a
+percentage of the total data set size of such indices. It signals that
+additional storage capacity is necessary when existing capacity is less than the
+percentage multiplied by total data set size.</p>
+<p>The frozen storage decider is enabled for all policies governing frozen data
+nodes and has no configuration options.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="autoscaling-frozen-storage-decider-settings"></a>Configuration settings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/frozen-storage-decider.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">percentage</code>
+</span>
+</dt>
+<dd>
+(Optional, number value)
+Percentage of local storage relative to the data set size. Defaults to 5.
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="autoscaling-frozen-existence-decider"></a>Frozen existence decider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/frozen-existence-decider.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The frozen existence decider (<code class="literal">frozen_existence</code>) ensures that once the first
+index enters the frozen ILM phase, the frozen tier is scaled into existence.</p>
+<p>The frozen existence decider is enabled for all policies governing frozen data
+nodes and has no configuration options.</p>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="autoscaling-machine-learning-decider"></a>Machine learning decider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/machine-learning-decider.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The machine learning decider (<code class="literal">ml</code>) calculates the memory and CPU requirements to run machine learning
+jobs and trained models.</p>
+<p>The machine learning decider is enabled for policies governing <code class="literal">ml</code> nodes.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>For machine learning jobs to open when the cluster is not appropriately scaled, set
+<code class="literal">xpack.ml.max_lazy_ml_nodes</code> to the largest number of possible machine learning nodes (refer
+to <a class="xref" href="settings.html#advanced-ml-settings" title="Advanced machine learning settings">Advanced machine learning settings</a> for more information). In Elasticsearch Service, this is
+automatically set.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="autoscaling-machine-learning-decider-settings"></a>Configuration settings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/machine-learning-decider.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Both <code class="literal">num_anomaly_jobs_in_queue</code> and <code class="literal">num_analytics_jobs_in_queue</code> are designed
+to delay a scale-up event. If the cluster is too small, these settings indicate
+how many jobs of each type can be unassigned from a node. Both settings are only
+considered for jobs that can be opened given the current scale. If a job is too
+large for any node size or if a job can&#8217;t be assigned without user intervention
+(for example, a user calling <code class="literal">_stop</code> against a real-time anomaly detection job), the
+numbers are ignored for that particular job.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">num_anomaly_jobs_in_queue</code>
+</span>
+</dt>
+<dd>
+(Optional, integer)
+Specifies the number of queued anomaly detection jobs to allow. Defaults to <code class="literal">0</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">num_analytics_jobs_in_queue</code>
+</span>
+</dt>
+<dd>
+(Optional, integer)
+Specifies the number of queued data frame analytics jobs to allow. Defaults to <code class="literal">0</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">down_scale_delay</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>)
+Specifies the time to delay before scaling down. Defaults to 1 hour. If a scale
+down is possible for the entire time window, then a scale down is requested. If
+the cluster requires a scale up during the window, the window is reset.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="autoscaling-machine-learning-decider-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/machine-learning-decider.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example creates an autoscaling policy named <code class="literal">my_autoscaling_policy</code> that
+overrides the default configuration of the machine learning decider.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_autoscaling/policy/my_autoscaling_policy
+{
+  "roles" : [ "ml" ],
+  "deciders": {
+    "ml": {
+      "num_anomaly_jobs_in_queue": 5,
+      "num_analytics_jobs_in_queue": 3,
+      "down_scale_delay": "30m"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1659.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged": true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="autoscaling-fixed-decider"></a>Fixed decider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/fixed-decider.asciidoc">edit</a></h2>
+</div></div></div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.</p>
+</div>
+</div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The fixed decider is intended for testing only. Do not use this decider in production.</p>
+</div>
+</div>
+<p>The <code class="literal">fixed</code> decider responds with a fixed required capacity. It is not enabled
+by default but can be enabled for any policy by explicitly configuring it.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_configuration_settings"></a>Configuration settings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/fixed-decider.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">storage</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>)
+Required amount of node-level storage. Defaults to <code class="literal">-1</code> (disabled).
+</dd>
+<dt>
+<span class="term">
+<code class="literal">memory</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>)
+Required amount of node-level memory. Defaults to <code class="literal">-1</code> (disabled).
+</dd>
+<dt>
+<span class="term">
+<code class="literal">processors</code>
+</span>
+</dt>
+<dd>
+(Optional, float)
+Required number of processors. Defaults to disabled.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">nodes</code>
+</span>
+</dt>
+<dd>
+(Optional, integer)
+Number of nodes to use when calculating capacity. Defaults to <code class="literal">1</code>.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="autoscaling-fixed-decider-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/autoscaling/deciders/fixed-decider.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example puts an autoscaling policy named <code class="literal">my_autoscaling_policy</code>, enabling
+and configuring the fixed decider.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_autoscaling/policy/my_autoscaling_policy
+{
+  "roles" : [ "data_hot" ],
+  "deciders": {
+    "fixed": {
+      "storage": "1tb",
+      "memory": "32gb",
+      "processors": 2.3,
+      "nodes": 8
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1660.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged": true
+}</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="xpack-autoscaling.html">« Autoscaling</a>
+</span>
+<span class="next">
+<a href="monitor-elasticsearch-cluster.html">Monitor a cluster »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

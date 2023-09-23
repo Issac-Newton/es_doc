@@ -1,1 +1,1 @@
-GET /my-index-00001/_doc/my_id
+POST _data_stream/_migrate/my-time-series-data

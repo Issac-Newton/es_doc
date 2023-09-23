@@ -1,1 +1,9 @@
-GET /my-index-000001/_shard_stores
+POST _reindex
+{
+  "source": {
+    "index": "my-index-2099.10.*"
+  },
+  "dest": {
+    "index": "my-index-2099.10"
+  }
+}

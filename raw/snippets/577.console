@@ -1,18 +1,6 @@
-POST /_reindex
+GET _analyze
 {
-  "source": {
-    "index": "my-data-stream",
-    "query": {
-      "range": {
-        "@timestamp": {
-          "gte": "now-7d/d",
-          "lte": "now/d"
-        }
-      }
-    }
-  },
-  "dest": {
-    "index": "new-data-stream",
-    "op_type": "create"
-  }
+  "tokenizer" : "standard",
+  "filter" : ["uppercase"],
+  "text" : "the Quick FoX JUMPs"
 }

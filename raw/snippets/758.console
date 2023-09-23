@@ -1,10 +1,21 @@
-GET /_search
+POST _ingest/pipeline/_simulate
 {
-  "query": {
-    "match": {
-      "message": {
-        "query": "this is a test"
+  "pipeline": {
+    "description" : "Hide my IP",
+    "processors": [
+      {
+        "redact": {
+          "field": "message",
+          "patterns": ["%{IP:client}"]
+        }
+      }
+    ]
+  },
+  "docs":[
+    {
+      "_source": {
+        "message": "55.3.244.1 GET /index.html 15824 0.043"
       }
     }
-  }
+  ]
 }

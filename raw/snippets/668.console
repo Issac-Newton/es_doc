@@ -1,10 +1,1 @@
-GET /_search
-{
-  "from": 5,
-  "size": 20,
-  "query": {
-    "match": {
-      "user.id": "kimchy"
-    }
-  }
-}
+POST /my-data-stream/_rollover/

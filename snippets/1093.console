@@ -1,6 +1,11 @@
-POST /exams/_search?size=0
+GET /_search
 {
-  "aggs": {
-    "avg_grade": { "avg": { "field": "grade" } }
+  "query": {
+    "span_first": {
+      "match": {
+        "span_term": { "user.id": "kimchy" }
+      },
+      "end": 3
+    }
   }
 }

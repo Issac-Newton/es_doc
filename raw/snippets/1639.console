@@ -1,1 +1,1 @@
-GET _tasks?group_by=parents
+POST logs-my_app-default/_ilm/remove

@@ -1,8 +1,13 @@
-POST /my-data-stream/_delete_by_query
+PUT /my-index-000001
 {
-  "query": {
-    "match": {
-      "user.id": "vlb44hny"
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "whitespace",
+          "filter": [ "stop" ]
+        }
+      }
     }
   }
 }

@@ -1,8 +1,4 @@
-PUT /index_double
+PUT /my-index-000001/_doc/my_id?pipeline=user_lookup
 {
-  "mappings": {
-    "properties": {
-      "field": { "type": "double" }
-    }
-  }
+  "email": "mardy.brown@asciidocsmith.com"
 }

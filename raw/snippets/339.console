@@ -1,35 +1,31 @@
-PUT /greek_example
+PUT my-index-000001
 {
-  "settings": {
-    "analysis": {
-      "filter": {
-        "greek_stop": {
-          "type":       "stop",
-          "stopwords":  "_greek_"
-        },
-        "greek_lowercase": {
-          "type":       "lowercase",
-          "language":   "greek"
-        },
-        "greek_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["παράδειγμα"]
-        },
-        "greek_stemmer": {
-          "type":       "stemmer",
-          "language":   "greek"
-        }
-      },
-      "analyzer": {
-        "rebuilt_greek": {
-          "tokenizer":  "standard",
-          "filter": [
-            "greek_lowercase",
-            "greek_stop",
-            "greek_keywords",
-            "greek_stemmer"
-          ]
-        }
+  "mappings": {
+    "properties": {
+      "message": {
+        "type": "keyword",
+        "ignore_above": 20
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "message": "Syntax error"
+}
+
+PUT my-index-000001/_doc/2
+{
+  "message": "Syntax error with some long stacktrace"
+}
+
+GET my-index-000001/_search
+{
+  "aggs": {
+    "messages": {
+      "terms": {
+        "field": "message"
       }
     }
   }

@@ -1,1 +1,7 @@
-GET /_tasks/r1A2WoRbTwKZ516z6NEs5A:36619
+PUT _snapshot/my_unverified_backup?verify=false
+{
+  "type": "fs",
+  "settings": {
+    "location": "my_unverified_backup_location"
+  }
+}

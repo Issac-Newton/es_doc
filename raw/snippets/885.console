@@ -1,15 +1,13 @@
-GET /my-index-00001/_search
+POST _render/template
 {
-  "query": {
-    "constant_score": {
-      "filter": {
-        "percolate": {
-          "field": "query",
-          "document": {
-            "message": "A new bonsai tree in the office"
-          }
-        }
+  "source": {
+    "query": {
+      "match": {
+        "user.group.emails": "{{#join}}emails{{/join}}"
       }
     }
+  },
+  "params": {
+    "emails": [ "user1@example.com", "user_one@example.com" ]
   }
 }

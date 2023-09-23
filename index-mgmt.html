@@ -3,13 +3,13 @@
   <head>
     
 <meta charset="UTF-8">
-<title>Index management | Elasticsearch Guide | Elastic</title>
-<meta class="elastic" name="content" content="Index management | Elasticsearch Guide">
+<title>Index management in Kibana | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Index management in Kibana | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="data-management.html" title="Data management"/>
-<link rel="prev" href="data-tiers.html" title="Data tiers"/>
-<link rel="next" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle"/>
+<link rel="prev" href="getting-started-index-lifecycle-management.html" title="Tutorial: Automate rollover with ILM"/>
+<link rel="next" href="overview-index-lifecycle-management.html" title="ILM overview"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -109,21 +109,21 @@
 </div>
 <div class="navheader">
 <span class="prev">
-<a href="data-tiers.html">« Data tiers</a>
+<a href="getting-started-index-lifecycle-management.html">« Tutorial: Automate rollover with ILM</a>
 </span>
 <span class="next">
-<a href="index-lifecycle-management.html">ILM: Manage the index lifecycle »</a>
+<a href="overview-index-lifecycle-management.html">ILM overview »</a>
 </span>
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="index-mgmt"></a>Index management<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/index-mgmt.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="index-mgmt"></a>Index management in Kibana<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/index-mgmt.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Kibana&#8217;s <span class="strong strong"><strong>Index Management</strong></span> features are an easy, convenient way to manage your
 cluster&#8217;s indices, <a class="xref" href="data-streams.html" title="Data streams">data streams</a>, and <a class="xref" href="index-templates.html" title="Index templates">index
 templates</a>. Practicing good index management ensures your data is stored
 correctly and in the most cost-effective way possible.</p>
-<h3><a id="index-mgmt-wyl"></a>What you&#8217;ll learn<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
+<h3><a id="index-mgmt-wyl"></a>What you&#8217;ll learn<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
 <p>You&#8217;ll learn how to:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -134,7 +134,7 @@ View and edit index settings.
 View mappings and statistics for an index.
 </li>
 <li class="listitem">
-Perform index-level operations, such as refreshes and freezes.
+Perform index-level operations, such as refreshes.
 </li>
 <li class="listitem">
 View and manage data streams.
@@ -144,7 +144,7 @@ Create index templates to automatically configure new data streams and indices.
 </li>
 </ul>
 </div>
-<h3><a id="index-mgm-req-permissions"></a>Required permissions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
+<h3><a id="index-mgm-req-permissions"></a>Required permissions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
 <p>If you use Elasticsearch security features, the following
 <a class="xref" href="authorization.html#security-privileges" title="Security privileges">security privileges</a> are required:</p>
 <div class="ulist itemizedlist">
@@ -162,7 +162,7 @@ The <code class="literal">manage_index_templates</code> cluster privilege to man
 </ul>
 </div>
 <p>To add these privileges in Kibana, go to <span class="strong strong"><strong>Stack Management &gt; Security &gt; Roles</strong></span>.</p>
-<h3><a id="view-edit-indices"></a>View and edit indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
+<h3><a id="view-edit-indices"></a>View and edit indices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
 <p>Open Kibana&#8217;s main menu and click <span class="strong strong"><strong>Stack Management &gt; Index Management</strong></span>.</p>
 <div class="imageblock screenshot">
 <div class="content">
@@ -170,20 +170,20 @@ The <code class="literal">manage_index_templates</code> cluster privilege to man
 </div>
 </div>
 <p>The <span class="strong strong"><strong>Index Management</strong></span> page contains an overview of your indices.
-Badges indicate if an index is <a class="xref" href="frozen-indices.html" title="Frozen indices">frozen</a>, a
-<a class="xref" href="ccr-apis.html#ccr-put-follow" title="Create follower API">follower index</a>, or a
-<a class="xref" href="rollup-apis.html#rollup-get-rollup-index-caps" title="Get rollup index capabilities API">rollup index</a>.</p>
+Badges indicate if an index is a <a class="xref" href="ccr-apis.html#ccr-put-follow" title="Create follower API">follower index</a>, a
+<a class="xref" href="rollup-apis.html#rollup-get-rollup-index-caps" title="Get rollup index capabilities API">rollup index</a>, or <a class="xref" href="indices.html#unfreeze-index-api" title="Unfreeze index API">frozen</a>.</p>
 <p>Clicking a badge narrows the list to only indices of that type.
 You can also filter indices using the search bar.</p>
 <p>You can drill down into each index to investigate the index
 <a class="xref" href="index-modules.html#index-modules-settings" title="Index Settings">settings</a>, <a class="xref" href="mapping.html" title="Mapping">mapping</a>, and statistics.
 From this view, you can also edit the index settings.</p>
+<p>To view and explore the documents within an index, click the compass icon <span class="image"><img src="compassicon.png" alt="compassicon" width="3%"></span> next to the index name to open <a href="https://www.elastic.co/guide/en/kibana/8.9/discover.html" class="ulink" target="_top">Discover</a>.</p>
 <div class="imageblock screenshot">
 <div class="content">
 <img src="images/index-mgmt/management_index_details.png" alt="Index Management UI">
 </div>
 </div>
-<h3><a id="_perform_index_level_operations"></a>Perform index-level operations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
+<h3><a id="_perform_index_level_operations"></a>Perform index-level operations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
 <p>Use the <span class="strong strong"><strong>Manage</strong></span> menu to perform index-level operations. This menu
 is available in the index details view, or when you select the checkbox of one or more
 indices on the overview page. The menu includes the following actions:</p>
@@ -202,21 +202,19 @@ indices on the overview page. The menu includes the following actions:</p>
 <a class="xref" href="indices.html#indices-flush" title="Flush API"><span class="strong strong"><strong>Flush index</strong></span></a>
 </li>
 <li class="listitem">
-<a class="xref" href="indices.html#freeze-index-api" title="Freeze index API"><span class="strong strong"><strong>Freeze index</strong></span></a>
-</li>
-<li class="listitem">
 <a class="xref" href="indices.html#indices-delete-index" title="Delete index API"><span class="strong strong"><strong>Delete index</strong></span></a>
 </li>
 <li class="listitem">
-<span class="strong strong"><strong>Add</strong></span> <a class="xref" href="set-up-lifecycle-policy.html" title="Configure a lifecycle policy"><span class="strong strong"><strong>lifecycle policy</strong></span></a>
+<a class="xref" href="set-up-lifecycle-policy.html" title="Configure a lifecycle policy"><span class="strong strong"><strong>Add lifecycle policy</strong></span></a>
 </li>
 </ul>
 </div>
-<h3><a id="manage-data-streams"></a>Manage data streams<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
+<h3><a id="manage-data-streams"></a>Manage data streams<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
 <p>The <span class="strong strong"><strong>Data Streams</strong></span> view lists your data streams and lets you examine or delete
 them.</p>
 <p>To view more information about a data stream, such as its generation or its
 current index lifecycle policy, click the stream&#8217;s name.</p>
+<p>To view and explore the data within a data stream, click the compass icon <span class="image"><img src="compassicon.png" alt="compassicon" width="3%"></span> next to the data stream name to open <a href="https://www.elastic.co/guide/en/kibana/8.9/discover.html" class="ulink" target="_top">Discover</a>.</p>
 <div class="imageblock screenshot">
 <div class="content">
 <img src="images/index-mgmt/management_index_data_stream_stats.png" alt="Data stream details">
@@ -229,7 +227,7 @@ current index lifecycle policy, click the stream&#8217;s name.</p>
 <img src="images/index-mgmt/management_index_data_stream_backing_index.png" alt="Backing index">
 </div>
 </div>
-<h3><a id="manage-index-templates"></a>Manage index templates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
+<h3><a id="manage-index-templates"></a>Manage index templates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/index-mgmt.asciidoc">edit</a></h3>
 <p>The <span class="strong strong"><strong>Index Templates</strong></span> view lists your templates and lets you examine,
 edit, clone, and delete them. Changes made to an index template do not
 affect existing indices.</p>
@@ -240,7 +238,7 @@ affect existing indices.</p>
 </div>
 <p>If you don&#8217;t have any templates, you can create one using the <span class="strong strong"><strong>Create template</strong></span>
 wizard.</p>
-<h4><a id="_try_it_create_an_index_template"></a>Try it: Create an index template<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/indices/index-mgmt.asciidoc">edit</a></h4>
+<h4><a id="_try_it_create_an_index_template"></a>Try it: Create an index template<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/indices/index-mgmt.asciidoc">edit</a></h4>
 <p>In this tutorial, you’ll create an index template and use it to configure two
 new indices.</p>
 <p><span class="strong strong"><strong>Step 1. Add a name and index pattern</strong></span></p>
@@ -266,15 +264,15 @@ Leave <span class="strong strong"><strong>Data Stream</strong></span>, <span cla
 </li>
 </ol>
 </div>
-<p><span class="strong strong"><strong>Step 2. Add settings, mappings, and index aliases</strong></span></p>
+<p><span class="strong strong"><strong>Step 2. Add settings, mappings, and aliases</strong></span></p>
 <div class="olist orderedlist">
 <ol class="orderedlist">
 <li class="listitem">
-<p>Add <a class="xref" href="indices.html#indices-component-template" title="Put component template API">component templates</a> to your index template.</p>
+<p>Add <a class="xref" href="indices.html#indices-component-template" title="Create or update component template API">component templates</a> to your index template.</p>
 <p>Component templates are pre-configured sets of mappings, index settings, and
-index aliases you can reuse across multiple index templates. Badges indicate
+aliases you can reuse across multiple index templates. Badges indicate
 whether a component template contains mappings (<span class="strong strong"><strong>M</strong></span>), index settings (<span class="strong strong"><strong>S</strong></span>),
-index aliases (<span class="strong strong"><strong>A</strong></span>), or a combination of the three.</p>
+aliases (<span class="strong strong"><strong>A</strong></span>), or a combination of the three.</p>
 <p>Component templates are optional. For this tutorial, do not add any component
 templates.</p>
 <div class="imageblock screenshot">
@@ -289,7 +287,7 @@ section blank.
 </li>
 <li class="listitem">
 <p>Define a mapping that contains an <a class="xref" href="mapping-types.html#object" title="Object field type">object</a> field named <code class="literal">geo</code> with a
-child <a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type">geo-point</a> field named <code class="literal">coordinates</code>:</p>
+child <a class="xref" href="mapping-types.html#geo-point" title="Geopoint field type"><code class="literal">geo_point</code></a> field named <code class="literal">coordinates</code>:</p>
 <div class="imageblock screenshot">
 <div class="content">
 <img src="images/index-mgmt/management-index-templates-mappings.png" alt="Mapped fields page">
@@ -314,7 +312,7 @@ child <a class="xref" href="mapping-types.html#geo-point" title="Geo-point field
 mappings.</p>
 </li>
 <li class="listitem">
-<p>Define an index alias named <code class="literal">my-index</code>:</p>
+<p>Define an alias named <code class="literal">my-index</code>:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
   "my-index": {}
@@ -366,7 +364,7 @@ POST /my-index-000002/_doc
   "url": "https://theacademyofperformingartsandscience.org/people/type:astronauts/name:laurel-b-clark/profile"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1304.console"></div>
+<div class="console_widget" data-snippet="snippets/1607.console"></div>
 </li>
 <li class="listitem">
 <p>Use the <a class="xref" href="indices.html#indices-get-index" title="Get index API">get index API</a> to view the configurations for the
@@ -375,17 +373,17 @@ earlier.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /my-index-000001,my-index-000002</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1305.console"></div>
+<div class="console_widget" data-snippet="snippets/1608.console"></div>
 </li>
 </ol>
 </div>
 </div>
 <div class="navfooter">
 <span class="prev">
-<a href="data-tiers.html">« Data tiers</a>
+<a href="getting-started-index-lifecycle-management.html">« Tutorial: Automate rollover with ILM</a>
 </span>
 <span class="next">
-<a href="index-lifecycle-management.html">ILM: Manage the index lifecycle »</a>
+<a href="overview-index-lifecycle-management.html">ILM overview »</a>
 </span>
 </div>
 </div>

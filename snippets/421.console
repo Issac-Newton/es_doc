@@ -1,6 +1,15 @@
-GET _analyze
+PUT /standard_example
 {
-  "tokenizer": "whitespace",
-  "filter": ["delimited_payload"],
-  "text": "the|0 brown|10 fox|5 is|0 quick|10"
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "rebuilt_standard": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase"      
+          ]
+        }
+      }
+    }
+  }
 }

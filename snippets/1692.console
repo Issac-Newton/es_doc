@@ -1,15 +1,17 @@
-PUT my-index-000001
+POST /_security/role/remote-replication
 {
-   "mappings": {
-       "properties": {
-          "counter": {
-             "type": "integer",
-             "store": false
-          },
-          "tags": {
-             "type": "keyword",
-             "store": true
-          }
-       }
-   }
+  "cluster": [
+    "read_ccr"
+  ],
+  "indices": [
+    {
+      "names": [
+        "leader-index-name"
+      ],
+      "privileges": [
+        "monitor",
+        "read"
+      ]
+    }
+  ]
 }

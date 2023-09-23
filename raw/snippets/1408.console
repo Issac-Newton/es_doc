@@ -1,2 +1,12 @@
-PUT /_snapshot/my_backup/<snapshot-{now/d}>
-PUT /_snapshot/my_backup/%3Csnapshot-%7Bnow%2Fd%7D%3E
+GET latency/_search
+{
+  "size": 0,
+  "aggs": {
+    "grade_percentiles": {
+      "percentiles": {
+        "field": "grade",
+        "missing": 10      
+      }
+    }
+  }
+}

@@ -33,19 +33,18 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="modules-discovery"></a>Discovery and cluster formation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery.asciidoc">edit</a></h2>
+<h2 class="title"><a id="modules-discovery"></a>Discovery and cluster formation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The discovery and cluster formation processes are responsible for discovering
 nodes, electing a master, forming a cluster, and publishing the cluster state
-each time it changes. All communication between nodes is done using the
-<a class="xref" href="settings.html#modules-transport" title="Transport">transport</a> layer.</p>
+each time it changes.</p>
 <p>The following processes and settings are part of discovery and cluster
 formation:</p>
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
 <span class="term">
-<a class="xref" href="modules-discovery.html#modules-discovery-hosts-providers" title="Discovery">Discovery</a>
+<a class="xref" href="modules-discovery.html#discovery-hosts-providers" title="Discovery">Discovery</a>
 </span>
 </dt>
 <dd>
@@ -83,13 +82,11 @@ discovery settings configured, this is automatically performed by the nodes
 themselves. As this auto-bootstrapping is
 <a class="xref" href="modules-discovery.html#modules-discovery-quorums" title="Quorum-based decision making">inherently unsafe</a>, running a node in
 <a class="xref" href="bootstrap-checks.html#dev-vs-prod-mode" title="Development vs. production mode">production mode</a> requires bootstrapping to be
-explicitly configured via the
-<a class="xref" href="modules-discovery.html#modules-discovery-bootstrap-cluster" title="Bootstrapping a cluster"><code class="literal">cluster.initial_master_nodes</code>
-setting</a>.
+<a class="xref" href="modules-discovery.html#modules-discovery-bootstrap-cluster" title="Bootstrapping a cluster">explicitly configured</a>.
 </dd>
 <dt>
 <span class="term">
-<a class="xref" href="getting-started-modify-data.html#modules-discovery-adding-removing-nodes" title="Adding and removing nodes">Adding and removing master-eligible nodes</a>
+<a class="xref" href="add-elasticsearch-nodes.html" title="Add and remove nodes in your cluster">Adding and removing master-eligible nodes</a>
 </span>
 </dt>
 <dd>
@@ -131,7 +128,7 @@ formation, master election and fault detection processes.
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="modules-discovery-hosts-providers"></a>Discovery<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h2>
+<h2 class="title"><a id="discovery-hosts-providers"></a>Discovery<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Discovery is the process by which the cluster formation module finds other
 nodes with which to form a cluster. This process runs when you start an
@@ -155,14 +152,21 @@ it has either discovered an elected master node or else it has discovered
 enough masterless master-eligible nodes to complete an election. If neither of
 these occur quickly enough then the node will retry after
 <code class="literal">discovery.find_peers_interval</code> which defaults to <code class="literal">1s</code>.</p>
+<p>Once a master is elected, it will normally remain as the elected master until
+it is deliberately stopped. It may also stop acting as the master if
+<a class="xref" href="modules-discovery.html#cluster-fault-detection" title="Cluster fault detection">fault detection</a> determines the cluster to be
+faulty. When a node stops being the elected master, it begins the discovery
+process again.</p>
+<p>Refer to <a class="xref" href="discovery-troubleshooting.html" title="Troubleshooting discovery">Troubleshooting discovery</a> for
+troubleshooting issues with discovery.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="built-in-hosts-providers"></a>Seed hosts providers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h3>
+<h3 class="title"><a id="built-in-hosts-providers"></a>Seed hosts providers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h3>
 </div></div></div>
 <p>By default the cluster formation module offers two seed hosts providers to
 configure the list of seed nodes: a <em>settings</em>-based and a <em>file</em>-based seed
-hosts provider.  It can be extended to support cloud environments and other
-forms of seed hosts providers via <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/7.10/discovery.html" class="ulink" target="_top">discovery plugins</a>.
+hosts provider. It can be extended to support cloud environments and other
+forms of seed hosts providers via <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/8.9/discovery.html" class="ulink" target="_top">discovery plugins</a>.
 Seed hosts providers are configured using the <code class="literal">discovery.seed_providers</code>
 setting, which defaults to the <em>settings</em>-based hosts provider. This setting
 accepts a list of different providers, allowing you to make use of multiple
@@ -179,24 +183,24 @@ concurrent lookups is controlled by
 the timeout for each lookup is controlled by <code class="literal">discovery.seed_resolver.timeout</code>
 which defaults to <code class="literal">5s</code>. Note that DNS lookups are subject to
 <a class="xref" href="system-config.html#networkaddress-cache-ttl" title="DNS cache settings">JVM DNS caching</a>.</p>
-<h5><a id="settings-based-hosts-provider"></a>Settings-based seed hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
+<h5><a id="settings-based-hosts-provider"></a>Settings-based seed hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
 <p>The settings-based seed hosts provider uses a node setting to configure a
 static list of the addresses of the seed nodes. These addresses can be given as
 hostnames or IP addresses; hosts specified as hostnames are resolved to IP
 addresses during each round of discovery.</p>
-<p>The list of hosts is set using the <a class="xref" href="important-settings.html#unicast.hosts" title="discovery.seed_hosts"><code class="literal">discovery.seed_hosts</code></a>
+<p>The list of hosts is set using the <a class="xref" href="settings.html#unicast.hosts" title="discovery.seed_hosts"><code class="literal">discovery.seed_hosts</code></a>
 static setting. For example:</p>
 <div class="pre_wrapper lang-yaml">
 <pre class="programlisting prettyprint lang-yaml">discovery.seed_hosts:
    - 192.168.1.10:9300
-   - 192.168.1.11 <a id="CO19-1"></a><i class="conum" data-value="1"></i>
-   - seeds.mydomain.com <a id="CO19-2"></a><i class="conum" data-value="2"></i></pre>
+   - 192.168.1.11 <a id="CO21-1"></a><i class="conum" data-value="1"></i>
+   - seeds.mydomain.com <a id="CO21-2"></a><i class="conum" data-value="2"></i></pre>
 </div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO19-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO21-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The port will default to <code class="literal">transport.profiles.default.port</code> and fallback to
@@ -205,7 +209,7 @@ static setting. For example:</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO19-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO21-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>If a hostname resolves to multiple IP addresses, Elasticsearch will attempt to
@@ -214,7 +218,7 @@ connect to every resolved address.</p>
 </tr>
 </table>
 </div>
-<h5><a id="file-based-hosts-provider"></a>File-based seed hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
+<h5><a id="file-based-hosts-provider"></a>File-based seed hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
 <p>The file-based seed hosts provider configures a list of hosts via an external
 file.  Elasticsearch reloads this file when it changes, so that the list of seed nodes
 can change dynamically without needing to restart each node. For example, this
@@ -236,7 +240,7 @@ supplied in <code class="literal">unicast_hosts.txt</code>.</p>
 <p>The <code class="literal">unicast_hosts.txt</code> file contains one node entry per line. Each node entry
 consists of the host (host name or IP address) and an optional transport port
 number. If the port number is specified, is must come immediately after the
-host (on the same line) separated by a <code class="literal">:</code>.  If the port number is not
+host (on the same line) separated by a <code class="literal">:</code>. If the port number is not
 specified, Elasticsearch will implicitly use the first port in the port range given by
 <code class="literal">transport.profiles.default.port</code>, or by <code class="literal">transport.port</code> if
 <code class="literal">transport.profiles.default.port</code> is not set.</p>
@@ -255,15 +259,15 @@ described above. IPv6 addresses must be given in brackets with the port, if
 needed, coming after the brackets.</p>
 <p>You can also add comments to this file. All comments must appear on their lines
 starting with <code class="literal">#</code> (i.e. comments cannot start in the middle of a line).</p>
-<h5><a id="ec2-hosts-provider"></a>EC2 hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
-<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/7.10/discovery-ec2.html" class="ulink" target="_top">EC2 discovery plugin</a> adds a hosts provider
+<h5><a id="ec2-hosts-provider"></a>EC2 hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
+<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/8.9/discovery-ec2.html" class="ulink" target="_top">EC2 discovery plugin</a> adds a hosts provider
 that uses the <a href="https://github.com/aws/aws-sdk-java" class="ulink" target="_top">AWS API</a> to find a list of
 seed nodes.</p>
-<h5><a id="azure-classic-hosts-provider"></a>Azure Classic hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
-<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/7.10/discovery-azure-classic.html" class="ulink" target="_top">Azure Classic discovery plugin</a> adds
+<h5><a id="azure-classic-hosts-provider"></a>Azure Classic hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
+<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/8.9/discovery-azure-classic.html" class="ulink" target="_top">Azure Classic discovery plugin</a> adds
 a hosts provider that uses the Azure Classic API find a list of seed nodes.</p>
-<h5><a id="gce-hosts-provider"></a>Google Compute Engine hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
-<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/7.10/discovery-gce.html" class="ulink" target="_top">GCE discovery plugin</a> adds a hosts provider
+<h5><a id="gce-hosts-provider"></a>Google Compute Engine hosts provider<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/discovery.asciidoc">edit</a></h5>
+<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/8.9/discovery-gce.html" class="ulink" target="_top">GCE discovery plugin</a> adds a hosts provider
 that uses the GCE API find a list of seed nodes.</p>
 </div>
 
@@ -271,7 +275,7 @@ that uses the GCE API find a list of seed nodes.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="modules-discovery-quorums"></a>Quorum-based decision making<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/quorums.asciidoc">edit</a></h2>
+<h2 class="title"><a id="modules-discovery-quorums"></a>Quorum-based decision making<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/quorums.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Electing a master node and changing the cluster state are the two fundamental
 tasks that master-eligible nodes must work together to perform. It is important
@@ -286,13 +290,13 @@ two pieces such that each piece may make decisions that are inconsistent with
 those of the other piece.</p>
 <p>Elasticsearch allows you to add and remove master-eligible nodes to a running
 cluster. In many cases you can do this simply by starting or stopping the nodes
-as required. See <a class="xref" href="getting-started-modify-data.html#modules-discovery-adding-removing-nodes" title="Adding and removing nodes">Adding and removing nodes</a>.</p>
+as required. See <a class="xref" href="add-elasticsearch-nodes.html" title="Add and remove nodes in your cluster"><em>Add and remove nodes in your cluster</em></a>.</p>
 <p>As nodes are added or removed Elasticsearch maintains an optimal level of fault
 tolerance by updating the cluster&#8217;s <a class="xref" href="modules-discovery.html#modules-discovery-voting" title="Voting configurations">voting
 configuration</a>, which is the set of master-eligible nodes whose responses are
 counted when making decisions such as electing a new master or committing a new
 cluster state. A decision is made only after more than half of the nodes in the
-voting configuration have responded.  Usually the voting configuration is the
+voting configuration have responded. Usually the voting configuration is the
 same as the set of all the master-eligible nodes that are currently in the
 cluster. However, there are some situations in which they may be different.</p>
 <p>To be sure that the cluster remains available you <span class="strong strong"><strong>must not stop half or more
@@ -305,7 +309,7 @@ master-eligible nodes, they must all remain available.</p>
 cluster-state update that adjusts the voting configuration to match, and this
 can take a short time to complete. It is important to wait for this adjustment
 to complete before removing more nodes from the cluster.</p>
-<h4><a id="_master_elections"></a>Master elections<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/quorums.asciidoc">edit</a></h4>
+<h4><a id="_master_elections"></a>Master elections<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/quorums.asciidoc">edit</a></h4>
 <p>Elasticsearch uses an election process to agree on an elected master node, both
 at startup and if the existing elected master fails. Any master-eligible node
 can start an election, and normally the first election that takes place will
@@ -316,20 +320,20 @@ until a master is elected, backing off on failure, so that eventually an
 election will succeed (with arbitrarily high probability). The scheduling of
 master elections are controlled by the <a class="xref" href="settings.html#master-election-settings">master
 election settings</a>.</p>
-<h4><a id="_cluster_maintenance_rolling_restarts_and_migrations"></a>Cluster maintenance, rolling restarts and migrations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/quorums.asciidoc">edit</a></h4>
+<h4><a id="_cluster_maintenance_rolling_restarts_and_migrations"></a>Cluster maintenance, rolling restarts and migrations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/quorums.asciidoc">edit</a></h4>
 <p>Many cluster maintenance tasks involve temporarily shutting down one or more
 nodes and then starting them back up again. By default Elasticsearch can remain
 available if one of its master-eligible nodes is taken offline, such as during a
-<a class="xref" href="rolling-upgrades.html" title="Rolling upgrades">rolling restart</a>. Furthermore, if multiple nodes are stopped
+rolling upgrade. Furthermore, if multiple nodes are stopped
 and then started again then it will automatically recover, such as during a
-<a class="xref" href="restart-upgrade.html" title="Full cluster restart upgrade">full cluster restart</a>. There is no need to take any further
+full cluster restart. There is no need to take any further
 action with the APIs described here in these cases, because the set of master
 nodes is not changing permanently.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="modules-discovery-voting"></a>Voting configurations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/voting.asciidoc">edit</a></h2>
+<h2 class="title"><a id="modules-discovery-voting"></a>Voting configurations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/voting.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Each Elasticsearch cluster has a <em>voting configuration</em>, which is the set of
 <a class="xref" href="settings.html#master-node" title="Master-eligible node">master-eligible nodes</a> whose responses are counted when making
@@ -354,13 +358,13 @@ nodes, they must all remain available.</p>
 corresponding changes to the voting configuration in order to ensure that the
 cluster is as resilient as possible. It is important to wait for this adjustment
 to complete before you remove more nodes from the cluster. For more information,
-see <a class="xref" href="getting-started-modify-data.html#modules-discovery-adding-removing-nodes" title="Adding and removing nodes">Adding and removing nodes</a>.</p>
+see <a class="xref" href="add-elasticsearch-nodes.html" title="Add and remove nodes in your cluster"><em>Add and remove nodes in your cluster</em></a>.</p>
 <p>The current voting configuration is stored in the cluster state so you can
 inspect its current contents as follows:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_cluster/state?filter_path=metadata.cluster_coordination.last_committed_config</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/42.console"></div>
+<div class="console_widget" data-snippet="snippets/31.console"></div>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -406,7 +410,7 @@ of resilience.</p>
 setting affects only its availability in the event of the failure of some of its
 nodes and the administrative tasks that must be performed as nodes join and
 leave the cluster.</p>
-<h4><a id="_even_numbers_of_master_eligible_nodes"></a>Even numbers of master-eligible nodes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/voting.asciidoc">edit</a></h4>
+<h4><a id="_even_numbers_of_master_eligible_nodes"></a>Even numbers of master-eligible nodes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/voting.asciidoc">edit</a></h4>
 <p>There should normally be an odd number of master-eligible nodes in a cluster.
 If there is an even number, Elasticsearch leaves one of them out of the voting
 configuration to ensure that it has an odd size. This omission does not decrease
@@ -427,7 +431,7 @@ nodes, however, the cluster is still only fully tolerant to the loss of one
 node, but quorum-based decisions require votes from two of the three voting
 nodes. In the event of an even split, one half will contain two of the three
 voting nodes so that half will remain available.</p>
-<h4><a id="_setting_the_initial_voting_configuration"></a>Setting the initial voting configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/voting.asciidoc">edit</a></h4>
+<h4><a id="_setting_the_initial_voting_configuration"></a>Setting the initial voting configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/voting.asciidoc">edit</a></h4>
 <p>When a brand-new cluster starts up for the first time, it must elect its first
 master node. To do this election, it needs to know the set of master-eligible
 nodes whose votes should count. This initial voting configuration is known as
@@ -469,35 +473,34 @@ when they restart.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="modules-discovery-bootstrap-cluster"></a>Bootstrapping a cluster<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/bootstrapping.asciidoc">edit</a></h2>
+<h2 class="title"><a id="modules-discovery-bootstrap-cluster"></a>Bootstrapping a cluster<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/bootstrapping.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Starting an Elasticsearch cluster for the very first time requires the initial
 set of <a class="xref" href="settings.html#master-node" title="Master-eligible node">master-eligible nodes</a> to be explicitly defined on one or
 more of the master-eligible nodes in the cluster. This is known as <em>cluster
-bootstrapping</em>. This is only required the first time a cluster starts up: nodes
-that have already joined a cluster store this information in their data folder
-for use in a <a class="xref" href="restart-upgrade.html" title="Full cluster restart upgrade">full cluster restart</a>, and freshly-started nodes
-that are joining a running cluster obtain this information from the cluster&#8217;s
-elected master.</p>
+bootstrapping</em>. This is only required the first time a cluster starts up.
+Freshly-started nodes that are joining a running cluster obtain this
+information from the cluster&#8217;s elected master.</p>
 <p>The initial set of master-eligible nodes is defined in the
-<a class="xref" href="important-settings.html#initial_master_nodes" title="cluster.initial_master_nodes"><code class="literal">cluster.initial_master_nodes</code> setting</a>. This should be
+<a class="xref" href="settings.html#initial_master_nodes" title="cluster.initial_master_nodes"><code class="literal">cluster.initial_master_nodes</code> setting</a>. This should be
 set to a list containing one of the following items for each master-eligible
 node:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-The <a class="xref" href="important-settings.html#node-name" title="Node name setting">node name</a> of the node.
+The <a class="xref" href="settings.html#node-name" title="Node name setting">node name</a> of the node.
 </li>
 <li class="listitem">
 The node&#8217;s hostname if <code class="literal">node.name</code> is not set, because <code class="literal">node.name</code> defaults
 to the node&#8217;s hostname. You must use either the fully-qualified hostname or
-the bare hostname <a class="xref" href="modules-discovery.html#modules-discovery-bootstrap-cluster-fqdns">depending on
+the bare hostname <a class="xref" href="modules-discovery.html#modules-discovery-bootstrap-cluster-fqdns" title="Node name formats must match">depending on
 your system configuration</a>.
 </li>
 <li class="listitem">
-The IP address of the node&#8217;s <a class="xref" href="settings.html#modules-transport" title="Transport">publish address</a>, if it is
-not possible to use the <code class="literal">node.name</code> of the node. This is normally the IP
-address to which <a class="xref" href="settings.html#common-network-settings" title="Commonly used network settings"><code class="literal">network.host</code></a> resolves but
+The IP address of the node&#8217;s <a class="xref" href="settings.html#modules-network-binding-publishing" title="Binding and publishing">transport
+publish address</a>, if it is not possible to use the <code class="literal">node.name</code> of the node.
+This is normally the IP address to which
+<a class="xref" href="settings.html#common-network-settings" title="Commonly used network settings"><code class="literal">network.host</code></a> resolves but
 <a class="xref" href="settings.html#advanced-network-settings" title="Advanced network settings">this can be overridden</a>.
 </li>
 <li class="listitem">
@@ -507,41 +510,55 @@ multiple nodes sharing a single IP address.
 </li>
 </ul>
 </div>
-<p>When you start a master-eligible node, you can provide this setting on the
-command line or in the <code class="literal">elasticsearch.yml</code> file. After the cluster has formed,
-this setting is no longer required. It should not be set for master-ineligible
-nodes, master-eligible nodes joining an existing cluster, or cluster restarts.</p>
-<p>It is technically sufficient to set <code class="literal">cluster.initial_master_nodes</code> on a single
-master-eligible node in the cluster, and only to mention that single node in the
-setting&#8217;s value, but this provides no fault tolerance before the cluster has
-fully formed. It is therefore better to bootstrap using at least three
-master-eligible nodes, each with a <code class="literal">cluster.initial_master_nodes</code> setting
-containing all three nodes.</p>
-<div class="warning admon">
+<div class="important admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>You must set <code class="literal">cluster.initial_master_nodes</code> to the same list of nodes
-on each node on which it is set in order to be sure that only a single cluster
-forms during bootstrapping and therefore to avoid the risk of data loss.</p>
+<p>After the cluster has formed, remove the <code class="literal">cluster.initial_master_nodes</code> setting
+from each node&#8217;s configuration. It should not be set for master-ineligible
+nodes, master-eligible nodes joining an existing cluster, or nodes which are
+restarting.</p>
+<p>If you leave <code class="literal">cluster.initial_master_nodes</code> in place once the cluster has
+formed then there is a risk that a future misconfiguration may result in
+bootstrapping a new cluster alongside your existing cluster. It may not be
+possible to recover from this situation without losing data.</p>
 </div>
 </div>
-<p>For a cluster with 3 master-eligible nodes (with <a class="xref" href="important-settings.html#node-name" title="Node name setting">node names</a>
-<code class="literal">master-a</code>, <code class="literal">master-b</code> and <code class="literal">master-c</code>) the configuration will look as follows:</p>
+<p>The simplest way to create a new cluster is for you to select one of your
+master-eligible nodes that will bootstrap itself into a single-node cluster,
+which all the other nodes will then join. This simple approach is not resilient
+to failures until the other master-eligible nodes have joined the cluster. For
+example, if you have a master-eligible node with <a class="xref" href="settings.html#node-name" title="Node name setting">node name</a>
+<code class="literal">master-a</code> then configure it as follows (omitting
+<code class="literal">cluster.initial_master_nodes</code> from the configuration of all other nodes):</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">cluster.initial_master_nodes: master-a</pre>
+</div>
+<p>For fault-tolerant cluster bootstrapping, use all the master-eligible nodes.
+For instance, if your cluster has 3 master-eligible nodes with <a class="xref" href="settings.html#node-name" title="Node name setting">node
+names</a> <code class="literal">master-a</code>, <code class="literal">master-b</code> and <code class="literal">master-c</code> then configure them all as
+follows:</p>
 <div class="pre_wrapper lang-yaml">
 <pre class="programlisting prettyprint lang-yaml">cluster.initial_master_nodes:
   - master-a
   - master-b
   - master-c</pre>
 </div>
-<p>Like all node settings, it is also possible to specify the initial set of master
-nodes on the command-line that is used to start Elasticsearch:</p>
-<div class="pre_wrapper lang-bash">
-<pre class="programlisting prettyprint lang-bash">$ bin/elasticsearch -Ecluster.initial_master_nodes=master-a,master-b,master-c</pre>
-</div>
-<div class="note admon">
+<div class="important admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p><a id="modules-discovery-bootstrap-cluster-fqdns"></a> The node names used in the
+<p>You must set <code class="literal">cluster.initial_master_nodes</code> to the same list of
+nodes on each node on which it is set in order to be sure that only a single
+cluster forms during bootstrapping. If <code class="literal">cluster.initial_master_nodes</code> varies
+across the nodes on which it is set then you may bootstrap multiple clusters.
+It is usually not possible to recover from this situation without losing data.</p>
+</div>
+</div>
+<div class="sidebar">
+<a id="modules-discovery-bootstrap-cluster-fqdns"></a>
+<div class="titlepage"><div><div>
+<p class="title"><strong>Node name formats must match</strong></p>
+</div></div></div>
+<p>The node names used in the
 <code class="literal">cluster.initial_master_nodes</code> list must exactly match the <code class="literal">node.name</code>
 properties of the nodes. By default the node name is set to the machine&#8217;s
 hostname which may or may not be fully-qualified depending on your system
@@ -549,7 +566,7 @@ configuration. If each node name is a fully-qualified domain name such as
 <code class="literal">master-a.example.com</code> then you must use fully-qualified domain names in the
 <code class="literal">cluster.initial_master_nodes</code> list too; conversely if your node names are bare
 hostnames (without the <code class="literal">.example.com</code> suffix) then you must use bare hostnames
-in the <code class="literal">cluster.initial_master_nodes</code> list. If you use a mix of fully-qualifed
+in the <code class="literal">cluster.initial_master_nodes</code> list. If you use a mix of fully-qualified
 and bare hostnames, or there is some other mismatch between <code class="literal">node.name</code> and
 <code class="literal">cluster.initial_master_nodes</code>, then the cluster will not form successfully and
 you will see log messages like the following.</p>
@@ -564,26 +581,25 @@ bootstrap a cluster: have discovered [{master-b.example.com}{...</pre>
 <code class="literal">master-a</code> and <code class="literal">master-b</code>, and it is clear from this message that they do not
 match exactly.</p>
 </div>
-</div>
-<h4><a id="_choosing_a_cluster_name"></a>Choosing a cluster name<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/bootstrapping.asciidoc">edit</a></h4>
-<p>The <a class="xref" href="important-settings.html#cluster-name" title="Cluster name setting"><code class="literal">cluster.name</code></a> setting enables you to create multiple
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="bootstrap-cluster-name"></a>Choosing a cluster name<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/bootstrapping.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <a class="xref" href="settings.html#cluster-name" title="Cluster name setting"><code class="literal">cluster.name</code></a> setting enables you to create multiple
 clusters which are separated from each other. Nodes verify that they agree on
 their cluster name when they first connect to each other, and Elasticsearch
 will only form a cluster from nodes that all have the same cluster name. The
 default value for the cluster name is <code class="literal">elasticsearch</code>, but it is recommended to
 change this to reflect the logical name of the cluster.</p>
-<h4><a id="_auto_bootstrapping_in_development_mode"></a>Auto-bootstrapping in development mode<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/bootstrapping.asciidoc">edit</a></h4>
-<p>If the cluster is running with a completely default configuration then it will
-automatically bootstrap a cluster based on the nodes that could be discovered to
-be running on the same host within a short time after startup. This means that
-by default it is possible to start up several nodes on a single machine and have
-them automatically form a cluster which is very useful for development
-environments and experimentation.  However, since nodes may not always
-successfully discover each other quickly enough this automatic bootstrapping
-cannot be relied upon and cannot be used in production deployments.</p>
-<p>If any of the following settings are configured then auto-bootstrapping will not
-take place, and you must configure <code class="literal">cluster.initial_master_nodes</code> as described
-in the <a class="xref" href="modules-discovery.html#modules-discovery-bootstrap-cluster" title="Bootstrapping a cluster">section on cluster bootstrapping</a>:</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="bootstrap-auto-bootstrap"></a>Auto-bootstrapping in development mode<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/bootstrapping.asciidoc">edit</a></h3>
+</div></div></div>
+<p>By default each node will automatically bootstrap itself into a single-node
+cluster the first time it starts. If any of the following settings are
+configured then auto-bootstrapping will not take place:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -597,98 +613,139 @@ in the <a class="xref" href="modules-discovery.html#modules-discovery-bootstrap-
 </li>
 </ul>
 </div>
-<div class="note admon">
-<div class="icon"></div>
-<div class="admon_content">
-<p><a id="modules-discovery-bootstrap-cluster-joining"></a> If you start an Elasticsearch node
-without configuring these settings then it will start up in development mode and
-auto-bootstrap itself into a new cluster. If you start some Elasticsearch nodes on
-different hosts then by default they will not discover each other and will form
-a different cluster on each host. Elasticsearch will not merge separate clusters together
-after they have formed, even if you subsequently try and configure all the nodes
-into a single cluster. This is because there is no way to merge these separate
-clusters together without a risk of data loss. You can tell that you have formed
-separate clusters by checking the cluster UUID reported by <code class="literal">GET /</code> on each node.
-If you intended to form a single cluster then you should start again:</p>
-<div class="ulist itemizedlist">
-<ul class="itemizedlist">
+<p>To add a new node into an existing cluster, configure <code class="literal">discovery.seed_hosts</code> or
+other relevant discovery settings so that the new node can discover the
+existing master-eligible nodes in the cluster. To bootstrap a new multi-node
+cluster, configure <code class="literal">cluster.initial_master_nodes</code> as described in the
+<a class="xref" href="modules-discovery.html#modules-discovery-bootstrap-cluster" title="Bootstrapping a cluster">section on cluster bootstrapping</a> as
+well as <code class="literal">discovery.seed_hosts</code> or other relevant discovery settings.</p>
+<div class="sidebar">
+<a id="modules-discovery-bootstrap-cluster-joining"></a>
+<div class="titlepage"><div><div>
+<p class="title"><strong>Forming a single cluster</strong></p>
+</div></div></div>
+<p>Once an Elasticsearch node has joined an existing cluster, or bootstrapped a new
+cluster, it will not join a different cluster. Elasticsearch will not merge separate
+clusters together after they have formed, even if you subsequently try and
+configure all the nodes into a single cluster. This is because there is no way
+to merge these separate clusters together without a risk of data loss. You can
+tell that you have formed separate clusters by checking the cluster UUID
+reported by <code class="literal">GET /</code> on each node.</p>
+<p>If you intended to add a node into an existing cluster but instead bootstrapped
+a separate single-node cluster then you must start again:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+Shut down the node.
+</li>
+<li class="listitem">
+Completely wipe the node by deleting the contents of its <a class="xref" href="settings.html#data-path" title="path.data">data
+folder</a>.
+</li>
+<li class="listitem">
+Configure <code class="literal">discovery.seed_hosts</code> or <code class="literal">discovery.seed_providers</code> and other
+relevant discovery settings.
+</li>
+<li class="listitem">
+Restart the node and verify that it joins the existing cluster rather than
+forming its own one-node cluster.
+</li>
+</ol>
+</div>
+<p>If you intended to form a new multi-node cluster but instead bootstrapped a
+collection of single-node clusters then you must start again:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
 <li class="listitem">
 Shut down all the nodes.
 </li>
 <li class="listitem">
-Completely wipe each node by deleting the contents of their
-<a class="xref" href="settings.html#data-path" title="path.data">data folders</a>.
+Completely wipe each node by deleting the contents of their <a class="xref" href="settings.html#data-path" title="path.data">data
+folders</a>.
 </li>
 <li class="listitem">
 Configure <code class="literal">cluster.initial_master_nodes</code> as described above.
 </li>
 <li class="listitem">
+Configure <code class="literal">discovery.seed_hosts</code> or <code class="literal">discovery.seed_providers</code> and other
+relevant discovery settings.
+</li>
+<li class="listitem">
 Restart all the nodes and verify that they have formed a single cluster.
 </li>
-</ul>
-</div>
+</ol>
 </div>
 </div>
 </div>
 
+</div>
+
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="cluster-state-publishing"></a>Publishing the cluster state<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/publishing.asciidoc">edit</a></h2>
+<h2 class="title"><a id="cluster-state-publishing"></a>Publishing the cluster state<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/publishing.asciidoc">edit</a></h2>
 </div></div></div>
-<p>The master node is the only node in a cluster that can make changes to the
-cluster state. The master node processes one batch of cluster state updates at
-a time, computing the required changes and publishing the updated cluster state
-to all the other nodes in the cluster. Each publication starts with the master
-broadcasting the updated cluster state to all nodes in the cluster.  Each node
-responds with an acknowledgement but does not yet apply the newly-received
-state. Once the master has collected acknowledgements from enough
-master-eligible nodes, the new cluster state is said to be <em>committed</em> and the
-master broadcasts another message instructing nodes to apply the now-committed
-state. Each node receives this message, applies the updated state, and then
-sends a second acknowledgement back to the master.</p>
-<p>The master allows a limited amount of time for each cluster state update to be
-completely published to all nodes. It is defined by the
+<p>The elected master node is the only node in a cluster that can make changes to
+the cluster state. The elected master node processes one batch of cluster state
+updates at a time, computing the required changes and publishing the updated
+cluster state to all the other nodes in the cluster. Each publication starts
+with the elected master broadcasting the updated cluster state to all nodes in
+the cluster. Each node responds with an acknowledgement but does not yet apply
+the newly-received state. Once the elected master has collected
+acknowledgements from enough master-eligible nodes, the new cluster state is
+said to be <em>committed</em> and the master broadcasts another message instructing
+nodes to apply the now-committed state. Each node receives this message,
+applies the updated state, and then sends a second acknowledgement back to the
+master.</p>
+<p>The elected master allows a limited amount of time for each cluster state
+update to be completely published to all nodes. It is defined by the
 <code class="literal">cluster.publish.timeout</code> setting, which defaults to <code class="literal">30s</code>, measured from the
 time the publication started. If this time is reached before the new cluster
-state is committed then the cluster state change is rejected and the master
-considers itself to have failed. It stands down and starts trying to elect a
-new master.</p>
+state is committed then the cluster state change is rejected and the elected
+master considers itself to have failed. It stands down and starts trying to
+elect a new master node.</p>
 <p>If the new cluster state is committed before <code class="literal">cluster.publish.timeout</code> has
-elapsed, the master node considers the change to have succeeded. It waits until
-the timeout has elapsed or until it has received acknowledgements that each
-node in the cluster has applied the updated state, and then starts processing
-and publishing the next cluster state update. If some acknowledgements have not
-been received (i.e. some nodes have not yet confirmed that they have applied
-the current update), these nodes are said to be <em>lagging</em> since their cluster
-states have fallen behind the master&#8217;s latest state. The master waits for the
-lagging nodes to catch up for a further time, <code class="literal">cluster.follower_lag.timeout</code>,
-which defaults to <code class="literal">90s</code>. If a node has still not successfully applied the
-cluster state update within this time then it is considered to have failed and
-is removed from the cluster.</p>
+elapsed, the elected master node considers the change to have succeeded. It
+waits until the timeout has elapsed or until it has received acknowledgements
+that each node in the cluster has applied the updated state, and then starts
+processing and publishing the next cluster state update. If some
+acknowledgements have not been received (i.e. some nodes have not yet confirmed
+that they have applied the current update), these nodes are said to be
+<em>lagging</em> since their cluster states have fallen behind the elected master&#8217;s
+latest state. The elected master waits for the lagging nodes to catch up for a
+further time, <code class="literal">cluster.follower_lag.timeout</code>, which defaults to <code class="literal">90s</code>. If a
+node has still not successfully applied the cluster state update within this
+time then it is considered to have failed and the elected master removes it
+from the cluster.</p>
 <p>Cluster state updates are typically published as diffs to the previous cluster
 state, which reduces the time and network bandwidth needed to publish a cluster
 state update. For example, when updating the mappings for only a subset of the
 indices in the cluster state, only the updates for those indices need to be
 published to the nodes in the cluster, as long as those nodes have the previous
 cluster state. If a node is missing the previous cluster state, for example
-when rejoining a cluster, the master will publish the full cluster state to
-that node so that it can receive future updates as diffs.</p>
+when rejoining a cluster, the elected master will publish the full cluster
+state to that node so that it can receive future updates as diffs.</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
 <p>Elasticsearch is a peer to peer based system, in which nodes communicate with one
 another directly. The high-throughput APIs (index, delete, search) do not
-normally interact with the master node. The responsibility of the master node
-is to maintain the global cluster state and reassign shards when nodes join or
-leave the cluster. Each time the cluster state is changed, the new state is
-published to all nodes in the cluster as described above.</p>
+normally interact with the elected master node. The responsibility of the
+elected master node is to maintain the global cluster state which includes
+reassigning shards when nodes join or leave the cluster. Each time the cluster
+state is changed, the new state is published to all nodes in the cluster as
+described above.</p>
 </div>
 </div>
+<p>The performance characteristics of cluster state updates are a function of the
+speed of the storage on each master-eligible node, as well as the reliability
+and latency of the network interconnections between all nodes in the cluster.
+You must therefore ensure that the storage and networking available to the
+nodes in your cluster are good enough to meet your performance goals.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="cluster-fault-detection"></a>Cluster fault detection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/modules/discovery/fault-detection.asciidoc">edit</a></h2>
+<h2 class="title"><a id="cluster-fault-detection"></a>Cluster fault detection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/fault-detection.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The elected master periodically checks each of the nodes in the cluster to
 ensure that they are still connected and healthy. Each node in the cluster also
@@ -710,6 +767,279 @@ writing a small file to disk and then deleting it again. If a node discovers
 its data path is unhealthy then it is removed from the cluster until the data
 path recovers. You can control this behavior with the
 <a class="xref" href="settings.html#modules-discovery-settings" title="Discovery and cluster formation settings"><code class="literal">monitor.fs.health</code> settings</a>.</p>
+<p><a id="cluster-fault-detection-cluster-state-publishing"></a>The elected master node
+will also remove nodes from the cluster if nodes are unable to apply an updated
+cluster state within a reasonable time. The timeout defaults to 2 minutes
+starting from the beginning of the cluster state update. Refer to
+<a class="xref" href="modules-discovery.html#cluster-state-publishing" title="Publishing the cluster state">Publishing the cluster state</a> for a more detailed description.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="cluster-fault-detection-troubleshooting"></a>Troubleshooting an unstable cluster<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/fault-detection.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Normally, a node will only leave a cluster if deliberately shut down. If a node
+leaves the cluster unexpectedly, it&#8217;s important to address the cause. A cluster
+in which nodes leave unexpectedly is unstable and can create several issues.
+For instance:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The cluster health may be yellow or red.
+</li>
+<li class="listitem">
+Some shards will be initializing and other shards may be failing.
+</li>
+<li class="listitem">
+Search, indexing, and monitoring operations may fail and report exceptions in
+logs.
+</li>
+<li class="listitem">
+The <code class="literal">.security</code> index may be unavailable, blocking access to the cluster.
+</li>
+<li class="listitem">
+The master may appear busy due to frequent cluster state updates.
+</li>
+</ul>
+</div>
+<p>To troubleshoot a cluster in this state, first ensure the cluster has a
+<a class="xref" href="discovery-troubleshooting.html" title="Troubleshooting discovery">stable master</a>. Next, focus on the nodes
+unexpectedly leaving the cluster ahead of all other issues. It will not be
+possible to solve other issues until the cluster has a stable master node and
+stable node membership.</p>
+<p>Diagnostics and statistics are usually not useful in an unstable cluster. These
+tools only offer a view of the state of the cluster at a single point in time.
+Instead, look at the cluster logs to see the pattern of behaviour over time.
+Focus particularly on logs from the elected master. When a node leaves the
+cluster, logs for the elected master include a message like this (with line
+breaks added to make it easier to read):</p>
+<div class="pre_wrapper lang-text">
+<pre class="programlisting prettyprint lang-text">[2022-03-21T11:02:35,513][INFO ][o.e.c.c.NodeLeftExecutor] [instance-0000000000]
+    node-left: [{instance-0000000004}{bfcMDTiDRkietFb9v_di7w}{aNlyORLASam1ammv2DzYXA}{172.27.47.21}{172.27.47.21:19054}{m}]
+    with reason [disconnected]</pre>
+</div>
+<p>This message says that the <code class="literal">NodeLeftExecutor</code> on the elected master
+(<code class="literal">instance-0000000000</code>) processed a <code class="literal">node-left</code> task, identifying the node that
+was removed and the reason for its removal. When the node joins the cluster
+again, logs for the elected master will include a message like this (with line
+breaks added to make it easier to read):</p>
+<div class="pre_wrapper lang-text">
+<pre class="programlisting prettyprint lang-text">[2022-03-21T11:02:59,892][INFO ][o.e.c.c.NodeJoinExecutor] [instance-0000000000]
+    node-join: [{instance-0000000004}{bfcMDTiDRkietFb9v_di7w}{UNw_RuazQCSBskWZV8ID_w}{172.27.47.21}{172.27.47.21:19054}{m}]
+    with reason [joining after restart, removed [24s] ago with reason [disconnected]]</pre>
+</div>
+<p>This message says that the <code class="literal">NodeJoinExecutor</code> on the elected master
+(<code class="literal">instance-0000000000</code>) processed a <code class="literal">node-join</code> task, identifying the node that
+was added to the cluster and the reason for the task.</p>
+<p>Other nodes may log similar messages, but report fewer details:</p>
+<div class="pre_wrapper lang-text">
+<pre class="programlisting prettyprint lang-text">[2020-01-29T11:02:36,985][INFO ][o.e.c.s.ClusterApplierService]
+    [instance-0000000001] removed {
+        {instance-0000000004}{bfcMDTiDRkietFb9v_di7w}{aNlyORLASam1ammv2DzYXA}{172.27.47.21}{172.27.47.21:19054}{m}
+        {tiebreaker-0000000003}{UNw_RuazQCSBskWZV8ID_w}{bltyVOQ-RNu20OQfTHSLtA}{172.27.161.154}{172.27.161.154:19251}{mv}
+    }, term: 14, version: 1653415, reason: Publication{term=14, version=1653415}</pre>
+</div>
+<p>These messages are not especially useful for troubleshooting, so focus on the
+ones from the <code class="literal">NodeLeftExecutor</code> and <code class="literal">NodeJoinExecutor</code> which are only emitted
+on the elected master and which contain more details. If you don&#8217;t see the
+messages from the <code class="literal">NodeLeftExecutor</code> and <code class="literal">NodeJoinExecutor</code>, check that:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+You&#8217;re looking at the logs for the elected master node.
+</li>
+<li class="listitem">
+The logs cover the correct time period.
+</li>
+<li class="listitem">
+Logging is enabled at <code class="literal">INFO</code> level.
+</li>
+</ul>
+</div>
+<p>Nodes will also log a message containing <code class="literal">master node changed</code> whenever they
+start or stop following the elected master. You can use these messages to
+determine each node&#8217;s view of the state of the master over time.</p>
+<p>If a node restarts, it will leave the cluster and then join the cluster again.
+When it rejoins, the <code class="literal">NodeJoinExecutor</code> will log that it processed a
+<code class="literal">node-join</code> task indicating that the node is <code class="literal">joining after restart</code>. If a node
+is unexpectedly restarting, look at the node&#8217;s logs to see why it is shutting
+down.</p>
+<p>The <a class="xref" href="cluster.html#health-api" title="Health API">Health</a> API on the affected node will also provide some useful
+information about the situation.</p>
+<p>If the node did not restart then you should look at the reason for its
+departure more closely. Each reason has different troubleshooting steps,
+described below. There are three possible reasons:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">disconnected</code>: The connection from the master node to the removed node was
+closed.
+</li>
+<li class="listitem">
+<code class="literal">lagging</code>: The master published a cluster state update, but the removed node
+did not apply it within the permitted timeout. By default, this timeout is 2
+minutes. Refer to <a class="xref" href="settings.html#modules-discovery-settings" title="Discovery and cluster formation settings">Discovery and cluster formation settings</a> for information about the
+settings which control this mechanism.
+</li>
+<li class="listitem">
+<code class="literal">followers check retry count exceeded</code>: The master sent a number of
+consecutive health checks to the removed node. These checks were rejected or
+timed out. By default, each health check times out after 10 seconds and Elasticsearch
+removes the node removed after three consecutively failed health checks. Refer
+to <a class="xref" href="settings.html#modules-discovery-settings" title="Discovery and cluster formation settings">Discovery and cluster formation settings</a> for information about the settings which
+control this mechanism.
+</li>
+</ul>
+</div>
+<h5><a id="_diagnosing_disconnected_nodes"></a>Diagnosing <code class="literal">disconnected</code> nodes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/fault-detection.asciidoc">edit</a></h5>
+<p>Nodes typically leave the cluster with reason <code class="literal">disconnected</code> when they shut
+down, but if they rejoin the cluster without restarting then there is some
+other problem.</p>
+<p>Elasticsearch is designed to run on a fairly reliable network. It opens a number of TCP
+connections between nodes and expects these connections to remain open forever.
+If a connection is closed then Elasticsearch will try and reconnect, so the occasional
+blip should have limited impact on the cluster even if the affected node
+briefly leaves the cluster. In contrast, repeatedly-dropped connections will
+severely affect its operation.</p>
+<p>The connections from the elected master node to every other node in the cluster
+are particularly important. The elected master never spontaneously closes its
+outbound connections to other nodes. Similarly, once a connection is fully
+established, a node never spontaneously close its inbound connections unless
+the node is shutting down.</p>
+<p>If you see a node unexpectedly leave the cluster with the <code class="literal">disconnected</code>
+reason, something other than Elasticsearch likely caused the connection to close. A
+common cause is a misconfigured firewall with an improper timeout or another
+policy that&#8217;s <a class="xref" href="settings.html#long-lived-connections" title="Long-lived idle connections">incompatible with Elasticsearch</a>. It could also
+be caused by general connectivity issues, such as packet loss due to faulty
+hardware or network congestion. If you&#8217;re an advanced user, you can get more
+detailed information about network exceptions by configuring the following
+loggers:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">logger.org.elasticsearch.transport.TcpTransport: DEBUG
+logger.org.elasticsearch.xpack.core.security.transport.netty4.SecurityNetty4Transport: DEBUG</pre>
+</div>
+<p>In extreme cases, you may need to take packet captures using <code class="literal">tcpdump</code> to
+determine whether messages between nodes are being dropped or rejected by some
+other device on the network.</p>
+<h5><a id="_diagnosing_lagging_nodes"></a>Diagnosing <code class="literal">lagging</code> nodes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/fault-detection.asciidoc">edit</a></h5>
+<p>Elasticsearch needs every node to process cluster state updates reasonably quickly. If a
+node takes too long to process a cluster state update, it can be harmful to the
+cluster. The master will remove these nodes with the <code class="literal">lagging</code> reason. Refer to
+<a class="xref" href="settings.html#modules-discovery-settings" title="Discovery and cluster formation settings">Discovery and cluster formation settings</a> for information about the settings which control
+this mechanism.</p>
+<p>Lagging is typically caused by performance issues on the removed node. However,
+a node may also lag due to severe network delays. To rule out network delays,
+ensure that <code class="literal">net.ipv4.tcp_retries2</code> is <a class="xref" href="system-config.html#system-config-tcpretries" title="TCP retransmission timeout">configured
+properly</a>. Log messages that contain <code class="literal">warn threshold</code> may provide more
+information about the root cause.</p>
+<p>If you&#8217;re an advanced user, you can get more detailed information about what
+the node was doing when it was removed by configuring the following logger:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">logger.org.elasticsearch.cluster.coordination.LagDetector: DEBUG</pre>
+</div>
+<p>When this logger is enabled, Elasticsearch will attempt to run the
+<a class="xref" href="cluster.html#cluster-nodes-hot-threads" title="Nodes hot threads API">Nodes hot threads</a> API on the faulty node and report the results in
+the logs on the elected master. The results are compressed, encoded, and split
+into chunks to avoid truncation:</p>
+<div class="pre_wrapper lang-text">
+<pre class="programlisting prettyprint lang-text">[DEBUG][o.e.c.c.LagDetector      ] [master] hot threads from node [{node}{g3cCUaMDQJmQ2ZLtjr-3dg}{10.0.0.1:9300}] lagging at version [183619] despite commit of cluster state version [183620] [part 1]: H4sIAAAAAAAA/x...
+[DEBUG][o.e.c.c.LagDetector      ] [master] hot threads from node [{node}{g3cCUaMDQJmQ2ZLtjr-3dg}{10.0.0.1:9300}] lagging at version [183619] despite commit of cluster state version [183620] [part 2]: p7x3w1hmOQVtuV...
+[DEBUG][o.e.c.c.LagDetector      ] [master] hot threads from node [{node}{g3cCUaMDQJmQ2ZLtjr-3dg}{10.0.0.1:9300}] lagging at version [183619] despite commit of cluster state version [183620] [part 3]: v7uTboMGDbyOy+...
+[DEBUG][o.e.c.c.LagDetector      ] [master] hot threads from node [{node}{g3cCUaMDQJmQ2ZLtjr-3dg}{10.0.0.1:9300}] lagging at version [183619] despite commit of cluster state version [183620] [part 4]: 4tse0RnPnLeDNN...
+[DEBUG][o.e.c.c.LagDetector      ] [master] hot threads from node [{node}{g3cCUaMDQJmQ2ZLtjr-3dg}{10.0.0.1:9300}] lagging at version [183619] despite commit of cluster state version [183620] (gzip compressed, base64-encoded, and split into 4 parts on preceding log lines)</pre>
+</div>
+<p>To reconstruct the output, base64-decode the data and decompress it using
+<code class="literal">gzip</code>. For instance, on Unix-like systems:</p>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">cat lagdetector.log | sed -e 's/.*://' | base64 --decode | gzip --decompress</pre>
+</div>
+<h5><a id="_diagnosing_follower_check_retry_count_exceeded_nodes"></a>Diagnosing <code class="literal">follower check retry count exceeded</code> nodes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/fault-detection.asciidoc">edit</a></h5>
+<p>Nodes sometimes leave the cluster with reason <code class="literal">follower check retry count
+exceeded</code> when they shut down, but if they rejoin the cluster without
+restarting then there is some other problem.</p>
+<p>Elasticsearch needs every node to respond to network messages successfully and
+reasonably quickly. If a node rejects requests or does not respond at all then
+it can be harmful to the cluster. If enough consecutive checks fail then the
+master will remove the node with reason <code class="literal">follower check retry count exceeded</code>
+and will indicate in the <code class="literal">node-left</code> message how many of the consecutive
+unsuccessful checks failed and how many of them timed out. Refer to
+<a class="xref" href="settings.html#modules-discovery-settings" title="Discovery and cluster formation settings">Discovery and cluster formation settings</a> for information about the settings which control
+this mechanism.</p>
+<p>Timeouts and failures may be due to network delays or performance problems on
+the affected nodes. Ensure that <code class="literal">net.ipv4.tcp_retries2</code> is
+<a class="xref" href="system-config.html#system-config-tcpretries" title="TCP retransmission timeout">configured properly</a> to eliminate network delays as
+a possible cause for this kind of instability. Log messages containing
+<code class="literal">warn threshold</code> may give further clues about the cause of the instability.</p>
+<p>If the last check failed with an exception then the exception is reported, and
+typically indicates the problem that needs to be addressed. If any of the
+checks timed out then narrow down the problem as follows.</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+GC pauses are recorded in the GC logs that Elasticsearch emits by default, and also
+usually by the <code class="literal">JvmMonitorService</code> in the main node logs. Use these logs to
+confirm whether or not GC is resulting in delays.
+</li>
+<li class="listitem">
+VM pauses also affect other processes on the same host. A VM pause also
+typically causes a discontinuity in the system clock, which Elasticsearch will report in
+its logs.
+</li>
+<li class="listitem">
+Packet captures will reveal system-level and network-level faults, especially
+if you capture the network traffic simultaneously at the elected master and the
+faulty node. The connection used for follower checks is not used for any other
+traffic so it can be easily identified from the flow pattern alone, even if TLS
+is in use: almost exactly every second there will be a few hundred bytes sent
+each way, first the request by the master and then the response by the
+follower. You should be able to observe any retransmissions, packet loss, or
+other delays on such a connection.
+</li>
+<li class="listitem">
+<p>Long waits for particular threads to be available can be identified by taking
+stack dumps (for example, using <code class="literal">jstack</code>) or a profiling trace (for example,
+using Java Flight Recorder) in the few seconds leading up to the relevant log
+message.</p>
+<p>The <a class="xref" href="cluster.html#cluster-nodes-hot-threads" title="Nodes hot threads API">Nodes hot threads</a> API sometimes yields useful information, but
+bear in mind that this API also requires a number of <code class="literal">transport_worker</code> and
+<code class="literal">generic</code> threads across all the nodes in the cluster. The API may be affected
+by the very problem you&#8217;re trying to diagnose. <code class="literal">jstack</code> is much more reliable
+since it doesn&#8217;t require any JVM threads.</p>
+<p>The threads involved in discovery and cluster membership are mainly
+<code class="literal">transport_worker</code> and <code class="literal">cluster_coordination</code> threads, for which there should
+never be a long wait. There may also be evidence of long waits for threads in
+the Elasticsearch logs. See <a class="xref" href="settings.html#modules-network-threading-model" title="Networking threading model">Networking threading model</a> for more information.</p>
+</li>
+</ul>
+</div>
+<p>By default the follower checks will time out after 30s, so if node departures
+are unpredictable then capture stack dumps every 15s to be sure that at least
+one stack dump was taken at the right time.</p>
+<h5><a id="_diagnosing_shardlockobtainfailedexception_failures"></a>Diagnosing <code class="literal">ShardLockObtainFailedException</code> failures<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/modules/discovery/fault-detection.asciidoc">edit</a></h5>
+<p>If a node leaves and rejoins the cluster then Elasticsearch will usually shut down and
+re-initialize its shards. If the shards do not shut down quickly enough then
+Elasticsearch may fail to re-initialize them due to a <code class="literal">ShardLockObtainFailedException</code>.</p>
+<p>To gather more information about the reason for shards shutting down slowly,
+configure the following logger:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">logger.org.elasticsearch.env.NodeEnvironment: DEBUG</pre>
+</div>
+<p>When this logger is enabled, Elasticsearch will attempt to run the
+<a class="xref" href="cluster.html#cluster-nodes-hot-threads" title="Nodes hot threads API">Nodes hot threads</a> API whenever it encounters a
+<code class="literal">ShardLockObtainFailedException</code>. The results are compressed, encoded, and
+split into chunks to avoid truncation:</p>
+<div class="pre_wrapper lang-text">
+<pre class="programlisting prettyprint lang-text">[DEBUG][o.e.e.NodeEnvironment    ] [master] hot threads while failing to obtain shard lock for [index][0] [part 1]: H4sIAAAAAAAA/x...
+[DEBUG][o.e.e.NodeEnvironment    ] [master] hot threads while failing to obtain shard lock for [index][0] [part 2]: p7x3w1hmOQVtuV...
+[DEBUG][o.e.e.NodeEnvironment    ] [master] hot threads while failing to obtain shard lock for [index][0] [part 3]: v7uTboMGDbyOy+...
+[DEBUG][o.e.e.NodeEnvironment    ] [master] hot threads while failing to obtain shard lock for [index][0] [part 4]: 4tse0RnPnLeDNN...
+[DEBUG][o.e.e.NodeEnvironment    ] [master] hot threads while failing to obtain shard lock for [index][0] (gzip compressed, base64-encoded, and split into 4 parts on preceding log lines)</pre>
+</div>
+<p>To reconstruct the output, base64-decode the data and decompress it using
+<code class="literal">gzip</code>. For instance, on Unix-like systems:</p>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">cat shardlock.log | sed -e 's/.*://' | base64 --decode | gzip --decompress</pre>
+</div>
+</div>
+
 </div>
 
 </div>

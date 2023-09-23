@@ -1,6 +1,8 @@
-GET /_search
+GET /my-index-000001/_search?preference=my-custom-shard-string
 {
   "query": {
-    "span_term" : { "user.id" : "kimchy" }
+    "match": {
+      "user.id": "kimchy"
+    }
   }
 }

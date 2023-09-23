@@ -1,25 +1,8 @@
-POST /_security/api_key
+POST my-index-000001/_doc/
 {
-  "name": "my-api-key",
-  "expiration": "1d",
-  "role_descriptors": {
-    "role-a": {
-      "cluster": ["all"],
-      "index": [
-        {
-          "names": ["index-a*"],
-          "privileges": ["read"]
-        }
-      ]
-    },
-    "role-b": {
-      "cluster": ["all"],
-      "index": [
-        {
-          "names": ["index-b*"],
-          "privileges": ["all"]
-        }
-      ]
-    }
+  "@timestamp": "2099-11-15T13:12:00",
+  "message": "GET /search HTTP/1.1 200 1070000",
+  "user": {
+    "id": "kimchy"
   }
 }

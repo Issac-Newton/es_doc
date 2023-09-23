@@ -1,13 +1,6 @@
-GET /bank/_search
+PUT /_cluster/settings
 {
-  "query": {
-    "bool": {
-      "must": [
-        { "match": { "age": "40" } }
-      ],
-      "must_not": [
-        { "match": { "state": "ID" } }
-      ]
-    }
+  "persistent": {
+    "cluster.metadata.administrator": "sysadmin@example.com"
   }
 }

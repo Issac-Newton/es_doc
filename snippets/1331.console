@@ -1,13 +1,10 @@
-PUT _ilm/policy/my_policy
+GET /_search
 {
-  "policy": {
-    "phases": {
-      "warm": {
-        "actions": {
-          "shrink" : {
-            "number_of_shards": 1
-          }
-        }
+  "aggs": {
+    "genres": {
+      "terms": {
+        "field": "genre",
+        "order": { "_key": "asc" }
       }
     }
   }

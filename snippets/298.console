@@ -1,23 +1,11 @@
-PUT my-index-000001
+GET /my_index/_search
 {
-  "mappings": {
-    "dynamic_templates": [
-      {
-        "longs_as_strings": {
-          "match_mapping_type": "string",
-          "match":   "long_*",
-          "unmatch": "*_text",
-          "mapping": {
-            "type": "long"
-          }
+    "query": {
+        "range" : {
+            "my_counter" : {
+                "gte" : "9223372036854775808",
+                "lte" : "18446744073709551615"
+            }
         }
-      }
-    ]
-  }
-}
-
-PUT my-index-000001/_doc/1
-{
-  "long_num": "5",
-  "long_text": "foo"
+    }
 }

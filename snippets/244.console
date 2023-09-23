@@ -1,19 +1,41 @@
-# Example documents
-PUT my-index-000001/_doc/1
+PUT new_index
 {
-  "text": "Document with ID 1"
-}
-
-PUT my-index-000001/_doc/2?refresh=true
-{
-  "text": "Document with ID 2"
-}
-
-GET my-index-000001/_search
-{
-  "query": {
-    "terms": {
-      "_id": [ "1", "2" ]
+  "mappings": {
+    "properties": {
+      "query" : {
+        "type" : "percolator"
+      },
+      "body" : {
+        "type": "text"
+      }
     }
   }
+}
+
+POST /_reindex?refresh
+{
+  "source": {
+    "index": "index"
+  },
+  "dest": {
+    "index": "new_index"
+  }
+}
+
+POST _aliases
+{
+  "actions": [
+    {
+      "remove": {
+        "index" : "index",
+        "alias": "queries"
+      }
+    },
+    {
+      "add": {
+        "index": "new_index",
+        "alias": "queries"
+      }
+    }
+  ]
 }

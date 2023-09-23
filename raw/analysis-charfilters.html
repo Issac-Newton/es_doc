@@ -33,12 +33,12 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-charfilters"></a>Character filters reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-charfilters"></a>Character filters reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters.asciidoc">edit</a></h2>
 </div></div></div>
 <p><em>Character filters</em> are used to preprocess the stream of characters before it
 is passed to the <a class="xref" href="analysis-tokenizers.html" title="Tokenizer reference">tokenizer</a>.</p>
 <p>A character filter receives the original text as a stream of characters and
-can transform the stream by adding, removing, or changing characters.  For
+can transform the stream by adding, removing, or changing characters. For
 instance, a character filter could be used to convert Hindu-Arabic numerals
 (٠‎١٢٣٤٥٦٧٨‎٩‎) into their Arabic-Latin equivalents (0123456789), or to strip HTML
 elements like <code class="literal">&lt;b&gt;</code> from the stream.</p>
@@ -77,16 +77,16 @@ regular expression with the specified replacement.
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-htmlstrip-charfilter"></a>HTML strip character filter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-htmlstrip-charfilter"></a>HTML strip character filter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Strips HTML elements from a text and replaces HTML entities with their decoded
 value (e.g, replaces <code class="literal">&amp;amp;</code> with <code class="literal">&amp;</code>).</p>
 <p>The <code class="literal">html_strip</code> filter uses Lucene&#8217;s
-<a href="https://lucene.apache.org/core/8_7_0/analyzers-common/org/apache/lucene/analysis/charfilter/HTMLStripCharFilter.html" class="ulink" target="_top">HTMLStripCharFilter</a>.</p>
+<a href="https://lucene.apache.org/core/9_7_0/analysis/common/org/apache/lucene/analysis/charfilter/HTMLStripCharFilter.html" class="ulink" target="_top">HTMLStripCharFilter</a>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-htmlstrip-charfilter-analyze-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-htmlstrip-charfilter-analyze-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following <a class="xref" href="indices.html#indices-analyze" title="Analyze API">analyze API</a> request uses the
 <code class="literal">html_strip</code> filter to change the text <code class="literal">&lt;p&gt;I&amp;apos;m so &lt;b&gt;happy&lt;/b&gt;!&lt;/p&gt;</code> to
@@ -101,7 +101,7 @@ value (e.g, replaces <code class="literal">&amp;amp;</code> with <code class="li
   "text": "&lt;p&gt;I&amp;apos;m so &lt;b&gt;happy&lt;/b&gt;!&lt;/p&gt;"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/529.console"></div>
+<div class="console_widget" data-snippet="snippets/585.console"></div>
 <p>The filter produces the following text:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ \nI'm so happy!\n ]</pre>
@@ -110,7 +110,7 @@ value (e.g, replaces <code class="literal">&amp;amp;</code> with <code class="li
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-htmlstrip-charfilter-analyzer-ex"></a>Add to an analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-htmlstrip-charfilter-analyzer-ex"></a>Add to an analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following <a class="xref" href="indices.html#indices-create-index" title="Create index API">create index API</a> request uses the
 <code class="literal">html_strip</code> filter to configure a new
@@ -132,12 +132,12 @@ value (e.g, replaces <code class="literal">&amp;amp;</code> with <code class="li
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/530.console"></div>
+<div class="console_widget" data-snippet="snippets/586.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-htmlstrip-charfilter-configure-parms"></a>Configurable parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-htmlstrip-charfilter-configure-parms"></a>Configurable parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -158,7 +158,7 @@ value of <code class="literal">[ "p" ]</code> skips the <code class="literal">&l
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-htmlstrip-charfilter-customize"></a>Customize<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-htmlstrip-charfilter-customize"></a>Customize<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/htmlstrip-charfilter.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To customize the <code class="literal">html_strip</code> filter, duplicate it to create the basis for a new
 custom character filter. You can modify the filter using its configurable
@@ -193,26 +193,26 @@ HTML element.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/531.console"></div>
+<div class="console_widget" data-snippet="snippets/587.console"></div>
 </div>
 
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-mapping-charfilter"></a>Mapping character filter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/mapping-charfilter.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-mapping-charfilter"></a>Mapping character filter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/mapping-charfilter.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>The <code class="literal">mapping</code> character filter accepts a map of keys and values.  Whenever it
+<p>The <code class="literal">mapping</code> character filter accepts a map of keys and values. Whenever it
 encounters a string of characters that is the same as a key, it replaces them
 with the value associated with that key.</p>
 <p>Matching is greedy; the longest pattern matching at a given point wins.
 Replacements are allowed to be the empty string.</p>
 <p>The <code class="literal">mapping</code> filter uses Lucene&#8217;s
-<a href="https://lucene.apache.org/core/8_7_0/analyzers-common/org/apache/lucene/analysis/charfilter/MappingCharFilter.html" class="ulink" target="_top">MappingCharFilter</a>.</p>
+<a href="https://lucene.apache.org/core/9_7_0/analysis/common/org/apache/lucene/analysis/charfilter/MappingCharFilter.html" class="ulink" target="_top">MappingCharFilter</a>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-mapping-charfilter-analyze-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/mapping-charfilter.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-mapping-charfilter-analyze-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/mapping-charfilter.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following <a class="xref" href="indices.html#indices-analyze" title="Analyze API">analyze API</a> request uses the <code class="literal">mapping</code> filter
 to convert Hindu-Arabic numerals (٠‎١٢٣٤٥٦٧٨‎٩‎) into their Arabic-Latin
@@ -242,7 +242,7 @@ equivalents (0123456789), changing the text <code class="literal">My license pla
   "text": "My license plate is ٢٥٠١٥"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/532.console"></div>
+<div class="console_widget" data-snippet="snippets/588.console"></div>
 <p>The filter produces the following text:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ My license plate is 25015 ]</pre>
@@ -251,7 +251,7 @@ equivalents (0123456789), changing the text <code class="literal">My license pla
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-mapping-charfilter-configure-parms"></a>Configurable parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/mapping-charfilter.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-mapping-charfilter-configure-parms"></a>Configurable parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/mapping-charfilter.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -288,7 +288,7 @@ break.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-mapping-charfilter-customize"></a>Customize and add to an analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/mapping-charfilter.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-mapping-charfilter-customize"></a>Customize and add to an analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/mapping-charfilter.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To customize the <code class="literal">mappings</code> filter, duplicate it to create the basis for a new
 custom character filter. You can modify the filter using its configurable
@@ -324,7 +324,7 @@ with a text equivalent.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/533.console"></div>
+<div class="console_widget" data-snippet="snippets/589.console"></div>
 <p>The following <a class="xref" href="indices.html#indices-analyze" title="Analyze API">analyze API</a> request uses the custom
 <code class="literal">my_mappings_char_filter</code> to replace <code class="literal">:(</code> with <code class="literal">_sad_</code> in
 the text <code class="literal">I'm delighted about it :(</code>.</p>
@@ -336,7 +336,7 @@ the text <code class="literal">I'm delighted about it :(</code>.</p>
   "text": "I'm delighted about it :("
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/534.console"></div>
+<div class="console_widget" data-snippet="snippets/590.console"></div>
 <p>The filter produces the following text:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ I'm delighted about it _sad_ ]</pre>
@@ -347,7 +347,7 @@ the text <code class="literal">I'm delighted about it :(</code>.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-pattern-replace-charfilter"></a>Pattern replace character filter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/pattern-replace-charfilter.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-pattern-replace-charfilter"></a>Pattern replace character filter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/pattern-replace-charfilter.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">pattern_replace</code> character filter uses a regular expression to match
@@ -364,7 +364,7 @@ StackOverflowError and cause the node it is running on to exit suddenly.</p>
 <p>Read more about <a href="https://www.regular-expressions.info/catastrophic.html" class="ulink" target="_top">pathological regular expressions and how to avoid them</a>.</p>
 </div>
 </div>
-<h3><a id="_configuration_23"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/pattern-replace-charfilter.asciidoc">edit</a></h3>
+<h3><a id="_configuration_23"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/pattern-replace-charfilter.asciidoc">edit</a></h3>
 <p>The <code class="literal">pattern_replace</code> character filter accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -415,12 +415,12 @@ Flags should be pipe-separated, eg <code class="literal">"CASE_INSENSITIVE|COMME
 </tbody>
 </table>
 </div>
-<h3><a id="_example_configuration_15"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/charfilters/pattern-replace-charfilter.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_15"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/charfilters/pattern-replace-charfilter.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">pattern_replace</code> character filter to
 replace any embedded dashes in numbers with underscores, i.e <code class="literal">123-456-789</code> &#8594;
 <code class="literal">123_456_789</code>:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT my-index-00001
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
 {
   "settings": {
     "analysis": {
@@ -443,13 +443,13 @@ replace any embedded dashes in numbers with underscores, i.e <code class="litera
   }
 }
 
-POST my-index-00001/_analyze
+POST my-index-000001/_analyze
 {
   "analyzer": "my_analyzer",
   "text": "My credit card is 123-456-789"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/535.console"></div>
+<div class="console_widget" data-snippet="snippets/591.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ My, credit, card, is, 123_456_789 ]</pre>
@@ -466,7 +466,7 @@ as can be seen in the following example.</p>
 followed by an upper-case letter (i.e. <code class="literal">fooBarBaz</code> &#8594; <code class="literal">foo Bar Baz</code>), allowing
 camelCase words to be queried individually:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT my-index-00001
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
 {
   "settings": {
     "analysis": {
@@ -500,13 +500,13 @@ camelCase words to be queried individually:</p>
   }
 }
 
-POST my-index-00001/_analyze
+POST my-index-000001/_analyze
 {
   "analyzer": "my_analyzer",
   "text": "The fooBarBaz method"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/536.console"></div>
+<div class="console_widget" data-snippet="snippets/592.console"></div>
 <p>The above returns the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ the, foo, bar, baz, method ]</pre>
@@ -515,12 +515,12 @@ POST my-index-00001/_analyze
 result will produce incorrect highlights, because our character filter changed
 the length of the original text:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT my-index-00001/_doc/1?refresh
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/1?refresh
 {
   "text": "The fooBarBaz method"
 }
 
-GET my-index-00001/_search
+GET my-index-000001/_search
 {
   "query": {
     "match": {
@@ -534,7 +534,7 @@ GET my-index-00001/_search
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/537.console"></div>
+<div class="console_widget" data-snippet="snippets/593.console"></div>
 <p>The output from the above is:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -554,8 +554,7 @@ GET my-index-00001/_search
     "max_score": 0.2876821,
     "hits": [
       {
-        "_index": "my-index-00001",
-        "_type": "_doc",
+        "_index": "my-index-000001",
         "_id": "1",
         "_score": 0.2876821,
         "_source": {
@@ -563,7 +562,7 @@ GET my-index-00001/_search
         },
         "highlight": {
           "text": [
-            "The foo&lt;em&gt;Ba&lt;/em&gt;rBaz method" <a id="CO164-1"></a><i class="conum" data-value="1"></i>
+            "The foo&lt;em&gt;Ba&lt;/em&gt;rBaz method" <a id="CO170-1"></a><i class="conum" data-value="1"></i>
           ]
         }
       }
@@ -575,7 +574,7 @@ GET my-index-00001/_search
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO164-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO170-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Note the incorrect highlight.</p>

@@ -1,20 +1,7 @@
 GET /_search
 {
-  "query": {
-    "span_not": {
-      "include": {
-        "span_term": { "field1": "hoya" }
-      },
-      "exclude": {
-        "span_near": {
-          "clauses": [
-            { "span_term": { "field1": "la" } },
-            { "span_term": { "field1": "hoya" } }
-          ],
-          "slop": 0,
-          "in_order": true
-        }
-      }
-    }
-  }
+  "indices_boost": [
+    { "my-alias":  1.4 },
+    { "my-index*": 1.3 }
+  ]
 }

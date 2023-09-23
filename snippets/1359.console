@@ -1,9 +1,12 @@
-PUT /_template/custom_monitoring
+GET latency/_search
 {
-  "index_patterns": ".monitoring-*",
-  "order": 1,
-  "settings": {
-    "number_of_shards": 5,
-    "number_of_replicas": 2
+  "size": 0,
+  "aggs": {
+    "grade_boxplot": {
+      "boxplot": {
+        "field": "grade",
+        "missing": 10    
+      }
+    }
   }
 }

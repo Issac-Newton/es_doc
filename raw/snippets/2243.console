@@ -1,16 +1,8 @@
-PUT /_security/privilege
+PUT my-index-000001/_doc/1?timeout=5m
 {
-  "app01": {
-    "read": {
-      "actions": [ "action:login", "data:read/*" ]
-    },
-    "write": {
-      "actions": [ "action:login", "data:write/*" ]
-    }
-  },
-  "app02": {
-    "all": {
-      "actions": [ "*" ]
-    }
+  "@timestamp": "2099-11-15T13:12:00",
+  "message": "GET /search HTTP/1.1 200 1070000",
+  "user": {
+    "id": "kimchy"
   }
 }

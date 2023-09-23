@@ -1,1 +1,12 @@
-GET /_data_stream/my-data-stream/_stats
+PUT _ingest/pipeline/set_ingest_time
+{
+  "description": "Set ingest timestamp.",
+  "processors": [
+    {
+      "set": {
+        "field": "event.ingested",
+        "value": "{{{_ingest.timestamp}}}"
+      }
+    }
+  ]
+}

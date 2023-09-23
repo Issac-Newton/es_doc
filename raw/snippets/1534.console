@@ -1,8 +1,5 @@
-GET bicycles,other_cycles/_search
+POST /_sql?format=tsv
 {
-  "query": {
-    "match": {
-      "description": "dutch"
-    }
-  }
+  "query": "SELECT * FROM library ORDER BY page_count DESC",
+  "fetch_size": 5
 }

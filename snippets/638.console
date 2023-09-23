@@ -1,13 +1,6 @@
-GET /my-index-000001/_search
+PUT /_cluster/settings
 {
-  "query": {
-    "match": {
-      "message": "GET /search"
-    }
-  },
-  "collapse": {
-    "field": "user.id"               
-  },
-  "sort": [ "http.response.bytes" ], 
-  "from": 10                         
+  "persistent": {
+    "indices.lifecycle.poll_interval": "1m"
+  }
 }

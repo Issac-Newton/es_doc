@@ -7,7 +7,7 @@
 <meta class="elastic" name="content" content="Getting Started with SQL | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="xpack-sql.html" title="SQL access"/>
+<link rel="up" href="xpack-sql.html" title="SQL"/>
 <link rel="prev" href="sql-overview.html" title="Overview"/>
 <link rel="next" href="sql-concepts.html" title="Conventions and Terminology"/>
 <meta class="elastic" name="product_version" content=""/>
@@ -105,7 +105,7 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-sql.html">SQL access</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-sql.html">SQL</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
@@ -117,12 +117,12 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-getting-started"></a>Getting Started with SQL<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/getting-started.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-getting-started"></a>Getting Started with SQL<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/getting-started.asciidoc">edit</a></h2>
 </div></div></div>
 <p>To start using Elasticsearch SQL, create
 an index with some data to experiment with:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /library/book/_bulk?refresh
+<pre class="programlisting prettyprint lang-console">PUT /library/_bulk?refresh
 {"index":{"_id": "Leviathan Wakes"}}
 {"name": "Leviathan Wakes", "author": "James S.A. Corey", "release_date": "2011-06-02", "page_count": 561}
 {"index":{"_id": "Hyperion"}}
@@ -130,15 +130,15 @@ an index with some data to experiment with:</p>
 {"index":{"_id": "Dune"}}
 {"name": "Dune", "author": "Frank Herbert", "release_date": "1965-06-01", "page_count": 604}</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1269.console"></div>
-<p>And now you can execute SQL using the <a class="xref" href="sql-rest.html" title="SQL REST API"><em>SQL REST API</em></a> right away:</p>
+<div class="console_widget" data-snippet="snippets/1527.console"></div>
+<p>And now you can execute SQL using the <a class="xref" href="sql-apis.html#sql-search-api" title="SQL search API">SQL search API</a>:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /_sql?format=txt
 {
   "query": "SELECT * FROM library WHERE release_date &lt; '2000-01-01'"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1270.console"></div>
+<div class="console_widget" data-snippet="snippets/1528.console"></div>
 <p>Which should return something along the lines of:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">    author     |     name      |  page_count   | release_date

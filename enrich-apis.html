@@ -3,13 +3,14 @@
   <head>
     
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>Enrich APIs | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="Enrich APIs | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="rest-apis.html" title="REST APIs"/>
 <link rel="prev" href="docs.html" title="Document APIs"/>
-<link rel="next" href="graph-explore-api.html" title="Graph explore API"/>
+<link rel="next" href="eql-apis.html" title="EQL APIs"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -112,19 +113,19 @@
 <a href="docs.html">« Document APIs</a>
 </span>
 <span class="next">
-<a href="graph-explore-api.html">Graph explore API »</a>
+<a href="eql-apis.html">EQL APIs »</a>
 </span>
 </div>
-<div class="chapter">
+<div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="enrich-apis"></a>Enrich APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/index.asciidoc">edit</a></h2>
+<h2 class="title"><a id="enrich-apis"></a>Enrich APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/index.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The following enrich APIs are available for managing <a class="xref" href="ingest-enriching-data.html#enrich-policy">enrich
 policies</a>:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="enrich-apis.html#put-enrich-policy-api" title="Put enrich policy API">Put enrich policy</a> to create or replace an enrich policy
+<a class="xref" href="enrich-apis.html#put-enrich-policy-api" title="Create enrich policy API">Create enrich policy</a> to create or replace an enrich policy
 </li>
 <li class="listitem">
 <a class="xref" href="enrich-apis.html#delete-enrich-policy-api" title="Delete enrich policy API">Delete enrich policy</a> to delete an enrich policy
@@ -142,7 +143,7 @@ policies</a>:</p>
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="put-enrich-policy-api"></a>Put enrich policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="put-enrich-policy-api"></a>Create enrich policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Creates an enrich policy.</p>
@@ -156,17 +157,17 @@ policies</a>:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1800.console"></div>
+<div class="console_widget" data-snippet="snippets/2370.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-enrich-policy-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="put-enrich-policy-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">PUT /_enrich/policy/&lt;enrich-policy&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-enrich-policy-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="put-enrich-policy-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If you use Elasticsearch security features, you must have:</p>
 <div class="ulist itemizedlist">
@@ -183,10 +184,9 @@ The <code class="literal">enrich_user</code> <a class="xref" href="authorization
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-enrich-policy-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="put-enrich-policy-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
-<p>Use the put enrich policy API
-to create a new <a class="xref" href="ingest-enriching-data.html#enrich-policy">enrich policy</a>.</p>
+<p>Use the create enrich policy API to create a <a class="xref" href="ingest-enriching-data.html#enrich-policy">enrich policy</a>.</p>
 <div class="warning admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -214,7 +214,7 @@ to delete the previous enrich policy.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-enrich-policy-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="put-enrich-policy-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -225,16 +225,15 @@ to delete the previous enrich policy.
 </dt>
 <dd>
 (Required, string)
-Enrich policy name
-used to limit the request.
+Name of the enrich policy to create or update.
 </dd>
 </dl>
 </div>
 </div>
 
-<div class="section">
+<div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-enrich-policy-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="put-enrich-policy-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/put-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -244,10 +243,96 @@ used to limit the request.
 </span>
 </dt>
 <dd>
-<p>(Required, <a class="xref" href="ingest-enriching-data.html#enrich-policy-definition" title="Enrich policy definition">enrich policy</a> object)
-Enrich policy used to match and add the right enrich data to
-the right incoming documents.</p>
-<p>See <a class="xref" href="ingest-enriching-data.html#enrich-policy-definition" title="Enrich policy definition">Enrich policy definition</a> for object definition and parameters.</p>
+<p>
+(Required, object)
+Configures the enrich policy. The field key is the enrich policy type. Valid key
+values are:
+</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">geo_match</code>
+</span>
+</dt>
+<dd>
+Matches enrich data to incoming documents based on a
+<a class="xref" href="geo-queries.html#query-dsl-geo-shape-query" title="Geoshape query"><code class="literal">geo_shape</code> query</a>. For an example, see
+<a class="xref" href="ingest-enriching-data.html#geo-match-enrich-policy-type" title="Example: Enrich your data based on geolocation">Example: Enrich your data based on geolocation</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">match</code>
+</span>
+</dt>
+<dd>
+Matches enrich data to incoming documents based on a
+<a class="xref" href="term-level-queries.html#query-dsl-term-query" title="Term query"><code class="literal">term</code> query</a>. For an example, see
+<a class="xref" href="ingest-enriching-data.html#match-enrich-policy-type" title="Example: Enrich your data based on exact values">Example: Enrich your data based on exact values</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">range</code>
+</span>
+</dt>
+<dd>
+Matches a number, date, or IP address in incoming documents to a range in the
+enrich index based on a <a class="xref" href="term-level-queries.html#query-dsl-term-query" title="Term query"><code class="literal">term</code> query</a>. For an example,
+see <a class="xref" href="ingest-enriching-data.html#range-enrich-policy-type" title="Example: Enrich your data by matching a value to a range">Example: Enrich your data by matching a value to a range</a>.
+</dd>
+</dl>
+</div>
+<details open>
+<summary class="title">Properties of <code class="literal">&lt;policy-type&gt;</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">indices</code>
+</span>
+</dt>
+<dd>
+<p>
+(Required, String or array of strings)
+One or more source indices used to create the enrich index.
+</p>
+<p>If multiple indices are specified, they must share a common <code class="literal">match_field</code>.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">match_field</code>
+</span>
+</dt>
+<dd>
+(Required, string)
+Field in source indices used to match incoming documents.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">enrich_fields</code>
+</span>
+</dt>
+<dd>
+(Required, Array of strings)
+Fields to add to matching incoming documents. These fields must be present in
+the source indices.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">query</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="query-dsl.html" title="Query DSL">Query DSL query object</a>)
+Query used to filter documents in the enrich index. The policy only uses
+documents matching this query to enrich incoming documents. Defaults to a
+<a class="xref" href="query-dsl-match-all-query.html" title="Match all query"><code class="literal">match_all</code></a> query.
+</dd>
+</dl>
+</div>
+</div>
+</details>
 </dd>
 </dl>
 </div>
@@ -257,7 +342,7 @@ the right incoming documents.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="delete-enrich-policy-api"></a>Delete enrich policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="delete-enrich-policy-api"></a>Delete enrich policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Deletes an existing <a class="xref" href="ingest-enriching-data.html#enrich-policy">enrich policy</a> and its
@@ -265,17 +350,17 @@ the right incoming documents.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">DELETE /_enrich/policy/my-policy</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1801.console"></div>
+<div class="console_widget" data-snippet="snippets/2371.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-enrich-policy-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="delete-enrich-policy-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">DELETE /_enrich/policy/&lt;enrich-policy&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-enrich-policy-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="delete-enrich-policy-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If you use Elasticsearch security features, you must have:</p>
 <div class="ulist itemizedlist">
@@ -292,7 +377,7 @@ The <code class="literal">enrich_user</code> <a class="xref" href="authorization
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-enrich-policy-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="delete-enrich-policy-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Use the delete enrich policy API
 to delete an existing enrich policy
@@ -310,7 +395,7 @@ You cannot remove in-use enrich policies.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-enrich-policy-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="delete-enrich-policy-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/delete-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -331,17 +416,17 @@ Enrich policy to delete.
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="get-enrich-policy-api"></a>Get enrich policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="get-enrich-policy-api"></a>Get enrich policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Returns information about an <a class="xref" href="ingest-enriching-data.html#enrich-policy">enrich policy</a>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_enrich/policy/my-policy</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1802.console"></div>
+<div class="console_widget" data-snippet="snippets/2372.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-enrich-policy-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-enrich-policy-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET /_enrich/policy/&lt;name&gt;</code></p>
 <p><code class="literal">GET /_enrich/policy</code></p>
@@ -350,7 +435,7 @@ Enrich policy to delete.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-enrich-policy-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-enrich-policy-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If you use Elasticsearch security features, you must have:</p>
 <div class="ulist itemizedlist">
@@ -367,7 +452,7 @@ The <code class="literal">enrich_user</code> <a class="xref" href="authorization
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-enrich-policy-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-enrich-policy-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -389,16 +474,16 @@ omit this parameter.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-enrich-policy-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-enrich-policy-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="get-enrich-policy-api-single-ex"></a>Get a single policy<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h4>
+<h4 class="title"><a id="get-enrich-policy-api-single-ex"></a>Get a single policy<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h4>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_enrich/policy/my-policy</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1803.console"></div>
+<div class="console_widget" data-snippet="snippets/2373.console"></div>
 <p>The API returns the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -426,15 +511,15 @@ omit this parameter.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="get-enrich-policy-api-commas-ex"></a>Get multiple policies<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h4>
+<h4 class="title"><a id="get-enrich-policy-api-commas-ex"></a>Get multiple policies<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h4>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_enrich/policy/my-policy,other-policy</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1804.console"></div>
+<div class="console_widget" data-snippet="snippets/2374.console"></div>
 <p>The API returns the following response:</p>
-<div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">{
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
   "policies": [
     {
       "config": {
@@ -475,12 +560,12 @@ omit this parameter.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="get-enrich-policy-api-all-ex"></a>Get all policies<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h4>
+<h4 class="title"><a id="get-enrich-policy-api-all-ex"></a>Get all policies<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/get-enrich-policy.asciidoc">edit</a></h4>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_enrich/policy</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1805.console"></div>
+<div class="console_widget" data-snippet="snippets/2375.console"></div>
 <p>The API returns the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -528,17 +613,17 @@ omit this parameter.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="execute-enrich-policy-api"></a>Execute enrich policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="execute-enrich-policy-api"></a>Execute enrich policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Executes an existing <a class="xref" href="ingest-enriching-data.html#enrich-policy">enrich policy</a>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT /_enrich/policy/my-policy/_execute</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1806.console"></div>
+<div class="console_widget" data-snippet="snippets/2376.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="execute-enrich-policy-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="execute-enrich-policy-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">PUT /_enrich/policy/&lt;enrich-policy&gt;/_execute</code></p>
 <p><code class="literal">POST /_enrich/policy/&lt;enrich-policy&gt;/_execute</code></p>
@@ -546,7 +631,7 @@ omit this parameter.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="execute-enrich-policy-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="execute-enrich-policy-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>If you use Elasticsearch security features, you must have:</p>
 <div class="ulist itemizedlist">
@@ -563,7 +648,7 @@ The <code class="literal">enrich_user</code> <a class="xref" href="authorization
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="execute-enrich-policy-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="execute-enrich-policy-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Use the execute enrich policy API
 to create the enrich index for an existing enrich policy.</p>
@@ -574,7 +659,7 @@ and are <a class="xref" href="indices.html#indices-forcemerge" title="Force merg
 <div class="warning admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>Enrich indices should be used by the <a class="xref" href="ingest-processors.html#enrich-processor" title="Enrich processor">enrich processor</a> only.
+<p>Enrich indices should be used by the <a class="xref" href="processors.html#enrich-processor" title="Enrich processor">enrich processor</a> only.
 Avoid using enrich indices for other purposes.</p>
 </div>
 </div>
@@ -582,15 +667,16 @@ Avoid using enrich indices for other purposes.</p>
 or index documents to an enrich index.
 Instead, update your source indices
 and <a class="xref" href="enrich-apis.html#execute-enrich-policy-api" title="Execute enrich policy API">execute</a> the enrich policy again.
-This creates a new enrich index from your updated source indices
-and deletes the previous enrich index.</p>
+This creates a new enrich index from your updated source indices.
+The previous enrich index will deleted with a delayed maintenance job.
+By default this is done every 15 minutes.</p>
 <p>Because this API request performs several operations,
 it may take a while to return a response.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="execute-enrich-policy-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="execute-enrich-policy-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -609,7 +695,7 @@ Enrich policy to execute.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="execute-enrich-policy-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="execute-enrich-policy-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/execute-enrich-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -631,7 +717,7 @@ complete. Defaults to <code class="literal">true</code>.
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="enrich-stats-api"></a>Enrich stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/enrich-stats.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="enrich-stats-api"></a>Enrich stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/enrich-stats.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Returns <a class="xref" href="settings.html#coordinating-node" title="Coordinating node">enrich coordinator</a> statistics
@@ -640,17 +726,17 @@ that are currently executing.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_enrich/_stats</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1807.console"></div>
+<div class="console_widget" data-snippet="snippets/2377.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="enrich-stats-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/enrich-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="enrich-stats-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/enrich-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET /_enrich/_stats</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="enrich-stats-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/enrich-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="enrich-stats-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/enrich-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -760,18 +846,79 @@ since node startup.
 </dl>
 </div>
 </dd>
+<dt>
+<span class="term">
+<code class="literal">cache_stats</code>
+</span>
+</dt>
+<dd>
+<p>(Array of objects)
+Objects containing information about the enrich
+cache stats on each ingest node.</p>
+<p>Returned parameters include:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">node_id</code>
+</span>
+</dt>
+<dd>
+(String)
+ID of the ingest node with a enrich cache.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">count</code>
+</span>
+</dt>
+<dd>
+(Integer)
+Number of cached entries.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">hits</code>
+</span>
+</dt>
+<dd>
+(Integer)
+The number of enrich lookups served from cache.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">missed</code>
+</span>
+</dt>
+<dd>
+(Integer)
+The number of time enrich lookups couldn&#8217;t be
+served from cache.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">evictions</code>
+</span>
+</dt>
+<dd>
+(Integer)
+The number cache entries evicted from the cache.
+</dd>
+</dl>
+</div>
+</dd>
 </dl>
 </div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="enrich-stats-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/enrich/enrich-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="enrich-stats-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/enrich/enrich-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_enrich/_stats</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1808.console"></div>
+<div class="console_widget" data-snippet="snippets/2378.console"></div>
 <p>The API returns the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -800,6 +947,15 @@ since node startup.
       "remote_requests_total": 0,
       "executed_searches_total": 0
     }
+  ],
+  "cache_stats": [
+    {
+      "node_id": "1sFM8cmSROZYhPxVsiWew",
+      "count": 0,
+      "hits": 0,
+      "misses": 0,
+      "evictions": 0
+    }
   ]
 }</pre>
 </div>
@@ -813,7 +969,7 @@ since node startup.
 <a href="docs.html">« Document APIs</a>
 </span>
 <span class="next">
-<a href="graph-explore-api.html">Graph explore API »</a>
+<a href="eql-apis.html">EQL APIs »</a>
 </span>
 </div>
 </div>

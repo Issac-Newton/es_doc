@@ -1,9 +1,13 @@
-PUT /my-index-000001/_mapping
+POST _cluster/reroute?metric=none
 {
-  "properties": {
-    "user_id": {
-      "type": "keyword",
-      "ignore_above": 100
+  "commands": [
+    {
+      "allocate_empty_primary": {
+        "index": "my-index",
+        "shard": 0,
+        "node": "my-node",
+        "accept_data_loss": "true"
+      }
     }
-  }
+  ]
 }

@@ -1,13 +1,4 @@
-GET /_search
+POST /my-time-series-index/_downsample/my-downsampled-time-series-index
 {
-  "query" : {
-    "match": { "user.id": "kimchy" }
-  },
-  "highlight" : {
-    "pre_tags" : ["<tag1>", "<tag2>"],
-    "post_tags" : ["</tag1>", "</tag2>"],
-    "fields" : {
-      "body" : {}
-    }
-  }
+    "fixed_interval": "1d"
 }

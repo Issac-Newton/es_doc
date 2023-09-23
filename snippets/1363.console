@@ -1,1 +1,11 @@
-GET /_cat/indices/my-index-000001?v=true&h=i,sth
+POST /sales/_search?size=0
+{
+  "aggs": {
+    "tag_cardinality": {
+      "cardinality": {
+        "field": "tag",
+        "missing": "N/A"
+      }
+    }
+  }
+}

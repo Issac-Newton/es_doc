@@ -1,29 +1,6 @@
-POST _watcher/watch/_execute
+PUT products/_doc/1567?if_seq_no=362&if_primary_term=2
 {
-  "ignore_condition" : true,
-  "watch" : {
-    "trigger" : { "schedule" : { "interval" : "10s" } },
-    "input" : {
-      "search" : {
-        "request" : {
-          "indices" : [ "logs" ],
-          "body" : {
-            "query" : {
-              "match" : { "message": "error" }
-            }
-          }
-        }
-      }
-    },
-    "condition" : {
-      "compare" : { "ctx.payload.hits.total" : { "gt" : 0 }}
-    },
-    "actions" : {
-      "log_error" : {
-        "logging" : {
-          "text" : "Found {{ctx.payload.hits.total}} errors in the logs"
-        }
-      }
-    }
-  }
+  "product": "r2d2",
+  "details": "A resourceful astromech droid",
+  "tags": [ "droid" ]
 }

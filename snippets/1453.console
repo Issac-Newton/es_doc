@@ -1,5 +1,18 @@
-POST /_security/oidc/logout
+POST /exams/_search
 {
-  "token" : "dGhpcyBpcyBub3QgYSByZWFsIHRva2VuIGJ1dCBpdCBpcyBvbmx5IHRlc3QgZGF0YS4gZG8gbm90IHRyeSB0byByZWFkIHRva2VuIQ==",
-  "refresh_token": "vLBPvmAB6KvwvJZr27cS"
+  "size": 0,
+  "aggs": {
+    "weighted_grade": {
+      "weighted_avg": {
+        "value": {
+          "field": "grade",
+          "missing": 2
+        },
+        "weight": {
+          "field": "weight",
+          "missing": 3
+        }
+      }
+    }
+  }
 }

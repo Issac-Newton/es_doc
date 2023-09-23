@@ -1,12 +1,16 @@
-PUT /products
+GET my_locations/_search
 {
-  "mappings": {
-    "properties": {
-      "resellers": {
-        "type": "nested",
-        "properties": {
-          "reseller": { "type": "text" },
-          "price": { "type": "double" }
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "top_left": "POINT (-74.1 40.73)",
+            "bottom_right": "POINT (-71.12 40.01)"
+          }
         }
       }
     }

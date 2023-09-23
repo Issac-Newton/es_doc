@@ -1,15 +1,13 @@
-PUT index
+POST /_sql?format=txt
 {
-  "mappings": {
-    "dynamic_templates": [
-      {
-        "strings": {
-          "match_mapping_type": "string",
-          "mapping": {
-            "type": "keyword"
-          }
-        }
+  "query": "SELECT * FROM library ORDER BY page_count DESC",
+  "filter": {
+    "range": {
+      "page_count": {
+        "gte" : 100,
+        "lte" : 200
       }
-    ]
-  }
+    }
+  },
+  "fetch_size": 5
 }

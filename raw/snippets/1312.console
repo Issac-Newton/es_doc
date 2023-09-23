@@ -1,1 +1,11 @@
-GET timeseries-*/_ilm/explain
+GET /_search
+{
+  "aggs": {
+    "genres": {
+      "rare_terms": {
+        "field": "genre",
+        "missing": "N/A"
+      }
+    }
+  }
+}

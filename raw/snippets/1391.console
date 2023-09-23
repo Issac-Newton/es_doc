@@ -1,7 +1,12 @@
-PUT /_snapshot/my_backup
+GET reviews/_search
 {
-  "type": "fs",
-  "settings": {
-    "location": "my_backup_location"
+  "size": 0,
+  "aggs": {
+    "review_variability": {
+      "median_absolute_deviation": {
+        "field": "rating",
+        "missing": 5
+      }
+    }
   }
 }

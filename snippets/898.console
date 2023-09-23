@@ -1,11 +1,15 @@
-GET /test/_search
+POST _render/template
 {
-  "query": {
-    "rank_feature": {
-      "field": "pagerank",
-      "saturation": {
-        "pivot": 8
+  "id": "my-search-template",
+  "params": {
+    "query_string": "My string",
+    "text_fields": [
+      {
+        "user_name": "John"
+      },
+      {
+        "user_name": "kimchy"
       }
-    }
+    ]
   }
 }

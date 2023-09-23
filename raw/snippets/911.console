@@ -1,13 +1,10 @@
-PUT my_sparse_index/_doc/1
+POST /index_long,index_double/_search
 {
-  "my_sparse_vector": {"2": 1.5, "15" : 2, "50": -1.1, "4545": 1.1},
-  "status" : "published"
+   "sort" : [
+      {
+        "field" : {
+            "numeric_type" : "double"
+        }
+      }
+   ]
 }
-
-PUT my_sparse_index/_doc/2
-{
-  "my_sparse_vector": {"2": 2.5, "10" : 1.3, "55": -2.3, "113": 1.6},
-  "status" : "published"
-}
-
-POST my_sparse_index/_refresh

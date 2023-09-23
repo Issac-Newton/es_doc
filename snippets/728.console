@@ -1,18 +1,13 @@
-GET /_search
+PUT _ingest/pipeline/attachment
 {
-  "sort" : [
+  "description" : "Extract attachment information",
+  "processors" : [
     {
-      "_geo_distance" : {
-        "pin.location" : {
-          "lat" : 40,
-          "lon" : -70
-        },
-        "order" : "asc",
-        "unit" : "km"
+      "attachment" : {
+        "field" : "data",
+        "properties": [ "content", "title" ],
+        "remove_binary": false
       }
     }
-  ],
-  "query" : {
-    "term" : { "user" : "kimchy" }
-  }
+  ]
 }

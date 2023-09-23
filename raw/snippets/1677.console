@@ -1,8 +1,17 @@
-PUT my-index-000001/_doc/1?timeout=5m
+POST _transform/_preview
 {
-  "@timestamp": "2099-11-15T13:12:00",
-  "message": "GET /search HTTP/1.1 200 1070000",
-  "user": {
-    "id": "kimchy"
+  "source": {
+    "index": "kibana_sample_data_ecommerce",
+    "query": {
+      "bool": {
+        "filter": {
+          "term": {"currency": "EUR"}
+        }
+      }
+    }
+  },
+  "latest": {
+    "unique_key": ["geoip.country_iso_code", "geoip.region_name"],
+    "sort": "order_date"
   }
 }

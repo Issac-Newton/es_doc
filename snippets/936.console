@@ -1,8 +1,17 @@
-PUT my-index-000001
+POST image-index/_search
 {
-  "mappings": {
-    "properties": {
-      "color": { "type": "keyword" }
+  "knn": {
+    "field": "image-vector",
+    "query_vector": [1, 5, -20],
+    "k": 5,
+    "num_candidates": 50,
+    "similarity": 36,
+    "filter": {
+      "term": {
+        "file-type": "png"
+      }
     }
-  }
+  },
+  "fields": ["title"],
+  "_source": false
 }

@@ -1,6 +1,14 @@
-GET /my-index-000001/_eql/search?filter_path=hits.events._source.@timestamp,hits.events._source.process.pid
+GET logs/_search
 {
-  "query": """
-    process where process.name == "regsvr32.exe"
-  """
+  "size": 0,
+  "aggs" : {
+    "messages" : {
+      "filters" : {
+        "filters" : [
+          { "match" : { "body" : "error"   }},
+          { "match" : { "body" : "warning" }}
+        ]
+      }
+    }
+  }
 }

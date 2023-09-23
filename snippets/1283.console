@@ -1,5 +1,13 @@
-POST /_sql?format=json
+GET /network-traffic/_search
 {
-  "cursor": "sDXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAAEWWWdrRlVfSS1TbDYtcW9lc1FJNmlYdw==:BAFmBmF1dGhvcgFmBG5hbWUBZgpwYWdlX2NvdW50AWYMcmVsZWFzZV9kYXRl+v///w8=",
-  "columnar": true
+  "size": 0,
+  "aggs": {
+    "ipv4-subnets": {
+      "ip_prefix": {
+        "field": "ipv4",
+        "prefix_length": 24,
+        "min_doc_count": 3
+      }
+    }
+  }
 }

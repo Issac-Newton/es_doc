@@ -1,16 +1,11 @@
-GET reviews/_search
+GET /test/_search
 {
-  "size": 0,
-  "aggs": {
-    "review_variability": {
-      "median_absolute_deviation": {
-        "script": {
-          "lang": "painless",
-          "source": "doc['rating'].value * params.scaleFactor",
-          "params": {
-            "scaleFactor": 2
-          }
-        }
+  "query": {
+    "rank_feature": {
+      "field": "pagerank",
+      "sigmoid": {
+        "pivot": 7,
+        "exponent": 0.6
       }
     }
   }

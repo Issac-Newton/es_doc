@@ -1,6 +1,16 @@
-PUT /job-candidates/_doc/2?refresh
+PUT my-index
 {
-  "name": "Jason Response",
-  "programming_languages": [ "java", "php" ],
-  "required_matches": 2
+  "mappings": {
+    "properties": {
+      "my_embeddings.predicted_value": {
+        "type": "dense_vector",
+        "dims": 384,
+        "index": true,
+        "similarity": "cosine"
+      },
+      "my_text_field": {
+        "type": "text"
+      }
+    }
+  }
 }

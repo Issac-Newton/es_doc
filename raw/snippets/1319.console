@@ -1,10 +1,14 @@
-PUT _ilm/policy/my_policy
+GET /_search
 {
-  "policy": {
-    "phases": {
-      "cold": {
-        "actions": {
-          "freeze" : { }
+  "aggs": {
+    "hotspots": {
+      "geohash_grid": {
+        "field": "location",
+        "precision": 5
+      },
+      "aggs": {
+        "significant_crime_types": {
+          "significant_terms": { "field": "crime_type" }
         }
       }
     }

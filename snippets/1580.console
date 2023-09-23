@@ -1,1 +1,9 @@
-GET /_cat/nodes?v=true
+GET my-index/_search
+{
+  "query": {
+    "match": {
+      "http.response": "304"
+    }
+  },
+  "fields" : ["http.response"]
+}

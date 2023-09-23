@@ -1,5 +1,14 @@
-GET text_payloads/_termvectors/1
+PUT /whitespace_example
 {
-  "fields": [ "text" ],
-  "payloads": true
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "rebuilt_whitespace": {
+          "tokenizer": "whitespace",
+          "filter": [        
+          ]
+        }
+      }
+    }
+  }
 }

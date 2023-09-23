@@ -1,29 +1,14 @@
-PUT _watcher/watch/cluster_health_watch
+GET /my-data-stream/_eql/search
 {
-  "trigger" : {
-    "schedule" : { "interval" : "10s" }
-  },
-  "input" : {
-    "http" : {
-      "request" : {
-       "host" : "localhost",
-       "port" : 9200,
-       "path" : "/_cluster/health"
+  "filter": {
+    "range": {
+      "@timestamp": {
+        "gte": "now-1d/d",
+        "lt": "now/d"
       }
     }
   },
-  "condition" : {
-    "compare" : {
-      "ctx.payload.status" : { "eq" : "red" }
-    }
-  },
-  "actions" : {
-    "send_email" : {
-      "email" : {
-        "to" : "username@example.org",
-        "subject" : "Cluster Status Warning",
-        "body" : "Cluster status is RED"
-      }
-    }
-  }
+  "query": """
+    file where (file.type == "file" and file.name == "cmd.exe")
+  """
 }

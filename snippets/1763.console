@@ -1,15 +1,6 @@
-POST _reindex
+PUT _cluster/settings
 {
-  "source": {
-    "index": "source",
-    "query": {
-      "match": {
-        "company": "cat"
-      }
-    }
-  },
-  "dest": {
-    "index": "dest",
-    "routing": "=cat"
+  "persistent": {
+    "xpack.monitoring.collection.enabled": false
   }
 }

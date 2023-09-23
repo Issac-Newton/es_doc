@@ -1,11 +1,13 @@
-GET my_locations/_search
+GET twitter/_search
 {
-  "query": {
-    "geo_bounding_box": {
-      "pin.location": {
-        "top_left": "dr",
-        "bottom_right": "dr"
-      }
-    }
-  }
+    "query": {
+        "match": {
+            "title": "elasticsearch"
+        }
+    },
+    "search_after": [1463538857, "654323"],
+    "sort": [
+        {"date": "asc"},
+        {"tie_breaker_id": "asc"}
+    ]
 }

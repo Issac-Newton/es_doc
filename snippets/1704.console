@@ -1,8 +1,6 @@
-POST my-index-000001/_delete_by_query?scroll_size=5000
+### On clusterA ###
+PUT /kibana_sample_data_ecommerce/_ccr/follow?wait_for_active_shards=1
 {
-  "query": {
-    "term": {
-      "user.id": "kimchy"
-    }
-  }
+  "remote_cluster": "clusterB",
+  "leader_index": "kibana_sample_data_ecommerce2"
 }

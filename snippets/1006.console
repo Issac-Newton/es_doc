@@ -1,11 +1,13 @@
-POST /sales/_search?size=0
+GET /_search
 {
-  "aggs": {
-    "t_shirts": {
-      "filter": { "term": { "type": "t-shirt" } },
-      "aggs": {
-        "avg_price": { "avg": { "field": "price" } }
-      }
+  "query": {
+    "multi_match" : {
+      "query":      "Jon",
+      "type":       "cross_fields",
+      "fields":     [
+        "first", "first.edge",
+        "last",  "last.edge"
+      ]
     }
   }
 }

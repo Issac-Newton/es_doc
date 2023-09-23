@@ -1,15 +1,25 @@
-GET /_search
+POST _ingest/pipeline/_simulate
 {
-  "query": {
-    "function_score": {
-      "gauss": {
-        "@timestamp": {
-          "origin": "2013-09-17",
-          "scale": "10d",
-          "offset": "5d",        
-          "decay": 0.5           
+  "pipeline": {
+  "description" : "parse multiple patterns",
+  "processors": [
+    {
+      "grok": {
+        "field": "message",
+        "patterns": ["%{FAVORITE_DOG:pet}", "%{FAVORITE_CAT:pet}"],
+        "pattern_definitions" : {
+          "FAVORITE_DOG" : "beagle",
+          "FAVORITE_CAT" : "burmese"
         }
       }
     }
+  ]
+},
+"docs":[
+  {
+    "_source": {
+      "message": "I love burmese cats!"
+    }
   }
+  ]
 }
