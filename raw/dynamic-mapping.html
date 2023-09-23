@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dynamic Mapping | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Dynamic Mapping | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="mapping.html" title="Mapping"/>
+<link rel="prev" href="mapping-params.html" title="Mapping parameters"/>
+<link rel="next" href="analysis.html" title="Text analysis"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="mapping.html">Mapping</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="mapping-params.html">« Mapping parameters</a>
+</span>
+<span class="next">
+<a href="analysis.html">Text analysis »</a>
+</span>
+</div>
+<div class="chapter">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="dynamic-mapping"></a>Dynamic Mapping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic-mapping.asciidoc">edit</a></h2>
+</div></div></div>
+<p>One of the most important features of Elasticsearch is that it tries to get
+out of your way and let you start exploring your data as quickly as possible.
+To index a document, you don&#8217;t have to first create an index, define a mapping
+type, and define your fields&#8201;&#8212;&#8201;you can just index a document and the index,
+type, and fields will spring to life automatically:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT data/_doc/1 <a id="CO106-1"></a><i class="conum" data-value="1"></i>
+{ "count": 5 }</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/292.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO106-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Creates the <code class="literal">data</code> index, the <code class="literal">_doc</code> mapping type, and a field
+called <code class="literal">count</code> with data type <code class="literal">long</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The automatic detection and addition of new fields is called
+<em>dynamic mapping</em>. The dynamic mapping rules can be customised to suit your
+purposes with:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<a class="xref" href="dynamic-mapping.html#dynamic-field-mapping" title="Dynamic field mapping">Dynamic field mappings</a>
+</span>
+</dt>
+<dd>
+The rules governing dynamic field detection.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="dynamic-mapping.html#dynamic-templates" title="Dynamic templates">Dynamic templates</a>
+</span>
+</dt>
+<dd>
+Custom rules to configure the mapping for dynamically added fields.
+</dd>
+</dl>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p><a class="xref" href="index-templates.html" title="Index templates">Index templates</a> allow you to configure the default
+mappings, settings and aliases for new indices, whether created
+automatically or explicitly.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="dynamic-field-mapping"></a>Dynamic field mapping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/field-mapping.asciidoc">edit</a></h2>
+</div></div></div>
+<p>By default, when a previously unseen field is found in a document,
+Elasticsearch will add the new field to the type mapping.   This behaviour can
+be disabled, both at the document and at the <a class="xref" href="mapping-types.html#object" title="Object field type"><code class="literal">object</code></a>  level, by
+setting the <a class="xref" href="mapping-params.html#dynamic" title="dynamic"><code class="literal">dynamic</code></a> parameter to <code class="literal">false</code> (to ignore new fields) or to <code class="literal">strict</code> (to throw
+an exception if an unknown field is encountered).</p>
+<p>Assuming <code class="literal">dynamic</code> field mapping is enabled, some simple rules are used to
+determine which data type the field should have:</p>
+<div class="informaltable">
+<table border="0" cellpadding="4px">
+<colgroup>
+<col/>
+<col/>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td valign="top">
+<p>
+<span class="strong strong"><strong>JSON data type</strong></span>
+</p>
+</td>
+<td valign="top">
+<p>
+<span class="strong strong"><strong>Elasticsearch data type</strong></span>
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">null</code>
+</p>
+</td>
+<td valign="top">
+<p>
+No field is added.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">true</code> or <code class="literal">false</code>
+</p>
+</td>
+<td valign="top">
+<p>
+<a class="xref" href="mapping-types.html#boolean" title="Boolean field type"><code class="literal">boolean</code></a> field
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+floating&#160;point&#160;number
+</p>
+</td>
+<td valign="top">
+<p>
+<a class="xref" href="mapping-types.html#number" title="Numeric field types"><code class="literal">float</code></a> field
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+integer
+</p>
+</td>
+<td valign="top">
+<p>
+<a class="xref" href="mapping-types.html#number" title="Numeric field types"><code class="literal">long</code></a> field
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+object
+</p>
+</td>
+<td valign="top">
+<p>
+<a class="xref" href="mapping-types.html#object" title="Object field type"><code class="literal">object</code></a> field
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+array
+</p>
+</td>
+<td valign="top">
+<p>
+Depends on the first non-<code class="literal">null</code> value in the array.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+string
+</p>
+</td>
+<td valign="top">
+<p>
+Either a <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a> field
+    (if the value passes <a class="xref" href="dynamic-mapping.html#date-detection" title="Date detection">date detection</a>),
+a <a class="xref" href="mapping-types.html#number" title="Numeric field types"><code class="literal">double</code></a> or <a class="xref" href="mapping-types.html#number" title="Numeric field types"><code class="literal">long</code></a> field
+    (if the value passes <a class="xref" href="dynamic-mapping.html#numeric-detection" title="Numeric detection">numeric detection</a>)
+or a <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> field, with a <a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> sub-field.
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These are the only <a class="xref" href="mapping-types.html" title="Field data types">field data types</a> that are dynamically
+detected.  All other data types must be mapped explicitly.</p>
+<p>Besides the options listed below, dynamic field mapping rules can be further
+customised with <a class="xref" href="dynamic-mapping.html#dynamic-templates" title="Dynamic templates"><code class="literal">dynamic_templates</code></a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="date-detection"></a>Date detection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/field-mapping.asciidoc">edit</a></h3>
+</div></div></div>
+<p>If <code class="literal">date_detection</code> is enabled (default), then new string fields are checked
+to see whether their contents match any of the date patterns specified in
+<code class="literal">dynamic_date_formats</code>.  If a match is found, a new <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a> field is
+added with the corresponding format.</p>
+<p>The default value for <code class="literal">dynamic_date_formats</code> is:</p>
+<p>&#91; <a class="xref" href="mapping-params.html#strict-date-time"><code class="literal">"strict_date_optional_time"</code></a>,<code class="literal">"yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z"</code>]</p>
+<p>For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/1
+{
+  "create_date": "2015/09/02"
+}
+
+GET my-index-000001/_mapping <a id="CO107-1"></a><i class="conum" data-value="1"></i></pre>
+</div>
+<div class="console_widget" data-snippet="snippets/293.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO107-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">create_date</code> field has been added as a <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a>
+field with the <a class="xref" href="mapping-params.html#mapping-date-format" title="format"><code class="literal">format</code></a>:<br>
+<code class="literal">"yyyy/MM/dd HH:mm:ss Z||yyyy/MM/dd Z"</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_disabling_date_detection"></a>Disabling date detection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/field-mapping.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Dynamic date detection can be disabled by setting <code class="literal">date_detection</code> to <code class="literal">false</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "date_detection": false
+  }
+}
+
+PUT my-index-000001/_doc/1 <a id="CO108-1"></a><i class="conum" data-value="1"></i>
+{
+  "create": "2015/09/02"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/294.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO108-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">create_date</code> field has been added as a <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> field.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_customising_detected_date_formats"></a>Customising detected date formats<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/field-mapping.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Alternatively, the <code class="literal">dynamic_date_formats</code> can be customised to support your
+own <a class="xref" href="mapping-params.html#mapping-date-format" title="format">date formats</a>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic_date_formats": ["MM/dd/yyyy"]
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "create_date": "09/25/2015"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/295.console"></div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="numeric-detection"></a>Numeric detection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/field-mapping.asciidoc">edit</a></h3>
+</div></div></div>
+<p>While JSON has support for native floating point and integer data types, some
+applications or languages may sometimes render numbers as strings. Usually the
+correct solution is to map these fields explicitly, but numeric detection
+(which is disabled by default) can be enabled to do this automatically:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "numeric_detection": true
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "my_float":   "1.0", <a id="CO109-1"></a><i class="conum" data-value="1"></i>
+  "my_integer": "1" <a id="CO109-2"></a><i class="conum" data-value="2"></i>
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/296.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO109-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">my_float</code> field is added as a <a class="xref" href="mapping-types.html#number" title="Numeric field types"><code class="literal">float</code></a> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO109-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">my_integer</code> field is added as a <a class="xref" href="mapping-types.html#number" title="Numeric field types"><code class="literal">long</code></a> field.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="dynamic-templates"></a>Dynamic templates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Dynamic templates allow you to define custom mappings that can be applied to
+dynamically added fields based on:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+the <a class="xref" href="dynamic-mapping.html" title="Dynamic Mapping">data type</a> detected by Elasticsearch, with <a class="xref" href="dynamic-mapping.html#match-mapping-type" title="match_mapping_type"><code class="literal">match_mapping_type</code></a>.
+</li>
+<li class="listitem">
+the name of the field, with <a class="xref" href="dynamic-mapping.html#match-unmatch" title="match and unmatch"><code class="literal">match</code> and <code class="literal">unmatch</code></a> or <a class="xref" href="dynamic-mapping.html#match-pattern" title="match_pattern"><code class="literal">match_pattern</code></a>.
+</li>
+<li class="listitem">
+the full dotted path to the field, with <a class="xref" href="dynamic-mapping.html#path-match-unmatch" title="path_match and path_unmatch"><code class="literal">path_match</code> and <code class="literal">path_unmatch</code></a>.
+</li>
+</ul>
+</div>
+<p>The original field name <code class="literal">{name}</code> and the detected data type
+<code class="literal">{dynamic_type}</code> <a class="xref" href="dynamic-mapping.html#template-variables" title="{name} and {dynamic_type}">template variables</a> can be used in
+the mapping specification as placeholders.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Dynamic field mappings are only added when a field contains a
+concrete value&#8201;&#8212;&#8201;not <code class="literal">null</code> or an empty array. This means that if the
+<code class="literal">null_value</code> option is used in a <code class="literal">dynamic_template</code>, it will only be applied
+after the first document with a concrete value for the field has been
+indexed.</p>
+</div>
+</div>
+<p>Dynamic templates are specified as an array of named objects:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">  "dynamic_templates": [
+    {
+      "my_template_name": { <a id="CO110-1"></a><i class="conum" data-value="1"></i>
+        ...  match conditions ... <a id="CO110-2"></a><i class="conum" data-value="2"></i>
+        "mapping": { ... } <a id="CO110-3"></a><i class="conum" data-value="3"></i>
+      }
+    },
+    ...
+  ]</pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO110-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The template name can be any string value.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO110-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The match conditions can include any of : <code class="literal">match_mapping_type</code>, <code class="literal">match</code>, <code class="literal">match_pattern</code>, <code class="literal">unmatch</code>, <code class="literal">path_match</code>, <code class="literal">path_unmatch</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO110-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The mapping that the matched field should use.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>If a provided mapping contains an invalid mapping snippet, a validation error
+is returned. Validation occurs when applying the dynamic template at index time,
+and, in most cases, when the dynamic template is updated. Providing an invalid mapping
+snippet may cause the update or validation of a dynamic template to fail under certain conditions:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If no <code class="literal">match_mapping_type</code> has been specified but the template is valid for at least one predefined mapping type,
+the mapping snippet is considered valid. However, a validation error is returned at index time if a field matching
+the template is indexed as a different type. For example, configuring a dynamic template with no <code class="literal">match_mapping_type</code>
+is considered valid as string type, but if a field matching the dynamic template is indexed as a long, a validation
+error is returned at index time.
+</li>
+<li class="listitem">
+If the <code class="literal">{name}</code> placeholder is used in the mapping snippet, validation is skipped when updating the dynamic
+template. This is because the field name is unknown at that time. Instead, validation occurs when the template is applied
+at index time.
+</li>
+</ul>
+</div>
+<p>Templates are processed in order&#8201;&#8212;&#8201;the first matching template wins. When
+putting new dynamic templates through the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">put mapping</a> API,
+all existing templates are overwritten. This allows for dynamic templates to be
+reordered or deleted after they were initially added.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-mapping-type"></a><code class="literal">match_mapping_type</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">match_mapping_type</code> is the data type detected by the JSON parser. Since
+JSON doesn&#8217;t distinguish a <code class="literal">long</code> from an <code class="literal">integer</code> or a <code class="literal">double</code> from
+a <code class="literal">float</code>, it will always choose the wider data type, i.e. <code class="literal">long</code> for integers
+and <code class="literal">double</code> for floating-point numbers.</p>
+<p>The following data types may be automatically detected:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">boolean</code> when <code class="literal">true</code> or <code class="literal">false</code> are encountered.
+</li>
+<li class="listitem">
+<code class="literal">date</code> when <a class="xref" href="dynamic-mapping.html#date-detection" title="Date detection">date detection</a> is enabled and a string matching
+any of the configured date formats is found.
+</li>
+<li class="listitem">
+<code class="literal">double</code> for numbers with a decimal part.
+</li>
+<li class="listitem">
+<code class="literal">long</code> for numbers without a decimal part.
+</li>
+<li class="listitem">
+<code class="literal">object</code> for objects, also called hashes.
+</li>
+<li class="listitem">
+<code class="literal">string</code> for character strings.
+</li>
+</ul>
+</div>
+<p><code class="literal">*</code> may also be used in order to match all data types.</p>
+<p>For example, if we wanted to map all integer fields as <code class="literal">integer</code> instead of
+<code class="literal">long</code>, and all <code class="literal">string</code> fields as both <code class="literal">text</code> and <code class="literal">keyword</code>, we
+could use the following template:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "integers": {
+          "match_mapping_type": "long",
+          "mapping": {
+            "type": "integer"
+          }
+        }
+      },
+      {
+        "strings": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "text",
+            "fields": {
+              "raw": {
+                "type":  "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "my_integer": 5, <a id="CO111-1"></a><i class="conum" data-value="1"></i>
+  "my_string": "Some string" <a id="CO111-2"></a><i class="conum" data-value="2"></i>
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/297.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO111-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">my_integer</code> field is mapped as an <code class="literal">integer</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO111-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">my_string</code> field is mapped as a <code class="literal">text</code>, with a <code class="literal">keyword</code> <a class="xref" href="mapping-params.html#multi-fields" title="fields">multi field</a>.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-unmatch"></a><code class="literal">match</code> and <code class="literal">unmatch</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">match</code> parameter uses a pattern to match on the field name, while
+<code class="literal">unmatch</code> uses a pattern to exclude fields matched by <code class="literal">match</code>.</p>
+<p>The following example matches all <code class="literal">string</code> fields whose name starts with
+<code class="literal">long_</code> (except for those which end with <code class="literal">_text</code>) and maps them as <code class="literal">long</code>
+fields:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "longs_as_strings": {
+          "match_mapping_type": "string",
+          "match":   "long_*",
+          "unmatch": "*_text",
+          "mapping": {
+            "type": "long"
+          }
+        }
+      }
+    ]
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "long_num": "5", <a id="CO112-1"></a><i class="conum" data-value="1"></i>
+  "long_text": "foo" <a id="CO112-2"></a><i class="conum" data-value="2"></i>
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/298.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO112-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">long_num</code> field is mapped as a <code class="literal">long</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO112-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">long_text</code> field uses the default <code class="literal">string</code> mapping.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-pattern"></a><code class="literal">match_pattern</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">match_pattern</code> parameter adjusts the behavior of the <code class="literal">match</code> parameter
+such that it supports full Java regular expression matching on the field name
+instead of simple wildcards, for instance:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">  "match_pattern": "regex",
+  "match": "^profit_\d+$"</pre>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="path-match-unmatch"></a><code class="literal">path_match</code> and <code class="literal">path_unmatch</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">path_match</code> and <code class="literal">path_unmatch</code> parameters work in the same way as <code class="literal">match</code>
+and <code class="literal">unmatch</code>, but operate on the full dotted path to the field, not just the
+final name, e.g. <code class="literal">some_object.*.some_field</code>.</p>
+<p>This example copies the values of any fields in the <code class="literal">name</code> object to the
+top-level <code class="literal">full_name</code> field, except for the <code class="literal">middle</code> field:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "full_name": {
+          "path_match":   "name.*",
+          "path_unmatch": "*.middle",
+          "mapping": {
+            "type":       "text",
+            "copy_to":    "full_name"
+          }
+        }
+      }
+    ]
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "name": {
+    "first":  "John",
+    "middle": "Winston",
+    "last":   "Lennon"
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/299.console"></div>
+<p>Note that the <code class="literal">path_match</code> and <code class="literal">path_unmatch</code> parameters match on object paths
+in addition to leaf fields. As an example, indexing the following document will
+result in an error because the <code class="literal">path_match</code> setting also matches the object
+field <code class="literal">name.title</code>, which can&#8217;t be mapped as text:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/2
+{
+  "name": {
+    "first":  "Paul",
+    "last":   "McCartney",
+    "title": {
+      "value": "Sir",
+      "category": "order of chivalry"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/300.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="template-variables"></a><code class="literal">{name}</code> and <code class="literal">{dynamic_type}</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">{name}</code> and <code class="literal">{dynamic_type}</code> placeholders are replaced in the <code class="literal">mapping</code>
+with the field name and detected dynamic type.  The following example sets all
+string fields to use an <a class="xref" href="mapping-params.html#analyzer" title="analyzer"><code class="literal">analyzer</code></a> with the same name as the
+field, and disables <a class="xref" href="mapping-params.html#doc-values" title="doc_values"><code class="literal">doc_values</code></a> for all non-string fields:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "named_analyzers": {
+          "match_mapping_type": "string",
+          "match": "*",
+          "mapping": {
+            "type": "text",
+            "analyzer": "{name}"
+          }
+        }
+      },
+      {
+        "no_doc_values": {
+          "match_mapping_type":"*",
+          "mapping": {
+            "type": "{dynamic_type}",
+            "doc_values": false
+          }
+        }
+      }
+    ]
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "english": "Some English text", <a id="CO113-1"></a><i class="conum" data-value="1"></i>
+  "count":   5 <a id="CO113-2"></a><i class="conum" data-value="2"></i>
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/301.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO113-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">english</code> field is mapped as a <code class="literal">string</code> field with the <code class="literal">english</code> analyzer.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO113-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">count</code> field is mapped as a <code class="literal">long</code> field with <code class="literal">doc_values</code> disabled.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="template-examples"></a>Template examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Here are some examples of potentially useful dynamic templates:</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_structured_search"></a>Structured search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h4>
+</div></div></div>
+<p>By default Elasticsearch will map string fields as a <code class="literal">text</code> field with a sub
+<code class="literal">keyword</code> field. However if you are only indexing structured content and not
+interested in full text search, you can make Elasticsearch map your fields
+only as `keyword`s. Note that this means that in order to search those fields,
+you will have to search on the exact same value that was indexed.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "strings_as_keywords": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword"
+          }
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/302.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="text-only-mappings-strings"></a><code class="literal">text</code>-only mappings for strings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h4>
+</div></div></div>
+<p>On the contrary to the previous example, if the only thing that you care about
+on your string fields is full-text search, and if you don&#8217;t plan on running
+aggregations, sorting or exact search on your string fields, you could tell
+Elasticsearch to map it only as a text field (which was the default behaviour
+before 5.0):</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "strings_as_text": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "text"
+          }
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/303.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_disabled_norms"></a>Disabled norms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Norms are index-time scoring factors. If you do not care about scoring, which
+would be the case for instance if you never sort documents by score, you could
+disable the storage of these scoring factors in the index and save some space.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "strings_as_keywords": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "text",
+            "norms": false,
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/304.console"></div>
+<p>The sub <code class="literal">keyword</code> field appears in this template to be consistent with the
+default rules of dynamic mappings. Of course if you do not need them because
+you don&#8217;t need to perform exact search or aggregate on this field, you could
+remove it as described in the previous section.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_time_series"></a>Time series<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/dynamic/templates.asciidoc">edit</a></h4>
+</div></div></div>
+<p>When doing time series analysis with Elasticsearch, it is common to have many
+numeric fields that you will often aggregate on but never filter on. In such a
+case, you could disable indexing on those fields to save disk space and also
+maybe gain some indexing speed:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "unindexed_longs": {
+          "match_mapping_type": "long",
+          "mapping": {
+            "type": "long",
+            "index": false
+          }
+        }
+      },
+      {
+        "unindexed_doubles": {
+          "match_mapping_type": "double",
+          "mapping": {
+            "type": "float", <a id="CO114-1"></a><i class="conum" data-value="1"></i>
+            "index": false
+          }
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/305.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO114-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Like the default dynamic mapping rules, doubles are mapped as floats, which
+are usually accurate enough, yet require half the disk space.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="mapping-params.html">« Mapping parameters</a>
+</span>
+<span class="next">
+<a href="analysis.html">Text analysis »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

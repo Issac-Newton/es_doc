@@ -1,0 +1,2511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User authentication | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="User authentication | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="secure-cluster.html" title="Secure a cluster"/>
+<link rel="prev" href="configuring-security.html" title="Configuring security in Elasticsearch"/>
+<link rel="next" href="saml-guide.html" title="Configuring SAML single-sign-on on the Elastic Stack"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="secure-cluster.html">Secure a cluster</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="configuring-security.html">« Configuring security in Elasticsearch</a>
+</span>
+<span class="next">
+<a href="saml-guide.html">Configuring SAML single-sign-on on the Elastic Stack »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="setting-up-authentication"></a>User authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/overview.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Authentication identifies an individual. To gain access to restricted resources,
+a user must prove their identity, via passwords, credentials, or some other
+means (typically referred to as authentication tokens).</p>
+<p>The Elastic Stack authenticates users by identifying the users behind the requests
+that hit the cluster and verifying that they are who they claim to be. The
+authentication process is handled by one or more authentication services called
+<a class="xref" href="setting-up-authentication.html#realms" title="Realms"><em>realms</em></a>.</p>
+<p>You can use the native support for managing and authenticating users, or
+integrate with external user management systems such as LDAP and Active
+Directory.</p>
+<p>The Elastic Stack security features provide built-in realms such as <code class="literal">native</code>,<code class="literal">ldap</code>,
+<code class="literal">active_directory</code>, <code class="literal">pki</code>, <code class="literal">file</code>, <code class="literal">saml</code>, and <code class="literal">oidc</code>. If none of the built-in
+realms meet your needs, you can also build your own custom realm and plug it
+into the Elastic Stack.</p>
+<p>When security features are enabled, depending on the realms you&#8217;ve configured,
+you must attach your user credentials to the requests sent to Elasticsearch. For example,
+when using realms that support usernames and passwords you can simply attach
+<a href="https://en.wikipedia.org/wiki/Basic_access_authentication" class="ulink" target="_top">basic auth</a> header to the requests.</p>
+<p>The security features provide two services: the token service and the api key
+service. You can use these services to exchange the current authentication for
+a token or key. This token or key can then be used as credentials for
+authenticating new requests. These services are enabled by default when TLS/SSL
+is enabled for HTTP.</p>
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="built-in-users"></a>Built-in users<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/built-in-users.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>The Elastic Stack security features provide built-in user credentials to help you get
+up and running. These users have a fixed set of privileges and cannot be
+authenticated until their passwords have been set. The <code class="literal">elastic</code> user can be
+used to <a class="xref" href="setting-up-authentication.html#set-built-in-user-passwords" title="Setting built-in user passwords">set all of the built-in user passwords</a>.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">elastic</code>
+</span>
+</dt>
+<dd>
+A built-in <a class="xref" href="authorization.html#built-in-roles" title="Built-in roles">superuser</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">kibana_system</code>
+</span>
+</dt>
+<dd>
+The user Kibana uses to connect and communicate with Elasticsearch.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">logstash_system</code>
+</span>
+</dt>
+<dd>
+The user Logstash uses when storing monitoring information in Elasticsearch.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">beats_system</code>
+</span>
+</dt>
+<dd>
+The user the Beats use when storing monitoring information in Elasticsearch.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">apm_system</code>
+</span>
+</dt>
+<dd>
+The user the APM server uses when storing monitoring information in Elasticsearch.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">remote_monitoring_user</code>
+</span>
+</dt>
+<dd>
+The user Metricbeat uses when collecting and
+storing monitoring information in Elasticsearch. It has the <code class="literal">remote_monitoring_agent</code> and
+<code class="literal">remote_monitoring_collector</code> built-in roles.
+</dd>
+</dl>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The built-in users serve specific purposes and are not intended for general
+use. In particular, do not use the <code class="literal">elastic</code> superuser unless full access to
+the cluster is required. Instead, create users that have the minimum necessary
+roles or privileges for their activities.</p>
+</div>
+</div>
+<h4><a id="built-in-user-explanation"></a>How the built-in users work<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/built-in-users.asciidoc">edit</a></h4>
+<p>These built-in users are stored in a special <code class="literal">.security</code> index, which is managed
+by Elasticsearch. If a built-in user is disabled or its password
+changes, the change is automatically reflected on each node in the cluster. If
+your <code class="literal">.security</code> index is deleted or restored from a snapshot, however, any
+changes you have applied are lost.</p>
+<p>Although they share the same API, the built-in users are separate and distinct
+from users managed by the <a class="xref" href="setting-up-authentication.html#native-realm" title="Native user authentication">native realm</a>. Disabling the native
+realm will not have any effect on the built-in users. The built-in users can
+be disabled individually, using the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-disable-user.html" class="ulink" target="_top">disable users API</a>.</p>
+<h4><a id="bootstrap-elastic-passwords"></a>The Elastic bootstrap password<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/built-in-users.asciidoc">edit</a></h4>
+<p>When you install Elasticsearch, if the <code class="literal">elastic</code> user does not already have a password,
+it uses a default bootstrap password. The bootstrap password is a transient
+password that enables you to run the tools that set all the built-in user passwords.</p>
+<p>By default, the bootstrap password is derived from a randomized <code class="literal">keystore.seed</code>
+setting, which is added to the keystore during installation. You do not need
+to know or change this bootstrap password. If you have defined a
+<code class="literal">bootstrap.password</code> setting in the keystore, however, that value is used instead.
+For more information about interacting with the keystore, see
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/secure-settings.html" class="ulink" target="_top">Secure Settings</a>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>After you <a class="xref" href="setting-up-authentication.html#set-built-in-user-passwords" title="Setting built-in user passwords">set passwords for the built-in users</a>,
+in particular for the <code class="literal">elastic</code> user, there is no further use for the bootstrap
+password.</p>
+</div>
+</div>
+<h4><a id="set-built-in-user-passwords"></a>Setting built-in user passwords<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/built-in-users.asciidoc">edit</a></h4>
+<p>You must set the passwords for all built-in users.</p>
+<p>The <code class="literal">elasticsearch-setup-passwords</code> tool is the simplest method to set the
+built-in users' passwords for the first time. It uses the <code class="literal">elastic</code> user&#8217;s
+bootstrap password to run user management API requests. For example, you can run
+the command in an "interactive" mode, which prompts you to enter new passwords
+for the <code class="literal">elastic</code>, <code class="literal">kibana_system</code>, <code class="literal">logstash_system</code>, <code class="literal">beats_system</code>, <code class="literal">apm_system</code>,
+and <code class="literal">remote_monitoring_user</code> users:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">bin/elasticsearch-setup-passwords interactive</pre>
+</div>
+<p>For more information about the command options, see
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/setup-passwords.html" class="ulink" target="_top">elasticsearch-setup-passwords</a>.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>After you set a password for the <code class="literal">elastic</code> user, the bootstrap
+password is no longer valid; you cannot run the <code class="literal">elasticsearch-setup-passwords</code>
+command a second time.</p>
+</div>
+</div>
+<p>Alternatively, you can set the initial passwords for the built-in users by using
+the <span class="strong strong"><strong>Management &gt; Users</strong></span> page in Kibana or the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-change-password.html" class="ulink" target="_top">Change Password API</a>. These methods are
+more complex. You must supply the <code class="literal">elastic</code> user and its bootstrap password to
+log into Kibana or run the API. This requirement means that you cannot use the
+default bootstrap password that is derived from the <code class="literal">keystore.seed</code> setting.
+Instead, you must explicitly set a <code class="literal">bootstrap.password</code> setting in the keystore
+before you start Elasticsearch. For example, the following command prompts you to enter a
+new bootstrap password:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">bin/elasticsearch-keystore add "bootstrap.password"</pre>
+</div>
+<p>You can then start Elasticsearch and Kibana and use the <code class="literal">elastic</code> user and bootstrap
+password to log into Kibana and change the passwords. Alternatively, you can
+submit Change Password API requests for each built-in user. These methods are
+better suited for changing your passwords after the initial setup is complete,
+since at that point the bootstrap password is no longer required.</p>
+<h4><a id="add-built-in-user-kibana"></a>Adding built-in user passwords to Kibana<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/built-in-users.asciidoc">edit</a></h4>
+<p>After the <code class="literal">kibana_system</code> user password is set, you need to update the Kibana server
+with the new password by setting <code class="literal">elasticsearch.password</code> in the <code class="literal">kibana.yml</code>
+configuration file:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">elasticsearch.password: kibanapassword</pre>
+</div>
+<p>See <a href="https://www.elastic.co/guide/en/kibana/7.10/using-kibana-with-security.html" class="ulink" target="_top">Configuring security in Kibana</a>.</p>
+<h4><a id="add-built-in-user-logstash"></a>Adding built-in user passwords to Logstash<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/built-in-users.asciidoc">edit</a></h4>
+<p>The <code class="literal">logstash_system</code> user is used internally within Logstash when
+monitoring is enabled for Logstash.</p>
+<p>To enable this feature in Logstash, you need to update the Logstash
+configuration with the new password by setting <code class="literal">xpack.monitoring.elasticsearch.password</code> in
+the <code class="literal">logstash.yml</code> configuration file:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.monitoring.elasticsearch.password: logstashpassword</pre>
+</div>
+<p>If you have upgraded from an older version of Elasticsearch, the <code class="literal">logstash_system</code> user
+may have defaulted to <em>disabled</em> for security reasons. Once the password has
+been changed, you can enable the user via the following API call:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _security/user/logstash_system/_enable</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1430.console"></div>
+<p>See <a href="https://www.elastic.co/guide/en/logstash/7.10/ls-security.html#ls-monitoring-user" class="ulink" target="_top">Configuring credentials for Logstash monitoring</a>.</p>
+<h4><a id="add-built-in-user-beats"></a>Adding built-in user passwords to Beats<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/built-in-users.asciidoc">edit</a></h4>
+<p>The <code class="literal">beats_system</code> user is used internally within Beats when monitoring is
+enabled for Beats.</p>
+<p>To enable this feature in Beats, you need to update the configuration for each
+of your beats to reference the correct username and password. For example:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.monitoring.elasticsearch.username: beats_system
+xpack.monitoring.elasticsearch.password: beatspassword</pre>
+</div>
+<p>For example, see <a href="https://www.elastic.co/guide/en/beats/metricbeat/7.10/monitoring.html" class="ulink" target="_top">Monitoring Metricbeat</a>.</p>
+<p>The <code class="literal">remote_monitoring_user</code> is used when Metricbeat collects and stores
+monitoring data for the Elastic Stack. See <a class="xref" href="monitoring-production.html" title="Monitoring in a production environment"><em>Monitoring in a production environment</em></a>.</p>
+<p>If you have upgraded from an older version of Elasticsearch, then you may not have set a
+password for the <code class="literal">beats_system</code> or <code class="literal">remote_monitoring_user</code> users. If this is
+the case, then you should use the <span class="strong strong"><strong>Management &gt; Users</strong></span> page in Kibana or the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-change-password.html" class="ulink" target="_top">Change Password API</a> to set a password
+for these users.</p>
+<h4><a id="add-built-in-user-apm"></a>Adding built-in user passwords to APM<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/built-in-users.asciidoc">edit</a></h4>
+<p>The <code class="literal">apm_system</code> user is used internally within APM when monitoring is enabled.</p>
+<p>To enable this feature in APM, you need to update the
+<a href="https://www.elastic.co/guide/en/apm/server/7.10/configuring-howto-apm-server.html" class="ulink" target="_top">APM configuration file</a> to
+reference the correct username and password. For example:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.monitoring.elasticsearch.username: apm_system
+xpack.monitoring.elasticsearch.password: apmserverpassword</pre>
+</div>
+<p>See <a href="https://www.elastic.co/guide/en/apm/server/7.10/monitoring.html" class="ulink" target="_top">Monitoring APM Server</a>.</p>
+<p>If you have upgraded from an older version of Elasticsearch, then you may not have set a
+password for the <code class="literal">apm_system</code> user. If this is the case,
+then you should use the <span class="strong strong"><strong>Management &gt; Users</strong></span> page in Kibana or the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-change-password.html" class="ulink" target="_top">Change Password API</a> to set a password
+for these users.</p>
+<h4><a id="disabling-default-password"></a>Disabling default password functionality<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/built-in-users.asciidoc">edit</a></h4>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This setting is deprecated. The elastic user no longer has a default password.
+The password must be set before the user can be used.
+See <a class="xref" href="setting-up-authentication.html#bootstrap-elastic-passwords" title="The Elastic bootstrap password">The Elastic bootstrap password</a>.</p>
+</div>
+</div>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="internal-users"></a>Internal users<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/internal-users.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>The Elastic Stack security features use three <em>internal</em> users (<code class="literal">_system</code>, <code class="literal">_xpack</code>,
+and <code class="literal">_xpack_security</code>), which are responsible for the operations that take place
+inside an Elasticsearch cluster.</p>
+<p>These users are only used by requests that originate from within the cluster.
+For this reason, they cannot be used to authenticate against the API and there
+is no password to manage or reset.</p>
+<p>From time-to-time you may find a reference to one of these users inside your
+logs, including <a class="xref" href="getting-started-modify-data.html#auditing" title="Audit logging">audit logs</a>.</p>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="token-authentication-services"></a>Token-based authentication services<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/token-authentication-services.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>The Elastic Stack security features authenticate users by using realms and one or more token-based
+authentication services. The token-based authentication services are used for
+authentication and for the management of tokens. These tokens can be used as
+credentials attached to requests that are sent to Elasticsearch. When Elasticsearch receives a request
+that must be authenticated, it consults first the token-based authentication
+services then the realm chain.</p>
+<p>The security features provide the following built-in token-based authentication
+services, which are listed in the order they are consulted:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<em>token-service</em>
+</span>
+</dt>
+<dd>
+<p>
+The token service uses the <a class="xref" href="security-api.html#security-api-get-token" title="Get token API">get token API</a> to
+generate access tokens and refresh tokens based on the OAuth2 specification.
+The access token is a short-lived token. By default, it expires after 20 minutes
+but it can be configured to last a maximum of 1 hour. It can be refreshed by
+using a refresh token, which has a lifetime of 24 hours. The access token is a
+bearer token. You can use it by sending a request with an <code class="literal">Authorization</code>
+header with a value that has the prefix "Bearer " followed by the value of the
+access token. For example:
+</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">curl -H "Authorization: Bearer dGhpcyBpcyBub3QgYSByZWFsIHRva2VuIGJ1dCBpdCBpcyBvbmx5IHRlc3QgZGF0YS4gZG8gbm90IHRyeSB0byByZWFkIHRva2VuIQ==" http://localhost:9200/_cluster/health</pre>
+</div>
+</dd>
+<dt>
+<span class="term">
+<em>api-key-service</em>
+</span>
+</dt>
+<dd>
+<p>
+The API key service uses the
+<a class="xref" href="security-api.html#security-api-create-api-key" title="Create API key API">create API key API</a> to generate API keys.
+By default, the API keys do not expire. When you make a request to create API
+keys, you can specify an expiration and permissions for the API key. The
+permissions are limited by the authenticated user&#8217;s permissions. You can use the
+API key by sending a request with an <code class="literal">Authorization</code> header with a value that
+has the prefix "ApiKey " followed by the credentials. The credentials are the
+base64 encoding of the API key ID and the API key joined by a colon. For example:
+</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">curl -H "Authorization: ApiKey VnVhQ2ZHY0JDZGJrUW0tZTVhT3g6dWkybHAyYXhUTm1zeWFrdzl0dk5udw==" http://localhost:9200/_cluster/health</pre>
+</div>
+</dd>
+</dl>
+</div>
+<p>Depending on your use case, you may want to decide on the lifetime of the tokens
+generated by these services. You can then use this information to decide which
+service to use to generate and manage the tokens. Non-expiring API keys may seem
+like the easy option but you must consider the security implications that come
+with non-expiring keys. Both the <em>token-service</em> and <em>api-key-service</em> permit
+you to invalidate the tokens. See
+<a class="xref" href="security-api.html#security-api-invalidate-token" title="Invalidate token API">invalidate token API</a> and
+<a class="xref" href="security-api.html#security-api-invalidate-api-key" title="Invalidate API key API">invalidate API key API</a>.</p>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="realms"></a>Realms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/realms.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>The Elastic Stack security features authenticate users by using realms and one or more
+<a class="xref" href="setting-up-authentication.html#token-authentication-services" title="Token-based authentication services">token-based authentication services</a>.</p>
+<p>A <em>realm</em> is used to resolve and authenticate users based on authentication
+tokens. The security features provide the following built-in realms:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<em>native</em>
+</span>
+</dt>
+<dd>
+An internal realm where users are stored in a dedicated Elasticsearch index.
+This realm supports an authentication token in the form of username and password,
+and is available by default when no realms are explicitly configured. The users
+are managed via the <a class="xref" href="security-api.html#security-user-apis" title="Users">user management APIs</a>.
+See <a class="xref" href="setting-up-authentication.html#native-realm" title="Native user authentication">Native user authentication</a>.
+</dd>
+<dt>
+<span class="term">
+<em>ldap</em>
+</span>
+</dt>
+<dd>
+A realm that uses an external LDAP server to authenticate the
+users. This realm supports an authentication token in the form of username and
+password, and requires explicit configuration in order to be used. See
+<a class="xref" href="setting-up-authentication.html#ldap-realm" title="LDAP user authentication">LDAP user authentication</a>.
+</dd>
+<dt>
+<span class="term">
+<em>active_directory</em>
+</span>
+</dt>
+<dd>
+A realm that uses an external Active Directory Server to authenticate the
+users. With this realm, users are authenticated by usernames and passwords.
+See <a class="xref" href="setting-up-authentication.html#active-directory-realm" title="Active Directory user authentication">Active Directory user authentication</a>.
+</dd>
+<dt>
+<span class="term">
+<em>pki</em>
+</span>
+</dt>
+<dd>
+A realm that authenticates users using Public Key Infrastructure (PKI). This
+realm works in conjunction with SSL/TLS and identifies the users through the
+Distinguished Name (DN) of the client&#8217;s X.509 certificates. See <a class="xref" href="setting-up-authentication.html#pki-realm" title="PKI user authentication">PKI user authentication</a>.
+</dd>
+<dt>
+<span class="term">
+<em>file</em>
+</span>
+</dt>
+<dd>
+An internal realm where users are defined in files stored on each node in the
+Elasticsearch cluster. This realm supports an authentication token in the form
+of username and password and is always available. See <a class="xref" href="setting-up-authentication.html#file-realm" title="File-based user authentication">File-based user authentication</a>.
+</dd>
+<dt>
+<span class="term">
+<em>saml</em>
+</span>
+</dt>
+<dd>
+A realm that facilitates authentication using the SAML 2.0 Web SSO protocol.
+This realm is designed to support authentication through Kibana and is not
+intended for use in the REST API.  See <a class="xref" href="setting-up-authentication.html#saml-realm" title="SAML authentication">SAML authentication</a>.
+</dd>
+<dt>
+<span class="term">
+<em>kerberos</em>
+</span>
+</dt>
+<dd>
+A realm that authenticates a user using Kerberos authentication. Users are
+authenticated on the basis of Kerberos tickets. See <a class="xref" href="setting-up-authentication.html#kerberos-realm" title="Kerberos authentication">Kerberos authentication</a>.
+</dd>
+<dt>
+<span class="term">
+<em>oidc</em>
+</span>
+</dt>
+<dd>
+A realm that facilitates authentication using OpenID Connect. It enables Elasticsearch to
+serve as an OpenID Connect Relying Party (RP) and provide single sign-on (SSO)
+support in Kibana. See <a class="xref" href="oidc-guide.html" title="Configuring single sign-on to the Elastic Stack using OpenID Connect"><em>Configuring single sign-on to the Elastic Stack using OpenID Connect</em></a>.
+</dd>
+</dl>
+</div>
+<p>The Elastic Stack security features also support custom realms. If you need to
+integrate with another authentication system, you can build a custom realm
+plugin. For more information, see
+<a class="xref" href="setting-up-authentication.html#custom-realms" title="Integrating with other authentication systems">Integrating with other authentication systems</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_internal_and_external_realms"></a>Internal and external realms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/realms.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Realm types can roughly be classified in two categories:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+Internal
+</span>
+</dt>
+<dd>
+Realms that are internal to Elasticsearch and don&#8217;t require any
+communication with external parties. They are fully managed by Elastic Stack
+security features. There can only be a maximum of one configured realm per
+internal realm type. The security features provide two internal realm types:
+<code class="literal">native</code> and <code class="literal">file</code>.
+</dd>
+<dt>
+<span class="term">
+External
+</span>
+</dt>
+<dd>
+Realms that require interaction with parties/components external to
+Elasticsearch, typically, with enterprise grade identity management systems. Unlike
+internal realms, there can be as many external realms as one would like - each
+with its own unique name and configuration. The Elastic Stack security features
+provide the following external realm types: <code class="literal">ldap</code>, <code class="literal">active_directory</code>, <code class="literal">saml</code>,
+<code class="literal">kerberos</code>, and <code class="literal">pki</code>.
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="realm-chains"></a>Realm chains<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/realm-chains.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p><a class="xref" href="setting-up-authentication.html#realms" title="Realms">Realms</a> live within a <em>realm chain</em>. It is essentially a prioritized
+list of configured realms (typically of various types). Realms are consulted in
+ascending order (that is to say, the realm with the lowest <code class="literal">order</code> value is
+consulted first). You should make sure each configured realm has a distinct
+<code class="literal">order</code> setting. In the event that two or more realms have the same <code class="literal">order</code>,
+they are processed in <code class="literal">name</code> order.</p>
+<p>During the authentication process, Elastic Stack security features consult and try
+to authenticate the request one realm at a time. Once one of the realms
+successfully authenticates the request, the authentication is considered to be
+successful. The authenticated user is associated with the request, which then
+proceeds to the authorization phase. If a realm cannot authenticate the request,
+the next realm in the chain is consulted. If all realms in the chain cannot
+authenticate the request, the authentication is considered to be unsuccessful
+and an authentication error is returned (as HTTP status code <code class="literal">401</code>).</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Some systems (e.g. Active Directory) have a temporary lock-out period
+after several successive failed login attempts. If the same username exists in
+multiple realms, unintentional account lockouts are possible. For more
+information, see <a class="xref" href="security-troubleshooting.html#trouble-shoot-active-directory" title="Users are frequently locked out of Active Directory">Users are frequently locked out of Active Directory</a>.</p>
+</div>
+</div>
+<p>The default realm chain contains the <code class="literal">native</code> and <code class="literal">file</code> realms. To explicitly
+configure a realm chain, you specify the chain in the <code class="literal">elasticsearch.yml</code> file.
+When you configure a realm chain, only the realms you specify are used for
+authentication. To use the <code class="literal">native</code> and <code class="literal">file</code> realms, you must include them in
+the chain.</p>
+<p>The following snippet configures a realm chain that includes the <code class="literal">file</code> and
+<code class="literal">native</code> realms, as well as two LDAP realms and an Active Directory realm.</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.authc.realms:
+  file.file1:
+      order: 0
+
+  native.native1:
+      order: 1
+
+  ldap.ldap1:
+      order: 2
+      enabled: false
+      url: 'url_to_ldap1'
+      ...
+
+  ldap.ldap2:
+      order: 3
+      url: 'url_to_ldap2'
+      ...
+
+  active_directory.ad1:
+      order: 4
+      url: 'url_to_ad'</pre>
+</div>
+<p>As can be seen above, each realm has a unique name that identifies it. Each type
+of realm dictates its own set of required and optional settings. That said,
+there are
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html#ref-realm-settings" class="ulink" target="_top">settings that are common to all realms</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="authorization_realms"></a>Delegating authorization to another realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/realm-chains.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Some realms have the ability to perform <em>authentication</em> internally, but
+delegate the lookup and assignment of roles (that is, <em>authorization</em>) to
+another realm.</p>
+<p>For example, you may wish to use a PKI realm to authenticate your users with
+TLS client certificates, then lookup that user in an LDAP realm and use their
+LDAP group assignments to determine their roles in Elasticsearch.</p>
+<p>Any realm that supports retrieving users (without needing their credentials) can
+be used as an <em>authorization realm</em> (that is, its name may appear as one of the
+values in the list of <code class="literal">authorization_realms</code>). See <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">Submitting requests on behalf of other users</a> for
+further explanation on which realms support this.</p>
+<p>For realms that support this feature, it can be enabled by configuring the
+<code class="literal">authorization_realms</code> setting on the authenticating realm. Check the list of
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html#realm-settings" class="ulink" target="_top">supported settings</a> for each realm
+to see if they support the <code class="literal">authorization_realms</code> setting.</p>
+<p>If delegated authorization is enabled for a realm, it authenticates the user in
+its standard manner (including relevant caching) then looks for that user in the
+configured list of authorization realms. It tries each realm in the order they
+are specified in the <code class="literal">authorization_realms</code> setting. The user is retrieved by
+principal - the user must have identical usernames in the <em>authentication</em> and
+<em>authorization realms</em>. If the user cannot be found in any of the authorization
+realms, authentication fails.</p>
+<p>See <a class="xref" href="authorization.html#configuring-authorization-delegation" title="Configuring authorization delegation">Configuring authorization delegation</a> for more details.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Delegated authorization requires that you have a
+<a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">subscription</a> that includes custom authentication and
+authorization realms.</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="active-directory-realm"></a>Active Directory user authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/active-directory-realm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can configure Elastic Stack security features to communicate with Active
+Directory to authenticate users. See <a class="xref" href="setting-up-authentication.html#ad-realm-configuration" title="Configuring an Active Directory realm">Configuring an Active Directory realm</a>.</p>
+<p>The security features use LDAP to communicate with Active Directory, so
+<code class="literal">active_directory</code> realms are similar to <a class="xref" href="setting-up-authentication.html#ldap-realm" title="LDAP user authentication"><code class="literal">ldap</code> realms</a>. Like
+LDAP directories, Active Directory stores users and groups hierarchically. The
+directory&#8217;s hierarchy is built from containers such as the <em>organizational unit</em>
+(<code class="literal">ou</code>), <em>organization</em> (<code class="literal">o</code>), and <em>domain controller</em> (<code class="literal">dc</code>).</p>
+<p>The path to an entry is a <em>Distinguished Name</em> (DN) that uniquely identifies a
+user or group. User and group names typically have attributes such as a
+<em>common name</em> (<code class="literal">cn</code>) or <em>unique ID</em> (<code class="literal">uid</code>). A DN is specified as a string, for
+example <code class="literal">"cn=admin,dc=example,dc=com"</code> (white spaces are ignored).</p>
+<p>The security features supports only Active Directory security groups. You
+cannot map distribution groups to roles.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>When you use Active Directory for authentication, the username entered by
+      the user is expected to match the <code class="literal">sAMAccountName</code> or <code class="literal">userPrincipalName</code>,
+      not the common name.</p>
+</div>
+</div>
+<p>The Active Directory realm authenticates users using an LDAP bind request. After
+authenticating the user, the realm then searches to find the user&#8217;s entry in
+Active Directory. Once the user has been found, the Active Directory realm then
+retrieves the user&#8217;s group memberships from the <code class="literal">tokenGroups</code> attribute on the
+user&#8217;s entry in Active Directory.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ad-realm-configuration"></a>Configuring an Active Directory realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/active-directory-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>To integrate with Active Directory, you configure an <code class="literal">active_directory</code>
+realm and map Active Directory users and groups to roles in the role mapping file.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Add a realm configuration of type <code class="literal">active_directory</code> to <code class="literal">elasticsearch.yml</code>
+under the <code class="literal">xpack.security.authc.realms.active_directory</code> namespace.
+At a minimum, you must specify the Active Directory <code class="literal">domain_name</code>.
+If you are configuring multiple realms, you should also
+explicitly set the <code class="literal">order</code> attribute to control the order in which the realms
+are consulted during authentication.</p>
+<p>See <a class="xref" href="settings.html#ref-ad-settings" title="Active Directory realm settings">Active Directory realm settings</a> for all of the options you can set for an
+<code class="literal">active_directory</code> realm.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Binding to Active Directory fails if the domain name is not mapped in DNS.
+      If DNS is not being provided by a Windows DNS server, add a mapping for
+      the domain in the local <code class="literal">/etc/hosts</code> file.</p>
+</div>
+</div>
+<p>For example, the following realm configuration configures Elasticsearch to connect
+to <code class="literal">ldaps://example.com:636</code> to authenticate users through Active Directory:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        active_directory:
+          my_ad:
+            order: 0 <a id="CO511-1"></a><i class="conum" data-value="1"></i>
+            domain_name: ad.example.com
+            url: ldaps://ad.example.com:636 <a id="CO511-2"></a><i class="conum" data-value="2"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO511-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The realm order controls the order in which the configured realms are checked
+when authenticating a user.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO511-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>If you don&#8217;t specify the URL, it defaults to <code class="literal">ldap:&lt;domain_name&gt;:389</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>When you configure realms in <code class="literal">elasticsearch.yml</code>, only the
+realms you specify are used for authentication. If you also want to use the
+<code class="literal">native</code> or <code class="literal">file</code> realms, you must include them in the realm chain.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p>If you are authenticating users across multiple domains in a forest, extra
+steps are required. There are a few minor differences in the configuration and
+the way that users authenticate.</p>
+<p>Set the <code class="literal">domain_name</code> setting to the forest root domain name.</p>
+<p>You must also set the <code class="literal">url</code> setting, since you must authenticate against the
+Global Catalog, which uses a different port and might not be running on every
+Domain Controller.</p>
+<p>For example, the following realm configuration configures Elasticsearch to connect
+to specific Domain Controllers on the Global Catalog port with the domain name
+set to the forest root:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        active_directory:
+          my_ad:
+            order: 0
+            domain_name: example.com <a id="CO512-1"></a><i class="conum" data-value="1"></i>
+            url: ldaps://dc1.ad.example.com:3269, ldaps://dc2.ad.example.com:3269 <a id="CO512-2"></a><i class="conum" data-value="2"></i>
+            load_balance:
+              type: "round_robin" <a id="CO512-3"></a><i class="conum" data-value="3"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO512-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">domain_name</code> is set to the name of the root domain in the forest.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO512-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">url</code> value used in this example has URLs for two different Domain Controllers,
+which are also Global Catalog servers. Port 3268 is the default port for unencrypted
+communication with the Global Catalog; port 3269 is the default port for SSL connections.
+The servers that are being connected to can be in any domain of the forest as long as
+they are also Global Catalog servers.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO512-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>A load balancing setting is provided to indicate the desired behavior when choosing
+the server to connect to.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>In this configuration, users will need to use either their full User Principal
+Name (UPN) or their Down-Level Logon Name. A UPN is typically a concatenation of
+the username with <code class="literal">@&lt;DOMAIN_NAME</code> such as <code class="literal">johndoe@ad.example.com</code>. The Down-Level
+Logon Name is the NetBIOS domain name, followed by a <code class="literal">\</code> and the username, such as
+<code class="literal">AD\johndoe</code>. Use of Down-Level Logon Name requires a connection to the regular LDAP
+ports (389 or 636) in order to query the configuration container to retrieve the
+domain name from the NetBIOS name.</p>
+</li>
+<li class="listitem">
+<p>(Optional) Configure how Elasticsearch should interact with multiple Active
+Directory servers.</p>
+<p>The <code class="literal">load_balance.type</code> setting can be used at the realm level. Two modes of
+operation are supported: failover and load balancing.  See <a class="xref" href="settings.html#ref-ad-settings" title="Active Directory realm settings">Active Directory realm settings</a>.</p>
+</li>
+<li class="listitem">
+(Optional) To protect passwords,
+<a class="xref" href="encrypting-communications.html#tls-active-directory" title="Encrypting communications between Elasticsearch and Active Directory">encrypt communications between Elasticsearch and the Active Directory server</a>.
+</li>
+<li class="listitem">
+Restart Elasticsearch.
+</li>
+<li class="listitem">
+<p>Configure a bind user.</p>
+<p>The Active Directory realm authenticates users using an LDAP bind request. By
+default, all of the LDAP operations are run by the user that Elasticsearch is
+authenticating. In some cases, regular users may not be able to access all of the
+necessary items within Active Directory and a <em>bind user</em> is needed. A bind user
+can be configured and is used to perform all operations other than the LDAP bind
+request, which is required to authenticate the credentials provided by the user.</p>
+<p>The use of a bind user enables the
+<a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as feature</a> to be used with the Active
+Directory realm and the ability to maintain a set of pooled connections to
+Active Directory. These pooled connection reduce the number of resources that
+must be created and destroyed with every user authentication.</p>
+<p>The following example shows the configuration of a bind user through the user of
+the <code class="literal">bind_dn</code> and <code class="literal">secure_bind_password</code> settings:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        active_directory:
+          my_ad:
+            order: 0
+            domain_name: ad.example.com
+            url: ldaps://ad.example.com:636
+            bind_dn: es_svc_user@ad.example.com <a id="CO513-1"></a><i class="conum" data-value="1"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO513-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This is the user that all Active Directory search requests are executed as.
+Without a bind user configured, all requests run as the user that is authenticating
+with Elasticsearch.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The password for the <code class="literal">bind_dn</code> user should be configured by adding the
+appropriate <code class="literal">secure_bind_password</code> setting to the Elasticsearch keystore. For example,
+the following command adds the password for the example realm above:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">bin/elasticsearch-keystore add  \
+xpack.security.authc.realms.active_directory.my_ad.secure_bind_password</pre>
+</div>
+<p>When a bind user is configured, connection pooling is enabled by default.
+Connection pooling can be disabled using the <code class="literal">user_search.pool.enabled</code> setting.</p>
+</li>
+<li class="listitem">
+<p>Map Active Directory users and groups to roles.</p>
+<p>An integral part of a realm authentication process is to resolve the roles
+associated with the authenticated user. Roles define the privileges a user has
+in the cluster.</p>
+<p>Since with the <code class="literal">active_directory</code> realm the users are managed externally in the
+Active Directory server, the expectation is that their roles are managed there
+as well. In fact, Active Directory supports the notion of groups, which often
+represent user roles for different systems in the organization.</p>
+<p>The <code class="literal">active_directory</code> realm enables you to map Active Directory users to roles
+via their Active Directory groups or other metadata. This role mapping can be
+configured via the <a class="xref" href="security-api.html#security-role-mapping-apis" title="Role mappings">role-mapping APIs</a> or by using
+a file stored on each node. When a user authenticates against an Active
+Directory realm, the privileges for that user are the union of all privileges
+defined by the roles to which the user is mapped.</p>
+<p>Within a mapping definition, you specify groups using their distinguished
+names. For example, the following mapping configuration maps the Active
+Directory <code class="literal">admins</code> group to both the <code class="literal">monitoring</code> and <code class="literal">user</code> roles, maps the
+<code class="literal">users</code> group to the <code class="literal">user</code> role and maps the <code class="literal">John Doe</code> user to the <code class="literal">user</code>
+role.</p>
+<p>Configured via the role-mapping API:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_security/role_mapping/admins
+{
+  "roles" : [ "monitoring" , "user" ],
+  "rules" : { "field" : {
+    "groups" : "cn=admins,dc=example,dc=com" <a id="CO514-1"></a><i class="conum" data-value="1"></i>
+  } },
+  "enabled": true
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1431.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO514-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The Active Directory distinguished name (DN) of the <code class="literal">admins</code> group.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_security/role_mapping/basic_users
+{
+  "roles" : [ "user" ],
+  "rules" : { "any": [
+    { "field" : {
+      "groups" : "cn=users,dc=example,dc=com" <a id="CO515-1"></a><i class="conum" data-value="1"></i>
+    } },
+    { "field" : {
+      "dn" : "cn=John Doe,cn=contractors,dc=example,dc=com" <a id="CO515-2"></a><i class="conum" data-value="2"></i>
+    } }
+  ] },
+  "enabled": true
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1432.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO515-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The Active Directory distinguished name (DN) of the <code class="literal">users</code> group.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO515-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The Active Directory distinguished name (DN) of the user <code class="literal">John Doe</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>Or, alternatively, configured via the role-mapping file:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">monitoring: <a id="CO516-1"></a><i class="conum" data-value="1"></i>
+  - "cn=admins,dc=example,dc=com" <a id="CO516-2"></a><i class="conum" data-value="2"></i>
+user:
+  - "cn=users,dc=example,dc=com" <a id="CO516-3"></a><i class="conum" data-value="3"></i>
+  - "cn=admins,dc=example,dc=com"
+  - "cn=John Doe,cn=contractors,dc=example,dc=com" <a id="CO516-4"></a><i class="conum" data-value="4"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO516-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of the role.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO516-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The Active Directory distinguished name (DN) of the <code class="literal">admins</code> group.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO516-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The Active Directory distinguished name (DN) of the <code class="literal">users</code> group.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO516-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The Active Directory distinguished name (DN) of the user <code class="literal">John Doe</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>For more information, see
+<a class="xref" href="authorization.html#mapping-roles" title="Mapping users and groups to roles">Mapping users and groups to roles</a>.</p>
+</li>
+<li class="listitem">
+<p>(Optional) Configure the <code class="literal">metadata</code> setting in the Active Directory realm to
+include extra properties in the user&#8217;s metadata.</p>
+<p>By default, <code class="literal">ldap_dn</code> and <code class="literal">ldap_groups</code> are populated in the user&#8217;s metadata.
+For more information, see
+<a class="xref" href="setting-up-authentication.html#ad-user-metadata" title="User metadata in Active Directory realms">User metadata in Active Directory realms</a>.</p>
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ad-user-metadata"></a>User metadata in Active Directory realms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/active-directory-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>When a user is authenticated via an Active Directory realm, the following
+properties are populated in the user&#8217;s <em>metadata</em>:</p>
+<div class="informaltable">
+<table border="1" cellpadding="4px">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Field</p></td>
+<td align="left" valign="top"><p>Description</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">ldap_dn</code></p></td>
+<td align="left" valign="top"><p>The distinguished name of the user.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">ldap_groups</code></p></td>
+<td align="left" valign="top"><p>The distinguished name of each of the groups that were
+                        resolved for the user (regardless of whether those
+                        groups were mapped to a role).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This metadata is returned in the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-authenticate.html" class="ulink" target="_top">authenticate API</a> and can be used with
+<a class="xref" href="authorization.html#templating-role-query" title="Templating a role query">templated queries</a> in roles.</p>
+<p>Additional metadata can be extracted from the Active Directory server by configuring
+the <code class="literal">metadata</code> setting on the Active Directory realm.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ad-load-balancing"></a>Load balancing and failover<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/active-directory-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">load_balance.type</code> setting can be used at the realm level to configure how
+the security features should interact with multiple Active Directory servers.
+Two modes of operation are supported: failover and load balancing.</p>
+<p>See
+<a class="xref" href="settings.html#load-balancing" title="Load balancing and failover">Load balancing and failover</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="active-directory-ssl"></a>Setting up SSL between Elasticsearch and Active Directory<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/active-directory-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>See <a class="xref" href="encrypting-communications.html#tls-active-directory" title="Encrypting communications between Elasticsearch and Active Directory">Encrypting communications between Elasticsearch and Active Directory</a>.</p>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="file-realm"></a>File-based user authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/file-realm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can manage and authenticate users with the built-in <code class="literal">file</code> realm.
+With the <code class="literal">file</code> realm, users are defined in local files on each node in the cluster.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>As the administrator of the cluster, it is your responsibility to
+ensure the same users are defined on every node in the cluster. The Elastic Stack
+security features do not deliver any mechanism to guarantee this. You should
+also be aware that you cannot add or manage users in the <code class="literal">file</code> realm via the
+<a class="xref" href="security-api.html#security-user-apis" title="Users">user APIs</a> and you cannot add or manage them in Kibana on the
+<span class="strong strong"><strong>Management / Security / Users</strong></span> page</p>
+</div>
+</div>
+<p>The <code class="literal">file</code> realm is very useful as a fallback or recovery realm. For example in cases where
+the cluster is unresponsive or the security index is unavailable, or when you forget the
+password for your administrative users.
+In this type of scenario, the <code class="literal">file</code> realm is a convenient way out - you can
+define a new <code class="literal">admin</code> user in the <code class="literal">file</code> realm and use it to log in and reset the
+credentials of all other users.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>When you configure realms in <code class="literal">elasticsearch.yml</code>, only the realms you
+specify are used for authentication. To use the <code class="literal">file</code> realm you must explicitly
+include it in the realm chain. While it is possible to define multiple instances
+of some other realms, you can define only <em>one</em> file realm per node.</p>
+</div>
+</div>
+<p>To define users, the security features provide the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/users-command.html" class="ulink" target="_top">users</a> command-line tool. This tool enables you to add
+and remove users, assign user roles, and manage user passwords.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="file-realm-configuration"></a>Configuring a file realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/file-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>All the data about the users for the <code class="literal">file</code> realm is stored in two files on each
+node in the cluster: <code class="literal">users</code> and <code class="literal">users_roles</code>. Both files are located in
+<code class="literal">ES_PATH_CONF</code> and are read on startup.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">users</code> and <code class="literal">users_roles</code> files are managed locally by the node and are
+<span class="strong strong"><strong>not</strong></span> managed globally by the cluster. This means that with a typical
+multi-node cluster, the exact same changes need to be applied on each and every
+node in the cluster.</p>
+<p>A safer approach would be to apply the change on one of the nodes and have the
+files distributed or copied to all other nodes in the cluster (either manually
+or using a configuration management system such as Puppet or Chef).</p>
+</div>
+</div>
+<p>The <code class="literal">file</code> realm is added to the realm chain by default. You don&#8217;t need to
+explicitly configure a <code class="literal">file</code> realm.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>(Optional) Add a realm configuration to <code class="literal">elasticsearch.yml</code> under the
+<code class="literal">xpack.security.authc.realms.file</code> namespace. At a minimum, you must set
+the realm&#8217;s <code class="literal">order</code> attribute.</p>
+<p>For example, the following snippet shows a <code class="literal">file</code> realm configuration that sets
+the <code class="literal">order</code> to zero so the realm is checked first:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        file:
+          file1:
+            order: 0</pre>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You can configure only one file realm on Elasticsearch nodes.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+Restart Elasticsearch.
+</li>
+<li class="listitem">
+<p>Add user information to the <code class="literal">ES_PATH_CONF/users</code> file on each node in the
+cluster.</p>
+<p>The <code class="literal">users</code> file stores all the users and their passwords. Each line in the file
+represents a single user entry consisting of the username and <span class="strong strong"><strong>hashed</strong></span> and <span class="strong strong"><strong>salted</strong></span> password.</p>
+<div class="pre_wrapper lang-bash">
+<pre class="programlisting prettyprint lang-bash">rdeniro:$2a$10$BBJ/ILiyJ1eBTYoRKxkqbuDEdYECplvxnqQ47uiowE7yGqvCEgj9W
+alpacino:$2a$10$cNwHnElYiMYZ/T3K4PvzGeJ1KbpXZp2PfoQD.gfaVdImnHOwIuBKS
+jacknich:{PBKDF2}50000$z1CLJt0MEFjkIK5iEfgvfnA6xq7lF25uasspsTKSo5Q=$XxCVLbaKDimOdyWgLCLJiyoiWpA/XDMe/xtVgn1r5Sg=</pre>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>To limit exposure to credential theft and mitigate credential compromise,
+the file realm stores passwords and caches user credentials according to
+security best practices. By default, a hashed version of user credentials
+is stored in memory, using a salted <code class="literal">sha-256</code> hash algorithm and a hashed
+version of passwords is stored on disk salted and hashed with the <code class="literal">bcrypt</code>
+hash algorithm. To use different hash algorithms, see <a class="xref" href="settings.html#hashing-settings" title="User cache and password hash algorithms">User cache and password hash algorithms</a>.</p>
+</div>
+</div>
+<p>While it is possible to modify the <code class="literal">users</code> files directly using any standard text
+editor, we strongly recommend using the <a class="xref" href="users-command.html" title="elasticsearch-users"><em>elasticsearch-users</em></a> tool to apply the
+required changes.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>As the administrator of the cluster, it is your responsibility to
+            ensure the same users are defined on every node in the cluster.
+            The Elasticsearch security features do not deliver any mechanisms to
+            guarantee this.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p>Add role information to the <code class="literal">ES_PATH_CONF/users_roles</code> file on each node
+in the cluster.</p>
+<p>The <code class="literal">users_roles</code> file stores the roles associated with the users. For example:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">admin:rdeniro
+power_user:alpacino,jacknich
+user:jacknich</pre>
+</div>
+<p>Each row maps a role to a comma-separated list of all the users that are
+associated with that role.</p>
+<p>You can use the <a class="xref" href="users-command.html" title="elasticsearch-users"><em>elasticsearch-users</em></a> tool to update this file. You must ensure that
+the same changes are made on every node in the cluster.</p>
+</li>
+<li class="listitem">
+<p>(Optional) Change how often the <code class="literal">users</code> and <code class="literal">users_roles</code> files are checked.</p>
+<p>By default, Elasticsearch checks these files for changes every 5 seconds. You can
+change this default behavior by changing the <code class="literal">resource.reload.interval.high</code>
+setting in the <code class="literal">elasticsearch.yml</code> file (as this is a common setting in Elasticsearch,
+changing its value may effect other schedules in the system).</p>
+</li>
+</ol>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ldap-realm"></a>LDAP user authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/ldap-realm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can configure the Elastic Stack security features to communicate with a
+Lightweight Directory Access Protocol (LDAP) server to authenticate users. See
+<a class="xref" href="setting-up-authentication.html#ldap-realm-configuration" title="Configuring an LDAP realm">Configuring an LDAP realm</a>.</p>
+<p>LDAP stores users and groups hierarchically, similar to the way folders are
+grouped in a file system. An LDAP directory&#8217;s hierarchy is built from containers
+such as the <em>organizational unit</em> (<code class="literal">ou</code>), <em>organization</em> (<code class="literal">o</code>), and
+<em>domain controller</em> (<code class="literal">dc</code>).</p>
+<p>The path to an entry is a <em>Distinguished Name</em> (DN) that uniquely identifies a
+user or group. User and group names typically have attributes such as a
+<em>common name</em> (<code class="literal">cn</code>) or <em>unique ID</em> (<code class="literal">uid</code>). A DN is specified as a string,
+for example  <code class="literal">"cn=admin,dc=example,dc=com"</code> (white spaces are ignored).</p>
+<p>The <code class="literal">ldap</code> realm supports two modes of operation, a user search mode
+and a mode with specific templates for user DNs.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="mapping-roles-ldap"></a>Mapping LDAP groups to roles<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/ldap-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>An integral part of a realm authentication process is to resolve the roles
+associated with the authenticated user. Roles define the privileges a user has
+in the cluster.</p>
+<p>Since with the <code class="literal">ldap</code> realm the users are managed externally in the LDAP server,
+the expectation is that their roles are managed there as well. In fact, LDAP
+supports the notion of groups, which often represent user roles for different
+systems in the organization.</p>
+<p>The <code class="literal">ldap</code> realm enables you to map LDAP users to roles via their LDAP
+groups or other metadata. This role mapping can be configured via the
+<a class="xref" href="security-api.html#security-api-put-role-mapping" title="Create or update role mappings API">add role mapping API</a> or by using a
+file stored on each node. When a user authenticates with LDAP, the privileges
+for that user are the union of all privileges defined by the roles to which
+the user is mapped.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ldap-realm-configuration"></a>Configuring an LDAP realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/ldap-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>To integrate with LDAP, you configure an <code class="literal">ldap</code> realm and map LDAP groups to
+user roles.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Determine which mode you want to use. The <code class="literal">ldap</code> realm supports two modes of
+operation, a user search mode and a mode with specific templates for user DNs.</p>
+<p>LDAP user search is the most common mode of operation. In this mode, a specific
+user with permission to search the LDAP directory is used to search for the DN
+of the authenticating user based on the provided username and an LDAP attribute.
+Once found, the user is authenticated by attempting to bind to the LDAP server
+using the found DN and the provided password.</p>
+<p>If your LDAP environment uses a few specific standard naming conditions for
+users, you can use user DN templates to configure the realm. The advantage of
+this method is that a search does not have to be performed to find the user DN.
+However, multiple bind operations might be needed to find the correct user DN.</p>
+</li>
+<li class="listitem">
+<p>To configure an <code class="literal">ldap</code> realm with user search:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Add a realm configuration to <code class="literal">elasticsearch.yml</code> under the
+<code class="literal">xpack.security.authc.realms.ldap</code> namespace. At a minimum, you must specify
+the <code class="literal">url</code> of the LDAP server, and set <code class="literal">user_search.base_dn</code> to the container DN
+where the users are searched for.
+If you are configuring multiple realms, you should also explicitly set the
+<code class="literal">order</code> attribute to control the order in which the realms are consulted during
+authentication. See <a class="xref" href="settings.html#ref-ldap-settings" title="LDAP realm settings">LDAP realm settings</a> for all of the options you can set for
+an <code class="literal">ldap</code> realm.</p>
+<p>For example, the following snippet shows an LDAP realm configured with a user search:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        ldap:
+          ldap1:
+            order: 0
+            url: "ldaps://ldap.example.com:636"
+            bind_dn: "cn=ldapuser, ou=users, o=services, dc=example, dc=com"
+            user_search:
+              base_dn: "dc=example,dc=com"
+              filter: "(cn={0})"
+            group_search:
+              base_dn: "dc=example,dc=com"
+            files:
+              role_mapping: "ES_PATH_CONF/role_mapping.yml"
+            unmapped_groups_as_roles: false</pre>
+</div>
+<p>The password for the <code class="literal">bind_dn</code> user should be configured by adding the appropriate
+<code class="literal">secure_bind_password</code> setting to the Elasticsearch keystore.
+For example, the following command adds the password for the example realm above:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">bin/elasticsearch-keystore add \
+xpack.security.authc.realms.ldap.ldap1.secure_bind_password</pre>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>When you configure realms in <code class="literal">elasticsearch.yml</code>, only the
+realms you specify are used for authentication. If you also want to use the
+<code class="literal">native</code> or <code class="literal">file</code> realms, you must include them in the realm chain.</p>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li class="listitem">
+<p>To configure an <code class="literal">ldap</code> realm with user DN templates:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Add a realm configuration to <code class="literal">elasticsearch.yml</code> in the
+<code class="literal">xpack.security.authc.realms.ldap</code> namespace. At a minimum, you must specify
+the <code class="literal">url</code> of the LDAP server, and specify at least one template with the
+<code class="literal">user_dn_templates</code> option. If you are configuring multiple realms, you should
+also explicitly set the <code class="literal">order</code> attribute to control the order in which the
+realms are consulted during authentication.
+See <a class="xref" href="settings.html#ref-ldap-settings" title="LDAP realm settings">LDAP realm settings</a> for all of the options you can set for an <code class="literal">ldap</code> realm.</p>
+<p>For example, the following snippet shows an LDAP realm configured with user DN
+templates:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        ldap:
+          ldap1:
+            order: 0
+            url: "ldaps://ldap.example.com:636"
+            user_dn_templates:
+              - "cn={0}, ou=users, o=marketing, dc=example, dc=com"
+              - "cn={0}, ou=users, o=engineering, dc=example, dc=com"
+            group_search:
+              base_dn: "dc=example,dc=com"
+            files:
+              role_mapping: "/mnt/elasticsearch/group_to_role_mapping.yml"
+            unmapped_groups_as_roles: false</pre>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">bind_dn</code> setting is not used in template mode.
+All LDAP operations run as the authenticating user.</p>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li class="listitem">
+<p>(Optional) Configure how the security features interact with multiple LDAP
+servers.</p>
+<p>The <code class="literal">load_balance.type</code> setting can be used at the realm level. The Elasticsearch
+security features support both failover and load balancing modes of operation.
+See <a class="xref" href="settings.html#ref-ldap-settings" title="LDAP realm settings">LDAP realm settings</a>.</p>
+</li>
+<li class="listitem">
+(Optional) To protect passwords,
+<a class="xref" href="encrypting-communications.html#tls-ldap" title="Encrypting communications between Elasticsearch and LDAP">encrypt communications between Elasticsearch and the LDAP server</a>.
+</li>
+<li class="listitem">
+Restart Elasticsearch.
+</li>
+<li class="listitem">
+<p>Map LDAP groups to roles.</p>
+<p>The <code class="literal">ldap</code> realm enables you to map LDAP users to roles via their LDAP
+groups, or other metadata. This role mapping can be configured via the
+<a class="xref" href="security-api.html#security-api-put-role-mapping" title="Create or update role mappings API">add role mapping API</a> or by using a file stored
+on each node. When a user authenticates with LDAP, the privileges
+for that user are the union of all privileges defined by the roles to which
+the user is mapped.</p>
+<p>Within a mapping definition, you specify groups using their distinguished
+names. For example, the following mapping configuration maps the LDAP
+<code class="literal">admins</code> group to both the <code class="literal">monitoring</code> and <code class="literal">user</code> roles, and maps the
+<code class="literal">users</code> group to the <code class="literal">user</code> role.</p>
+<p>Configured via the role-mapping API:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_security/role_mapping/admins
+{
+  "roles" : [ "monitoring" , "user" ],
+  "rules" : { "field" : {
+    "groups" : "cn=admins,dc=example,dc=com" <a id="CO517-1"></a><i class="conum" data-value="1"></i>
+  } },
+  "enabled": true
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1433.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO517-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The LDAP distinguished name (DN) of the <code class="literal">admins</code> group.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_security/role_mapping/basic_users
+{
+  "roles" : [ "user" ],
+  "rules" : { "field" : {
+    "groups" : "cn=users,dc=example,dc=com" <a id="CO518-1"></a><i class="conum" data-value="1"></i>
+  } },
+  "enabled": true
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1434.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO518-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The LDAP distinguished name (DN) of the <code class="literal">users</code> group.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>Or, alternatively, configured via the role-mapping file:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">monitoring: <a id="CO519-1"></a><i class="conum" data-value="1"></i>
+  - "cn=admins,dc=example,dc=com" <a id="CO519-2"></a><i class="conum" data-value="2"></i>
+user:
+  - "cn=users,dc=example,dc=com" <a id="CO519-3"></a><i class="conum" data-value="3"></i>
+  - "cn=admins,dc=example,dc=com"</pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO519-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of the mapped role.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO519-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The LDAP distinguished name (DN) of the <code class="literal">admins</code> group.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO519-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The LDAP distinguished name (DN) of the <code class="literal">users</code> group.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>For more information, see
+<a class="xref" href="setting-up-authentication.html#mapping-roles-ldap" title="Mapping LDAP groups to roles">Mapping LDAP groups to roles</a> and <a class="xref" href="authorization.html#mapping-roles" title="Mapping users and groups to roles">Mapping users and groups to roles</a>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The LDAP realm supports
+<a class="xref" href="setting-up-authentication.html#authorization_realms" title="Delegating authorization to another realm">authorization realms</a> as an
+alternative to role mapping.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p>(Optional) Configure the <code class="literal">metadata</code> setting on the LDAP realm to include extra
+fields in the user&#8217;s metadata.</p>
+<p>By default, <code class="literal">ldap_dn</code> and <code class="literal">ldap_groups</code> are populated in the user&#8217;s metadata.
+For more information, see
+<a class="xref" href="setting-up-authentication.html#ldap-user-metadata" title="User metadata in LDAP realms">User metadata in LDAP realms</a>.</p>
+<p>The example below includes the user&#8217;s common name (<code class="literal">cn</code>) as an additional
+field in their metadata.</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        ldap:
+          ldap1:
+            metadata: cn</pre>
+</div>
+</li>
+<li class="listitem">
+Set up SSL to encrypt communications between Elasticsearch and LDAP. See <a class="xref" href="encrypting-communications.html#tls-ldap" title="Encrypting communications between Elasticsearch and LDAP">Encrypting communications between Elasticsearch and LDAP</a>.
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ldap-user-metadata"></a>User metadata in LDAP realms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/ldap-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>When a user is authenticated via an LDAP realm, the following properties are
+populated in the user&#8217;s <em>metadata</em>:</p>
+<div class="informaltable">
+<table border="1" cellpadding="4px">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Field</p></td>
+<td align="left" valign="top"><p>Description</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">ldap_dn</code></p></td>
+<td align="left" valign="top"><p>The distinguished name of the user.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">ldap_groups</code></p></td>
+<td align="left" valign="top"><p>The distinguished name of each of the groups that were
+                        resolved for the user (regardless of whether those
+                        groups were mapped to a role).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This metadata is returned in the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-authenticate.html" class="ulink" target="_top">authenticate API</a>, and can be used with
+<a class="xref" href="authorization.html#templating-role-query" title="Templating a role query">templated queries</a> in roles.</p>
+<p>Additional fields can be included in the user&#8217;s metadata by  configuring
+the <code class="literal">metadata</code> setting on the LDAP realm. This metadata is available for use
+with the <a class="xref" href="authorization.html#mapping-roles-api" title="Using the role mapping API">role mapping API</a> or in
+<a class="xref" href="authorization.html#templating-role-query" title="Templating a role query">templated role queries</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ldap-load-balancing"></a>Load balancing and failover<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/ldap-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">load_balance.type</code> setting can be used at the realm level to configure how
+the security features should interact with multiple LDAP servers. The
+security features support both failover and load balancing modes of operation.</p>
+<p>See <a class="xref" href="settings.html#load-balancing" title="Load balancing and failover">Load balancing and failover</a>.</p>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="native-realm"></a>Native user authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/native-realm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>The easiest way to manage and authenticate users is with the internal <code class="literal">native</code>
+realm. You can use the REST APIs or Kibana to add and remove users, assign user
+roles, and manage user passwords.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="native-realm-configuration"></a>Configuring a native realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/native-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The native realm is available by default when no other realms are
+configured. If other realm settings have been configured in <code class="literal">elasticsearch.yml</code>,
+you must add the native realm to the realm chain.</p>
+<p>You can configure a <code class="literal">native</code> realm in the <code class="literal">xpack.security.authc.realms.native</code>
+namespace in <code class="literal">elasticsearch.yml</code>.
+Explicitly configuring a native realm enables you to set the order in which it
+appears in the realm chain, temporarily disable the realm, and control its
+cache options.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Add a realm configuration to <code class="literal">elasticsearch.yml</code> under the
+<code class="literal">xpack.security.authc.realms.native</code> namespace. It is recommended that you
+explicitly set the <code class="literal">order</code> attribute for the realm.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You can configure only one native realm on Elasticsearch nodes.</p>
+</div>
+</div>
+<p>See <a class="xref" href="settings.html#ref-native-settings" title="Native realm settings">Native realm settings</a> for all of the options you can set for the <code class="literal">native</code> realm.
+For example, the following snippet shows a <code class="literal">native</code> realm configuration that
+sets the <code class="literal">order</code> to zero so the realm is checked first:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        native:
+          native1:
+            order: 0</pre>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>To limit exposure to credential theft and mitigate credential compromise,
+the native realm stores passwords and caches user credentials according to
+security best practices. By default, a hashed version of user credentials
+is stored in memory, using a salted <code class="literal">sha-256</code> hash algorithm and a hashed
+version of passwords is stored on disk salted and hashed with the <code class="literal">bcrypt</code>
+hash algorithm. To use different hash algorithms, see <a class="xref" href="settings.html#hashing-settings" title="User cache and password hash algorithms">User cache and password hash algorithms</a>.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+Restart Elasticsearch.
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="managing-native-users"></a>Managing native users<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/native-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The Elastic Stack security features enable you to easily manage users in Kibana on the
+<span class="strong strong"><strong>Management / Security / Users</strong></span> page.</p>
+<p>Alternatively, you can manage users through the <code class="literal">user</code> API. For more
+information and examples, see
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api.html#security-user-apis" class="ulink" target="_top">user management APIs</a>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<a id="migrating-from-file"></a>
+<p>To migrate file-based users to the <code class="literal">native</code> realm, use the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/migrate-tool.html" class="ulink" target="_top">migrate tool</a>.</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="oidc-realm"></a>OpenID Connect authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/oidc-realm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>The OpenID Connect realm enables Elasticsearch to serve as an OpenID Connect Relying
+Party (RP) and provides single sign-on (SSO) support in Kibana.</p>
+<p>It is specifically designed to support authentication via an interactive web
+browser, so it does not operate as a standard authentication realm. Instead,
+there are Kibana and Elasticsearch security features that work together to enable
+interactive OpenID Connect sessions.</p>
+<p>This means that the OpenID Connect realm is not suitable for use by standard
+REST clients. If you configure an OpenID Connect realm for use in Kibana, you
+should also configure another realm, such as the <a class="xref" href="setting-up-authentication.html#native-realm" title="Native user authentication">native realm</a>
+in your authentication chain.</p>
+<p>In order to simplify the process of configuring OpenID Connect authentication
+within the Elastic Stack, there is a step-by-step guide: <a class="xref" href="oidc-guide.html" title="Configuring single sign-on to the Elastic Stack using OpenID Connect"><em>Configuring single sign-on to the Elastic Stack using OpenID Connect</em></a>.</p>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="pki-realm"></a>PKI user authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/pki-realm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can configure Elasticsearch to use Public Key Infrastructure (PKI) certificates to
+authenticate users. In this scenario, clients connecting directly to Elasticsearch must
+present X.509 certificates. First, the certificates must be accepted for
+authentication on the SSL/TLS layer on Elasticsearch. Then they are optionally
+further validated by a PKI realm. See <a class="xref" href="setting-up-authentication.html#pki-realm-for-direct-clients" title="PKI authentication for clients connecting directly to Elasticsearch">PKI authentication for clients connecting directly to Elasticsearch</a>.</p>
+<p>You can also use PKI certificates to authenticate to Kibana, however this
+requires some additional configuration. On Elasticsearch, this configuration enables Kibana
+to act as a proxy for SSL/TLS authentication and to submit the client
+certificates to Elasticsearch for further validation by a PKI realm. See
+<a class="xref" href="setting-up-authentication.html#pki-realm-for-proxied-clients" title="PKI authentication for clients connecting to Kibana">PKI authentication for clients connecting to Kibana</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="pki-realm-for-direct-clients"></a>PKI authentication for clients connecting directly to Elasticsearch<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/configuring-pki-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>To use PKI in Elasticsearch, you configure a PKI realm, enable client authentication on
+the desired network layers (transport or http), and map the Distinguished Names
+(DNs) from the Subject field in the user certificates to roles. You create the
+mappings in a role mapping file or use the role mappings API.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You can use a combination of PKI and username/password authentication. For
+example, you can enable SSL/TLS on the transport layer and define a PKI realm to
+require transport clients to authenticate with X.509 certificates, while still
+authenticating HTTP traffic using username and password credentials.</p>
+</div>
+</div>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Add a realm configuration for a <code class="literal">pki</code> realm to <code class="literal">elasticsearch.yml</code> under the
+<code class="literal">xpack.security.authc.realms.pki</code> namespace. If you are configuring multiple
+realms, you should explicitly set the <code class="literal">order</code> attribute. See
+<a class="xref" href="settings.html#ref-pki-settings" title="PKI realm settings">PKI realm settings</a> for all of the options you can set for a <code class="literal">pki</code> realm.</p>
+<p>For example, the following snippet shows the most basic <code class="literal">pki</code> realm configuration:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        pki:
+          pki1:
+            order: 1</pre>
+</div>
+<p>With this configuration, any certificate trusted by the Elasticsearch SSL/TLS layer is
+accepted for authentication. The username is the common name (CN) extracted
+from the DN in the Subject field of the end-entity certificate. This
+configuration is not sufficient to permit PKI authentication to Kibana;
+additional steps are required.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>When you configure realms in <code class="literal">elasticsearch.yml</code>, only the
+realms you specify are used for authentication. If you also want to use the
+<code class="literal">native</code> or <code class="literal">file</code> realms, you must include them in the realm chain.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p>Optional: If you want to use something other than the CN of the Subject DN as
+the username, you can specify a regex to extract the desired username. The regex
+is applied on the Subject DN.</p>
+<p>For example, the regex in the following
+configuration extracts the email address from the Subject DN:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        pki:
+          pki1:
+            username_pattern: "EMAILADDRESS=(.*?)(?:,|$)"</pre>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If the regex is too restrictive and does not match the Subject DN of the
+client&#8217;s certificate, then the realm does not authenticate the certificate.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+Optional: If you want the same users to also be authenticated using
+certificates when they connect to Kibana, you must configure the Elasticsearch PKI realm
+to allow delegation. See <a class="xref" href="setting-up-authentication.html#pki-realm-for-proxied-clients" title="PKI authentication for clients connecting to Kibana">PKI authentication for clients connecting to Kibana</a>.
+</li>
+<li class="listitem">
+Restart Elasticsearch because realm configuration is not reloaded automatically. If
+you&#8217;re following through with the next steps, you might wish to hold the
+restart for last.
+</li>
+<li class="listitem">
+<a class="xref" href="encrypting-communications.html#configuring-tls" title="Encrypting communications in Elasticsearch">Enable SSL/TLS</a>.
+</li>
+<li class="listitem">
+<p>Enable client authentication on the desired network layers (transport or http).</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>To use PKI when clients connect directly to Elasticsearch, you must enable
+SSL/TLS with client authentication. That is to say, you must set   <code class="literal">xpack.security.transport.ssl.client_authentication</code> and
+<code class="literal">xpack.security.http.ssl.client_authentication</code> to <code class="literal">optional</code> or <code class="literal">required</code>. If
+the setting value is <code class="literal">optional</code>, clients without certificates can authenticate
+with other credentials.</p>
+</div>
+</div>
+<p>When clients connect directly to Elasticsearch and are not proxy-authenticated, the PKI
+realm relies on the TLS settings of the node&#8217;s network interface. The realm can
+be configured to be more restrictive than the underlying network connection.
+That is, it is possible to configure the node such that some connections
+are accepted by the network interface but then fail to be authenticated by the
+PKI realm. However, the reverse is not possible. The PKI realm cannot
+authenticate a connection that has been refused by the network interface.</p>
+<p>In particular this means:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The transport or http interface must request client certificates by setting
+<code class="literal">client_authentication</code> to <code class="literal">optional</code> or <code class="literal">required</code>.
+</li>
+<li class="listitem">
+The interface must <em>trust</em> the certificate that is presented by the client
+by configuring either the <code class="literal">truststore</code> or <code class="literal">certificate_authorities</code> paths,
+or by setting <code class="literal">verification_mode</code> to <code class="literal">none</code>.
+</li>
+<li class="listitem">
+The <em>protocols</em> supported by the interface must be compatible with those
+used by the client.
+</li>
+</ul>
+</div>
+<p>For an explanation of these settings, see <a class="xref" href="settings.html#ssl-tls-settings" title="General TLS settings">General TLS settings</a>.</p>
+<p>The relevant network interface (transport or http) must be configured to trust
+any certificate that is to be used within the PKI realm. However, it is possible
+to configure the PKI realm to trust only a <em>subset</em> of the certificates accepted
+by the network interface. This is useful when the SSL/TLS layer trusts clients
+with certificates that are signed by a different CA than the one that signs your
+users' certificates.</p>
+<p>To configure the PKI realm with its own truststore, specify the
+<code class="literal">truststore.path</code> option. The path must be located within the Elasticsearch
+configuration directory (<code class="literal">ES_PATH_CONF</code>). For example:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      realms:
+        pki:
+          pki1:
+            truststore:
+              path: "pki1_truststore.jks"</pre>
+</div>
+<p>If the truststore is password protected, the password should be configured by
+adding the appropriate <code class="literal">secure_password</code> setting to the Elasticsearch keystore.  For
+example, the following command adds the password for the example realm above:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">bin/elasticsearch-keystore add \
+xpack.security.authc.realms.pki.pki1.truststore.secure_password</pre>
+</div>
+<p>The <code class="literal">certificate_authorities</code> option can be used as an alternative to the
+<code class="literal">truststore.path</code> setting, when the certificate files are PEM formatted. The
+setting accepts a list. The two options are exclusive, they cannot be both used
+simultaneously.</p>
+</li>
+<li class="listitem">
+<p>Map roles for PKI users.</p>
+<p>You map roles for PKI users through the
+<a class="xref" href="security-api.html#security-role-mapping-apis" title="Role mappings">role mapping APIs</a> or by using a file stored on
+each node. Both configuration options are merged together. When a user
+authenticates against a PKI realm, the privileges for that user are the union of
+all privileges defined by the roles to which the user is mapped.</p>
+<p>You identify a user by the distinguished name in their certificate.
+For example, the following mapping configuration maps <code class="literal">John Doe</code> to the
+<code class="literal">user</code> role using the role mapping API:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_security/role_mapping/users
+{
+  "roles" : [ "user" ],
+  "rules" : { "field" : {
+    "dn" : "cn=John Doe,ou=example,o=com" <a id="CO520-1"></a><i class="conum" data-value="1"></i>
+  } },
+  "enabled": true
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1435.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO520-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The distinguished name (DN) of a PKI user.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>Alternatively, use a role-mapping file. For example:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">user: <a id="CO521-1"></a><i class="conum" data-value="1"></i>
+  - "cn=John Doe,ou=example,o=com" <a id="CO521-2"></a><i class="conum" data-value="2"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO521-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of a role.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO521-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The distinguished name (DN) of a PKI user.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The file&#8217;s path defaults to <code class="literal">ES_PATH_CONF/role_mapping.yml</code>. You can specify a
+different path (which must be within <code class="literal">ES_PATH_CONF</code>) by using the
+<code class="literal">files.role_mapping</code> realm setting (e.g.
+<code class="literal">xpack.security.authc.realms.pki.pki1.files.role_mapping</code>).</p>
+<p>The distinguished name for a PKI user follows X.500 naming conventions which
+place the most specific fields (like <code class="literal">cn</code> or <code class="literal">uid</code>) at the beginning of the
+name and the most general fields (like <code class="literal">o</code> or <code class="literal">dc</code>) at the end of the name.
+Some tools, such as <em>openssl</em>, may print out the subject name in a different
+format.</p>
+<p>One way that you can determine the correct DN for a certificate is to use the
+<a class="xref" href="security-api.html#security-api-authenticate" title="Authenticate API">authenticate API</a> (use the relevant PKI
+certificate as the means of authentication) and inspect the metadata field in
+the result. The user&#8217;s distinguished name will be populated under the <code class="literal">pki_dn</code>
+key. You can also use the authenticate API to validate your role mapping.</p>
+<p>For more information, see <a class="xref" href="authorization.html#mapping-roles" title="Mapping users and groups to roles">Mapping users and groups to roles</a>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The PKI realm supports <a class="xref" href="setting-up-authentication.html#authorization_realms" title="Delegating authorization to another realm">authorization realms</a> as an
+alternative to role mapping.</p>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="pki-realm-for-proxied-clients"></a>PKI authentication for clients connecting to Kibana<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/configuring-pki-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>By default, the PKI realm relies on the node&#8217;s network interface to perform the
+SSL/TLS handshake and extract the client certificate. This behaviour requires
+that clients connect directly to Elasticsearch so that their SSL connection is terminated
+by the Elasticsearch node.  If SSL/TLS authentication is to be performed by Kibana, the
+PKI realm must be configured to permit delegation.</p>
+<p>Specifically, when clients presenting X.509 certificates connect to Kibana,
+Kibana performs the SSL/TLS authentication. Kibana then forwards the client&#8217;s
+certificate chain (by calling an Elasticsearch API) to have them further validated by
+the PKI realms that have been configured for delegation.</p>
+<p>To permit authentication delegation for a specific Elasticsearch PKI realm, start by
+configuring the realm for the usual case, as detailed in the
+<a class="xref" href="setting-up-authentication.html#pki-realm-for-direct-clients" title="PKI authentication for clients connecting directly to Elasticsearch">PKI authentication for clients connecting directly to Elasticsearch</a> section. In this scenario, when you enable TLS,
+it is mandatory that you <a class="xref" href="encrypting-communications.html#tls-http" title="Encrypting HTTP client communications">encrypt HTTP client communications</a>.</p>
+<p>You must also explicitly configure a <code class="literal">truststore</code> (or, equivalently
+<code class="literal">certificate_authorities</code>) even though it is the same trust configuration that
+you have configured on the network layer. The
+<code class="literal">xpack.security.authc.token.enabled</code> and <code class="literal">delegation.enabled</code> settings must also
+be <code class="literal">true</code>. For example:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack:
+  security:
+    authc:
+      token.enabled: true
+      realms:
+        pki:
+          pki1:
+            order: 1
+            delegation.enabled: true
+            truststore:
+              path: "pki1_truststore.jks"</pre>
+</div>
+<p>After you restart Elasticsearch, this realm can validate delegated PKI authentication.
+You must then
+<a href="https://www.elastic.co/guide/en/kibana/7.10/kibana-authentication.html#pki-authentication" class="ulink" target="_top">configure Kibana to allow PKI certificate authentication</a>.</p>
+<p>A PKI realm with <code class="literal">delegation.enabled</code> still works unchanged for clients
+connecting directly to Elasticsearch. Directly authenticated users and users that are PKI
+authenticated by delegation to Kibana both follow the same
+<a class="xref" href="authorization.html#mapping-roles" title="Mapping users and groups to roles">role mapping rules</a> or
+<a class="xref" href="setting-up-authentication.html#authorization_realms" title="Delegating authorization to another realm">authorization realms configurations</a>.</p>
+<p>If you use the <a class="xref" href="security-api.html#security-role-mapping-apis" title="Role mappings">role mapping APIs</a>, however, you
+can distinguish between users that are authenticated by delegation and users
+that are authenticated directly. The former have the extra fields
+<code class="literal">pki_delegated_by_user</code> and <code class="literal">pki_delegated_by_realm</code> in the user&#8217;s metadata. In
+the common setup, where authentication is delegated to Kibana, the values of
+these fields are <code class="literal">kibana</code> and <code class="literal">reserved</code>, respectively. For example, the
+following role mapping rule assigns the <code class="literal">role_for_pki1_direct</code> role to all users
+that have been authenticated directly by the <code class="literal">pki1</code> realm, by connecting to Elasticsearch
+instead of going through Kibana:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_security/role_mapping/direct_pki_only
+{
+  "roles" : [ "role_for_pki1_direct" ],
+  "rules" : {
+    "all": [
+      {
+        "field": {"realm.name": "pki1"}
+      },
+      {
+        "field": {
+          "metadata.pki_delegated_by_user": null <a id="CO522-1"></a><i class="conum" data-value="1"></i>
+        }
+      }
+    ]
+  },
+  "enabled": true
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1436.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO522-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>If this metadata field is set (that is to say, it is <span class="strong strong"><strong>not</strong></span> <code class="literal">null</code>), the user
+has been authenticated in the delegation scenario.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="saml-realm"></a>SAML authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/saml-realm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>The Elastic Stack security features support user authentication using SAML
+single sign-on (SSO). The security features provide this support using the Web
+Browser SSO profile of the SAML 2.0 protocol.</p>
+<p>This protocol is specifically designed to support authentication via an
+interactive web browser, so it does not operate as a standard authentication
+realm. Instead, there are Kibana and Elasticsearch security features that work
+together to enable interactive SAML sessions.</p>
+<p>This means that the SAML realm is not suitable for use by standard REST clients.
+If you configure a SAML realm for use in Kibana, you should also configure
+another realm, such as the <a class="xref" href="setting-up-authentication.html#native-realm" title="Native user authentication">native realm</a> in your authentication
+chain.</p>
+<p>In order to simplify the process of configuring SAML authentication within the
+Elastic Stack, there is a step-by-step guide to
+<a class="xref" href="saml-guide.html" title="Configuring SAML single-sign-on on the Elastic Stack">Configuring Elasticsearch and Kibana to use SAML single sign-on</a>.</p>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="kerberos-realm"></a>Kerberos authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/kerberos-realm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can configure the Elastic Stack security features to support Kerberos V5
+authentication, an industry standard protocol to authenticate users in Elasticsearch.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You cannot use the Kerberos realm to authenticate on the transport network layer.</p>
+</div>
+</div>
+<p>To authenticate users with Kerberos, you need to configure a Kerberos realm and
+map users to roles. For more information on realm settings, see
+<a class="xref" href="settings.html#ref-kerberos-settings" title="Kerberos realm settings">Kerberos realm settings</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="kerberos-terms"></a>Key concepts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/kerberos-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>There are a few terms and concepts that you&#8217;ll encounter when you&#8217;re setting up
+Kerberos realms:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<em>kdc</em>
+</span>
+</dt>
+<dd>
+Key Distribution Center. A service that issues Kerberos tickets.
+</dd>
+<dt>
+<span class="term">
+<em>principal</em>
+</span>
+</dt>
+<dd>
+<p>
+A Kerberos principal is a unique identity to which Kerberos can assign
+tickets. It can be used to identify a user or a service provided by a
+server.
+</p>
+<p>Kerberos V5 principal names are of format <code class="literal">primary/instance@REALM</code>, where
+<code class="literal">primary</code> is a user name.</p>
+<p><code class="literal">instance</code> is an optional string that qualifies the primary and is separated
+by a slash(<code class="literal">/</code>) from the primary. For a user, usually it is not used; for
+service hosts, it is the fully qualified domain name of the host.</p>
+<p><code class="literal">REALM</code> is the Kerberos realm. Usually it is is the domain name in upper case.
+An example of a typical user principal is <code class="literal">user@ES.DOMAIN.LOCAL</code>. An example of
+a typical service principal is <code class="literal">HTTP/es.domain.local@ES.DOMAIN.LOCAL</code>.</p>
+</dd>
+<dt>
+<span class="term">
+<em>realm</em>
+</span>
+</dt>
+<dd>
+Realms define the administrative boundary within which the authentication server
+has authority to authenticate users and services.
+</dd>
+<dt>
+<span class="term">
+<em>keytab</em>
+</span>
+</dt>
+<dd>
+A file that stores pairs of principals and encryption keys.
+</dd>
+</dl>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Anyone with read permissions to this file can use the
+credentials in the network to access other services so it is important
+to protect it with proper file permissions.</p>
+</div>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<em>krb5.conf</em>
+</span>
+</dt>
+<dd>
+A file that contains Kerberos configuration information such as the default realm
+name, the location of Key distribution centers (KDC), realms information,
+mappings from domain names to Kerberos realms, and default configurations for
+realm session key encryption types.
+</dd>
+<dt>
+<span class="term">
+<em>ticket granting ticket (TGT)</em>
+</span>
+</dt>
+<dd>
+A TGT is an authentication ticket generated by the Kerberos authentication
+server. It contains an encrypted authenticator.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="kerberos-realm-configuration"></a>Configuring a Kerberos realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/kerberos-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Kerberos is used to protect services and uses a ticket-based authentication
+protocol to authenticate users.
+You can configure Elasticsearch to use the Kerberos V5 authentication protocol, which is
+an industry standard protocol, to authenticate users.
+In this scenario, clients must present Kerberos tickets for authentication.</p>
+<p>In Kerberos, users authenticate with an authentication service and later
+with a ticket granting service to generate a TGT (ticket-granting ticket).
+This ticket is then presented to the service for authentication.
+Refer to your Kerberos installation documentation for more information about
+obtaining TGT. Elasticsearch clients must first obtain a TGT then initiate the process of
+authenticating with Elasticsearch.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="kerberos-realm-prereq"></a>Before you begin<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/configuring-kerberos-realm.asciidoc">edit</a></h4>
+</div></div></div>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Deploy Kerberos.</p>
+<p>You must have the Kerberos infrastructure set up in your environment.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Kerberos requires a lot of external services to function properly, such as
+time synchronization between all machines and working forward and reverse DNS
+mappings in your domain. Refer to your Kerberos documentation for more details.</p>
+</div>
+</div>
+<p>These instructions do not cover setting up and configuring your Kerberos
+deployment. Where examples are provided, they pertain to an MIT Kerberos V5
+deployment. For more information, see
+<a href="http://web.mit.edu/kerberos/www/index.html" class="ulink" target="_top">MIT Kerberos documentation</a></p>
+</li>
+<li class="listitem">
+<p>Configure Java GSS.</p>
+<p>Elasticsearch uses Java GSS framework support for Kerberos authentication.
+To support Kerberos authentication, Elasticsearch needs the following files:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">krb5.conf</code>, a Kerberos configuration file
+</li>
+<li class="listitem">
+A <code class="literal">keytab</code> file that contains credentials for the Elasticsearch service principal
+</li>
+</ul>
+</div>
+<p>The configuration requirements depend on your Kerberos setup. Refer to your
+Kerberos documentation to configure the <code class="literal">krb5.conf</code> file.</p>
+<p>For more information on Java GSS, see
+<a href="https://docs.oracle.com/javase/10/security/kerberos-requirements1.htm" class="ulink" target="_top">Java GSS Kerberos requirements</a></p>
+</li>
+<li class="listitem">
+<p>Enable TLS for HTTP.</p>
+<p>If your Elasticsearch cluster is operating in production mode, you must configure the
+HTTP interface to use SSL/TLS before you can enable Kerberos authentication. For
+more information, see <a class="xref" href="encrypting-communications.html#tls-http" title="Encrypting HTTP client communications">Encrypting HTTP client communications</a>.</p>
+<p>This step is necessary to support Kerberos authentication via Kibana.
+It is not required for Kerberos authentication directly against the Elasticsearch Rest API.</p>
+</li>
+<li class="listitem">
+<p>Enable the token service</p>
+<p>The Elasticsearch Kerberos implementation makes use of the Elasticsearch token service. If you
+configure TLS on the HTTP interface, this service is automatically enabled. It
+can be explicitly configured by adding the following setting in your
+<code class="literal">elasticsearch.yml</code> file:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.authc.token.enabled: true</pre>
+</div>
+<p>This step is necessary to support Kerberos authentication via Kibana.
+It is not required for Kerberos authentication directly against the Elasticsearch Rest API.</p>
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="kerberos-realm-create"></a>Create a Kerberos realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/configuring-kerberos-realm.asciidoc">edit</a></h4>
+</div></div></div>
+<p>To configure a Kerberos realm in Elasticsearch:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Configure the JVM to find the Kerberos configuration file.</p>
+<p>Elasticsearch uses Java GSS and JAAS Krb5LoginModule to support Kerberos authentication
+using a Simple and Protected GSSAPI Negotiation Mechanism (SPNEGO) mechanism.
+The Kerberos configuration file (<code class="literal">krb5.conf</code>) provides information such as the
+default realm, the Key Distribution Center (KDC), and other configuration details
+required for Kerberos authentication. When the JVM needs some configuration
+properties, it tries to find those values by locating and loading this file. The
+JVM system property to configure the file path is <code class="literal">java.security.krb5.conf</code>. To
+configure JVM system properties see <a class="xref" href="settings.html#jvm-options" title="Setting JVM options">Setting JVM options</a>.
+If this system property is not specified, Java tries to locate the file based on
+the conventions.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>It is recommended that this system property be configured for Elasticsearch.
+The method for setting this property depends on your Kerberos infrastructure.
+Refer to your Kerberos documentation for more details.</p>
+</div>
+</div>
+<p>For more information, see <a href="http://web.mit.edu/kerberos/krb5-latest/doc/admin/conf_files/krb5_conf.html" class="ulink" target="_top">krb5.conf</a></p>
+</li>
+<li class="listitem">
+<p>Create a keytab for the Elasticsearch node.</p>
+<p>A keytab is a file that stores pairs of principals and encryption keys. Elasticsearch
+uses the keys from the keytab to decrypt the tickets presented by the user. You
+must create a keytab for Elasticsearch by using the tools provided by your Kerberos
+implementation. For example, some tools that create keytabs are <code class="literal">ktpass.exe</code> on
+Windows and <code class="literal">kadmin</code> for MIT Kerberos.</p>
+</li>
+<li class="listitem">
+<p>Put the keytab file in the Elasticsearch configuration directory.</p>
+<p>Make sure that this keytab file has read permissions. This file contains
+credentials, therefore you must take appropriate measures to protect it.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Elasticsearch uses Kerberos on the HTTP network layer, therefore there must be
+a keytab file for the HTTP service principal on every Elasticsearch node. The service
+principal name must have the format <code class="literal">HTTP/es.domain.local@ES.DOMAIN.LOCAL</code>.
+The keytab files are unique for each node since they include the hostname.
+An Elasticsearch node can act as any principal a client requests as long as that
+principal and its credentials are found in the configured keytab.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p>Create a Kerberos realm.</p>
+<p>To enable Kerberos authentication in Elasticsearch, you must add a Kerberos realm in the
+realm chain.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You can configure only one Kerberos realm on Elasticsearch nodes.</p>
+</div>
+</div>
+<p>To configure a Kerberos realm, there are a few mandatory realm settings and
+other optional settings that you need to configure in the <code class="literal">elasticsearch.yml</code>
+configuration file. Add a realm configuration under the
+<code class="literal">xpack.security.authc.realms.kerberos</code> namespace.</p>
+<p>The most common configuration for a Kerberos realm is as follows:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.authc.realms.kerberos.kerb1:
+  order: 3
+  keytab.path: es.keytab
+  remove_realm_name: false</pre>
+</div>
+<p>The <code class="literal">username</code> is extracted from the ticket presented by user and usually has
+the format <code class="literal">username@REALM</code>. This <code class="literal">username</code> is used for mapping
+roles to the user. If realm setting <code class="literal">remove_realm_name</code> is
+set to <code class="literal">true</code>, the realm part (<code class="literal">@REALM</code>) is removed. The resulting <code class="literal">username</code>
+is used for role mapping.</p>
+<p>For detailed information of available realm settings,
+see <a class="xref" href="settings.html#ref-kerberos-settings" title="Kerberos realm settings">Kerberos realm settings</a>.</p>
+</li>
+<li class="listitem">
+Restart Elasticsearch
+</li>
+<li class="listitem">
+<p>Map Kerberos users to roles.</p>
+<p>The <code class="literal">kerberos</code> realm enables you to map Kerberos users to roles. You can
+configure these role mappings by using the
+<a class="xref" href="security-api.html#security-api-put-role-mapping" title="Create or update role mappings API">create or update role mappings API</a>. You
+identify users by their <code class="literal">username</code> field.</p>
+<p>The following example uses the role mapping API to map <code class="literal">user@REALM</code> to the roles
+<code class="literal">monitoring</code> and <code class="literal">user</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/role_mapping/kerbrolemapping
+{
+  "roles" : [ "monitoring_user" ],
+  "enabled": true,
+  "rules" : {
+    "field" : { "username" : "user@REALM" }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1437.console"></div>
+<p>In case you want to support Kerberos cross realm authentication you may
+need to map roles based on the Kerberos realm name. For such scenarios
+following are the additional user metadata available for role mapping:
+- <code class="literal">kerberos_realm</code> will be set to Kerberos realm name.
+- <code class="literal">kerberos_user_principal_name</code> will be set to user principal name from the Kerberos ticket.</p>
+<p>For more information, see <a class="xref" href="authorization.html#mapping-roles" title="Mapping users and groups to roles">Mapping users and groups to roles</a>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The Kerberos realm supports
+<a class="xref" href="setting-up-authentication.html#authorization_realms" title="Delegating authorization to another realm">authorization realms</a> as an
+alternative to role mapping.</p>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="kerberos-realm-kibana"></a>Configure Kibana for Kerberos<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/kerberos-realm.asciidoc">edit</a></h4>
+</div></div></div>
+<p>If you want to use Kerberos to authenticate via your browser and Kibana, you
+need to enable the relevant authentication provider in Kibana configuration. See
+<a href="https://www.elastic.co/guide/en/kibana/7.10/kibana-authentication.html#kerberos" class="ulink" target="_top">kerberos single sign-on</a></p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="custom-realms"></a>Integrating with other authentication systems<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/custom-realm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>If you are using an authentication system that is not supported out-of-the-box
+by the Elasticsearch security features, you can create a custom realm to interact with
+it to authenticate users. You implement a custom realm as an SPI loaded security
+extension as part of an ordinary elasticsearch plugin.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="implementing-custom-realm"></a>Implementing a custom realm<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/custom-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Sample code that illustrates the structure and implementation of a custom realm
+is provided in <a href="https://github.com/elastic/elasticsearch/tree/7.10/x-pack/qa/security-example-spi-extension" class="ulink" target="_top">https://github.com/elastic/elasticsearch/tree/7.10/x-pack/qa/security-example-spi-extension</a>. You can use this code as a starting point for creating your
+own realm.</p>
+<p>To create a custom realm, you need to:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+Extend <code class="literal">org.elasticsearch.xpack.security.authc.Realm</code> to communicate with your
+authentication system to authenticate users.
+</li>
+<li class="listitem">
+Implement the <code class="literal">org.elasticsearch.xpack.security.authc.Realm.Factory</code> interface in
+a class that will be used to create the custom realm.
+</li>
+<li class="listitem">
+Extend <code class="literal">org.elasticsearch.xpack.security.authc.DefaultAuthenticationFailureHandler</code> to
+handle authentication failures when using your custom realm.
+</li>
+</ol>
+</div>
+<p>To package your custom realm as a plugin:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Implement an extension class for your realm that extends
+<code class="literal">org.elasticsearch.xpack.core.security.SecurityExtension</code>. There you need to
+override one or more of the following methods:</p>
+<div class="pre_wrapper lang-java">
+<pre class="programlisting prettyprint lang-java">@Override
+public Map&lt;String, Factory&gt; getRealms() {
+    ...
+}</pre>
+</div>
+<p>The <code class="literal">getRealms</code> method is used to provide a map of type names to the <code class="literal">Factory</code> that
+will be used to create the realm.</p>
+<div class="pre_wrapper lang-java">
+<pre class="programlisting prettyprint lang-java">@Override
+public AuthenticationFailureHandler getAuthenticationFailureHandler() {
+    ...
+}</pre>
+</div>
+<p>The <code class="literal">getAuthenticationFailureHandler</code> method is used to optionally provide a
+custom <code class="literal">AuthenticationFailureHandler</code>, which will control how the
+Elasticsearch security features respond in certain authentication failure events.</p>
+<div class="pre_wrapper lang-java">
+<pre class="programlisting prettyprint lang-java">@Override
+public List&lt;String&gt; getSettingsFilter() {
+    ...
+}</pre>
+</div>
+<p>The <code class="literal">Plugin#getSettingsFilter</code> method returns a list of setting names that should be
+filtered from the settings APIs as they may contain sensitive credentials. Note this method is not
+part of the <code class="literal">SecurityExtension</code> interface, it&#8217;s available as part of the elasticsearch plugin main class.</p>
+</li>
+<li class="listitem">
+Create a build configuration file for the plugin; Gradle is our recommendation.
+</li>
+<li class="listitem">
+Create a <code class="literal">META-INF/services/org.elasticsearch.xpack.core.security.SecurityExtension</code> descriptor file for the
+extension that contains the fully qualified class name of your <code class="literal">org.elasticsearch.xpack.core.security.SecurityExtension</code> implementation
+</li>
+<li class="listitem">
+Bundle all in a single zip file.
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="using-custom-realm"></a>Using a custom realm to authenticate users<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/custom-realm.asciidoc">edit</a></h3>
+</div></div></div>
+<p>To use a custom realm:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Install the realm extension on each node in the cluster. You run
+<code class="literal">bin/elasticsearch-plugin</code> with the <code class="literal">install</code> sub-command and specify the URL
+pointing to the zip file that contains the extension. For example:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">bin/elasticsearch-plugin install file:///&lt;path&gt;/my-realm-1.0.zip</pre>
+</div>
+</li>
+<li class="listitem">
+<p>Add a realm configuration of the appropriate realm type to <code class="literal">elasticsearch.yml</code>
+under the <code class="literal">xpack.security.authc.realms</code> namespace.
+You must define your realm within the namespace that matches the type defined
+by the extension.
+The options you can set depend on the settings exposed by the custom realm.
+If you are configuring multiple realms, you should also explicitly set the
+<code class="literal">order</code> attribute to control the order in which the realms are consulted during
+authentication. You should make sure each configured realm has a distinct
+<code class="literal">order</code> setting. In the event that two or more realms have the same <code class="literal">order</code>,
+they will be processed in realm <code class="literal">name</code> order.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>When you configure realms in <code class="literal">elasticsearch.yml</code>, only the
+realms you specify are used for authentication. If you also want to use the
+<code class="literal">native</code> or <code class="literal">file</code> realms, you must include them in the realm chain.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+Restart Elasticsearch.
+</li>
+</ol>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="anonymous-access"></a>Enabling anonymous access<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/anonymous-access.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Incoming requests are considered to be <em>anonymous</em> if no authentication token
+can be extracted from the incoming request. By default, anonymous requests are rejected and an authentication error is returned (status code <code class="literal">401</code>).</p>
+<p>To enable anonymous access, you assign one or more roles to anonymous
+users in the <code class="literal">elasticsearch.yml</code> configuration file. For example, the following
+configuration assigns anonymous users <code class="literal">role1</code> and <code class="literal">role2</code>:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.authc:
+  anonymous:
+    username: anonymous_user <a id="CO523-1"></a><i class="conum" data-value="1"></i>
+    roles: role1, role2 <a id="CO523-2"></a><i class="conum" data-value="2"></i>
+    authz_exception: true <a id="CO523-3"></a><i class="conum" data-value="3"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO523-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The username/principal of the anonymous user. Defaults to
+<code class="literal">_es_anonymous_user</code> if not specified.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO523-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The roles to associate with the anonymous user. If no roles are specified, anonymous access is disabled&#8212;&#8203;anonymous requests will be rejected and return an authentication error.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO523-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>When <code class="literal">true</code>, a 403 HTTP status code is returned if the anonymous user
+does not have the permissions needed to perform the requested action and the
+user will NOT be prompted to provide credentials to access the requested
+resource. When <code class="literal">false</code>, a 401 HTTP status code is returned if the anonymous user
+does not have the necessary permissions and the user is prompted for
+credentials to access the requested resource. If you are using anonymous access
+in combination with HTTP, you might need to set <code class="literal">authz_exception</code> to <code class="literal">false</code>
+if your client does not support preemptive basic authentication. Defaults to
+<code class="literal">true</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="controlling-user-cache"></a>Controlling the user cache<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/user-cache.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>User credentials are cached in memory on each node to avoid connecting to a
+remote authentication service or hitting the disk for every incoming request.
+You can configure characteristics of the user cache with the <code class="literal">cache.ttl</code>,
+<code class="literal">cache.max_users</code>, and <code class="literal">cache.hash_algo</code> realm settings.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>PKI realms do not cache user credentials but do cache the resolved user
+object to avoid unnecessarily needing to perform role mapping on each request.</p>
+</div>
+</div>
+<p>The cached user credentials are hashed in memory. By default, the Elasticsearch
+security features use a salted <code class="literal">sha-256</code> hash algorithm. You can use a
+different hashing algorithm by setting the <code class="literal">cache.hash_algo</code> realm settings. See
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html#hashing-settings" class="ulink" target="_top">User cache and password hash algorithms</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="cache-eviction-api"></a>Evicting users from the cache<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/authentication/user-cache.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can use the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-api-clear-cache.html" class="ulink" target="_top">clear cache API</a> to force
+the eviction of cached users . For example, the following request evicts all
+users from the <code class="literal">ad1</code> realm:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">$ curl -XPOST 'http://localhost:9200/_security/realm/ad1/_clear_cache'</pre>
+</div>
+<p>To clear the cache for multiple realms, specify the realms as a comma-separated
+list:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">$ curl -XPOST 'http://localhost:9200/_security/realm/ad1,ad2/_clear_cache'</pre>
+</div>
+<p>You can also evict specific users:</p>
+<div class="pre_wrapper lang-java">
+<pre class="programlisting prettyprint lang-java">$ curl -XPOST 'http://localhost:9200/_security/realm/ad1/_clear_cache?usernames=rdeniro,alpacino'</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="configuring-security.html">« Configuring security in Elasticsearch</a>
+</span>
+<span class="next">
+<a href="saml-guide.html">Configuring SAML single-sign-on on the Elastic Stack »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

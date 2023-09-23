@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Enabling audit logging | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Enabling audit logging | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="secure-cluster.html" title="Secure a cluster"/>
+<link rel="prev" href="authorization.html" title="User authorization"/>
+<link rel="next" href="encrypting-communications.html" title="Encrypting communications"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="secure-cluster.html">Secure a cluster</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="authorization.html">« User authorization</a>
+</span>
+<span class="next">
+<a href="encrypting-communications.html">Encrypting communications »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="enable-audit-logging"></a>Enabling audit logging<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/enable-audit-logging.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can log security-related events such as authentication failures and refused connections
+to monitor your cluster for suspicious activity.
+Audit logging also provides forensic evidence in the event of an attack.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Audit logs are <span class="strong strong"><strong>disabled</strong></span> by default. You must explicitly enable audit logging.</p>
+</div>
+</div>
+<p>To enable enable audit logging:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+Set <code class="literal">xpack.security.audit.enabled</code> to <code class="literal">true</code> in <code class="literal">elasticsearch.yml</code>.
+</li>
+<li class="listitem">
+Restart Elasticsearch.
+</li>
+</ol>
+</div>
+<p>When audit logging is enabled, <a class="xref" href="enable-audit-logging.html#audit-event-types" title="Audit event types">security events</a> are persisted to
+a dedicated <code class="literal">&lt;clustername&gt;_audit.json</code> file on the host&#8217;s file system (on each node).</p>
+<p>You can configure additional options to control what events are logged and
+what information is included in the audit log.
+For more information, see <a class="xref" href="settings.html#auditing-settings" title="Auditing security settings">Auditing settings</a>.</p>
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="audit-event-types"></a>Audit event types<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/event-types.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>When you are <a class="xref" href="enable-audit-logging.html" title="Enabling audit logging">auditing security events</a>, each request can generate
+multiple audit events.</p>
+<p>The following is a list of the events that can be generated:</p>
+<div class="informaltable">
+<table border="1" cellpadding="4px">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+<col class="col_3"/>
+<col class="col_4"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">anonymous_access_denied</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when a request is denied due to a missing
+                                          authentication token.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">authentication_success</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when a user successfully authenticates.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">authentication_failed</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when the authentication token cannot be
+                                          matched to a known user.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">realm_authentication_failed</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged for every realm that fails to present a valid
+                                          authentication token. <code class="literal">&lt;realm&gt;</code> represents the
+                                          realm type.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">access_denied</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when an authenticated user attempts to execute
+                                          an action they do not have the necessary
+                                          <a class="xref" href="authorization.html#security-privileges" title="Security privileges">privilege</a> to perform.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">access_granted</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when an authenticated user attempts to execute
+                                          an action they have the necessary privilege to perform.
+                                          When the <code class="literal">system_access_granted</code> event is included, all system
+                                          (internal) actions are also logged. The default setting does
+                                          not log system actions to avoid cluttering the logs.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_as_granted</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when an authenticated user attempts to <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as</a>
+                                          another user that they have the necessary privileges to do.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_as_denied</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when an authenticated user attempts to <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as</a>
+                                          another user action they do not have the necessary
+                                          <a class="xref" href="authorization.html#security-privileges" title="Security privileges">privilege</a> to do so.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">tampered_request</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when the security features detect that the request has
+                                          been tampered with. Typically relates to <code class="literal">search/scroll</code>
+                                          requests when the scroll ID is believed to have been
+                                          tampered with.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">connection_granted</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when an incoming TCP connection passes the
+                                          <a class="xref" href="ip-filtering.html" title="Restricting connections with IP filtering">IP Filter</a> for a specific
+                                          profile.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">connection_denied</code></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p></p></td>
+<td align="left" valign="top"><p>Logged when an incoming TCP connection does not pass the
+                                          <a class="xref" href="ip-filtering.html" title="Restricting connections with IP filtering">IP Filter</a> for a specific
+                                          profile.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3><a id="audit-event-attributes"></a>Audit event attributes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/event-types.asciidoc">edit</a></h3>
+<p>In 6.5.0, there is a new <a class="xref" href="enable-audit-logging.html#audit-log-output" title="Logfile audit output"><code class="literal">logfile</code> audit output</a> format.
+This format also brings in a few changes for audit event attributes.</p>
+<p>The new format is output to the <code class="literal">&lt;clustername&gt;_audit.json</code> file.
+The audit entries are formatted as flat JSON documents (that is to say, no
+nested objects), one per line. Hence, the attribute names are JSON keys and they
+follow a dotted name syntax. Any attributes that lack a value (<code class="literal">null</code>) are not
+output.</p>
+<p>The following list shows attributes that are common to all audit events.
+Their names and values are analogous to those in the deprecated <code class="literal">logfile</code> or
+<code class="literal">index</code> output formats. However, it is expected that the formats will evolve
+independently during the 6.x releases, so it is advisable to follow the attribute
+descriptions for the format that you are using.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">@timestamp</code>
+</span>
+</dt>
+<dd>
+The time, in ISO9601 format, when the event occurred.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">node.name</code>
+</span>
+</dt>
+<dd>
+The name of the node. This can be changed
+in the <code class="literal">elasticsearch.yml</code> config file.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">node.id</code>
+</span>
+</dt>
+<dd>
+The node id. This is automatically generated and is
+persistent across full cluster restarts.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">host.ip</code>
+</span>
+</dt>
+<dd>
+The bound IP address of the node, with which the node
+can be communicated with.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">host.name</code>
+</span>
+</dt>
+<dd>
+The unresolved node&#8217;s hostname.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">origin.address</code>
+</span>
+</dt>
+<dd>
+The source IP address of the request associated with
+this event. This could be the address of the remote client,
+the address of another cluster node, or the local node&#8217;s
+bound address, if the request originated locally. Unless
+the remote client connects directly to the cluster, the
+<em>client  address</em> will actually be the address of the first
+OSI layer 3 proxy in front of the cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">origin.type</code>
+</span>
+</dt>
+<dd>
+The origin type of the request associated with this event:
+<code class="literal">rest</code> (request originated from a REST API request),
+<code class="literal">transport</code> (request was received on the transport channel),
+or <code class="literal">local_node</code> (the local node issued the request).
+</dd>
+<dt>
+<span class="term">
+<code class="literal">event.type</code>
+</span>
+</dt>
+<dd>
+The internal processing layer that generated the event:
+<code class="literal">rest</code>, <code class="literal">transport</code> or <code class="literal">ip_filter</code>.
+This is different from <code class="literal">origin.type</code> because a request
+originating from the REST API is translated to a number
+of transport messages, generating audit events with
+<code class="literal">origin.type: rest</code> and <code class="literal">event.type: transport</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">event.action</code>
+</span>
+</dt>
+<dd>
+The type of event that occurred: <code class="literal">anonymous_access_denied</code>,
+<code class="literal">authentication_failed</code>, <code class="literal">authentication_success</code>,
+<code class="literal">realm_authentication_failed</code>, <code class="literal">access_denied</code>, <code class="literal">access_granted</code>,
+<code class="literal">connection_denied</code>, <code class="literal">connection_granted</code>, <code class="literal">tampered_request</code>,
+<code class="literal">run_as_denied</code>, or <code class="literal">run_as_granted</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">opaque_id</code>
+</span>
+</dt>
+<dd>
+The value of the <code class="literal">X-Opaque-Id</code> HTTP header (if present) of
+the request associated with this event. This header can
+be used freely by the client to mark API calls, as it has
+no semantics in Elasticsearch.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">x_forwarded_for</code>
+</span>
+</dt>
+<dd>
+The verbatim value of the <code class="literal">X-Forwarded-For</code> HTTP request
+header (if present) of the request associated with the
+audit event. This header is commonly added by proxies
+when they forward requests and the value is the address
+of the proxied client. When a request crosses multiple
+proxies the header is a comma delimited list with the
+last value being the address of the second to last
+proxy server (the address of the last proxy server is
+designated by the <code class="literal">origin.address</code> field).
+</dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_audit_event_attributes_of_the_rest_event_type"></a>Audit event attributes of the REST event type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/event-types.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The events with <code class="literal">event.type</code> equal to <code class="literal">rest</code> have one of the following <code class="literal">event.action</code>
+attribute values: <code class="literal">authentication_success</code>, <code class="literal">anonymous_access_denied</code>, <code class="literal">authentication_failed</code>,
+<code class="literal">realm_authentication_failed</code>, <code class="literal">tampered_request</code> or <code class="literal">run_as_denied</code>.
+These event types also have the following extra attributes (in addition to the
+common ones):</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">url.path</code>
+</span>
+</dt>
+<dd>
+The path part of the URL (between the port and the query
+string) of the REST request associated with this event.
+This is URL encoded.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">url.query</code>
+</span>
+</dt>
+<dd>
+The query part of the URL (after "?", if present) of the
+REST request associated with this event. This is URL encoded.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">request.method</code>
+</span>
+</dt>
+<dd>
+The HTTP method of the REST request associated with this
+event. It is one of GET, POST, PUT, DELETE, OPTIONS,
+HEAD, PATCH, TRACE and CONNECT.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">request.body</code>
+</span>
+</dt>
+<dd>
+The full content of the REST request associated with this
+event, if enabled. This contains the query body. The body
+is escaped according to the JSON RFC 4627.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_audit_event_attributes_of_the_transport_event_type"></a>Audit event attributes of the transport event type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/event-types.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The events with <code class="literal">event.type</code> equal to <code class="literal">transport</code> have one of the following <code class="literal">event.action</code>
+attribute values: <code class="literal">authentication_success</code>, <code class="literal">anonymous_access_denied</code>, <code class="literal">authentication_failed</code>,
+<code class="literal">realm_authentication_failed</code>, <code class="literal">access_granted</code>, <code class="literal">access_denied</code>, <code class="literal">run_as_granted</code>,
+<code class="literal">run_as_denied</code>, or <code class="literal">tampered_request</code>.
+These event types also have the following extra attributes (in addition to the common
+ones):</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">action</code>
+</span>
+</dt>
+<dd>
+The name of the transport action that was executed.
+This is like the URL for a REST request.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">indices</code>
+</span>
+</dt>
+<dd>
+The indices names array that the request associated
+with this event pertains to (when applicable).
+</dd>
+<dt>
+<span class="term">
+<code class="literal">request.name</code>
+</span>
+</dt>
+<dd>
+The name of the request handler that was executed.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_audit_event_attributes_of_the_ip_filter_event_type"></a>Audit event attributes of the ip_filter event type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/event-types.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The events with <code class="literal">event.type</code> equal to <code class="literal">ip_filter</code> have one of the following <code class="literal">event.action</code>
+attribute values: <code class="literal">connection_granted</code> or <code class="literal">connection_denied</code>.
+These event types also have the following extra attributes (in addition to the common
+ones):</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">transport_profile</code>
+</span>
+</dt>
+<dd>
+The transport profile the request targeted.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">rule</code>
+</span>
+</dt>
+<dd>
+The <a class="xref" href="ip-filtering.html" title="Restricting connections with IP filtering">IP filtering</a> rule that denied
+the request.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_extra_audit_event_attributes_for_specific_events"></a>Extra audit event attributes for specific events<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/event-types.asciidoc">edit</a></h3>
+</div></div></div>
+<p>There are a few events that have some more attributes in addition to those
+that have been previously described:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p><code class="literal">authentication_success</code>:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">realm</code>
+</span>
+</dt>
+<dd>
+The name of the realm that successfully authenticated the user.
+If authenticated using an API key, this is the special value of
+<code class="literal">_es_api_key</code>. This is a shorthand attribute
+for the same information that is described by the <code class="literal">user.realm</code>,
+<code class="literal">user.run_by.realm</code> and <code class="literal">authentication.type</code> attributes.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.name</code>
+</span>
+</dt>
+<dd>
+The name of the <em>effective</em> user. This is usually the
+same as the <em>authenticated</em> user, but if using the
+<a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>
+this instead denotes the name of the  <em>impersonated</em> user.
+If authenticated using an API key, this is
+the name of the API key owner.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.realm</code>
+</span>
+</dt>
+<dd>
+Name of the realm to which the <em>effective</em> user
+belongs. If authenticated using an API key, this is
+the name of the realm to which the API key owner belongs.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.run_by.name</code>
+</span>
+</dt>
+<dd>
+This attribute is present only if the request is
+using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>
+and denotes the name of the  <em>authenticated</em> user,
+which is also known as the <em>impersonator</em>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.run_by.realm</code>
+</span>
+</dt>
+<dd>
+Name of the realm to which the <em>authenticated</em>
+(<em>impersonator</em>) user belongs.
+This attribute is provided only if the request
+uses the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">authentication.type</code>
+</span>
+</dt>
+<dd>
+Method used to authenticate the user.
+Possible values are <code class="literal">REALM</code>, <code class="literal">API_KEY</code>, <code class="literal">TOKEN</code>, <code class="literal">ANONYMOUS</code> or <code class="literal">INTERNAL</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">api_key.id</code>
+</span>
+</dt>
+<dd>
+API key ID returned by the <a class="xref" href="security-api.html#security-api-create-api-key" title="Create API key API">create API key</a> request.
+This attribute is only provided for authentication using an API key.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">api_key.name</code>
+</span>
+</dt>
+<dd>
+API key name provided in the <a class="xref" href="security-api.html#security-api-create-api-key" title="Create API key API">create API key</a> request.
+This attribute is only provided for authentication using an API key.
+</dd>
+</dl>
+</div>
+</li>
+<li class="listitem">
+<p><code class="literal">authentication_failed</code>:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">user.name</code>
+</span>
+</dt>
+<dd>
+The name of the user that failed authentication.
+If the request authentication token is invalid or
+unparsable, this information might be missing.
+</dd>
+</dl>
+</div>
+</li>
+<li class="listitem">
+<p><code class="literal">realm_authentication_failed</code>:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">user.name</code>
+</span>
+</dt>
+<dd>
+The name of the user that failed authentication.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">realm</code>
+</span>
+</dt>
+<dd>
+The name of the realm that rejected this authentication.
+<span class="strong strong"><strong>This event is generated for each consulted realm
+in the chain.</strong></span>
+</dd>
+</dl>
+</div>
+</li>
+<li class="listitem">
+<p><code class="literal">run_as_denied</code> and <code class="literal">run_as_granted</code>:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">user.roles</code>
+</span>
+</dt>
+<dd>
+The role names of the user as an array.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.name</code>
+</span>
+</dt>
+<dd>
+The name of the <em>authenticated</em> user which is being
+granted or denied the <em>impersonation</em> action.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.realm</code>
+</span>
+</dt>
+<dd>
+The realm name that the <em>authenticated</em> user belongs to.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.run_as.name</code>
+</span>
+</dt>
+<dd>
+The name of the user as which the <em>impersonation</em>
+action is granted or denied.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.run_as.realm</code>
+</span>
+</dt>
+<dd>
+The realm name of that the <em>impersonated</em> user belongs to.
+</dd>
+</dl>
+</div>
+</li>
+<li class="listitem">
+<p><code class="literal">access_granted</code> and <code class="literal">access_denied</code>:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">user.roles</code>
+</span>
+</dt>
+<dd>
+The role names of the user as an array. If authenticated
+using an API key, this contains the
+role names of the API key owner.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.name</code>
+</span>
+</dt>
+<dd>
+The name of the <em>effective</em> user. This is usually the
+same as the <em>authenticated</em> user, but if using the
+<a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>
+this instead denotes the name of the  <em>impersonated</em> user.
+If authenticated using an API key, this is
+the name of the API key owner.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.realm</code>
+</span>
+</dt>
+<dd>
+Name of the realm to which the <em>effective</em> user
+belongs. If authenticated using an API key, this is
+the name of the realm to which the API key owner belongs.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.run_by.name</code>
+</span>
+</dt>
+<dd>
+This attribute is present only if the request is
+using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>
+and denoted the name of the <em>authenticated</em> user,
+which is also known as the <em>impersonator</em>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">user.run_by.realm</code>
+</span>
+</dt>
+<dd>
+This attribute is present only if the request is
+using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>
+and denotes the name of the realm that the <em>authenticated</em>
+(<em>impersonator</em>) user belongs to.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">authentication.type</code>
+</span>
+</dt>
+<dd>
+Method used to authenticate the user.
+Possible values are <code class="literal">REALM</code>, <code class="literal">API_KEY</code>, <code class="literal">TOKEN</code>, <code class="literal">ANONYMOUS</code> or <code class="literal">INTERNAL</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">api_key.id</code>
+</span>
+</dt>
+<dd>
+API key ID returned by the <a class="xref" href="security-api.html#security-api-create-api-key" title="Create API key API">create API key</a> request.
+This attribute is only provided for authentication using an API key.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">api_key.name</code>
+</span>
+</dt>
+<dd>
+API key name provided in the <a class="xref" href="security-api.html#security-api-create-api-key" title="Create API key API">create API key</a> request.
+This attribute is only provided for authentication using an API key.
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<h3><a id="audit-event-attributes-deprecated-formats"></a>Audit event attributes for the deprecated formats<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/event-types.asciidoc">edit</a></h3>
+<p>The following table shows the common attributes that can be associated with
+every event, when it is output to the <code class="literal">&lt;clustername&gt;_access.log</code> file.</p>
+<div class="table">
+<p class="title"><strong>Table 73. Common attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Common attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">@timestamp</code></p></td>
+<td align="left" valign="top"><p>When the event occurred.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">node_name</code></p></td>
+<td align="left" valign="top"><p>The name of the node.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">node_host_name</code></p></td>
+<td align="left" valign="top"><p>The hostname of the node.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">node_host_address</code></p></td>
+<td align="left" valign="top"><p>The IP address of the node.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">layer</code></p></td>
+<td align="left" valign="top"><p>The layer from which this event originated: <code class="literal">rest</code>, <code class="literal">transport</code> or <code class="literal">ip_filter</code></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">event_type</code></p></td>
+<td align="left" valign="top"><p>The type of event that occurred: <code class="literal">anonymous_access_denied</code>,
+                        <code class="literal">authentication_failed</code>, <code class="literal">authentication_success</code>,
+                        <code class="literal">realm_authentication_failed</code>, <code class="literal">access_denied</code>, <code class="literal">access_granted</code>,
+                        <code class="literal">connection_denied</code>, <code class="literal">connection_granted</code>, <code class="literal">tampered_request</code>,
+                        <code class="literal">run_as_denied</code>, <code class="literal">run_as_granted</code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>These are positional attributes, which are printed at the beginning of each log line and
+are not adjoined by the attribute name.</p>
+<p>The attribute <code class="literal">origin_address</code> is also common to every audit event. It is always
+named, that is, it is not positional. It denotes the source IP address of the
+request associated with this event. This might be the address of the client, the
+address of another cluster node, or the local node&#8217;s bound address (if the request
+originated locally). Unless the client connects directly to the cluster, the
+<em>client  address</em> is the address of the first OSI layer 3 proxy in front of the
+cluster.</p>
+<p>In addition, every event might have the <code class="literal">opaque_id</code> attribute, with the value as
+it has been passed in by the <code class="literal">X-Opaque-Id</code> HTTP request header. This header can
+be used freely by the client to mark API calls, as it has no semantics in
+Elasticsearch. Every audit event, generated as part of handling a request thus
+marked, contains the <code class="literal">opaque_id</code> attribute.</p>
+<p>The following tables show the attributes that can are associated with each type
+of event, in addition to the common ones previously described:</p>
+<div class="table">
+<p class="title"><strong>Table 74. REST anonymous_access_denied attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="REST anonymous_access_denied attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">uri</code></p></td>
+<td align="left" valign="top"><p>The REST endpoint URI.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request_body</code></p></td>
+<td align="left" valign="top"><p>The body of the request, if enabled.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 75. REST authentication_success attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="REST authentication_success attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The <em>effective</em> (impersonated) username. Usually this is
+                         the same as the <em>authenticated</em> username.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_by_principal</code></p></td>
+<td align="left" valign="top"><p>The <em>authenticated</em> (impersonator) username.
+                         This attribute is present only if the request is
+                         using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>.
+                         Otherwise, the <em>effective</em> user is the same as the
+                         <em>authenticated</em> one, which is indicated by the <code class="literal">principal</code>
+                         attribute.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">realm</code></p></td>
+<td align="left" valign="top"><p>The realm that authenticated the user.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">uri</code></p></td>
+<td align="left" valign="top"><p>The REST endpoint URI.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">params</code></p></td>
+<td align="left" valign="top"><p>The REST URI query parameters.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request_body</code></p></td>
+<td align="left" valign="top"><p>The body of the request, if enabled.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 76. REST authentication_failed attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="REST authentication_failed attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The principal (username) that failed authentication.
+                         If the request&#8217;s authentication token is invalid, this
+                         information might be missing.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">uri</code></p></td>
+<td align="left" valign="top"><p>The REST endpoint URI.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request_body</code></p></td>
+<td align="left" valign="top"><p>The body of the request, if enabled.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 77. REST realm_authentication_failed attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="REST realm_authentication_failed attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">realm</code></p></td>
+<td align="left" valign="top"><p>The realm that failed to authenticate the user.
+                         <span class="strong strong"><strong>A separate entry is logged for each consulted realm.</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The principal (username) that failed authentication.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">uri</code></p></td>
+<td align="left" valign="top"><p>The REST endpoint URI.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request_body</code></p></td>
+<td align="left" valign="top"><p>The body of the request, if enabled.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 78. REST tampered_request attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="REST tampered_request attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">uri</code></p></td>
+<td align="left" valign="top"><p>The REST endpoint URI.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request_body</code></p></td>
+<td align="left" valign="top"><p>The body of the request, if enabled.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 79. Transport anonymous_access_denied attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Transport anonymous_access_denied attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">origin_type</code></p></td>
+<td align="left" valign="top"><p>Where the request originated: <code class="literal">rest</code> (request
+                         originated from a REST API request), <code class="literal">transport</code>
+                         (request was received on the transport channel), or
+                         <code class="literal">local_node</code> (the local node issued the request).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">action</code></p></td>
+<td align="left" valign="top"><p>The name of the action that was executed.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">indices</code></p></td>
+<td align="left" valign="top"><p>A comma-separated list of indices this request
+                         pertains to (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request</code></p></td>
+<td align="left" valign="top"><p>The type of request that was executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 80. Transport authentication_success attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Transport authentication_success attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">origin_type</code></p></td>
+<td align="left" valign="top"><p>Where the request originated: <code class="literal">rest</code> (request
+                         originated from a REST API request), <code class="literal">transport</code>
+                         (request was received on the transport channel), or
+                         <code class="literal">local_node</code> (the local node issued the request).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The <em>effective</em> (impersonated) username. Usually this is
+                         the same as the <em>authenticated</em> username.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_by_principal</code></p></td>
+<td align="left" valign="top"><p>The <em>authenticated</em> (impersonator) username.
+                         This attribute is present only if the request is
+                         using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>.
+                         Otherwise, the <em>effective</em> and the <em>authenticated</em>
+                         users are equivalent and are indicated by the
+                         <code class="literal">principal</code> attribute.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">realm</code></p></td>
+<td align="left" valign="top"><p>The realm that authenticated the user.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">action</code></p></td>
+<td align="left" valign="top"><p>The name of the action that was executed.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">indices</code></p></td>
+<td align="left" valign="top"><p>A comma-separated list of indices this request
+                         pertains to (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request</code></p></td>
+<td align="left" valign="top"><p>The type of request that was executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 81. Transport authentication_failed attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Transport authentication_failed attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">origin_type</code></p></td>
+<td align="left" valign="top"><p>Where the request originated: <code class="literal">rest</code> (request
+                         originated from a REST API request), <code class="literal">transport</code>
+                         (request was received on the transport channel), or
+                         <code class="literal">local_node</code> (the local node issued the request).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The <em>effective</em> (impersonated) username. Usually this is
+                         the same as the <em>authenticated</em> username. If the
+                         request&#8217;s authentication token is invalid, this
+                         information might be missing.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_by_principal</code></p></td>
+<td align="left" valign="top"><p>The <em>authenticated</em> (impersonator) username.
+                         This attribute is present only if the request is
+                         using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>.
+                         Otherwise, the <em>effective</em> and the <em>authenticated</em>
+                         users are equivalent and are indicated by the
+                         <code class="literal">principal</code> attribute.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">action</code></p></td>
+<td align="left" valign="top"><p>The name of the action that was executed.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">indices</code></p></td>
+<td align="left" valign="top"><p>A comma-separated list of indices this request
+                         pertains to (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request</code></p></td>
+<td align="left" valign="top"><p>The type of request that was executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 82. Transport realm_authentication_failed attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Transport realm_authentication_failed attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">realm</code></p></td>
+<td align="left" valign="top"><p>The realm that failed to authenticate the user.
+                         <span class="strong strong"><strong>A separate entry is logged for each consulted realm.</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">origin_type</code></p></td>
+<td align="left" valign="top"><p>Where the request originated: <code class="literal">rest</code> (request
+                         originated from a REST API request), <code class="literal">transport</code>
+                         (request was received on the transport channel), or
+                         <code class="literal">local_node</code> (the local node issued the request).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The principal (username) that failed authentication.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">action</code></p></td>
+<td align="left" valign="top"><p>The name of the action that was executed.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">indices</code></p></td>
+<td align="left" valign="top"><p>A comma-separated list of indices this request
+                         pertains to (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request</code></p></td>
+<td align="left" valign="top"><p>The type of request that was executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 83. Transport access_granted attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Transport access_granted attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">origin_type</code></p></td>
+<td align="left" valign="top"><p>Where the request originated: <code class="literal">rest</code> (request
+                         originated from a REST API request), <code class="literal">transport</code>
+                         (request was received on the transport channel), or
+                         <code class="literal">local_node</code> (the local node issued the request).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The <em>effective</em> (impersonated) username for which
+                         authorization succeeded. Unless the request is using
+                         the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>,
+                         the <em>effective</em> and <em>authenticated</em> usernames are equivalent.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">realm</code></p></td>
+<td align="left" valign="top"><p>The realm name that <code class="literal">principal</code> belongs to.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_by_principal</code></p></td>
+<td align="left" valign="top"><p>The <em>authenticated</em> (impersonator) username.
+                         This attribute is present only if the request is
+                         using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>.
+                         Otherwise, the <em>effective</em> and the <em>authenticated</em>
+                         usernames are equivalent and are indicated by the
+                         <code class="literal">principal</code> attribute.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_by_realm</code></p></td>
+<td align="left" valign="top"><p>The realm name that <code class="literal">run_by_principal</code> belongs to
+                         (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">roles</code></p></td>
+<td align="left" valign="top"><p>The set of roles granting permissions.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">action</code></p></td>
+<td align="left" valign="top"><p>The name of the action that was executed.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">indices</code></p></td>
+<td align="left" valign="top"><p>A comma-separated list of indices this request
+                         pertains to (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request</code></p></td>
+<td align="left" valign="top"><p>The type of request that was executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 84. Transport access_denied attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Transport access_denied attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">origin_type</code></p></td>
+<td align="left" valign="top"><p>Where the request originated: <code class="literal">rest</code> (request
+                         originated from a REST API request), <code class="literal">transport</code>
+                         (request was received on the transport channel), or
+                         <code class="literal">local_node</code> (the local node issued the request).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The <em>effective</em> (impersonated) username for which
+                         authorization failed. Unless the request is using
+                         the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>,
+                         the <em>effective</em> and the <em>authenticated</em> usernames are
+                         equivalent.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">realm</code></p></td>
+<td align="left" valign="top"><p>The realm name that <code class="literal">principal</code> belongs to.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_by_principal</code></p></td>
+<td align="left" valign="top"><p>The <em>authenticated</em> (impersonator) username.
+                         This attribute is present only if the request is
+                         using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>.
+                         Otherwise, the <em>effective</em> and the <em>authenticated</em>
+                         usernames are equivalent and are indicated by the
+                         <code class="literal">principal</code> attribute.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_by_realm</code></p></td>
+<td align="left" valign="top"><p>The realm name that <code class="literal">run_by_principal</code> belongs to
+                         (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">roles</code></p></td>
+<td align="left" valign="top"><p>The set of roles granting permissions.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">action</code></p></td>
+<td align="left" valign="top"><p>The name of the action that was executed.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">indices</code></p></td>
+<td align="left" valign="top"><p>A comma-separated list of indices this request
+                         relates to (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request</code></p></td>
+<td align="left" valign="top"><p>The type of request that was executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 85. Transport run_as_granted attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Transport run_as_granted attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">origin_type</code></p></td>
+<td align="left" valign="top"><p>Where the request originated: <code class="literal">rest</code> (request
+                         originated from a REST API request), <code class="literal">transport</code>
+                         (request was received on the transport channel), or
+                         <code class="literal">local_node</code> (the local node issued the request).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The <em>authenticated</em> (<em>impersonator</em>) username for which
+                         the impersonation operation was granted.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">realm</code></p></td>
+<td align="left" valign="top"><p>The realm name that the <em>authenticated</em> user belongs to.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_as_principal</code></p></td>
+<td align="left" valign="top"><p>The <em>impersonated</em> username.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_as_realm</code></p></td>
+<td align="left" valign="top"><p>The realm name that the <em>impersonated</em> username belongs to.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">roles</code></p></td>
+<td align="left" valign="top"><p>The set of roles granting permissions.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">action</code></p></td>
+<td align="left" valign="top"><p>The name of the action that was executed.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">indices</code></p></td>
+<td align="left" valign="top"><p>A comma-separated list of indices this request
+                         relates to (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request</code></p></td>
+<td align="left" valign="top"><p>The type of request that was executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 86. Transport run_as_denied attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Transport run_as_denied attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">origin_type</code></p></td>
+<td align="left" valign="top"><p>Where the request originated: <code class="literal">rest</code> (request
+                         originated from a REST API request), <code class="literal">transport</code>
+                         (request was received on the transport channel), or
+                         <code class="literal">local_node</code> (the local node issued the request).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The <em>authenticated</em> (<em>impersonator</em>) username for which
+                         the impersonation operation was denied.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">realm</code></p></td>
+<td align="left" valign="top"><p>The realm name that the <em>authenticated</em> user belongs to.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_as_principal</code></p></td>
+<td align="left" valign="top"><p>The <em>impersonated</em> username.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_as_realm</code></p></td>
+<td align="left" valign="top"><p>The realm name that the <em>impersonated</em> username belongs to.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">roles</code></p></td>
+<td align="left" valign="top"><p>The set of roles granting permissions.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">action</code></p></td>
+<td align="left" valign="top"><p>The name of the action that was executed.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">indices</code></p></td>
+<td align="left" valign="top"><p>A comma-separated list of indices this request
+                         relates to (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request</code></p></td>
+<td align="left" valign="top"><p>The type of request that was executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 87. Transport tampered_request attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Transport tampered_request attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">origin_type</code></p></td>
+<td align="left" valign="top"><p>Where the request originated: <code class="literal">rest</code> (request
+                         originated from a REST API request), <code class="literal">transport</code>
+                         (request was received on the transport channel), or
+                         <code class="literal">local_node</code> (the local node issued the request).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">principal</code></p></td>
+<td align="left" valign="top"><p>The <em>effective</em> (impersonated) username. Unless the request
+                         is using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>,
+                         the <em>effective</em> and the <em>authenticated</em> usernames are
+                         equivalent. If the requests&#8217;s authentication token is
+                         invalid, this information might be missing.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">run_by_principal</code></p></td>
+<td align="left" valign="top"><p>The <em>authenticated</em> (impersonator) username.
+                         This attribute is present only if the request is
+                         using the <a class="xref" href="authorization.html#run-as-privilege" title="Submitting requests on behalf of other users">run as authorization functionality</a>.
+                         Otherwise, the <em>effective</em> and the <em>authenticated</em> usernames
+                         are equivalent and are indicated by the <code class="literal">principal</code> attribute.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">action</code></p></td>
+<td align="left" valign="top"><p>The name of the action that was executed.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">indices</code></p></td>
+<td align="left" valign="top"><p>A comma-separated list of indices this request
+                         pertains to (when applicable).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">request</code></p></td>
+<td align="left" valign="top"><p>The type of request that was executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 88. IP filter connection_granted attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="IP filter connection_granted attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">transport_profile</code></p></td>
+<td align="left" valign="top"><p>The transport profile the request targeted.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">rule</code></p></td>
+<td align="left" valign="top"><p>The <a class="xref" href="ip-filtering.html" title="Restricting connections with IP filtering">IP filtering</a> rule that granted
+                        the request.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="table">
+<p class="title"><strong>Table 89. IP filter connection_denied attributes</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="IP filter connection_denied attributes">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Attribute</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">transport_profile</code></p></td>
+<td align="left" valign="top"><p>The transport profile the request targeted.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">rule</code></p></td>
+<td align="left" valign="top"><p>The <a class="xref" href="ip-filtering.html" title="Restricting connections with IP filtering">IP filtering</a> rule that denied
+                        the request.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="audit-log-output"></a>Logfile audit output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/output-logfile.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>The <code class="literal">logfile</code> audit output is the default output for auditing. It writes data to
+the <code class="literal">&lt;clustername&gt;_audit.json</code> file in the logs directory. To maintain
+compatibility with releases prior to 6.5.0, a <code class="literal">&lt;clustername&gt;_access.log</code> file
+is also generated. They differ in the output format but the contents
+are similar. For systems that are not ingesting the audit file for search or
+analytics it is strongly recommended to keep only the newer format.</p>
+<p>To turn off the deprecated output format, you can disable the logger in the
+<code class="literal">log4j2.properties</code> file:</p>
+<div class="pre_wrapper lang-properties">
+<pre class="programlisting prettyprint lang-properties"># change info to off
+# logger.xpack_security_audit_deprecated_logfile.level = info
+logger.xpack_security_audit_deprecated_logfile.level = off</pre>
+</div>
+<p>Alternatively, use the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-update-settings.html" class="ulink" target="_top">cluster update settings API</a> to dynamically
+configure the logger:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_cluster/settings
+{
+  "persistent": {
+    "logger.org.elasticsearch.xpack.security.audit.logfile.DeprecatedLoggingAuditTrail": "off"
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1477.console"></div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If you overwrite the <code class="literal">log4j2.properties</code> and do not specify appenders for
+any of the audit trails, audit events are forwarded to the root appender, which
+by default points to the <code class="literal">elasticsearch.log</code> file.</p>
+</div>
+</div>
+<h3><a id="audit-log-entry-format"></a>Log entry format<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/output-logfile.asciidoc">edit</a></h3>
+<p>The log entries in the <code class="literal">&lt;clustername&gt;_audit.json</code> file have the following format:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Each log entry is a one line JSON document and each one is printed on a separate line.
+</li>
+<li class="listitem">
+The fields of a log entry are ordered. However, if a field does not have a value it
+will not be printed. The precise line pattern, together with the complete field
+order, are specified in the <code class="literal">log4j2.properties</code> config file.
+</li>
+<li class="listitem">
+The log entry does not contain nested inner JSON objects, i.e. the doc is flat.
+</li>
+<li class="listitem">
+The field names follow a dotted notation to flatten inner objects.
+</li>
+<li class="listitem">
+A field&#8217;s value can be a string, a number or an array of strings.
+</li>
+<li class="listitem">
+A field&#8217;s value, a request body as well, will be escaped as per the JSON RFC 4627.
+</li>
+</ul>
+</div>
+<p>There is a list of <a class="xref" href="enable-audit-logging.html#audit-event-types" title="Audit event types">audit event types</a> specifying the
+set of fields for each sog entry type.</p>
+<h3><a id="deprecated-audit-log-entry-format"></a>Deprecated log entry format<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/output-logfile.asciidoc">edit</a></h3>
+<p>The log entries in the <code class="literal">&lt;clustername&gt;_access.log</code> file have the following format:</p>
+<div class="pre_wrapper lang-txt">
+<pre class="programlisting prettyprint lang-txt">[&lt;timestamp&gt;] [&lt;local_node_info&gt;] [&lt;layer&gt;] [&lt;entry_type&gt;] &lt;attribute_list&gt;</pre>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;timestamp&gt;</code>
+</span>
+</dt>
+<dd>
+When the event occurred. You can configure the
+timestamp format in <code class="literal">log4j2.properties</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">&lt;local_node_info&gt;</code>
+</span>
+</dt>
+<dd>
+Information about the local node that generated
+the log entry. You can control what node information
+is included by configuring the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/auditing-settings.html#node-audit-settings" class="ulink" target="_top">local node info settings</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">&lt;layer&gt;</code>
+</span>
+</dt>
+<dd>
+The layer from which this event originated:
+<code class="literal">rest</code>, <code class="literal">transport</code> or <code class="literal">ip_filter</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">&lt;entry_type&gt;</code>
+</span>
+</dt>
+<dd>
+The type of event that occurred: <code class="literal">anonymous_access_denied</code>,
+<code class="literal">authentication_failed</code>, <code class="literal">access_denied</code>, <code class="literal">access_granted</code>,
+<code class="literal">connection_granted</code>, <code class="literal">connection_denied</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">&lt;attribute_list&gt;</code>
+</span>
+</dt>
+<dd>
+A comma-separated list of key-value pairs that contain
+data pertaining to the event. Formatted as
+<code class="literal">attr1=[val1], attr2=[val2]</code>. See <a class="xref" href="enable-audit-logging.html#audit-event-attributes" title="Audit event attributes">Audit Entry Attributes</a> for the attributes that can be included
+for each type of event.
+</dd>
+</dl>
+</div>
+<h3><a id="audit-log-settings"></a>Logfile output settings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/output-logfile.asciidoc">edit</a></h3>
+<p>The events and some other information about what gets logged can be
+controlled using settings in the <code class="literal">elasticsearch.yml</code> file. See
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/auditing-settings.html#event-audit-settings" class="ulink" target="_top">Audited Event Settings</a> and
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/auditing-settings.html#node-audit-settings" class="ulink" target="_top">Local Node Info Settings</a>.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>No filtering is performed when auditing, so sensitive data may be
+audited in plain text when including the request body in audit events.</p>
+</div>
+</div>
+<p><a id="logging-file"></a>You can also configure how the logfile is written in the <code class="literal">log4j2.properties</code>
+file located in <code class="literal">ES_PATH_CONF</code>. By default, audit information is appended to the
+<code class="literal">&lt;clustername&gt;_audit.json</code> file located in the standard Elasticsearch <code class="literal">logs</code> directory
+(typically located at <code class="literal">$ES_HOME/logs</code>). The file rolls over on a daily basis.
+The deprecated logfile audit format (<code class="literal">&lt;clustername&gt;_access.log</code>) can be disabled
+from the same <code class="literal">log4j2.properties</code> file (hint: look for the comment
+instructing to set the log level to <code class="literal">off</code>). The deprecated format is a duplication
+of information that is in place to assure backwards compatibility. If you are
+not strict about the audit format it is strongly recommended to only use the
+<code class="literal">&lt;clustername&gt;_audit.json</code> log appender.</p>
+<h3><a id="audit-log-ignore-policy"></a>Logfile audit events ignore policies<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/output-logfile.asciidoc">edit</a></h3>
+<p>The comprehensive audit trail is necessary to ensure accountability. It offers tremendous
+value during incident response and can even be required for demonstrating compliance.</p>
+<p>The drawback of an audited system is represented by the inevitable performance penalty incurred.
+In all truth, the audit trail spends <em>I/O ops</em> that are not available anymore for the user&#8217;s queries.
+Sometimes the verbosity of the audit trail may become a problem that the event type restrictions,
+<a class="xref" href="enable-audit-logging.html#audit-log-settings" title="Logfile output settings">defined by <code class="literal">include</code> and <code class="literal">exclude</code></a>, will not alleviate.</p>
+<p><span class="strong strong"><strong>Audit events ignore policies</strong></span> are a finer way to tune the verbosity of the audit trail.
+These policies define rules that match audit events which will be <em>ignored</em> (read as: not printed).
+Rules match on the values of attributes of audit events and complement the <a class="xref" href="enable-audit-logging.html#audit-log-settings" title="Logfile output settings">include/exclude</a> method.
+Imagine the corpus of audit events and the policies chopping off unwanted events.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>When utilizing audit events ignore policies you are acknowledging potential
+accountability gaps that could render illegitimate actions undetectable.
+Please take time to review these policies whenever your system architecture changes.</p>
+</div>
+</div>
+<p>A policy is a named set of filter rules. Each filter rule applies to a single event attribute,
+one of the <code class="literal">users</code>, <code class="literal">realms</code>, <code class="literal">roles</code> or <code class="literal">indices</code> attributes. The filter rule defines
+a list of <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/regexp-syntax.html" class="ulink" target="_top">Lucene regexp</a>, <span class="strong strong"><strong>any</strong></span> of which has to match the value of the audit
+event attribute for the rule to match.
+A policy matches an event if <span class="strong strong"><strong>all</strong></span> the rules comprising it match the event.
+An audit event is ignored, therefore not printed, if it matches <span class="strong strong"><strong>any</strong></span> policy. All other
+non-matching events are printed as usual.</p>
+<p>All policies are defined under the <code class="literal">xpack.security.audit.logfile.events.ignore_filters</code>
+settings namespace. For example, the following policy named <em>example1</em> matches
+events from the <em>kibana_system</em> or <em>admin_user</em> principals <span class="strong strong"><strong>and</strong></span> operating over indices of the
+wildcard form <em>app-logs*</em>:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.audit.logfile.events.ignore_filters:
+  example1:
+    users: ["kibana_system", "admin_user"]
+    indices: ["app-logs*"]</pre>
+</div>
+<p>An audit event generated by the <em>kibana_system</em> user and operating over multiple indices
+, some of which do not match the indices wildcard, will not match.
+As expected, operations generated by all other users (even operating only on indices that
+match the <em>indices</em> filter) will not match this policy either.</p>
+<p>Audit events of different types may have <a class="xref" href="enable-audit-logging.html#audit-event-attributes" title="Audit event attributes">different attributes</a>.
+If an event does not contain an attribute for which some policy defines filters, the
+event will not match the policy.
+For example, the following policy named <em>example2</em>, will never match <code class="literal">authentication_success</code> or
+<code class="literal">authentication_failed</code> events, irrespective of the user&#8217;s roles, because these
+event schemas do not contain the <code class="literal">role</code> attribute:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.audit.logfile.events.ignore_filters:
+  example2:
+    roles: ["admin", "ops_admin_*"]</pre>
+</div>
+<p>Likewise, any events of users with multiple roles, some of which do not match the
+regexps will not match this policy.</p>
+<p>For completeness, although practical use cases should be sparse, a filter can match
+a missing attribute of an event, using the empty string ("") or the empty list ([]).
+For example, the following policy will match events that do not have the <code class="literal">indices</code>
+attribute (<code class="literal">anonymous_access_denied</code>, <code class="literal">authentication_success</code> and other types) as well
+as events over the <em>next</em> index.</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.audit.logfile.events.ignore_filters:
+  example3:
+    indices: ["next", ""]</pre>
+</div>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="auditing-search-queries"></a>Auditing search queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/auditing/auditing-search-queries.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>There is no <a class="xref" href="enable-audit-logging.html#audit-event-types" title="Audit event types">audit event type</a> specifically
+dedicated to search queries. Search queries are analyzed and then processed; the
+processing triggers authorization actions that are audited.
+However, the original raw query, as submitted by the client, is not accessible
+downstream when authorization auditing occurs.</p>
+<p>Search queries are contained inside HTTP request bodies, however, and some
+audit events that are generated by the REST layer can be toggled to output
+the request body to the audit log.</p>
+<p>To make certain audit events include the request body, edit the following
+setting in the <code class="literal">elasticsearch.yml</code> file:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.audit.logfile.events.emit_request_body: true</pre>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>No filtering is performed when auditing, so sensitive data might be
+audited in plain text when audit events include the request body. Also, the
+request body can contain malicious content that can break a parser consuming
+the audit logs.</p>
+</div>
+</div>
+<p>There are only a handful of <a class="xref" href="enable-audit-logging.html#audit-event-types" title="Audit event types">audit event types</a> that are
+generated in the REST layer and can access the request body. Most of them are not
+included by default.</p>
+<p>A good practical piece of advice is to add <code class="literal">authentication_success</code> to the event
+types that are audited (add it to the list in the <code class="literal">xpack.security.audit.logfile.events.include</code>),
+as this event type is not audited by default.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Typically, the include list contains other event types as well, such as
+<code class="literal">access_granted</code> or <code class="literal">access_denied</code>.</p>
+</div>
+</div>
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="authorization.html">« User authorization</a>
+</span>
+<span class="next">
+<a href="encrypting-communications.html">Encrypting communications »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

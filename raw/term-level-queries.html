@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Term-level queries | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Term-level queries | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="query-dsl.html" title="Query DSL"/>
+<link rel="prev" href="specialized-queries.html" title="Specialized queries"/>
+<link rel="next" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="query-dsl.html">Query DSL</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="specialized-queries.html">« Specialized queries</a>
+</span>
+<span class="next">
+<a href="query-dsl-minimum-should-match.html"><code class="literal">minimum_should_match</code> parameter »</a>
+</span>
+</div>
+<div class="chapter">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="term-level-queries"></a>Term-level queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/term-level-queries.asciidoc">edit</a></h2>
+</div></div></div>
+<p>You can use <span class="strong strong"><strong>term-level queries</strong></span> to find documents based on precise values in
+structured data. Examples of structured data include date ranges, IP addresses,
+prices, or product IDs.</p>
+<p>Unlike <a class="xref" href="full-text-queries.html" title="Full text queries">full-text queries</a>, term-level queries do not
+analyze search terms. Instead, term-level queries match the exact terms stored
+in a field.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Term-level queries still normalize search terms for <code class="literal">keyword</code> fields with the
+<code class="literal">normalizer</code> property. For more details, see <a class="xref" href="mapping-params.html#normalizer" title="normalizer"><code class="literal">normalizer</code></a>.</p>
+</div>
+</div>
+<h3><a id="term-level-query-types"></a>Types of term-level queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/term-level-queries.asciidoc">edit</a></h3>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-exists-query" title="Exists query"><code class="literal">exists</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents that contain any indexed value for a field.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-fuzzy-query" title="Fuzzy query"><code class="literal">fuzzy</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents that contain terms similar to the search term. Elasticsearch measures
+similarity, or fuzziness, using a
+<a href="https://en.wikipedia.org/wiki/Levenshtein_distance" class="ulink" target="_top">Levenshtein edit distance</a>.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-ids-query" title="IDs"><code class="literal">ids</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents based on their <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field">document IDs</a>.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-prefix-query" title="Prefix query"><code class="literal">prefix</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents that contain a specific prefix in a provided field.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-range-query" title="Range query"><code class="literal">range</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents that contain terms within a provided range.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-regexp-query" title="Regexp query"><code class="literal">regexp</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents that contain terms matching a
+<a href="https://en.wikipedia.org/wiki/Regular_expression" class="ulink" target="_top">regular expression</a>.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-term-query" title="Term query"><code class="literal">term</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents that contain an exact term in a provided field.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-terms-query" title="Terms query"><code class="literal">terms</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents that contain one or more exact terms in a provided field.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-terms-set-query" title="Terms set query"><code class="literal">terms_set</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents that contain a minimum number of exact terms in a provided
+field. You can define the minimum number of matching terms using a field or
+script.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-type-query" title="Type Query"><code class="literal">type</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents of the specified type.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="term-level-queries.html#query-dsl-wildcard-query" title="Wildcard query"><code class="literal">wildcard</code> query</a>
+</span>
+</dt>
+<dd>
+Returns documents that contain terms matching a wildcard pattern.
+</dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-exists-query"></a>Exists query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/exists-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain an indexed value for a field.</p>
+<p>An indexed value may not exist for a document&#8217;s field due to a variety of reasons:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The field in the source JSON is <code class="literal">null</code> or <code class="literal">[]</code>
+</li>
+<li class="listitem">
+The field has <code class="literal">"index" : false</code> set in the mapping
+</li>
+<li class="listitem">
+The length of the field value exceeded an <code class="literal">ignore_above</code> setting in the mapping
+</li>
+<li class="listitem">
+The field value was malformed and <code class="literal">ignore_malformed</code> was defined in the mapping
+</li>
+</ul>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="exists-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/exists-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "exists": {
+      "field": "user"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/919.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="exists-query-top-level-params"></a>Top-level parameters for <code class="literal">exists</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/exists-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">field</code>
+</span>
+</dt>
+<dd>
+<p>
+(Required, string) Name of the field you wish to search.
+</p>
+<p>While a field is deemed non-existent if the JSON value is <code class="literal">null</code> or <code class="literal">[]</code>, these
+values will indicate the field does exist:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Empty strings, such as <code class="literal">""</code> or <code class="literal">"-"</code>
+</li>
+<li class="listitem">
+Arrays containing <code class="literal">null</code> and another value, such as <code class="literal">[null, "foo"]</code>
+</li>
+<li class="listitem">
+A custom <a class="xref" href="mapping-params.html#null-value" title="null_value"><code class="literal">null-value</code></a>, defined in field mapping
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="exists-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/exists-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="find-docs-null-values"></a>Find documents missing indexed values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/exists-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>To find documents that are missing an indexed value for a field,
+use the <code class="literal">must_not</code> <a class="xref" href="compound-queries.html#query-dsl-bool-query" title="Boolean query">boolean query</a> with the <code class="literal">exists</code>
+query.</p>
+<p>The following search returns documents that are missing an indexed value for
+the <code class="literal">user.id</code> field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "must_not": {
+        "exists": {
+          "field": "user.id"
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/920.console"></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-fuzzy-query"></a>Fuzzy query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/fuzzy-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain terms similar to the search term, as measured by
+a <a href="https://en.wikipedia.org/wiki/Levenshtein_distance" class="ulink" target="_top">Levenshtein edit distance</a>.</p>
+<p>An edit distance is the number of one-character changes needed to turn one term
+into another. These changes can include:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Changing a character (<span class="strong strong"><strong>b</strong></span>ox → <span class="strong strong"><strong>f</strong></span>ox)
+</li>
+<li class="listitem">
+Removing a character (<span class="strong strong"><strong>b</strong></span>lack → lack)
+</li>
+<li class="listitem">
+Inserting a character (sic → sic<span class="strong strong"><strong>k</strong></span>)
+</li>
+<li class="listitem">
+Transposing two adjacent characters (<span class="strong strong"><strong>ac</strong></span>t → <span class="strong strong"><strong>ca</strong></span>t)
+</li>
+</ul>
+</div>
+<p>To find similar terms, the <code class="literal">fuzzy</code> query creates a set of all possible
+variations, or expansions, of the search term within a specified edit distance.
+The query then returns exact matches for each expansion.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="fuzzy-query-ex-request"></a>Example requests<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/fuzzy-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="fuzzy-query-ex-simple"></a>Simple example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/fuzzy-query.asciidoc">edit</a></h4>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "fuzzy": {
+      "user.id": {
+        "value": "ki"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/921.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="fuzzy-query-ex-advanced"></a>Example using advanced parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/fuzzy-query.asciidoc">edit</a></h4>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "fuzzy": {
+      "user.id": {
+        "value": "ki",
+        "fuzziness": "AUTO",
+        "max_expansions": 50,
+        "prefix_length": 0,
+        "transpositions": true,
+        "rewrite": "constant_score"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/922.console"></div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="fuzzy-query-top-level-params"></a>Top-level parameters for <code class="literal">fuzzy</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/fuzzy-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, object) Field you wish to search.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="fuzzy-query-field-params"></a>Parameters for <code class="literal">&lt;field&gt;</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/fuzzy-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">value</code>
+</span>
+</dt>
+<dd>
+(Required, string) Term you wish to find in the provided <code class="literal">&lt;field&gt;</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzziness</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Maximum edit distance allowed for matching. See <a class="xref" href="api-conventions.html#fuzziness" title="Fuzziness">Fuzziness</a>
+for valid values and more information.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_expansions</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, integer) Maximum number of variations created. Defaults to <code class="literal">50</code>.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Avoid using a high value in the <code class="literal">max_expansions</code> parameter, especially
+if the <code class="literal">prefix_length</code> parameter value is <code class="literal">0</code>. High values in the
+<code class="literal">max_expansions</code> parameter can cause poor performance due to the high number of
+variations examined.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">prefix_length</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Number of beginning characters left unchanged when creating
+expansions. Defaults to <code class="literal">0</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">transpositions</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) Indicates whether edits include transpositions of two
+adjacent characters (ab → ba). Defaults to <code class="literal">true</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">rewrite</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Method used to rewrite the query. For valid values and more
+information, see the <a class="xref" href="query-dsl-multi-term-rewrite.html" title="rewrite parameter"><code class="literal">rewrite</code> parameter</a>.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="fuzzy-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/fuzzy-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Fuzzy queries will not be executed if <a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a>
+is set to false.</p>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-ids-query"></a>IDs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/ids-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents based on their IDs. This query uses document IDs stored in
+the <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field"><code class="literal">_id</code></a> field.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_example_request_2"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/ids-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "ids" : {
+      "values" : ["1", "4", "100"]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/923.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ids-query-top-level-parameters"></a>Top-level parameters for <code class="literal">ids</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/ids-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">values</code>
+</span>
+</dt>
+<dd>
+(Required, array of strings) An array of <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field">document IDs</a>.
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-prefix-query"></a>Prefix query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/prefix-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain a specific prefix in a provided field.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="prefix-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/prefix-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The following search returns documents where the <code class="literal">user.id</code> field contains a term
+that begins with <code class="literal">ki</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "prefix": {
+      "user.id": {
+        "value": "ki"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/924.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="prefix-query-top-level-params"></a>Top-level parameters for <code class="literal">prefix</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/prefix-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, object) Field you wish to search.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="prefix-query-field-params"></a>Parameters for <code class="literal">&lt;field&gt;</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/prefix-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">value</code>
+</span>
+</dt>
+<dd>
+(Required, string) Beginning characters of terms you wish to find in the
+provided <code class="literal">&lt;field&gt;</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">rewrite</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Method used to rewrite the query. For valid values and more
+information, see the <a class="xref" href="query-dsl-multi-term-rewrite.html" title="rewrite parameter"><code class="literal">rewrite</code> parameter</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">case_insensitive</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) allows ASCII case insensitive matching of the
+value with the indexed field values when set to true. Default is false which means
+the case sensitivity of matching depends on the underlying field&#8217;s mapping.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="prefix-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/prefix-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="prefix-query-short-ex"></a>Short request example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/prefix-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>You can simplify the <code class="literal">prefix</code> query syntax by combining the <code class="literal">&lt;field&gt;</code> and
+<code class="literal">value</code> parameters. For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "prefix" : { "user" : "ki" }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/925.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="prefix-query-index-prefixes"></a>Speed up prefix queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/prefix-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>You can speed up prefix queries using the <a class="xref" href="mapping-params.html#index-prefixes" title="index_prefixes"><code class="literal">index_prefixes</code></a>
+mapping parameter. If enabled, Elasticsearch indexes prefixes between 2 and 5
+characters in a separate field. This lets Elasticsearch run prefix queries more
+efficiently at the cost of a larger index.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="prefix-query-allow-expensive-queries"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/prefix-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Prefix queries will not be executed if <a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a>
+is set to false. However, if <a class="xref" href="mapping-params.html#index-prefixes" title="index_prefixes"><code class="literal">index_prefixes</code></a> are enabled, an optimised query is built which
+is not considered slow, and will be executed in spite of this setting.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-range-query"></a>Range query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain terms within a provided range.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="range-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The following search returns documents where the <code class="literal">age</code> field contains a term
+between <code class="literal">10</code> and <code class="literal">20</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "range": {
+      "age": {
+        "gte": 10,
+        "lte": 20,
+        "boost": 2.0
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/926.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="range-query-top-level-params"></a>Top-level parameters for <code class="literal">range</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+<p>(Required, object) Field you wish to search.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="range-query-field-params"></a>Parameters for <code class="literal">&lt;field&gt;</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">gt</code>
+</span>
+</dt>
+<dd>
+(Optional) Greater than.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">gte</code>
+</span>
+</dt>
+<dd>
+(Optional) Greater than or equal to.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">lt</code>
+</span>
+</dt>
+<dd>
+(Optional) Less than.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">lte</code>
+</span>
+</dt>
+<dd>
+(Optional) Less than or equal to.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">format</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Date format used to convert <code class="literal">date</code> values in the query.</p>
+<p>By default, Elasticsearch uses the <a class="xref" href="mapping-params.html#mapping-date-format" title="format">date <code class="literal">format</code></a> provided in the
+<code class="literal">&lt;field&gt;</code>'s mapping. This value overrides that mapping format.</p>
+<p>For valid syntax, see <a class="xref" href="mapping-params.html#mapping-date-format" title="format"><code class="literal">format</code></a>.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If a format or date value is incomplete, the range query replaces any
+missing components with default values. See <a class="xref" href="term-level-queries.html#missing-date-components" title="Missing date components">Missing date components</a>.</p>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="variablelist">
+<a id="querying-range-fields"></a>
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">relation</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Indicates how the range query matches values for <code class="literal">range</code>
+fields. Valid values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">INTERSECTS</code> (Default)
+</span>
+</dt>
+<dd>
+Matches documents with a range field value that intersects the query&#8217;s range.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">CONTAINS</code>
+</span>
+</dt>
+<dd>
+Matches documents with a range field value that entirely contains the query&#8217;s range.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">WITHIN</code>
+</span>
+</dt>
+<dd>
+Matches documents with a range field value entirely within the query&#8217;s range.
+</dd>
+</dl>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">time_zone</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string)
+<a href="https://en.wikipedia.org/wiki/List_of_UTC_time_offsets" class="ulink" target="_top">Coordinated Universal
+Time (UTC) offset</a> or
+<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" class="ulink" target="_top">IANA time zone</a>
+used to convert <code class="literal">date</code> values in the query to UTC.</p>
+<p>Valid values are ISO 8601 UTC offsets, such as <code class="literal">+01:00</code> or -<code class="literal">08:00</code>, and IANA
+time zone IDs, such as <code class="literal">America/Los_Angeles</code>.</p>
+<p>For an example query using the <code class="literal">time_zone</code> parameter, see
+<a class="xref" href="term-level-queries.html#range-query-time-zone" title="Example query using time_zone parameter">Time zone in <code class="literal">range</code> queries</a>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">time_zone</code> parameter does <span class="strong strong"><strong>not</strong></span> affect the <a class="xref" href="api-conventions.html#date-math" title="Date Math">date math</a> value
+of <code class="literal">now</code>. <code class="literal">now</code> is always the current system time in UTC.</p>
+<p>However, the <code class="literal">time_zone</code> parameter does convert dates calculated using <code class="literal">now</code> and
+<a class="xref" href="api-conventions.html#date-math" title="Date Math">date math rounding</a>. For example, the <code class="literal">time_zone</code> parameter will
+convert a value of <code class="literal">now/d</code>.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">boost</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, float) Floating point number used to decrease or increase the
+<a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a> of a query. Defaults to <code class="literal">1.0</code>.</p>
+<p>You can use the <code class="literal">boost</code> parameter to adjust relevance scores for searches
+containing two or more queries.</p>
+<p>Boost values are relative to the default value of <code class="literal">1.0</code>. A boost value between
+<code class="literal">0</code> and <code class="literal">1.0</code> decreases the relevance score. A value greater than <code class="literal">1.0</code>
+increases the relevance score.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="range-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="ranges-on-text-and-keyword"></a>Using the <code class="literal">range</code> query with <code class="literal">text</code> and <code class="literal">keyword</code> fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Range queries on <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> or <a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> fields will not be executed if
+<a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a> is set to false.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="ranges-on-dates"></a>Using the <code class="literal">range</code> query with <code class="literal">date</code> fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>When the <code class="literal">&lt;field&gt;</code> parameter is a <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a> field data type, you can use
+<a class="xref" href="api-conventions.html#date-math" title="Date Math">date math</a> with the following parameters:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">gt</code>
+</li>
+<li class="listitem">
+<code class="literal">gte</code>
+</li>
+<li class="listitem">
+<code class="literal">lt</code>
+</li>
+<li class="listitem">
+<code class="literal">lte</code>
+</li>
+</ul>
+</div>
+<p>For example, the following search returns documents where the <code class="literal">timestamp</code> field
+contains a date between today and yesterday.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "range": {
+      "timestamp": {
+        "gte": "now-1d/d",
+        "lt": "now/d"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/927.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="missing-date-components"></a>Missing date components<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h5>
+</div></div></div>
+<p>For range queries and <a class="xref" href="search-aggregations-bucket.html#search-aggregations-bucket-daterange-aggregation" title="Date range aggregation">date
+range</a> aggregations, Elasticsearch replaces missing date components with the following
+values. Missing year components are not replaced.</p>
+<div class="pre_wrapper lang-text">
+<pre class="programlisting prettyprint lang-text">MONTH_OF_YEAR:    01
+DAY_OF_MONTH:     01
+HOUR_OF_DAY:      23
+MINUTE_OF_HOUR:   59
+SECOND_OF_MINUTE: 59
+NANO_OF_SECOND:   999_999_999</pre>
+</div>
+<p>For example, if the format is <code class="literal">yyyy-MM</code>, Elasticsearch converts a <code class="literal">gt</code> value of <code class="literal">2099-12</code>
+to <code class="literal">2099-12-01T23:59:59.999_999_999Z</code>. This date uses the provided year (<code class="literal">2099</code>)
+and month (<code class="literal">12</code>) but uses the default day (<code class="literal">01</code>), hour (<code class="literal">23</code>), minute (<code class="literal">59</code>),
+second (<code class="literal">59</code>), and nanosecond (<code class="literal">999_999_999</code>).</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="range-query-date-math-rounding"></a>Date math and rounding<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h5>
+</div></div></div>
+<p>Elasticsearch rounds <a class="xref" href="api-conventions.html#date-math" title="Date Math">date math</a> values in parameters as follows:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">gt</code>
+</span>
+</dt>
+<dd>
+<p>Rounds up to the first millisecond not covered by the rounded date.</p>
+<p>For example, <code class="literal">2014-11-18||/M</code> rounds up to <code class="literal">2014-12-01T00:00:00.000</code>, excluding
+the entire month of November.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">gte</code>
+</span>
+</dt>
+<dd>
+<p>Rounds down to the first millisecond.</p>
+<p>For example, <code class="literal">2014-11-18||/M</code> rounds down to <code class="literal">2014-11-01T00:00:00.000</code>, including
+the entire month.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">lt</code>
+</span>
+</dt>
+<dd>
+<p>Rounds down to the last millisecond before the rounded value.</p>
+<p>For example, <code class="literal">2014-11-18||/M</code> rounds down to <code class="literal">2014-10-31T23:59:59.999</code>, excluding
+the entire month of November.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">lte</code>
+</span>
+</dt>
+<dd>
+<p>Rounds up to the latest millisecond in the rounding interval.</p>
+<p>For example, <code class="literal">2014-11-18||/M</code> rounds up to <code class="literal">2014-11-30T23:59:59.999</code>, including
+the entire month.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="range-query-time-zone"></a>Example query using <code class="literal">time_zone</code> parameter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/range-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>You can use the <code class="literal">time_zone</code> parameter to convert <code class="literal">date</code> values to UTC using a
+UTC offset. For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "range": {
+      "timestamp": {
+        "time_zone": "+01:00",        <a id="CO223-1"></a><i class="conum" data-value="1"></i>
+        "gte": "2020-01-01T00:00:00", <a id="CO223-2"></a><i class="conum" data-value="2"></i>
+        "lte": "now"                  <a id="CO223-3"></a><i class="conum" data-value="3"></i>
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/928.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO223-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Indicates that <code class="literal">date</code> values use a UTC offset of <code class="literal">+01:00</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO223-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>With a UTC offset of <code class="literal">+01:00</code>, Elasticsearch converts this date to
+<code class="literal">2019-12-31T23:00:00 UTC</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO223-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">time_zone</code> parameter does not affect the <code class="literal">now</code> value.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-regexp-query"></a>Regexp query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/regexp-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain terms matching a
+<a href="https://en.wikipedia.org/wiki/Regular_expression" class="ulink" target="_top">regular expression</a>.</p>
+<p>A regular expression is a way to match patterns in data using placeholder
+characters, called operators. For a list of operators supported by the
+<code class="literal">regexp</code> query, see <a class="xref" href="regexp-syntax.html" title="Regular expression syntax">Regular expression syntax</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="regexp-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/regexp-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The following search returns documents where the <code class="literal">user.id</code> field contains any term
+that begins with <code class="literal">k</code> and ends with <code class="literal">y</code>. The <code class="literal">.*</code> operators match any
+characters of any length, including no characters. Matching
+terms can include <code class="literal">ky</code>, <code class="literal">kay</code>, and <code class="literal">kimchy</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "regexp": {
+      "user.id": {
+        "value": "k.*y",
+        "flags": "ALL",
+        "case_insensitive": true,
+        "max_determinized_states": 10000,
+        "rewrite": "constant_score"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/929.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="regexp-top-level-params"></a>Top-level parameters for <code class="literal">regexp</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/regexp-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, object) Field you wish to search.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="regexp-query-field-params"></a>Parameters for <code class="literal">&lt;field&gt;</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/regexp-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">value</code>
+</span>
+</dt>
+<dd>
+<p>
+(Required, string) Regular expression for terms you wish to find in the provided
+<code class="literal">&lt;field&gt;</code>. For a list of supported operators, see <a class="xref" href="regexp-syntax.html" title="Regular expression syntax">Regular
+expression syntax</a>.
+</p>
+<p>By default, regular expressions are limited to 1,000 characters. You can change
+this limit using the <a class="xref" href="index-modules.html#index-max-regex-length"><code class="literal">index.max_regex_length</code></a>
+setting.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The performance of the <code class="literal">regexp</code> query can vary based on the regular expression
+provided. To improve performance, avoid using wildcard patterns, such as <code class="literal">.*</code> or
+<code class="literal">.*?+</code>, without a prefix or suffix.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">flags</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Enables optional operators for the regular expression. For
+valid values and more information, see <a class="xref" href="regexp-syntax.html#regexp-optional-operators" title="Optional operators">Regular
+expression syntax</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">case_insensitive</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) allows case insensitive matching of the regular expression
+value with the indexed field values when set to true. Default is false which means
+the case sensitivity of matching depends on the underlying field&#8217;s mapping.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_determinized_states</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, integer) Maximum number of
+<a href="https://en.wikipedia.org/wiki/Deterministic_finite_automaton" class="ulink" target="_top">automaton states</a>
+required for the query. Default is <code class="literal">10000</code>.</p>
+<p>Elasticsearch uses <a href="https://lucene.apache.org/core/" class="ulink" target="_top">Apache Lucene</a> internally to parse
+regular expressions. Lucene converts each regular expression to a finite
+automaton containing a number of determinized states.</p>
+<p>You can use this parameter to prevent that conversion from unintentionally
+consuming too many resources. You may need to increase this limit to run complex
+regular expressions.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">rewrite</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Method used to rewrite the query. For valid values and more
+information, see the <a class="xref" href="query-dsl-multi-term-rewrite.html" title="rewrite parameter"><code class="literal">rewrite</code> parameter</a>.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="regexp-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/regexp-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_allow_expensive_queries_6"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/regexp-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Regexp queries will not be executed if <a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a>
+is set to false.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-term-query"></a>Term query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/term-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain an <span class="strong strong"><strong>exact</strong></span> term in a provided field.</p>
+<p>You can use the <code class="literal">term</code> query to find documents based on a precise value such as
+a price, a product ID, or a username.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Avoid using the <code class="literal">term</code> query for <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> fields.</p>
+<p>By default, Elasticsearch changes the values of <code class="literal">text</code> fields as part of <a class="xref" href="analysis.html" title="Text analysis">analysis</a>. This can make finding exact matches for <code class="literal">text</code> field values
+difficult.</p>
+<p>To search <code class="literal">text</code> field values, use the <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code></a> query
+instead.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="term-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/term-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "term": {
+      "user.id": {
+        "value": "kimchy",
+        "boost": 1.0
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/930.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="term-top-level-params"></a>Top-level parameters for <code class="literal">term</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/term-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, object) Field you wish to search.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="term-field-params"></a>Parameters for <code class="literal">&lt;field&gt;</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/term-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">value</code>
+</span>
+</dt>
+<dd>
+(Required, string) Term you wish to find in the provided <code class="literal">&lt;field&gt;</code>. To return a
+document, the term must exactly match the field value, including whitespace and
+capitalization.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">boost</code>
+</span>
+</dt>
+<dd>
+<p>
+(Optional, float) Floating point number used to decrease or increase the
+<a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a> of a query. Defaults to <code class="literal">1.0</code>.
+</p>
+<p>You can use the <code class="literal">boost</code> parameter to adjust relevance scores for searches
+containing two or more queries.</p>
+<p>Boost values are relative to the default value of <code class="literal">1.0</code>. A boost value between
+<code class="literal">0</code> and <code class="literal">1.0</code> decreases the relevance score. A value greater than <code class="literal">1.0</code>
+increases the relevance score.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">case_insensitive</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) allows ASCII case insensitive matching of the
+value with the indexed field values when set to true. Default is false which means
+the case sensitivity of matching depends on the underlying field&#8217;s mapping
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="term-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/term-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="avoid-term-query-text-fields"></a>Avoid using the <code class="literal">term</code> query for <code class="literal">text</code> fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/term-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>By default, Elasticsearch changes the values of <code class="literal">text</code> fields during analysis. For
+example, the default <a class="xref" href="analysis-analyzers.html#analysis-standard-analyzer" title="Standard analyzer">standard analyzer</a> changes
+<code class="literal">text</code> field values as follows:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Removes most punctuation
+</li>
+<li class="listitem">
+Divides the remaining content into individual words, called
+<a class="xref" href="analysis-tokenizers.html" title="Tokenizer reference">tokens</a>
+</li>
+<li class="listitem">
+Lowercases the tokens
+</li>
+</ul>
+</div>
+<p>To better search <code class="literal">text</code> fields, the <code class="literal">match</code> query also analyzes your provided
+search term before performing a search. This means the <code class="literal">match</code> query can search
+<code class="literal">text</code> fields for analyzed tokens rather than an exact term.</p>
+<p>The <code class="literal">term</code> query does <span class="strong strong"><strong>not</strong></span> analyze the search term. The <code class="literal">term</code> query only
+searches for the <span class="strong strong"><strong>exact</strong></span> term you provide. This means the <code class="literal">term</code> query may
+return poor or no results when searching <code class="literal">text</code> fields.</p>
+<p>To see the difference in search results, try the following example.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Create an index with a <code class="literal">text</code> field called <code class="literal">full_text</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "full_text": { "type": "text" }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/931.console"></div>
+</li>
+<li class="listitem">
+<p>Index a document with a value of <code class="literal">Quick Brown Foxes!</code> in the <code class="literal">full_text</code>
+field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/1
+{
+  "full_text":   "Quick Brown Foxes!"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/932.console"></div>
+<p>Because <code class="literal">full_text</code> is a <code class="literal">text</code> field, Elasticsearch changes <code class="literal">Quick Brown Foxes!</code> to
+<code class="literal">[quick, brown, fox]</code> during analysis.</p>
+</li>
+<li class="listitem">
+<p>Use the <code class="literal">term</code> query to search for <code class="literal">Quick Brown Foxes!</code> in the <code class="literal">full_text</code>
+field. Include the <code class="literal">pretty</code> parameter so the response is more readable.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index-000001/_search?pretty
+{
+  "query": {
+    "term": {
+      "full_text": "Quick Brown Foxes!"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/933.console"></div>
+<p>Because the <code class="literal">full_text</code> field no longer contains the <span class="strong strong"><strong>exact</strong></span> term <code class="literal">Quick Brown
+Foxes!</code>, the <code class="literal">term</code> query search returns no results.</p>
+</li>
+<li class="listitem">
+<p>Use the <code class="literal">match</code> query to search for <code class="literal">Quick Brown Foxes!</code> in the <code class="literal">full_text</code>
+field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index-000001/_search?pretty
+{
+  "query": {
+    "match": {
+      "full_text": "Quick Brown Foxes!"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/934.console"></div>
+<p>Unlike the <code class="literal">term</code> query, the <code class="literal">match</code> query analyzes your provided search term,
+<code class="literal">Quick Brown Foxes!</code>, before performing a search. The <code class="literal">match</code> query then returns
+any documents containing the <code class="literal">quick</code>, <code class="literal">brown</code>, or <code class="literal">fox</code> tokens in the
+<code class="literal">full_text</code> field.</p>
+<p>Here&#8217;s the response for the <code class="literal">match</code> query search containing the indexed document
+in the results.</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "took" : 1,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 1,
+      "relation" : "eq"
+    },
+    "max_score" : 0.8630463,
+    "hits" : [
+      {
+        "_index" : "my-index-000001",
+        "_type" : "_doc",
+        "_id" : "1",
+        "_score" : 0.8630463,
+        "_source" : {
+          "full_text" : "Quick Brown Foxes!"
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-terms-query"></a>Terms query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain one or more <span class="strong strong"><strong>exact</strong></span> terms in a provided field.</p>
+<p>The <code class="literal">terms</code> query is the same as the <a class="xref" href="term-level-queries.html#query-dsl-term-query" title="Term query"><code class="literal">term</code> query</a>,
+except you can search for multiple values.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="terms-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The following search returns documents where the <code class="literal">user.id</code> field contains <code class="literal">kimchy</code>
+or <code class="literal">elkbee</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "terms": {
+      "user.id": [ "kimchy", "elkbee" ],
+      "boost": 1.0
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/935.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="terms-top-level-params"></a>Top-level parameters for <code class="literal">terms</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, object) Field you wish to search.</p>
+<p>The value of this parameter is an array of terms you wish to find in the
+provided field. To return a document, one or more terms must exactly match a
+field value, including whitespace and capitalization.</p>
+<p>By default, Elasticsearch limits the <code class="literal">terms</code> query to a maximum of 65,536
+terms. You can change this limit using the <a class="xref" href="index-modules.html#index-max-terms-count"><code class="literal">index.max_terms_count</code></a> setting.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>To use the field values of an existing document as search terms, use the
+<a class="xref" href="term-level-queries.html#query-dsl-terms-lookup" title="Terms lookup">terms lookup</a> parameters.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">boost</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, float) Floating point number used to decrease or increase the
+<a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a> of a query. Defaults to <code class="literal">1.0</code>.</p>
+<p>You can use the <code class="literal">boost</code> parameter to adjust relevance scores for searches
+containing two or more queries.</p>
+<p>Boost values are relative to the default value of <code class="literal">1.0</code>. A boost value between
+<code class="literal">0</code> and <code class="literal">1.0</code> decreases the relevance score. A value greater than <code class="literal">1.0</code>
+increases the relevance score.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="terms-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-dsl-terms-query-highlighting"></a>Highlighting <code class="literal">terms</code> queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p><a class="xref" href="highlighting.html" title="Highlighting">Highlighting</a> is best-effort only. Elasticsearch may not
+return highlight results for <code class="literal">terms</code> queries depending on:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Highlighter type
+</li>
+<li class="listitem">
+Number of terms in the query
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-dsl-terms-lookup"></a>Terms lookup<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Terms lookup fetches the field values of an existing document. Elasticsearch then uses
+those values as search terms. This can be helpful when searching for a large set
+of terms.</p>
+<p>Because terms lookup fetches values from a document, the <a class="xref" href="mapping-fields.html#mapping-source-field" title="_source field"><code class="literal">_source</code></a> mapping field must be enabled to use terms lookup. The <code class="literal">_source</code>
+field is enabled by default.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>By default, Elasticsearch limits the <code class="literal">terms</code> query to a maximum of 65,536
+terms. This includes terms fetched using terms lookup. You can change
+this limit using the <a class="xref" href="index-modules.html#index-max-terms-count"><code class="literal">index.max_terms_count</code></a> setting.</p>
+</div>
+</div>
+<p>To reduce network traffic, a terms lookup will fetch the document&#8217;s values from
+a shard on a local data node if possible. If the your terms data is not large,
+consider using an index with a single primary shard that&#8217;s fully replicated
+across all applicable data nodes to minimize network traffic.</p>
+<p>To perform a terms lookup, use the following parameters.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="query-dsl-terms-lookup-params"></a>Terms lookup parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-query.asciidoc">edit</a></h5>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">index</code>
+</span>
+</dt>
+<dd>
+(Required, string) Name of the index from which to fetch field values.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">id</code>
+</span>
+</dt>
+<dd>
+(Required, string) <a class="xref" href="mapping-fields.html#mapping-id-field" title="_id field">ID</a> of the document from which to fetch
+field values.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">path</code>
+</span>
+</dt>
+<dd>
+<p>(Required, string) Name of the field from which to fetch field values. Elasticsearch uses
+these values as search terms for the query.</p>
+<p>If the field values include an array of nested inner objects, you can access
+those objects using dot notation syntax.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">routing</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Custom <a class="xref" href="mapping-fields.html#mapping-routing-field" title="_routing field">routing value</a> of the
+document from which to fetch term values. If a custom routing value was provided
+when the document was indexed, this parameter is required.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="query-dsl-terms-lookup-example"></a>Terms lookup example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-query.asciidoc">edit</a></h5>
+</div></div></div>
+<p>To see how terms lookup works, try the following example.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Create an index with a <code class="literal">keyword</code> field named <code class="literal">color</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "color": { "type": "keyword" }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/936.console"></div>
+</li>
+<li class="listitem">
+<p>Index a document with an ID of 1 and values of <code class="literal">["blue", "green"]</code> in the
+<code class="literal">color</code> field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/1
+{
+  "color":   ["blue", "green"]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/937.console"></div>
+</li>
+<li class="listitem">
+<p>Index another document with an ID of 2 and value of <code class="literal">blue</code> in the <code class="literal">color</code>
+field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/2
+{
+  "color":   "blue"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/938.console"></div>
+</li>
+<li class="listitem">
+<p>Use the <code class="literal">terms</code> query with terms lookup parameters to find documents
+containing one or more of the same terms as document 2. Include the <code class="literal">pretty</code>
+parameter so the response is more readable.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index-000001/_search?pretty
+{
+  "query": {
+    "terms": {
+        "color" : {
+            "index" : "my-index-000001",
+            "id" : "2",
+            "path" : "color"
+        }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/939.console"></div>
+<p>Because document 2 and document 1 both contain <code class="literal">blue</code> as a value in the <code class="literal">color</code>
+field, Elasticsearch returns both documents.</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "took" : 17,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 2,
+      "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "my-index-000001",
+        "_type" : "_doc",
+        "_id" : "1",
+        "_score" : 1.0,
+        "_source" : {
+          "color" : [
+            "blue",
+            "green"
+          ]
+        }
+      },
+      {
+        "_index" : "my-index-000001",
+        "_type" : "_doc",
+        "_id" : "2",
+        "_score" : 1.0,
+        "_source" : {
+          "color" : "blue"
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-terms-set-query"></a>Terms set query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-set-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain a minimum number of <span class="strong strong"><strong>exact</strong></span> terms in a provided
+field.</p>
+<p>The <code class="literal">terms_set</code> query is the same as the <a class="xref" href="term-level-queries.html#query-dsl-terms-query" title="Terms query"><code class="literal">terms</code>
+query</a>, except you can define the number of matching terms required to
+return a document. For example:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+A field, <code class="literal">programming_languages</code>, contains a list of known programming
+languages, such as <code class="literal">c++</code>, <code class="literal">java</code>, or <code class="literal">php</code> for job candidates. You can use the
+<code class="literal">terms_set</code> query to return documents that match at least two of these
+languages.
+</li>
+<li class="listitem">
+A field, <code class="literal">permissions</code>, contains a list of possible user permissions for an
+application. You can use the <code class="literal">terms_set</code> query to return documents that
+match a subset of these permissions.
+</li>
+</ul>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="terms-set-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-set-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="terms-set-query-ex-request-index-setup"></a>Index setup<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-set-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>In most cases, you&#8217;ll need to include a <a class="xref" href="mapping-types.html#number" title="Numeric field types">numeric</a> field mapping in
+your index to use the <code class="literal">terms_set</code> query. This numeric field contains the
+number of matching terms required to return a document.</p>
+<p>To see how you can set up an index for the <code class="literal">terms_set</code> query, try the
+following example.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Create an index, <code class="literal">job-candidates</code>, with the following field mappings:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">name</code>, a <a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> field. This field contains the name of the
+job candidate.
+</li>
+<li class="listitem">
+<code class="literal">programming_languages</code>, a <a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> field. This field contains
+programming languages known by the job candidate.
+</li>
+<li class="listitem">
+<code class="literal">required_matches</code>, a <a class="xref" href="mapping-types.html#number" title="Numeric field types">numeric</a> <code class="literal">long</code> field. This field contains
+the number of matching terms required to return a document.
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /job-candidates
+{
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "keyword"
+      },
+      "programming_languages": {
+        "type": "keyword"
+      },
+      "required_matches": {
+        "type": "long"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/940.console"></div>
+</li>
+<li class="listitem">
+<p>Index a document with an ID of <code class="literal">1</code> and the following values:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">Jane Smith</code> in the <code class="literal">name</code> field.
+</li>
+<li class="listitem">
+<code class="literal">["c++", "java"]</code> in the <code class="literal">programming_languages</code> field.
+</li>
+<li class="listitem">
+<code class="literal">2</code> in the <code class="literal">required_matches</code> field.
+</li>
+</ul>
+</div>
+<p>Include the <code class="literal">?refresh</code> parameter so the document is immediately available for
+search.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /job-candidates/_doc/1?refresh
+{
+  "name": "Jane Smith",
+  "programming_languages": [ "c++", "java" ],
+  "required_matches": 2
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/941.console"></div>
+</li>
+<li class="listitem">
+<p>Index another document with an ID of <code class="literal">2</code> and the following values:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">Jason Response</code> in the <code class="literal">name</code> field.
+</li>
+<li class="listitem">
+<code class="literal">["java", "php"]</code> in the <code class="literal">programming_languages</code> field.
+</li>
+<li class="listitem">
+<code class="literal">2</code> in the <code class="literal">required_matches</code> field.
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /job-candidates/_doc/2?refresh
+{
+  "name": "Jason Response",
+  "programming_languages": [ "java", "php" ],
+  "required_matches": 2
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/942.console"></div>
+</li>
+</ol>
+</div>
+<p>You can now use the <code class="literal">required_matches</code> field value as the number of
+matching terms required to return a document in the <code class="literal">terms_set</code> query.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="terms-set-query-ex-request-query"></a>Example query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-set-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The following search returns documents where the <code class="literal">programming_languages</code> field
+contains at least two of the following terms:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">c++</code>
+</li>
+<li class="listitem">
+<code class="literal">java</code>
+</li>
+<li class="listitem">
+<code class="literal">php</code>
+</li>
+</ul>
+</div>
+<p>The <code class="literal">minimum_should_match_field</code> is <code class="literal">required_matches</code>. This means the
+number of matching terms required is <code class="literal">2</code>, the value of the <code class="literal">required_matches</code>
+field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /job-candidates/_search
+{
+  "query": {
+    "terms_set": {
+      "programming_languages": {
+        "terms": [ "c++", "java", "php" ],
+        "minimum_should_match_field": "required_matches"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/943.console"></div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="terms-set-top-level-params"></a>Top-level parameters for <code class="literal">terms_set</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-set-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, object) Field you wish to search.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="terms-set-field-params"></a>Parameters for <code class="literal">&lt;field&gt;</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-set-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">terms</code>
+</span>
+</dt>
+<dd>
+<p>(Required, array of strings) Array of terms you wish to find in the provided
+<code class="literal">&lt;field&gt;</code>. To return a document, a required number of terms must exactly match
+the field values, including whitespace and capitalization.</p>
+<p>The required number of matching terms is defined in the
+<code class="literal">minimum_should_match_field</code> or <code class="literal">minimum_should_match_script</code> parameter.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">minimum_should_match_field</code>
+</span>
+</dt>
+<dd>
+(Optional, string) <a class="xref" href="mapping-types.html#number" title="Numeric field types">Numeric</a> field containing the number of matching
+terms required to return a document.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">minimum_should_match_script</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Custom script containing the number of matching terms
+required to return a document.</p>
+<p>For parameters and valid values, see <a class="xref" href="modules-scripting.html" title="Scripting">Scripting</a>.</p>
+<p>For an example query using the <code class="literal">minimum_should_match_script</code> parameter, see
+<a class="xref" href="term-level-queries.html#terms-set-query-script" title="How to use the minimum_should_match_script parameter">How to use the <code class="literal">minimum_should_match_script</code>
+parameter</a>.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="terms-set-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-set-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="terms-set-query-script"></a>How to use the <code class="literal">minimum_should_match_script</code> parameter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-set-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>You can use <code class="literal">minimum_should_match_script</code> to define the required number of
+matching terms using a script. This is useful if you need to set the number of
+required terms dynamically.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="terms-set-query-script-ex"></a>Example query using <code class="literal">minimum_should_match_script</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/terms-set-query.asciidoc">edit</a></h5>
+</div></div></div>
+<p>The following search returns documents where the <code class="literal">programming_languages</code> field
+contains at least two of the following terms:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">c++</code>
+</li>
+<li class="listitem">
+<code class="literal">java</code>
+</li>
+<li class="listitem">
+<code class="literal">php</code>
+</li>
+</ul>
+</div>
+<p>The <code class="literal">source</code> parameter of this query indicates:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The required number of terms to match cannot exceed <code class="literal">params.num_terms</code>, the
+number of terms provided in the <code class="literal">terms</code> field.
+</li>
+<li class="listitem">
+The required number of terms to match is <code class="literal">2</code>, the value of the
+<code class="literal">required_matches</code> field.
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /job-candidates/_search
+{
+  "query": {
+    "terms_set": {
+      "programming_languages": {
+        "terms": [ "c++", "java", "php" ],
+        "minimum_should_match_script": {
+          "source": "Math.min(params.num_terms, doc['required_matches'].value)"
+        },
+        "boost": 1.0
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/944.console"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-type-query"></a>Type Query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/type-query.asciidoc">edit</a></h2>
+</div></div></div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3>Deprecated in 7.0.0.</h3>
+<p>Types and the <code class="literal">type</code> query are deprecated and in the process of being removed. See <a class="xref" href="removal-of-types.html" title="Removal of mapping types"><em>Removal of mapping types</em></a>.</p>
+</div>
+</div>
+<p>Filters documents matching the provided document / mapping type.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "type": {
+      "value": "_doc"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/945.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-wildcard-query"></a>Wildcard query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/wildcard-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain terms matching a wildcard pattern.</p>
+<p>A wildcard operator is a placeholder that matches one or more characters. For
+example, the <code class="literal">*</code> wildcard operator matches zero or more characters. You can
+combine wildcard operators with other characters to create a wildcard pattern.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="wildcard-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/wildcard-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The following search returns documents where the <code class="literal">user.id</code> field contains a term
+that begins with <code class="literal">ki</code> and ends with <code class="literal">y</code>. These matching terms can include <code class="literal">kiy</code>,
+<code class="literal">kity</code>, or <code class="literal">kimchy</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "wildcard": {
+      "user.id": {
+        "value": "ki*y",
+        "boost": 1.0,
+        "rewrite": "constant_score"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/946.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="wildcard-top-level-params"></a>Top-level parameters for <code class="literal">wildcard</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/wildcard-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, object) Field you wish to search.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="wildcard-query-field-params"></a>Parameters for <code class="literal">&lt;field&gt;</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/wildcard-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">value</code>
+</span>
+</dt>
+<dd>
+<p>
+(Required, string) Wildcard pattern for terms you wish to find in the provided
+<code class="literal">&lt;field&gt;</code>.
+</p>
+<p>This parameter supports two wildcard operators:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">?</code>, which matches any single character
+</li>
+<li class="listitem">
+<code class="literal">*</code>, which can match zero or more characters, including an empty one
+</li>
+</ul>
+</div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Avoid beginning patterns with <code class="literal">*</code> or <code class="literal">?</code>. This can increase
+the iterations needed to find matching terms and slow search performance.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">boost</code>
+</span>
+</dt>
+<dd>
+<p>
+(Optional, float) Floating point number used to decrease or increase the
+<a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a> of a query. Defaults to <code class="literal">1.0</code>.
+</p>
+<p>You can use the <code class="literal">boost</code> parameter to adjust relevance scores for searches
+containing two or more queries.</p>
+<p>Boost values are relative to the default value of <code class="literal">1.0</code>. A boost value between
+<code class="literal">0</code> and <code class="literal">1.0</code> decreases the relevance score. A value greater than <code class="literal">1.0</code>
+increases the relevance score.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">rewrite</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Method used to rewrite the query. For valid values and more information, see the
+<a class="xref" href="query-dsl-multi-term-rewrite.html" title="rewrite parameter"><code class="literal">rewrite</code> parameter</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">case_insensitive</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) allows case insensitive matching of the
+pattern with the indexed field values when set to true. Default is false which means
+the case sensitivity of matching depends on the underlying field&#8217;s mapping.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="wildcard-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/wildcard-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_allow_expensive_queries_7"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/wildcard-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Wildcard queries will not be executed if <a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a>
+is set to false.</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="specialized-queries.html">« Specialized queries</a>
+</span>
+<span class="next">
+<a href="query-dsl-minimum-should-match.html"><code class="literal">minimum_should_match</code> parameter »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

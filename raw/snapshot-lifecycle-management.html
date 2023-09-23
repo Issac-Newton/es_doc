@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SLM: Manage the snapshot lifecycle | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="SLM: Manage the snapshot lifecycle | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="snapshot-restore.html" title="Snapshot and restore"/>
+<link rel="prev" href="delete-snapshots.html" title="Delete a snapshot"/>
+<link rel="next" href="searchable-snapshots.html" title="Searchable snapshots"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="snapshot-restore.html">Snapshot and restore</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="delete-snapshots.html">« Delete a snapshot</a>
+</span>
+<span class="next">
+<a href="searchable-snapshots.html">Searchable snapshots »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="snapshot-lifecycle-management"></a>SLM: Manage the snapshot lifecycle<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/slm/index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can set up snapshot lifecycle policies to automate the timing, frequency, and retention of snapshots.
+Snapshot policies can apply to multiple data streams and indices.</p>
+<p>The snapshot lifecycle management (SLM) <a class="xref" href="snapshot-lifecycle-management-api.html" title="Snapshot lifecycle management APIs">CRUD APIs</a> provide
+the building blocks for the snapshot policy features that are part of Kibana Management.
+<a href="https://www.elastic.co/guide/en/kibana/7.10/snapshot-repositories.html" class="ulink" target="_top">Snapshot and Restore</a> makes it easy to
+set up policies, register snapshot repositories, view and manage snapshots, and restore data streams or indices.</p>
+<p>You can stop and restart SLM to temporarily pause automatic backups while performing
+upgrades or other maintenance.</p>
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="getting-started-snapshot-lifecycle-management"></a>Tutorial: Automate backups with SLM<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/slm/getting-started-slm.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>This tutorial demonstrates how to automate daily backups of Elasticsearch data streams and indices using an SLM policy.
+The policy takes <a class="xref" href="getting-started-modify-data.html#modules-snapshots" title="Snapshot module">snapshots</a> of all data streams and indices in the cluster
+and stores them in a local repository.
+It also defines a retention policy and automatically deletes snapshots
+when they are no longer needed.</p>
+<p>To manage snapshots with SLM, you:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<a class="xref" href="snapshot-lifecycle-management.html#slm-gs-register-repository" title="Register a repository">Register a repository</a>.
+</li>
+<li class="listitem">
+<a class="xref" href="snapshot-lifecycle-management.html#slm-gs-create-policy" title="Set up a snapshot policy">Create an SLM policy</a>.
+</li>
+</ol>
+</div>
+<p>To test the policy, you can manually trigger it to take an initial snapshot.</p>
+<h4><a id="slm-gs-register-repository"></a>Register a repository<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/slm/getting-started-slm.asciidoc">edit</a></h4>
+<p>To use SLM, you must have a snapshot repository configured.
+The repository can be local (shared filesystem) or remote (cloud storage).
+Remote repositories can reside on S3, HDFS, Azure, Google Cloud Storage,
+or any other platform supported by a <a href="https://www.elastic.co/guide/en/elasticsearch/plugins/7.10/repository.html" class="ulink" target="_top">repository plugin</a>.
+Remote repositories are generally used for production deployments.</p>
+<p>For this tutorial, you can register a local repository from
+<a href="https://www.elastic.co/guide/en/kibana/7.10/snapshot-repositories.html" class="ulink" target="_top">Kibana Management</a>
+or use the put repository API:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_snapshot/my_repository
+{
+  "type": "fs",
+  "settings": {
+    "location": "my_backup_location"
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1423.console"></div>
+<h4><a id="slm-gs-create-policy"></a>Set up a snapshot policy<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/slm/getting-started-slm.asciidoc">edit</a></h4>
+<p>Once you have a repository in place,
+you can define an SLM policy to take snapshots automatically.
+The policy defines when to take snapshots, which data streams or indices should be included,
+and what to name the snapshots.
+A policy can also specify a <a class="xref" href="snapshot-lifecycle-management.html#slm-retention" title="Snapshot retention">retention policy</a> and
+automatically delete snapshots when they are no longer needed.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Don&#8217;t be afraid to configure a policy that takes frequent snapshots.
+Snapshots are incremental and make efficient use of storage.</p>
+</div>
+</div>
+<p>You can define and manage policies through Kibana Management or with the put policy API.</p>
+<p>For example, you could define a <code class="literal">nightly-snapshots</code> policy
+to back up all of your data streams and indices daily at 2:30AM UTC.</p>
+<p>A put policy request defines the policy configuration in JSON:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_slm/policy/nightly-snapshots
+{
+  "schedule": "0 30 1 * * ?", <a id="CO506-1"></a><i class="conum" data-value="1"></i>
+  "name": "&lt;nightly-snap-{now/d}&gt;", <a id="CO506-2"></a><i class="conum" data-value="2"></i>
+  "repository": "my_repository", <a id="CO506-3"></a><i class="conum" data-value="3"></i>
+  "config": { <a id="CO506-4"></a><i class="conum" data-value="4"></i>
+    "indices": ["*"] <a id="CO506-5"></a><i class="conum" data-value="5"></i>
+  },
+  "retention": { <a id="CO506-6"></a><i class="conum" data-value="6"></i>
+    "expire_after": "30d", <a id="CO506-7"></a><i class="conum" data-value="7"></i>
+    "min_count": 5, <a id="CO506-8"></a><i class="conum" data-value="8"></i>
+    "max_count": 50 <a id="CO506-9"></a><i class="conum" data-value="9"></i>
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1424.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO506-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>When the snapshot should be taken in
+<a class="xref" href="trigger.html#schedule-cron" title="Watcher cron schedule">Cron syntax</a>: daily at 2:30AM UTC</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO506-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>How to name the snapshot: use
+<a class="xref" href="api-conventions.html#date-math-index-names" title="Date math support in index names">date math</a> to include the current date in the snapshot name</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO506-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Where to store the snapshot</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO506-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The configuration to be used for the snapshot requests (see below)</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO506-5"><i class="conum" data-value="5"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Which data streams or indices to include in the snapshot: all data streams and indices</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO506-6"><i class="conum" data-value="6"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Optional retention policy: keep snapshots for 30 days,
+retaining at least 5 and no more than 50 snapshots regardless of age</p>
+</td>
+</tr>
+</table>
+</div>
+<p>You can specify additional snapshot configuration options to customize how snapshots are taken.
+For example, you could configure the policy to fail the snapshot
+if one of the specified data streams or indices is missing.
+For more information about snapshot options, see <a class="xref" href="snapshots-take-snapshot.html" title="Create a snapshot">snapshot requests</a>.</p>
+<h4><a id="slm-gs-test-policy"></a>Test the snapshot policy<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/slm/getting-started-slm.asciidoc">edit</a></h4>
+<p>A snapshot taken by SLM is just like any other snapshot.
+You can view information about snapshots in Kibana Management or
+get info with the <a class="xref" href="snapshots-monitor-snapshot-restore.html" title="Monitor snapshot and restore progress">snapshot APIs</a>.
+In addition, SLM keeps track of policy successes and failures so you
+have insight into how the policy is working. If the policy has executed at
+least once, the <a class="xref" href="snapshot-lifecycle-management-api.html#slm-api-get-policy" title="Get snapshot lifecycle policy API">get policy</a> API returns additional metadata
+that shows if the snapshot succeeded.</p>
+<p>You can manually execute a snapshot policy to take a snapshot immediately.
+This is useful for taking snapshots before making a configuration change,
+upgrading, or to test a new policy.
+Manually executing a policy does not affect its configured schedule.</p>
+<p>Instead of waiting for the policy to run, tell SLM to take a snapshot
+using the configuration right now instead of waiting for 1:30 a.m..</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_slm/policy/nightly-snapshots/_execute</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1425.console"></div>
+<p>After forcing the <code class="literal">nightly-snapshots</code> policy to run,
+you can retrieve the policy to get success or failure information.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_slm/policy/nightly-snapshots?human</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1426.console"></div>
+<p>Only the most recent success and failure are returned,
+but all policy executions are recorded in the <code class="literal">.slm-history*</code> indices.
+The response also shows when the policy is scheduled to execute next.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The response shows if the policy succeeded in <em>initiating</em> a snapshot.
+However, that does not guarantee that the snapshot completed successfully.
+It is possible for the initiated snapshot to fail if, for example, the connection to a remote
+repository is lost while copying files.</p>
+</div>
+</div>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "nightly-snapshots" : {
+    "version": 1,
+    "modified_date": "2019-04-23T01:30:00.000Z",
+    "modified_date_millis": 1556048137314,
+    "policy" : {
+      "schedule": "0 30 1 * * ?",
+      "name": "&lt;nightly-snap-{now/d}&gt;",
+      "repository": "my_repository",
+      "config": {
+        "indices": ["*"],
+      },
+      "retention": {
+        "expire_after": "30d",
+        "min_count": 5,
+        "max_count": 50
+      }
+    },
+    "last_success": {                                                    <a id="CO507-1"></a><i class="conum" data-value="1"></i>
+      "snapshot_name": "nightly-snap-2019.04.24-tmtnyjtrsxkhbrrdcgg18a", <a id="CO507-2"></a><i class="conum" data-value="2"></i>
+      "time_string": "2019-04-24T16:43:49.316Z",
+      "time": 1556124229316
+    } ,
+    "last_failure": {                                                    <a id="CO507-3"></a><i class="conum" data-value="3"></i>
+      "snapshot_name": "nightly-snap-2019.04.02-lohisb5ith2n8hxacaq3mw",
+      "time_string": "2019-04-02T01:30:00.000Z",
+      "time": 1556042030000,
+      "details": "{\"type\":\"index_not_found_exception\",\"reason\":\"no such index [important]\",\"resource.type\":\"index_or_alias\",\"resource.id\":\"important\",\"index_uuid\":\"_na_\",\"index\":\"important\",\"stack_trace\":\"[important] IndexNotFoundException[no such index [important]]\\n\\tat org.elasticsearch.cluster.metadata.IndexNameExpressionResolver$WildcardExpressionResolver.indexNotFoundException(IndexNameExpressionResolver.java:762)\\n\\tat org.elasticsearch.cluster.metadata.IndexNameExpressionResolver$WildcardExpressionResolver.innerResolve(IndexNameExpressionResolver.java:714)\\n\\tat org.elasticsearch.cluster.metadata.IndexNameExpressionResolver$WildcardExpressionResolver.resolve(IndexNameExpressionResolver.java:670)\\n\\tat org.elasticsearch.cluster.metadata.IndexNameExpressionResolver.concreteIndices(IndexNameExpressionResolver.java:163)\\n\\tat org.elasticsearch.cluster.metadata.IndexNameExpressionResolver.concreteIndexNames(IndexNameExpressionResolver.java:142)\\n\\tat org.elasticsearch.cluster.metadata.IndexNameExpressionResolver.concreteIndexNames(IndexNameExpressionResolver.java:102)\\n\\tat org.elasticsearch.snapshots.SnapshotsService$1.execute(SnapshotsService.java:280)\\n\\tat org.elasticsearch.cluster.ClusterStateUpdateTask.execute(ClusterStateUpdateTask.java:47)\\n\\tat org.elasticsearch.cluster.service.MasterService.executeTasks(MasterService.java:687)\\n\\tat org.elasticsearch.cluster.service.MasterService.calculateTaskOutputs(MasterService.java:310)\\n\\tat org.elasticsearch.cluster.service.MasterService.runTasks(MasterService.java:210)\\n\\tat org.elasticsearch.cluster.service.MasterService$Batcher.run(MasterService.java:142)\\n\\tat org.elasticsearch.cluster.service.TaskBatcher.runIfNotProcessed(TaskBatcher.java:150)\\n\\tat org.elasticsearch.cluster.service.TaskBatcher$BatchedTask.run(TaskBatcher.java:188)\\n\\tat org.elasticsearch.common.util.concurrent.ThreadContext$ContextPreservingRunnable.run(ThreadContext.java:688)\\n\\tat org.elasticsearch.common.util.concurrent.PrioritizedEsThreadPoolExecutor$TieBreakingPrioritizedRunnable.runAndClean(PrioritizedEsThreadPoolExecutor.java:252)\\n\\tat org.elasticsearch.common.util.concurrent.PrioritizedEsThreadPoolExecutor$TieBreakingPrioritizedRunnable.run(PrioritizedEsThreadPoolExecutor.java:215)\\n\\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\\n\\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\\n\\tat java.base/java.lang.Thread.run(Thread.java:834)\\n\"}"
+    } ,
+    "next_execution": "2019-04-24T01:30:00.000Z",                        <a id="CO507-4"></a><i class="conum" data-value="4"></i>
+    "next_execution_millis": 1556048160000
+  }
+}</pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO507-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Information about the last time the policy successfully initated a snapshot</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO507-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The name of the snapshot that was successfully initiated</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO507-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Information about the last time the policy failed to initiate a snapshot</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO507-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The next time the policy will execute</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="slm-and-security"></a>Security and SLM<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/slm/slm-security.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The following cluster privileges control access to the SLM actions when
+Elasticsearch security features are enabled:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">manage_slm</code>
+</span>
+</dt>
+<dd>
+Allows a user to perform all SLM actions, including creating and updating policies
+and starting and stopping SLM.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">read_slm</code>
+</span>
+</dt>
+<dd>
+Allows a user to perform all read-only SLM actions,
+such as getting policies and checking the SLM status.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">cluster:admin/snapshot/*</code>
+</span>
+</dt>
+<dd>
+Allows a user to take and delete snapshots of any
+index, whether or not they have access to that index.
+</dd>
+</dl>
+</div>
+<p>You can create and manage roles to assign these privileges through Kibana Management.</p>
+<p>To grant the privileges necessary to create and manage SLM policies and snapshots,
+you can set up a role with the <code class="literal">manage_slm</code> and <code class="literal">cluster:admin/snapshot/*</code> cluster privileges
+and full access to the SLM history indices.</p>
+<p>For example, the following request creates an <code class="literal">slm-admin</code> role:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/role/slm-admin
+{
+  "cluster": ["manage_slm", "cluster:admin/snapshot/*"],
+  "indices": [
+    {
+      "names": [".slm-history-*"],
+      "privileges": ["all"]
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1427.console"></div>
+<p>To grant read-only access to SLM policies and the snapshot history,
+you can set up a role with the <code class="literal">read_slm</code> cluster privilege and read access
+to the snapshot lifecycle management history indices.</p>
+<p>For example, the following request creates a <code class="literal">slm-read-only</code> role:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_security/role/slm-read-only
+{
+  "cluster": ["read_slm"],
+  "indices": [
+    {
+      "names": [".slm-history-*"],
+      "privileges": ["read"]
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1428.console"></div>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="slm-retention"></a>Snapshot retention<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/slm/slm-retention.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can include a retention policy in an SLM policy to automatically delete old snapshots.
+Retention runs as a cluster-level task and is not associated with a particular policy&#8217;s schedule.
+The retention criteria are evaluated as part of the retention task, not when the policy executes.
+For the retention task to automatically delete snapshots,
+you need to include a <a class="xref" href="snapshot-lifecycle-management-api.html#slm-api-put-retention"><code class="literal">retention</code></a> object in your SLM policy.</p>
+<p>To control when the retention task runs, configure
+<a class="xref" href="settings.html#slm-retention-schedule"><code class="literal">slm.retention_schedule</code></a> in the cluster settings.
+You can define the schedule as a periodic or absolute <a class="xref" href="trigger.html#schedule-cron" title="Watcher cron schedule">cron schedule</a>.
+The <a class="xref" href="settings.html#slm-retention-duration"><code class="literal">slm.retention_duration</code></a> setting limits how long
+SLM should spend deleting old snapshots.</p>
+<p>You can update the schedule and duration dynamically with the
+<a class="xref" href="cluster.html#cluster-update-settings" title="Cluster update settings API">update settings</a> API.
+You can run the retention task manually with the
+<a class="xref" href="snapshot-lifecycle-management-api.html#slm-api-execute-retention" title="Execute snapshot retention policy API">execute retention </a> API.</p>
+<p>The retention task only considers snapshots initiated through SLM policies,
+either according to the policy schedule or through the
+<a class="xref" href="snapshot-lifecycle-management-api.html#slm-api-execute-lifecycle" title="Execute snapshot lifecycle policy API">execute lifecycle</a> API.
+Manual snapshots are ignored and don&#8217;t count toward the retention limits.</p>
+<p>To retrieve information about the snapshot retention task history,
+use the  <a class="xref" href="snapshot-lifecycle-management-api.html#slm-api-get-stats" title="Get snapshot lifecycle stats API">get stats</a> API:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_slm/stats</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1429.console"></div>
+<p>The response includes the following statistics:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">{
+  "retention_runs": 13, <a id="CO508-1"></a><i class="conum" data-value="1"></i>
+  "retention_failed": 0, <a id="CO508-2"></a><i class="conum" data-value="2"></i>
+  "retention_timed_out": 0, <a id="CO508-3"></a><i class="conum" data-value="3"></i>
+  "retention_deletion_time": "1.4s", <a id="CO508-4"></a><i class="conum" data-value="4"></i>
+  "retention_deletion_time_millis": 1404,
+  "policy_stats": [
+    {
+      "policy": "daily-snapshots",
+      "snapshots_taken": 1,
+      "snapshots_failed": 1,
+      "snapshots_deleted": 0, <a id="CO508-5"></a><i class="conum" data-value="5"></i>
+      "snapshot_deletion_failures": 0 <a id="CO508-6"></a><i class="conum" data-value="6"></i>
+    }
+  ],
+  "total_snapshots_taken": 1,
+  "total_snapshots_failed": 1,
+  "total_snapshots_deleted": 0, <a id="CO508-7"></a><i class="conum" data-value="7"></i>
+  "total_snapshot_deletion_failures": 0 <a id="CO508-8"></a><i class="conum" data-value="8"></i>
+}</pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Number of times retention has been run</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Number of times retention failed while running</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Number of times retention hit the <code class="literal">slm.retention_duration</code> time limit and had to stop before deleting all eligible snapshots</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Total time spent deleting snapshots by the retention process</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-5"><i class="conum" data-value="5"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Number of snapshots created by the "daily-snapshots" policy that have been deleted</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-6"><i class="conum" data-value="6"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Number of snapshots that failed to be deleted</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-7"><i class="conum" data-value="7"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Total number of snapshots deleted across all policies</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO508-8"><i class="conum" data-value="8"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Total number of snapshot deletion failures across all policies</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="delete-snapshots.html">« Delete a snapshot</a>
+</span>
+<span class="next">
+<a href="searchable-snapshots.html">Searchable snapshots »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

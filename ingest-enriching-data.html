@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+<meta charset="UTF-8">
+<title>Enrich your data | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Enrich your data | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="ingest.html" title="Ingest node"/>
+<link rel="prev" href="handling-failure-in-pipelines.html" title="Handling Failures in Pipelines"/>
+<link rel="next" href="ingest-processors.html" title="Processors"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.optimizely.com/js/18132920325.js"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-title" content="Elastic">
+    <meta name="application-name" content="Elastic">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="naver-site-verification" content="936882c1853b701b3cef3721758d80535413dbfd" />
+    <meta name="yandex-verification" content="d8a47e95d0972434" />
+    <meta name="localized" content="true" />
+    <meta name="st:robots" content="follow,index" />
+    <meta property="og:image" content="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt280217a63b82a734/6202d3378b1f312528798412/elastic-logo.svg" />
+    <meta property="og:image:width" content="500" />
+    <meta property="og:image:height" content="172" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" sizes="64x64" href="/favicon_64x64_16bit.png">
+    <link rel="apple-touch-icon-precomposed" sizes="32x32" href="/favicon_32x32.png">
+    <link rel="apple-touch-icon-precomposed" sizes="16x16" href="/favicon_16x16.png">
+    <!-- Give IE8 a fighting chance -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/guide/static/styles.css" />
+  </head>
+
+  <!--© 2015-2022 Elasticsearch B.V. -->
+  <!-- All Elastic documentation is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. -->
+  <!-- http://creativecommons.org/licenses/by-nc-nd/4.0/ -->
+
+  <body>
+    <!-- Google Tag Manager -->
+    <script>dataLayer = [];</script><noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-58RLH5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-58RLH5');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12395217-16"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-12395217-16');
+    </script>
+
+    <!-- Google Tag Manager for GA4 -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KNJMG2M');</script>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KNJMG2M" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager for GA4-->
+
+    <div id='elastic-nav' style="display:none;"></div>
+    <script src='https://www.elastic.co/elastic-nav.js'></script>
+
+    <div class="main-container">
+      <section id="content" >
+        <div class="content-wrapper">
+
+          <section id="guide" lang="en">
+            <div class="container-fluid">
+              <div class="row pb-3">
+                <div class="col-12 order-2 col-md-4 order-md-1 col-lg-3 h-almost-full-md sticky-top-md" id="left_col">
+                  <!-- The TOC is appended here -->
+                </div>
+
+                <div class="col-12 order-1 col-md-8 order-md-2 col-lg-7 order-lg-2 guide-section" id="middle_col">
+                  <!-- start body -->
+                  
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="ingest.html">Ingest node</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="handling-failure-in-pipelines.html">« Handling Failures in Pipelines</a>
+</span>
+<span class="next">
+<a href="ingest-processors.html">Processors »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ingest-enriching-data"></a>Enrich your data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can use the <a class="xref" href="ingest-processors.html#enrich-processor" title="Enrich processor">enrich processor</a> to add data from your
+existing indices to incoming documents during ingest.</p>
+<p>For example, you can use the enrich processor to:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Identify web services or vendors based on known IP addresses
+</li>
+<li class="listitem">
+Add product information to retail orders based on product IDs
+</li>
+<li class="listitem">
+Supplement contact information based on an email address
+</li>
+<li class="listitem">
+Add postal codes based on user coordinates
+</li>
+</ul>
+</div>
+<h3><a id="how-enrich-works"></a>How the enrich processor works<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h3>
+<p>An <a class="xref" href="ingest.html" title="Ingest node">ingest pipeline</a> changes documents before they are actually
+indexed. You can think of an ingest pipeline as an assembly line made up of a
+series of workers, called <a class="xref" href="ingest-processors.html" title="Processors">processors</a>. Each processor makes
+specific changes, like lowercasing field values, to incoming documents before
+moving on to the next. When all the processors in a pipeline are done, the
+finished document is added to the target index.</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/ingest/ingest-process.svg" alt="ingest process">
+</div>
+</div>
+<p>Most processors are self-contained and only change <em>existing</em> data in incoming
+documents. But the enrich processor adds <em>new</em> data to incoming documents
+and requires a few special components:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/ingest/enrich/enrich-process.svg" alt="enrich process">
+</div>
+</div>
+<div class="variablelist">
+<a id="enrich-policy"></a>
+<dl class="variablelist">
+<dt>
+<span class="term">
+enrich policy
+</span>
+</dt>
+<dd>
+<p>A set of configuration options used to add the right enrich data to the right
+incoming documents.</p>
+<p>An enrich policy contains:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+A list of one or more <em>source indices</em> which store enrich data as documents
+</li>
+<li class="listitem">
+The <em>policy type</em> which determines how the processor matches the enrich data
+to incoming documents
+</li>
+<li class="listitem">
+A <em>match field</em> from the source indices used to match incoming documents
+</li>
+<li class="listitem">
+<em>Enrich fields</em> containing enrich data from the source indices you want to add
+to incoming documents
+</li>
+</ul>
+</div>
+<p>Before it can be used with an enrich processor, an enrich policy must be
+<a class="xref" href="enrich-apis.html#execute-enrich-policy-api" title="Execute enrich policy API">executed</a>. When executed, an enrich policy uses
+enrich data from the policy&#8217;s source indices to create a streamlined system
+index called the <em>enrich index</em>. The processor uses this index to match and
+enrich incoming documents.</p>
+<p>See <a class="xref" href="ingest-enriching-data.html#enrich-policy-definition" title="Enrich policy definition">Enrich policy definition</a> for a full list of enrich policy types and
+configuration options.</p>
+</dd>
+</dl>
+</div>
+<div class="variablelist">
+<a id="source-index"></a>
+<dl class="variablelist">
+<dt>
+<span class="term">
+source index
+</span>
+</dt>
+<dd>
+An index which stores enrich data you&#8217;d like to add to incoming documents. You
+can create and manage these indices just like a regular Elasticsearch index. You can use
+multiple source indices in an enrich policy. You also can use the same source
+index in multiple enrich policies.
+</dd>
+</dl>
+</div>
+<div class="variablelist">
+<a id="enrich-index"></a>
+<dl class="variablelist">
+<dt>
+<span class="term">
+enrich index
+</span>
+</dt>
+<dd>
+<p>A special system index tied to a specific enrich policy.</p>
+<p>Directly matching incoming documents to documents in source indices could be
+slow and resource intensive. To speed things up, the enrich processor uses an
+enrich index.</p>
+<p>Enrich indices contain enrich data from source indices but have a few special
+properties to help streamline them:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+They are system indices, meaning they&#8217;re managed internally by Elasticsearch and only
+intended for use with enrich processors.
+</li>
+<li class="listitem">
+They always begin with <code class="literal">.enrich-*</code>.
+</li>
+<li class="listitem">
+They are read-only, meaning you can&#8217;t directly change them.
+</li>
+<li class="listitem">
+They are <a class="xref" href="indices.html#indices-forcemerge" title="Force merge API">force merged</a> for fast retrieval.
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="enrich-setup"></a>Set up an enrich processor<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>To set up an enrich processor, follow these steps:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+Check the <a class="xref" href="ingest-enriching-data.html#enrich-prereqs" title="Prerequisites">prerequisites</a>.
+</li>
+<li class="listitem">
+<a class="xref" href="ingest-enriching-data.html#create-enrich-source-index" title="Add enrich data">Add enrich data</a>.
+</li>
+<li class="listitem">
+<a class="xref" href="ingest-enriching-data.html#create-enrich-policy" title="Create an enrich policy">Create an enrich policy</a>.
+</li>
+<li class="listitem">
+<a class="xref" href="ingest-enriching-data.html#execute-enrich-policy" title="Execute the enrich policy">Execute the enrich policy</a>.
+</li>
+<li class="listitem">
+<a class="xref" href="ingest-enriching-data.html#add-enrich-processor" title="Add an enrich processor to an ingest pipeline">Add an enrich processor to an ingest pipeline</a>.
+</li>
+<li class="listitem">
+<a class="xref" href="ingest-enriching-data.html#ingest-enrich-docs" title="Ingest and enrich documents">Ingest and enrich documents</a>.
+</li>
+</ol>
+</div>
+<p>Once you have an enrich processor set up,
+you can <a class="xref" href="ingest-enriching-data.html#update-enrich-data" title="Update an enrich index">update your enrich data</a>
+and <a class="xref" href="ingest-enriching-data.html#update-enrich-policies" title="Update an enrich policy">update your enrich policies</a>.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The enrich processor performs several operations
+and may impact the speed of your <a class="xref" href="pipeline.html" title="Pipeline Definition">ingest pipeline</a>.</p>
+<p>We strongly recommend testing and benchmarking your enrich processors
+before deploying them in production.</p>
+<p>We do not recommend using the enrich processor to append real-time data.
+The enrich processor works best with reference data
+that doesn&#8217;t change frequently.</p>
+</div>
+</div>
+<h4><a id="enrich-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h4>
+<p>If you use Elasticsearch security features, you must have:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">read</code> index privileges for any indices used
+</li>
+<li class="listitem">
+The <code class="literal">enrich_user</code> <a class="xref" href="authorization.html#built-in-roles" title="Built-in roles">built-in role</a>
+</li>
+</ul>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="create-enrich-source-index"></a>Add enrich data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h3>
+</div></div></div>
+<p>To begin, add documents to one or more source indices. These documents should
+contain the enrich data you eventually want to add to incoming documents.</p>
+<p>You can manage source indices just like regular Elasticsearch indices using the
+<a class="xref" href="docs.html" title="Document APIs">document</a> and <a class="xref" href="indices.html" title="Index APIs">index</a> APIs.</p>
+<p>You also can set up <a href="https://www.elastic.co/guide/en/beats/libbeat/7.10/getting-started.html" class="ulink" target="_top">Beats</a>, such as a
+<a href="https://www.elastic.co/guide/en/beats/filebeat/7.10/filebeat-installation-configuration.html" class="ulink" target="_top">Filebeat</a>, to
+automatically send and index documents to your source indices. See
+<a href="https://www.elastic.co/guide/en/beats/libbeat/7.10/getting-started.html" class="ulink" target="_top">Getting started with Beats</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="create-enrich-policy"></a>Create an enrich policy<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h3>
+</div></div></div>
+<p>After adding enrich data to your source indices, you can
+<a class="xref" href="ingest-enriching-data.html#enrich-policy-definition" title="Enrich policy definition">define an enrich policy</a>. When defining the enrich
+policy, you should include at least the following:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+A list of one or more <em>source indices</em> which store enrich data as documents
+</li>
+<li class="listitem">
+The <em>policy type</em> which determines how the processor matches the enrich data
+to incoming documents
+</li>
+<li class="listitem">
+A <em>match field</em> from the source indices used to match incoming documents
+</li>
+<li class="listitem">
+<em>Enrich fields</em> containing enrich data from the source indices you want to add
+to incoming documents
+</li>
+</ul>
+</div>
+<p>You can use this definition to create the enrich policy with the
+<a class="xref" href="enrich-apis.html#put-enrich-policy-api" title="Put enrich policy API">put enrich policy API</a>.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Once created, you can&#8217;t update or change an enrich policy.
+See <a class="xref" href="ingest-enriching-data.html#update-enrich-policies" title="Update an enrich policy">Update an enrich policy</a>.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="execute-enrich-policy"></a>Execute the enrich policy<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Once the enrich policy is created, you can execute it using the
+<a class="xref" href="enrich-apis.html#execute-enrich-policy-api" title="Execute enrich policy API">execute enrich policy API</a> to create an
+<a class="xref" href="ingest-enriching-data.html#enrich-index">enrich index</a>.</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/ingest/enrich/enrich-policy-index.svg" alt="enrich policy index">
+</div>
+</div>
+<p>The <em>enrich index</em> contains documents from the policy&#8217;s source indices.
+Enrich indices always begin with <code class="literal">.enrich-*</code>,
+are read-only,
+and are <a class="xref" href="indices.html#indices-forcemerge" title="Force merge API">force merged</a>.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Enrich indices should be used by the <a class="xref" href="ingest-processors.html#enrich-processor" title="Enrich processor">enrich processor</a> only.
+Avoid using enrich indices for other purposes.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="add-enrich-processor"></a>Add an enrich processor to an ingest pipeline<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Once you have source indices, an enrich policy, and the related enrich index in
+place, you can set up an ingest pipeline that includes an enrich processor for
+your policy.</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/ingest/enrich/enrich-processor.svg" alt="enrich processor">
+</div>
+</div>
+<p>Define an <a class="xref" href="ingest-processors.html#enrich-processor" title="Enrich processor">enrich processor</a> and add it to an ingest
+pipeline using the <a class="xref" href="ingest-apis.html#put-pipeline-api" title="Put pipeline API">put pipeline API</a>.</p>
+<p>When defining the enrich processor, you must include at least the following:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The enrich policy to use.
+</li>
+<li class="listitem">
+The field used to match incoming documents to the documents in your enrich index.
+</li>
+<li class="listitem">
+The target field to add to incoming documents. This target field contains the
+match and enrich fields specified in your enrich policy.
+</li>
+</ul>
+</div>
+<p>You also can use the <code class="literal">max_matches</code> option to set the number of enrich documents
+an incoming document can match. If set to the default of <code class="literal">1</code>, data is added to
+an incoming document&#8217;s target field as a JSON object. Otherwise, the data is
+added as an array.</p>
+<p>See <a class="xref" href="ingest-processors.html#enrich-processor" title="Enrich processor">Enrich</a> for a full list of configuration options.</p>
+<p>You also can add other <a class="xref" href="ingest-processors.html" title="Processors">processors</a> to your ingest pipeline.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ingest-enrich-docs"></a>Ingest and enrich documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can now use your ingest pipeline to enrich and index documents.</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/ingest/enrich/enrich-process.svg" alt="enrich process">
+</div>
+</div>
+<p>Before implementing the pipeline in production, we recommend indexing a few test
+documents first and verifying enrich data was added correctly using the
+<a class="xref" href="docs.html#docs-get" title="Get API">get API</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="update-enrich-data"></a>Update an enrich index<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Once created, you cannot update
+or index documents to an enrich index.
+Instead, update your source indices
+and <a class="xref" href="enrich-apis.html#execute-enrich-policy-api" title="Execute enrich policy API">execute</a> the enrich policy again.
+This creates a new enrich index from your updated source indices
+and deletes the previous enrich index.</p>
+<p>If wanted, you can <a class="xref" href="docs.html#docs-reindex" title="Reindex API">reindex</a>
+or <a class="xref" href="docs.html#docs-update-by-query" title="Update By Query API">update</a> any already ingested documents
+using your ingest pipeline.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="update-enrich-policies"></a>Update an enrich policy<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Once created, you can&#8217;t update or change an enrich policy.
+Instead, you can:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+Create and <a class="xref" href="enrich-apis.html#execute-enrich-policy-api" title="Execute enrich policy API">execute</a> a new enrich policy.
+</li>
+<li class="listitem">
+Replace the previous enrich policy
+with the new enrich policy
+in any in-use enrich processors.
+</li>
+<li class="listitem">
+Use the <a class="xref" href="enrich-apis.html#delete-enrich-policy-api" title="Delete enrich policy API">delete enrich policy</a> API
+to delete the previous enrich policy.
+</li>
+</ol>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="enrich-policy-definition"></a>Enrich policy definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p><a class="xref" href="ingest-enriching-data.html#enrich-policy">Enrich policies</a> are defined as JSON objects like the
+following:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">{
+  "&lt;enrich_policy_type&gt;": {
+    "indices": [ "..." ],
+    "match_field": "...",
+    "enrich_fields": [ "..." ],
+    "query": {... }
+  }
+}</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="enrich-policy-parms"></a>Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;enrich_policy_type&gt;</code>
+</span>
+</dt>
+<dd>
+<p>(Required, enrich policy object)
+The enrich policy type determines how enrich data is matched to incoming
+documents.</p>
+<p>Supported enrich policy types include:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<a class="xref" href="ingest-enriching-data.html#geo-match-enrich-policy-type" title="Example: Enrich your data based on geolocation"><code class="literal">geo_match</code></a>
+</span>
+</dt>
+<dd>
+Matches enrich data to incoming documents based on a geographic location using
+a <a class="xref" href="geo-queries.html#query-dsl-geo-shape-query" title="Geo-shape query"><code class="literal">geo_shape</code> query</a>. For an example, see
+<a class="xref" href="ingest-enriching-data.html#geo-match-enrich-policy-type" title="Example: Enrich your data based on geolocation">Example: Enrich your data based on geolocation</a>.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ingest-enriching-data.html#match-enrich-policy-type" title="Example: Enrich your data based on exact values"><code class="literal">match</code></a>
+</span>
+</dt>
+<dd>
+Matches enrich data to incoming documents based on a precise value, such as an
+email address or ID, using a <a class="xref" href="term-level-queries.html#query-dsl-term-query" title="Term query"><code class="literal">term</code> query</a>. For an
+example, see <a class="xref" href="ingest-enriching-data.html#match-enrich-policy-type" title="Example: Enrich your data based on exact values">Example: Enrich your data based on exact values</a>.
+</dd>
+</dl>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">indices</code>
+</span>
+</dt>
+<dd>
+<p>(Required, String or array of strings)
+Source indices used to create the enrich index.</p>
+<p>If multiple indices are provided, they must share a common <code class="literal">match_field</code>, which
+the enrich processor can use to match incoming documents.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">match_field</code>
+</span>
+</dt>
+<dd>
+(Required, string)
+Field in the source indices used to match incoming documents.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">enrich_fields</code>
+</span>
+</dt>
+<dd>
+(Required, Array of strings)
+Fields to add to matching incoming documents. These fields must be present in
+the source indices.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">query</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="query-dsl.html" title="Query DSL">Query DSL query object</a>)
+Query used to filter documents in the enrich index for matching. Defaults to
+a <a class="xref" href="query-dsl-match-all-query.html" title="Match all query"><code class="literal">match_all</code></a> query.
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="geo-match-enrich-policy-type"></a>Example: Enrich your data based on geolocation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p><code class="literal">geo_match</code> <a class="xref" href="ingest-enriching-data.html#enrich-policy">enrich policies</a> match enrich data to incoming
+documents based on a geographic location, using a
+<a class="xref" href="geo-queries.html#query-dsl-geo-shape-query" title="Geo-shape query"><code class="literal">geo_shape</code> query</a>.</p>
+<p>The following example creates a <code class="literal">geo_match</code> enrich policy that adds postal
+codes to incoming documents based on a set of coordinates. It then adds the
+<code class="literal">geo_match</code> enrich policy to a processor in an ingest pipeline.</p>
+<p>Use the <a class="xref" href="indices.html#indices-create-index" title="Create index API">create index API</a> to create a source index
+containing at least one <code class="literal">geo_shape</code> field.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /postal_codes
+{
+  "mappings": {
+    "properties": {
+      "location": {
+        "type": "geo_shape"
+      },
+      "postal_code": {
+        "type": "keyword"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/598.console"></div>
+<p>Use the <a class="xref" href="docs.html#docs-index_" title="Index API">index API</a> to index enrich data to this source index.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /postal_codes/_doc/1?refresh=wait_for
+{
+  "location": {
+    "type": "envelope",
+    "coordinates": [ [ 13.0, 53.0 ], [ 14.0, 52.0 ] ]
+  },
+  "postal_code": "96598"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/599.console"></div>
+<p>Use the <a class="xref" href="enrich-apis.html#put-enrich-policy-api" title="Put enrich policy API">put enrich policy API</a> to create an enrich
+policy with the <code class="literal">geo_match</code> policy type. This policy must include:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+One or more source indices
+</li>
+<li class="listitem">
+A <code class="literal">match_field</code>,
+the <code class="literal">geo_shape</code> field from the source indices used to match incoming documents
+</li>
+<li class="listitem">
+Enrich fields from the source indices you&#8217;d like to append to incoming
+documents
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_enrich/policy/postal_policy
+{
+  "geo_match": {
+    "indices": "postal_codes",
+    "match_field": "location",
+    "enrich_fields": [ "location", "postal_code" ]
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/600.console"></div>
+<p>Use the <a class="xref" href="enrich-apis.html#execute-enrich-policy-api" title="Execute enrich policy API">execute enrich policy API</a> to create an
+enrich index for the policy.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_enrich/policy/postal_policy/_execute</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/601.console"></div>
+<p>Use the <a class="xref" href="ingest-apis.html#put-pipeline-api" title="Put pipeline API">put pipeline API</a> to create an ingest pipeline. In
+the pipeline, add an <a class="xref" href="ingest-processors.html#enrich-processor" title="Enrich processor">enrich processor</a> that includes:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Your enrich policy.
+</li>
+<li class="listitem">
+The <code class="literal">field</code> of incoming documents used to match the geo_shape of documents
+from the enrich index.
+</li>
+<li class="listitem">
+The <code class="literal">target_field</code> used to store appended enrich data for incoming documents.
+This field contains the <code class="literal">match_field</code> and <code class="literal">enrich_fields</code> specified in your
+enrich policy.
+</li>
+<li class="listitem">
+The <code class="literal">shape_relation</code>, which indicates how the processor matches geo_shapes in
+incoming documents to geo_shapes in documents from the enrich index. See
+<a class="xref" href="geo-queries.html#_spatial_relations" title="Spatial Relations">Spatial Relations</a> for valid options and more information.
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_ingest/pipeline/postal_lookup
+{
+  "description": "Enrich postal codes",
+  "processors": [
+    {
+      "enrich": {
+        "policy_name": "postal_policy",
+        "field": "geo_location",
+        "target_field": "geo_data",
+        "shape_relation": "INTERSECTS"
+      }
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/602.console"></div>
+<p>Use the ingest pipeline to index a document. The incoming document should
+include the <code class="literal">field</code> specified in your enrich processor.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /users/_doc/0?pipeline=postal_lookup
+{
+  "first_name": "Mardy",
+  "last_name": "Brown",
+  "geo_location": "POINT (13.5 52.5)"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/603.console"></div>
+<p>To verify the enrich processor matched and appended the appropriate field data,
+use the <a class="xref" href="docs.html#docs-get" title="Get API">get API</a> to view the indexed document.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /users/_doc/0</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/604.console"></div>
+<p>The API returns the following response:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "found": true,
+  "_index": "users",
+  "_type": "_doc",
+  "_id": "0",
+  "_version": 1,
+  "_seq_no": 55,
+  "_primary_term": 1,
+  "_source": {
+    "geo_data": {
+      "location": {
+        "type": "envelope",
+        "coordinates": [[13.0, 53.0], [14.0, 52.0]]
+      },
+      "postal_code": "96598"
+    },
+    "first_name": "Mardy",
+    "last_name": "Brown",
+    "geo_location": "POINT (13.5 52.5)"
+  }
+}</pre>
+</div>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="match-enrich-policy-type"></a>Example: Enrich your data based on exact values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/enrich.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p><code class="literal">match</code> <a class="xref" href="ingest-enriching-data.html#enrich-policy">enrich policies</a> match enrich data to incoming
+documents based on an exact value, such as a email address or ID, using a
+<a class="xref" href="term-level-queries.html#query-dsl-term-query" title="Term query"><code class="literal">term</code> query</a>.</p>
+<p>The following example creates a <code class="literal">match</code> enrich policy that adds user name and
+contact information to incoming documents based on an email address. It then
+adds the <code class="literal">match</code> enrich policy to a processor in an ingest pipeline.</p>
+<p>Use the <a class="xref" href="indices.html#indices-create-index" title="Create index API">create index API</a> or <a class="xref" href="docs.html#docs-index_" title="Index API">index
+API</a> to create a source index.</p>
+<p>The following index API request creates a source index and indexes a
+new document to that index.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /users/_doc/1?refresh=wait_for
+{
+  "email": "mardy.brown@asciidocsmith.com",
+  "first_name": "Mardy",
+  "last_name": "Brown",
+  "city": "New Orleans",
+  "county": "Orleans",
+  "state": "LA",
+  "zip": 70116,
+  "web": "mardy.asciidocsmith.com"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/605.console"></div>
+<p>Use the put enrich policy API to create an enrich policy with the <code class="literal">match</code>
+policy type. This policy must include:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+One or more source indices
+</li>
+<li class="listitem">
+A <code class="literal">match_field</code>,
+the field from the source indices used to match incoming documents
+</li>
+<li class="listitem">
+Enrich fields from the source indices you&#8217;d like to append to incoming
+documents
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_enrich/policy/users-policy
+{
+  "match": {
+    "indices": "users",
+    "match_field": "email",
+    "enrich_fields": ["first_name", "last_name", "city", "zip", "state"]
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/606.console"></div>
+<p>Use the <a class="xref" href="enrich-apis.html#execute-enrich-policy-api" title="Execute enrich policy API">execute enrich policy API</a> to create an
+enrich index for the policy.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_enrich/policy/users-policy/_execute</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/607.console"></div>
+<p>Use the <a class="xref" href="ingest-apis.html#put-pipeline-api" title="Put pipeline API">put pipeline API</a> to create an ingest pipeline. In
+the pipeline, add an <a class="xref" href="ingest-processors.html#enrich-processor" title="Enrich processor">enrich processor</a> that includes:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Your enrich policy.
+</li>
+<li class="listitem">
+The <code class="literal">field</code> of incoming documents used to match documents
+from the enrich index.
+</li>
+<li class="listitem">
+The <code class="literal">target_field</code> used to store appended enrich data for incoming documents.
+This field contains the <code class="literal">match_field</code> and <code class="literal">enrich_fields</code> specified in your
+enrich policy.
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_ingest/pipeline/user_lookup
+{
+  "description" : "Enriching user details to messages",
+  "processors" : [
+    {
+      "enrich" : {
+        "policy_name": "users-policy",
+        "field" : "email",
+        "target_field": "user",
+        "max_matches": "1"
+      }
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/608.console"></div>
+<p>Use the ingest pipeline to index a document. The incoming document should
+include the <code class="literal">field</code> specified in your enrich processor.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /my-index-00001/_doc/my_id?pipeline=user_lookup
+{
+  "email": "mardy.brown@asciidocsmith.com"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/609.console"></div>
+<p>To verify the enrich processor matched and appended the appropriate field data,
+use the <a class="xref" href="docs.html#docs-get" title="Get API">get API</a> to view the indexed document.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /my-index-00001/_doc/my_id</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/610.console"></div>
+<p>The API returns the following response:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "found": true,
+  "_index": "my-index-00001",
+  "_type": "_doc",
+  "_id": "my_id",
+  "_version": 1,
+  "_seq_no": 55,
+  "_primary_term": 1,
+  "_source": {
+    "user": {
+      "email": "mardy.brown@asciidocsmith.com",
+      "first_name": "Mardy",
+      "last_name": "Brown",
+      "zip": 70116,
+      "city": "New Orleans",
+      "state": "LA"
+    },
+    "email": "mardy.brown@asciidocsmith.com"
+  }
+}</pre>
+</div>
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="handling-failure-in-pipelines.html">« Handling Failures in Pipelines</a>
+</span>
+<span class="next">
+<a href="ingest-processors.html">Processors »</a>
+</span>
+</div>
+</div>
+
+                  <!-- end body -->
+                </div>
+
+                <div class="col-12 order-3 col-lg-2 order-lg-3 h-almost-full-lg sticky-top-lg" id="right_col">
+                  <div id="sticky_content">
+                    <!-- The OTP is appended here -->
+                    <div class="row">
+                      <div class="col-0 col-md-4 col-lg-0" id="bottom_left_col"></div>
+                      <div class="col-12 col-md-8 col-lg-12">
+                        <div id="rtpcontainer">
+                          <div class="mktg-promo" id="most-popular">
+                            <p class="aside-heading">Most Popular</p>
+                            <div class="pb-2">
+                              <p class="media-type">Video</p>
+                              <a href="https://www.elastic.co/webinars/getting-started-elasticsearch?page=docs&placement=top-video">
+                                <p class="mb-0">Get Started with Elasticsearch</p>
+                              </a>
+                            </div>
+                            <div class="pb-2">
+                              <p class="media-type">Video</p>
+                              <a href="https://www.elastic.co/webinars/getting-started-kibana?page=docs&placement=top-video">
+                                <p class="mb-0">Intro to Kibana</p>
+                              </a>
+                            </div>
+                            <div class="pb-2">
+                              <p class="media-type">Video</p>
+                              <a href="https://www.elastic.co/webinars/introduction-elk-stack?page=docs&placement=top-video">
+                                <p class="mb-0">ELK for Logs & Metrics</p>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+
+<div id='elastic-footer'></div>
+<script src='https://www.elastic.co/elastic-footer.js'></script>
+<!-- Footer Section end-->
+
+      </section>
+    </div>
+
+<script src="/guide/static/jquery.js"></script>
+<script type="text/javascript" src="/guide/static/docs.js"></script>
+<script type="text/javascript">
+  window.initial_state = {}</script>
+  </body>
+</html>

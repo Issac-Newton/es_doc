@@ -1,0 +1,4165 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+<meta charset="UTF-8">
+<title>Full text queries | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Full text queries | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="query-dsl.html" title="Query DSL"/>
+<link rel="prev" href="compound-queries.html" title="Compound queries"/>
+<link rel="next" href="geo-queries.html" title="Geo queries"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.optimizely.com/js/18132920325.js"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-title" content="Elastic">
+    <meta name="application-name" content="Elastic">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="naver-site-verification" content="936882c1853b701b3cef3721758d80535413dbfd" />
+    <meta name="yandex-verification" content="d8a47e95d0972434" />
+    <meta name="localized" content="true" />
+    <meta name="st:robots" content="follow,index" />
+    <meta property="og:image" content="https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt280217a63b82a734/6202d3378b1f312528798412/elastic-logo.svg" />
+    <meta property="og:image:width" content="500" />
+    <meta property="og:image:height" content="172" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" sizes="64x64" href="/favicon_64x64_16bit.png">
+    <link rel="apple-touch-icon-precomposed" sizes="32x32" href="/favicon_32x32.png">
+    <link rel="apple-touch-icon-precomposed" sizes="16x16" href="/favicon_16x16.png">
+    <!-- Give IE8 a fighting chance -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="/guide/static/styles.css" />
+  </head>
+
+  <!--© 2015-2022 Elasticsearch B.V. -->
+  <!-- All Elastic documentation is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License. -->
+  <!-- http://creativecommons.org/licenses/by-nc-nd/4.0/ -->
+
+  <body>
+    <!-- Google Tag Manager -->
+    <script>dataLayer = [];</script><noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-58RLH5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-58RLH5');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12395217-16"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-12395217-16');
+    </script>
+
+    <!-- Google Tag Manager for GA4 -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KNJMG2M');</script>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KNJMG2M" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager for GA4-->
+
+    <div id='elastic-nav' style="display:none;"></div>
+    <script src='https://www.elastic.co/elastic-nav.js'></script>
+
+    <div class="main-container">
+      <section id="content" >
+        <div class="content-wrapper">
+
+          <section id="guide" lang="en">
+            <div class="container-fluid">
+              <div class="row pb-3">
+                <div class="col-12 order-2 col-md-4 order-md-1 col-lg-3 h-almost-full-md sticky-top-md" id="left_col">
+                  <!-- The TOC is appended here -->
+                </div>
+
+                <div class="col-12 order-1 col-md-8 order-md-2 col-lg-7 order-lg-2 guide-section" id="middle_col">
+                  <!-- start body -->
+                  
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="query-dsl.html">Query DSL</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="compound-queries.html">« Compound queries</a>
+</span>
+<span class="next">
+<a href="geo-queries.html">Geo queries »</a>
+</span>
+</div>
+<div class="chapter">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="full-text-queries"></a>Full text queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/full-text-queries.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The full text queries enable you to search <a class="xref" href="analysis.html" title="Text analysis">analyzed text fields</a> such as the
+body of an email. The query string is processed using the same analyzer that was applied to
+the field during indexing.</p>
+<p>The queries in this group are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<a class="xref" href="full-text-queries.html#query-dsl-intervals-query" title="Intervals query"><code class="literal">intervals</code> query</a>
+</span>
+</dt>
+<dd>
+A full text query that allows fine-grained control of the ordering and
+proximity of matching terms.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code> query</a>
+</span>
+</dt>
+<dd>
+The standard query for performing full text queries, including fuzzy matching
+and phrase or proximity queries.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="full-text-queries.html#query-dsl-match-bool-prefix-query" title="Match boolean prefix query"><code class="literal">match_bool_prefix</code> query</a>
+</span>
+</dt>
+<dd>
+Creates a <code class="literal">bool</code> query that matches each term as a <code class="literal">term</code> query, except for
+the last term, which is matched as a <code class="literal">prefix</code> query
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase" title="Match phrase query"><code class="literal">match_phrase</code> query</a>
+</span>
+</dt>
+<dd>
+Like the <code class="literal">match</code> query but used for matching exact phrases or word proximity matches.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase-prefix" title="Match phrase prefix query"><code class="literal">match_phrase_prefix</code> query</a>
+</span>
+</dt>
+<dd>
+Like the <code class="literal">match_phrase</code> query, but does a wildcard search on the final word.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="full-text-queries.html#query-dsl-multi-match-query" title="Multi-match query"><code class="literal">multi_match</code> query</a>
+</span>
+</dt>
+<dd>
+The multi-field version of the <code class="literal">match</code> query.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="full-text-queries.html#query-dsl-common-terms-query" title="Common Terms Query"><code class="literal">common</code> terms query</a>
+</span>
+</dt>
+<dd>
+A more specialized query which gives more preference to uncommon words.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="full-text-queries.html#query-dsl-query-string-query" title="Query string query"><code class="literal">query_string</code> query</a>
+</span>
+</dt>
+<dd>
+Supports the compact Lucene <a class="xref" href="full-text-queries.html#query-string-syntax" title="Query string syntax">query string syntax</a>,
+allowing you to specify AND|OR|NOT conditions and multi-field search
+within a single query string. For expert users only.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="full-text-queries.html#query-dsl-simple-query-string-query" title="Simple query string query"><code class="literal">simple_query_string</code> query</a>
+</span>
+</dt>
+<dd>
+A simpler, more robust version of the <code class="literal">query_string</code> syntax suitable
+for exposing directly to users.
+</dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-intervals-query"></a>Intervals query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents based on the order and proximity of matching terms.</p>
+<p>The <code class="literal">intervals</code> query uses <span class="strong strong"><strong>matching rules</strong></span>, constructed from a small set of
+definitions. These rules are then applied to terms from a specified <code class="literal">field</code>.</p>
+<p>The definitions produce sequences of minimal intervals that span terms in a
+body of text. These intervals can be further combined and filtered by
+parent sources.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="intervals-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The following <code class="literal">intervals</code> search returns documents containing <code class="literal">my
+favorite food</code> without any gap, followed by <code class="literal">hot water</code> or <code class="literal">cold porridge</code> in the
+<code class="literal">my_text</code> field.</p>
+<p>This search would match a <code class="literal">my_text</code> value of <code class="literal">my favorite food is cold
+porridge</code> but not <code class="literal">when it's cold my favorite food is porridge</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _search
+{
+  "query": {
+    "intervals" : {
+      "my_text" : {
+        "all_of" : {
+          "ordered" : true,
+          "intervals" : [
+            {
+              "match" : {
+                "query" : "my favorite food",
+                "max_gaps" : 0,
+                "ordered" : true
+              }
+            },
+            {
+              "any_of" : {
+                "intervals" : [
+                  { "match" : { "query" : "hot water" } },
+                  { "match" : { "query" : "cold porridge" } }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/752.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="intervals-top-level-params"></a>Top-level parameters for <code class="literal">intervals</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<a id="intervals-rules"></a>
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+<p>(Required, rule object) Field you wish to search.</p>
+<p>The value of this parameter is a rule object used to match documents
+based on matching terms, order, and proximity.</p>
+<p>Valid rules include:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="full-text-queries.html#intervals-match" title="match rule parameters"><code class="literal">match</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="full-text-queries.html#intervals-prefix" title="prefix rule parameters"><code class="literal">prefix</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="full-text-queries.html#intervals-wildcard" title="wildcard rule parameters"><code class="literal">wildcard</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="full-text-queries.html#intervals-fuzzy" title="fuzzy rule parameters"><code class="literal">fuzzy</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="full-text-queries.html#intervals-all_of" title="all_of rule parameters"><code class="literal">all_of</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="full-text-queries.html#intervals-any_of" title="any_of rule parameters"><code class="literal">any_of</code></a>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="intervals-match"></a><code class="literal">match</code> rule parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">match</code> rule matches analyzed text.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">query</code>
+</span>
+</dt>
+<dd>
+(Required, string) Text you wish to find in the provided <code class="literal">&lt;field&gt;</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_gaps</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, integer) Maximum number of positions between the matching terms.
+Terms further apart than this are not considered matches. Defaults to
+<code class="literal">-1</code>.</p>
+<p>If unspecified or set to <code class="literal">-1</code>, there is no width restriction on the match. If
+set to <code class="literal">0</code>, the terms must appear next to each other.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">ordered</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean)
+If <code class="literal">true</code>, matching terms must appear in their specified order. Defaults to
+<code class="literal">false</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyzer</code>
+</span>
+</dt>
+<dd>
+(Optional, string) <a class="xref" href="analysis.html" title="Text analysis">analyzer</a> used to analyze terms in the <code class="literal">query</code>.
+Defaults to the top-level <code class="literal">&lt;field&gt;</code>'s analyzer.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">filter</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="full-text-queries.html#interval_filter" title="filter rule parameters">interval filter</a> rule object) An optional interval
+filter.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">use_field</code>
+</span>
+</dt>
+<dd>
+(Optional, string) If specified, then match intervals from this
+field rather than the top-level <code class="literal">&lt;field&gt;</code>. Terms are analyzed using the
+search analyzer from this field. This allows you to search across multiple
+fields as if they were all the same field; for example, you could index the same
+text into stemmed and unstemmed fields, and search for stemmed tokens near
+unstemmed ones.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="intervals-prefix"></a><code class="literal">prefix</code> rule parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">prefix</code> rule matches terms that start with a specified set of characters.
+This prefix can expand to match at most 128 terms. If the prefix matches more
+than 128 terms, Elasticsearch returns an error. You can use the
+<a class="xref" href="mapping-params.html#index-prefixes" title="index_prefixes"><code class="literal">index-prefixes</code></a> option in the field mapping to avoid this
+limit.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">prefix</code>
+</span>
+</dt>
+<dd>
+(Required, string) Beginning characters of terms you wish to find in the
+top-level <code class="literal">&lt;field&gt;</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyzer</code>
+</span>
+</dt>
+<dd>
+(Optional, string) <a class="xref" href="analysis.html" title="Text analysis">analyzer</a> used to normalize the <code class="literal">prefix</code>.
+Defaults to the top-level <code class="literal">&lt;field&gt;</code>'s analyzer.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">use_field</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) If specified, then match intervals from this field rather
+than the top-level <code class="literal">&lt;field&gt;</code>.</p>
+<p>The <code class="literal">prefix</code> is normalized using the search analyzer from this field, unless a
+separate <code class="literal">analyzer</code> is specified.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="intervals-wildcard"></a><code class="literal">wildcard</code> rule parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">wildcard</code> rule matches terms using a wildcard pattern. This pattern can
+expand to match at most 128 terms. If the pattern matches more than 128 terms,
+Elasticsearch returns an error.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">pattern</code>
+</span>
+</dt>
+<dd>
+<p>
+(Required, string) Wildcard pattern used to find matching terms.
+</p>
+<p>This parameter supports two wildcard operators:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">?</code>, which matches any single character
+</li>
+<li class="listitem">
+<code class="literal">*</code>, which can match zero or more characters, including an empty one
+</li>
+</ul>
+</div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Avoid beginning patterns with <code class="literal">*</code> or <code class="literal">?</code>. This can increase
+the iterations needed to find matching terms and slow search performance.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyzer</code>
+</span>
+</dt>
+<dd>
+(Optional, string) <a class="xref" href="analysis.html" title="Text analysis">analyzer</a> used to normalize the <code class="literal">pattern</code>.
+Defaults to the top-level <code class="literal">&lt;field&gt;</code>'s analyzer.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">use_field</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) If specified, match intervals from this field rather than the
+top-level <code class="literal">&lt;field&gt;</code>.</p>
+<p>The <code class="literal">pattern</code> is normalized using the search analyzer from this field, unless
+<code class="literal">analyzer</code> is specified separately.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="intervals-fuzzy"></a><code class="literal">fuzzy</code> rule parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">fuzzy</code> rule matches terms that are similar to the provided term, within an
+edit distance defined by <a class="xref" href="api-conventions.html#fuzziness" title="Fuzziness">Fuzziness</a>.  If the fuzzy expansion matches more than
+128 terms, Elasticsearch returns an error.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">term</code>
+</span>
+</dt>
+<dd>
+(Required, string) The term to match
+</dd>
+<dt>
+<span class="term">
+<code class="literal">prefix_length</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Number of beginning characters left unchanged when creating
+expansions. Defaults to <code class="literal">0</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">transpositions</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) Indicates whether edits include transpositions of two
+adjacent characters (ab → ba). Defaults to <code class="literal">true</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzziness</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Maximum edit distance allowed for matching. See <a class="xref" href="api-conventions.html#fuzziness" title="Fuzziness">Fuzziness</a>
+for valid values and more information.  Defaults to <code class="literal">auto</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyzer</code>
+</span>
+</dt>
+<dd>
+(Optional, string) <a class="xref" href="analysis.html" title="Text analysis">analyzer</a> used to normalize the <code class="literal">term</code>.
+Defaults to the top-level <code class="literal">&lt;field&gt;</code> 's analyzer.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">use_field</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) If specified, match intervals from this field rather than the
+top-level <code class="literal">&lt;field&gt;</code>.</p>
+<p>The <code class="literal">term</code> is normalized using the search analyzer from this field, unless
+<code class="literal">analyzer</code> is specified separately.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="intervals-all_of"></a><code class="literal">all_of</code> rule parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">all_of</code> rule returns matches that span a combination of other rules.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">intervals</code>
+</span>
+</dt>
+<dd>
+(Required, array of rule objects) An array of rules to combine. All rules must
+produce a match in a document for the overall source to match.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_gaps</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, integer) Maximum number of positions between the matching terms.
+Intervals produced by the rules further apart than this are not considered
+matches. Defaults to <code class="literal">-1</code>.</p>
+<p>If unspecified or set to <code class="literal">-1</code>, there is no width restriction on the match. If
+set to <code class="literal">0</code>, the terms must appear next to each other.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">ordered</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, intervals produced by the rules should appear in
+the order in which they are specified. Defaults to <code class="literal">false</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">filter</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="full-text-queries.html#interval_filter" title="filter rule parameters">interval filter</a> rule object) Rule used to filter
+returned intervals.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="intervals-any_of"></a><code class="literal">any_of</code> rule parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">any_of</code> rule returns intervals produced by any of its sub-rules.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">intervals</code>
+</span>
+</dt>
+<dd>
+(Required, array of rule objects) An array of rules to match.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">filter</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="full-text-queries.html#interval_filter" title="filter rule parameters">interval filter</a> rule object) Rule used to filter
+returned intervals.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="interval_filter"></a><code class="literal">filter</code> rule parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">filter</code> rule returns intervals based on a query. See
+<a class="xref" href="full-text-queries.html#interval-filter-rule-ex" title="Filter example">Filter example</a> for an example.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">after</code>
+</span>
+</dt>
+<dd>
+(Optional, query object) Query used to return intervals that follow an interval
+from the <code class="literal">filter</code> rule.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">before</code>
+</span>
+</dt>
+<dd>
+(Optional, query object) Query used to return intervals that occur before an
+interval from the <code class="literal">filter</code> rule.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">contained_by</code>
+</span>
+</dt>
+<dd>
+(Optional, query object) Query used to return intervals contained by an interval
+from the <code class="literal">filter</code> rule.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">containing</code>
+</span>
+</dt>
+<dd>
+(Optional, query object) Query used to return intervals that contain an interval
+from the <code class="literal">filter</code> rule.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">not_contained_by</code>
+</span>
+</dt>
+<dd>
+(Optional, query object) Query used to return intervals that are <span class="strong strong"><strong>not</strong></span>
+contained by an interval from the <code class="literal">filter</code> rule.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">not_containing</code>
+</span>
+</dt>
+<dd>
+(Optional, query object) Query used to return intervals that do <span class="strong strong"><strong>not</strong></span> contain
+an interval from the <code class="literal">filter</code> rule.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">not_overlapping</code>
+</span>
+</dt>
+<dd>
+(Optional, query object) Query used to return intervals that do <span class="strong strong"><strong>not</strong></span> overlap
+with an interval from the <code class="literal">filter</code> rule.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">overlapping</code>
+</span>
+</dt>
+<dd>
+(Optional, query object) Query used to return intervals that overlap with an
+interval from the <code class="literal">filter</code> rule.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">script</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="modules-scripting-using.html" title="How to use scripts">script object</a>) Script used to return
+matching documents. This script must return a boolean value, <code class="literal">true</code> or <code class="literal">false</code>.
+See <a class="xref" href="full-text-queries.html#interval-script-filter" title="Script filters">Script filters</a> for an example.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="intervals-query-note"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="interval-filter-rule-ex"></a>Filter example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The following search includes a <code class="literal">filter</code> rule. It returns documents that have
+the words <code class="literal">hot</code> and <code class="literal">porridge</code> within 10 positions of each other, without the
+word <code class="literal">salty</code> in between:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _search
+{
+  "query": {
+    "intervals" : {
+      "my_text" : {
+        "match" : {
+          "query" : "hot porridge",
+          "max_gaps" : 10,
+          "filter" : {
+            "not_containing" : {
+              "match" : {
+                "query" : "salty"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/753.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="interval-script-filter"></a>Script filters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>You can use a script to filter intervals based on their start position, end
+position, and internal gap count. The following <code class="literal">filter</code> script uses the
+<code class="literal">interval</code> variable with the <code class="literal">start</code>, <code class="literal">end</code>, and <code class="literal">gaps</code> methods:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _search
+{
+  "query": {
+    "intervals" : {
+      "my_text" : {
+        "match" : {
+          "query" : "hot porridge",
+          "filter" : {
+            "script" : {
+              "source" : "interval.start &gt; 10 &amp;&amp; interval.end &lt; 20 &amp;&amp; interval.gaps == 0"
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/754.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="interval-minimization"></a>Minimization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/intervals-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The intervals query always minimizes intervals, to ensure that queries can
+run in linear time. This can sometimes cause surprising results, particularly
+when using <code class="literal">max_gaps</code> restrictions or filters. For example, take the
+following query, searching for <code class="literal">salty</code> contained within the phrase <code class="literal">hot
+porridge</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _search
+{
+  "query": {
+    "intervals" : {
+      "my_text" : {
+        "match" : {
+          "query" : "salty",
+          "filter" : {
+            "contained_by" : {
+              "match" : {
+                "query" : "hot porridge"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/755.console"></div>
+<p>This query does <span class="strong strong"><strong>not</strong></span> match a document containing the phrase <code class="literal">hot porridge is
+salty porridge</code>, because the intervals returned by the match query for <code class="literal">hot
+porridge</code> only cover the initial two terms in this document, and these do not
+overlap the intervals covering <code class="literal">salty</code>.</p>
+<p>Another restriction to be aware of is the case of <code class="literal">any_of</code> rules that contain
+sub-rules which overlap. In particular, if one of the rules is a strict
+prefix of the other, then the longer rule can never match, which can
+cause surprises when used in combination with <code class="literal">max_gaps</code>. Consider the
+following query, searching for <code class="literal">the</code> immediately followed by <code class="literal">big</code> or <code class="literal">big bad</code>,
+immediately followed by <code class="literal">wolf</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _search
+{
+  "query": {
+    "intervals" : {
+      "my_text" : {
+        "all_of" : {
+          "intervals" : [
+            { "match" : { "query" : "the" } },
+            { "any_of" : {
+                "intervals" : [
+                    { "match" : { "query" : "big" } },
+                    { "match" : { "query" : "big bad" } }
+                ] } },
+            { "match" : { "query" : "wolf" } }
+          ],
+          "max_gaps" : 0,
+          "ordered" : true
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/756.console"></div>
+<p>Counter-intuitively, this query does <span class="strong strong"><strong>not</strong></span> match the document <code class="literal">the big bad
+wolf</code>, because the <code class="literal">any_of</code> rule in the middle only produces intervals
+for <code class="literal">big</code> - intervals for <code class="literal">big bad</code> being longer than those for <code class="literal">big</code>, while
+starting at the same position, and so being minimized away. In these cases,
+it&#8217;s better to rewrite the query so that all of the options are explicitly
+laid out at the top level:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _search
+{
+  "query": {
+    "intervals" : {
+      "my_text" : {
+        "any_of" : {
+          "intervals" : [
+            { "match" : {
+                "query" : "the big bad wolf",
+                "ordered" : true,
+                "max_gaps" : 0 } },
+            { "match" : {
+                "query" : "the big wolf",
+                "ordered" : true,
+                "max_gaps" : 0 } }
+           ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/757.console"></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-match-query"></a>Match query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that match a provided text, number, date or boolean value. The
+provided text is analyzed before matching.</p>
+<p>The <code class="literal">match</code> query is the standard query for performing a full-text search,
+including options for fuzzy matching.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match": {
+      "message": {
+        "query": "this is a test"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/758.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-top-level-params"></a>Top-level parameters for <code class="literal">match</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, object) Field you wish to search.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-field-params"></a>Parameters for <code class="literal">&lt;field&gt;</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">query</code>
+</span>
+</dt>
+<dd>
+<p>(Required) Text, number, boolean value or date you wish to find in the provided
+<code class="literal">&lt;field&gt;</code>.</p>
+<p>The <code class="literal">match</code> query <a class="xref" href="analysis.html" title="Text analysis">analyzes</a> any provided text before performing a
+search. This means the <code class="literal">match</code> query can search <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> fields for
+analyzed tokens rather than an exact term.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyzer</code>
+</span>
+</dt>
+<dd>
+(Optional, string) <a class="xref" href="analysis.html" title="Text analysis">Analyzer</a> used to convert the text in the <code class="literal">query</code>
+value into tokens. Defaults to the <a class="xref" href="configure-text-analysis.html#specify-index-time-analyzer" title="How Elasticsearch determines the index analyzer">index-time
+analyzer</a> mapped for the <code class="literal">&lt;field&gt;</code>. If no analyzer is mapped, the index&#8217;s
+default analyzer is used.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">auto_generate_synonyms_phrase_query</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, Boolean) If <code class="literal">true</code>, <a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase" title="Match phrase query">match phrase</a>
+queries are automatically created for multi-term synonyms. Defaults to <code class="literal">true</code>.</p>
+<p>See <a class="xref" href="full-text-queries.html#query-dsl-match-query-synonyms" title="Synonyms">Use synonyms with match query</a> for an
+example.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzziness</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Maximum edit distance allowed for matching. See <a class="xref" href="api-conventions.html#fuzziness" title="Fuzziness">Fuzziness</a>
+for valid values and more information. See <a class="xref" href="full-text-queries.html#query-dsl-match-query-fuzziness" title="Fuzziness in the match query">Fuzziness in the match query</a>
+for an example.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_expansions</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Maximum number of terms to which the query will
+expand. Defaults to <code class="literal">50</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">prefix_length</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Number of beginning characters left unchanged for fuzzy
+matching. Defaults to <code class="literal">0</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzzy_transpositions</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, edits for fuzzy matching include
+transpositions of two adjacent characters (ab → ba). Defaults to <code class="literal">true</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzzy_rewrite</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Method used to rewrite the query. See the
+<a class="xref" href="query-dsl-multi-term-rewrite.html" title="rewrite parameter"><code class="literal">rewrite</code> parameter</a> for valid values and more
+information.</p>
+<p>If the <code class="literal">fuzziness</code> parameter is not <code class="literal">0</code>, the <code class="literal">match</code> query uses a <code class="literal">fuzzy_rewrite</code>
+method of <code class="literal">top_terms_blended_freqs_${max_expansions}</code> by default.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">lenient</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, format-based errors, such as providing a text
+<code class="literal">query</code> value for a <a class="xref" href="mapping-types.html#number" title="Numeric field types">numeric</a> field, are ignored. Defaults to <code class="literal">false</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">operator</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Boolean logic used to interpret text in the <code class="literal">query</code> value.
+Valid values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">OR</code> (Default)
+</span>
+</dt>
+<dd>
+For example, a <code class="literal">query</code> value of <code class="literal">capital of Hungary</code> is interpreted as <code class="literal">capital
+OR of OR Hungary</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">AND</code>
+</span>
+</dt>
+<dd>
+For example, a <code class="literal">query</code> value of <code class="literal">capital of Hungary</code> is interpreted as <code class="literal">capital
+AND of AND Hungary</code>.
+</dd>
+</dl>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">minimum_should_match</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Minimum number of clauses that must match for a document to
+be returned. See the <a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code>
+parameter</a> for valid values and more information.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">zero_terms_query</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Indicates whether no documents are returned if the <code class="literal">analyzer</code>
+removes all tokens, such as when using a <code class="literal">stop</code> filter. Valid values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">none</code> (Default)
+</span>
+</dt>
+<dd>
+No documents are returned if the <code class="literal">analyzer</code> removes all tokens.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">all</code>
+</span>
+</dt>
+<dd>
+Returns all documents, similar to a <a class="xref" href="query-dsl-match-all-query.html" title="Match all query"><code class="literal">match_all</code></a>
+query.
+</dd>
+</dl>
+</div>
+<p>See <a class="xref" href="full-text-queries.html#query-dsl-match-query-zero" title="Zero terms query">Zero terms query</a> for an example.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-dsl-match-query-short-ex"></a>Short request example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>You can simplify the match query syntax by combining the <code class="literal">&lt;field&gt;</code> and <code class="literal">query</code>
+parameters. For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match": {
+      "message": "this is a test"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/759.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-dsl-match-query-boolean"></a>How the match query works<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">match</code> query is of type <code class="literal">boolean</code>. It means that the text
+provided is analyzed and the analysis process constructs a boolean query
+from the provided text. The <code class="literal">operator</code> parameter can be set to <code class="literal">or</code> or <code class="literal">and</code>
+to control the boolean clauses (defaults to <code class="literal">or</code>). The minimum number of
+optional <code class="literal">should</code> clauses to match can be set using the
+<a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code></a>
+parameter.</p>
+<p>Here is an example with the <code class="literal">operator</code> parameter:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match": {
+      "message": {
+        "query": "this is a test",
+        "operator": "and"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/760.console"></div>
+<p>The <code class="literal">analyzer</code> can be set to control which analyzer will perform the
+analysis process on the text. It defaults to the field explicit mapping
+definition, or the default search analyzer.</p>
+<p>The <code class="literal">lenient</code> parameter can be set to <code class="literal">true</code> to ignore exceptions caused by
+data-type mismatches,  such as trying to query a numeric field with a text
+query string. Defaults to <code class="literal">false</code>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-dsl-match-query-fuzziness"></a>Fuzziness in the match query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p><code class="literal">fuzziness</code> allows <em>fuzzy matching</em> based on the type of field being queried.
+See <a class="xref" href="api-conventions.html#fuzziness" title="Fuzziness">Fuzziness</a> for allowed settings.</p>
+<p>The <code class="literal">prefix_length</code> and
+<code class="literal">max_expansions</code> can be set in this case to control the fuzzy process.
+If the fuzzy option is set the query will use <code class="literal">top_terms_blended_freqs_${max_expansions}</code>
+as its <a class="xref" href="query-dsl-multi-term-rewrite.html" title="rewrite parameter">rewrite
+method</a> the <code class="literal">fuzzy_rewrite</code> parameter allows to control how the query will get
+rewritten.</p>
+<p>Fuzzy transpositions (<code class="literal">ab</code> &#8594; <code class="literal">ba</code>) are allowed by default but can be disabled
+by setting <code class="literal">fuzzy_transpositions</code> to <code class="literal">false</code>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Fuzzy matching is not applied to terms with synonyms or in cases where the
+analysis process produces multiple tokens at the same position. Under the hood
+these terms are expanded to a special synonym query that blends term frequencies,
+which does not support fuzzy expansion.</p>
+</div>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match": {
+      "message": {
+        "query": "this is a testt",
+        "fuzziness": "AUTO"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/761.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-dsl-match-query-zero"></a>Zero terms query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>If the analyzer used removes all tokens in a query like a <code class="literal">stop</code> filter
+does, the default behavior is to match no documents at all. In order to
+change that the <code class="literal">zero_terms_query</code> option can be used, which accepts
+<code class="literal">none</code> (default) and <code class="literal">all</code> which corresponds to a <code class="literal">match_all</code> query.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match": {
+      "message": {
+        "query": "to be or not to be",
+        "operator": "and",
+        "zero_terms_query": "all"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/762.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-dsl-match-query-cutoff"></a>Cutoff frequency<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h4>
+</div></div></div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3>Deprecated in 7.3.0.</h3>
+<p>This option can be omitted as the <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query">Match</a> can skip blocks of documents efficiently, without any configuration, provided that the total number of hits is not tracked.</p>
+</div>
+</div>
+<p>The match query supports a <code class="literal">cutoff_frequency</code> that allows
+specifying an absolute or relative document frequency where high
+frequency terms are moved into an optional subquery and are only scored
+if one of the low frequency (below the cutoff) terms in the case of an
+<code class="literal">or</code> operator or all of the low frequency terms in the case of an <code class="literal">and</code>
+operator match.</p>
+<p>This query allows handling <code class="literal">stopwords</code> dynamically at runtime, is domain
+independent and doesn&#8217;t require a stopword file. It prevents scoring /
+iterating high frequency terms and only takes the terms into account if a
+more significant / lower frequency term matches a document. Yet, if all
+of the query terms are above the given <code class="literal">cutoff_frequency</code> the query is
+automatically transformed into a pure conjunction (<code class="literal">and</code>) query to
+ensure fast execution.</p>
+<p>The <code class="literal">cutoff_frequency</code> can either be relative to the total number of
+documents if in the range from 0 (inclusive) to 1 (exclusive) or absolute if greater or equal to
+<code class="literal">1.0</code>.</p>
+<p>Here is an example showing a query composed of stopwords exclusively:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match": {
+      "message": {
+        "query": "to be or not to be",
+        "cutoff_frequency": 0.001
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/763.console"></div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">cutoff_frequency</code> option operates on a per-shard-level. This means
+that when trying it out on test indexes with low document numbers you
+should follow the advice in <a href="https://www.elastic.co/guide/en/elasticsearch/guide/2.x/relevance-is-broken.html" class="ulink" target="_top">Relevance is broken</a>.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-dsl-match-query-synonyms"></a>Synonyms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">match</code> query supports multi-terms synonym expansion with the <a class="xref" href="analysis-tokenfilters.html#analysis-synonym-graph-tokenfilter" title="Synonym graph token filter">synonym_graph</a> token filter. When this filter is used, the parser creates a phrase query for each multi-terms synonyms.
+For example, the following synonym: <code class="literal">"ny, new york"</code> would produce:</p>
+<p><code class="literal">(ny OR ("new york"))</code></p>
+<p>It is also possible to match multi terms synonyms with conjunctions instead:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+   "query": {
+       "match" : {
+           "message": {
+               "query" : "ny city",
+               "auto_generate_synonyms_phrase_query" : false
+           }
+       }
+   }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/764.console"></div>
+<p>The example above creates a boolean query:</p>
+<p><code class="literal">(ny OR (new AND york)) city</code></p>
+<p>that matches documents with the term <code class="literal">ny</code> or the conjunction <code class="literal">new AND york</code>.
+By default the parameter <code class="literal">auto_generate_synonyms_phrase_query</code> is set to <code class="literal">true</code>.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-match-bool-prefix-query"></a>Match boolean prefix query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-bool-prefix-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>A <code class="literal">match_bool_prefix</code> query analyzes its input and constructs a
+<a class="xref" href="compound-queries.html#query-dsl-bool-query" title="Boolean query"><code class="literal">bool</code> query</a> from the terms. Each term except the last
+is used in a <code class="literal">term</code> query. The last term is used in a <code class="literal">prefix</code> query. A
+<code class="literal">match_bool_prefix</code> query such as</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match_bool_prefix" : {
+      "message" : "quick brown f"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/765.console"></div>
+<p>where analysis produces the terms <code class="literal">quick</code>, <code class="literal">brown</code>, and <code class="literal">f</code> is similar to the
+following <code class="literal">bool</code> query</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool" : {
+      "should": [
+        { "term": { "message": "quick" }},
+        { "term": { "message": "brown" }},
+        { "prefix": { "message": "f"}}
+      ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/766.console"></div>
+<p>An important difference between the <code class="literal">match_bool_prefix</code> query and
+<a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase-prefix" title="Match phrase prefix query"><code class="literal">match_phrase_prefix</code></a> is that the
+<code class="literal">match_phrase_prefix</code> query matches its terms as a phrase, but the
+<code class="literal">match_bool_prefix</code> query can match its terms in any position. The example
+<code class="literal">match_bool_prefix</code> query above could match a field containing
+<code class="literal">quick brown fox</code>, but it could also match <code class="literal">brown fox quick</code>. It could also
+match a field containing the term <code class="literal">quick</code>, the term <code class="literal">brown</code> and a term
+starting with <code class="literal">f</code>, appearing in any position.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_parameters"></a>Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-bool-prefix-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>By default, <code class="literal">match_bool_prefix</code> queries' input text will be analyzed using the
+analyzer from the queried field&#8217;s mapping. A different search analyzer can be
+configured with the <code class="literal">analyzer</code> parameter</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match_bool_prefix": {
+      "message": {
+        "query": "quick brown f",
+        "analyzer": "keyword"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/767.console"></div>
+<p><code class="literal">match_bool_prefix</code> queries support the
+<a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code></a> and <code class="literal">operator</code>
+parameters as described for the
+<a class="xref" href="full-text-queries.html#query-dsl-match-query-boolean" title="How the match query works"><code class="literal">match</code> query</a>, applying the setting to the
+constructed <code class="literal">bool</code> query. The number of clauses in the constructed <code class="literal">bool</code>
+query will in most cases be the number of terms produced by analysis of the
+query text.</p>
+<p>The <a class="xref" href="full-text-queries.html#query-dsl-match-query-fuzziness" title="Fuzziness in the match query"><code class="literal">fuzziness</code></a>, <code class="literal">prefix_length</code>,
+<code class="literal">max_expansions</code>, <code class="literal">fuzzy_transpositions</code>, and <code class="literal">fuzzy_rewrite</code> parameters can
+be applied to the <code class="literal">term</code> subqueries constructed for all terms but the final
+term. They do not have any effect on the prefix query constructed for the
+final term.</p>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-match-query-phrase"></a>Match phrase query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-phrase-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>The <code class="literal">match_phrase</code> query analyzes the text and creates a <code class="literal">phrase</code> query
+out of the analyzed text. For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match_phrase": {
+      "message": "this is a test"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/768.console"></div>
+<p>A phrase query matches terms up to a configurable <code class="literal">slop</code>
+(which defaults to 0) in any order. Transposed terms have a slop of 2.</p>
+<p>The <code class="literal">analyzer</code> can be set to control which analyzer will perform the
+analysis process on the text. It defaults to the field explicit mapping
+definition, or the default search analyzer, for example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match_phrase": {
+      "message": {
+        "query": "this is a test",
+        "analyzer": "my_analyzer"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/769.console"></div>
+<p>This query also accepts <code class="literal">zero_terms_query</code>, as explained in <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code> query</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-match-query-phrase-prefix"></a>Match phrase prefix query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-phrase-prefix-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents that contain the words of a provided text, in the <span class="strong strong"><strong>same
+order</strong></span> as provided. The last term of the provided text is treated as a
+<a class="xref" href="term-level-queries.html#query-dsl-prefix-query" title="Prefix query">prefix</a>, matching any words that begin with that term.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-phrase-prefix-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-phrase-prefix-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The following search returns documents that contain phrases beginning with
+<code class="literal">quick brown f</code> in the <code class="literal">message</code> field.</p>
+<p>This search would match a <code class="literal">message</code> value of <code class="literal">quick brown fox</code> or <code class="literal">two quick
+brown ferrets</code> but not <code class="literal">the fox is quick and brown</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "match_phrase_prefix": {
+      "message": {
+        "query": "quick brown f"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/770.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-phrase-prefix-top-level-params"></a>Top-level parameters for <code class="literal">match_phrase_prefix</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-phrase-prefix-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;field&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, object) Field you wish to search.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-phrase-prefix-field-params"></a>Parameters for <code class="literal">&lt;field&gt;</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-phrase-prefix-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">query</code>
+</span>
+</dt>
+<dd>
+<p>(Required, string) Text you wish to find in the provided <code class="literal">&lt;field&gt;</code>.</p>
+<p>The <code class="literal">match_phrase_prefix</code> query <a class="xref" href="analysis.html" title="Text analysis">analyzes</a> any provided text into
+tokens before performing a search. The last term of this text is treated as a
+<a class="xref" href="term-level-queries.html#query-dsl-prefix-query" title="Prefix query">prefix</a>, matching any words that begin with that term.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyzer</code>
+</span>
+</dt>
+<dd>
+(Optional, string) <a class="xref" href="analysis.html" title="Text analysis">Analyzer</a> used to convert text in the <code class="literal">query</code>
+value into tokens. Defaults to the <a class="xref" href="configure-text-analysis.html#specify-index-time-analyzer" title="How Elasticsearch determines the index analyzer">index-time
+analyzer</a> mapped for the <code class="literal">&lt;field&gt;</code>. If no analyzer is mapped, the index&#8217;s
+default analyzer is used.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_expansions</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Maximum number of terms to which the last provided term of
+the <code class="literal">query</code> value will expand. Defaults to <code class="literal">50</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">slop</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Maximum number of positions allowed between matching tokens.
+Defaults to <code class="literal">0</code>. Transposed terms have a slop of <code class="literal">2</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">zero_terms_query</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Indicates whether no documents are returned if the <code class="literal">analyzer</code>
+removes all tokens, such as when using a <code class="literal">stop</code> filter. Valid values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">none</code> (Default)
+</span>
+</dt>
+<dd>
+No documents are returned if the <code class="literal">analyzer</code> removes all tokens.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">all</code>
+</span>
+</dt>
+<dd>
+Returns all documents, similar to a <a class="xref" href="query-dsl-match-all-query.html" title="Match all query"><code class="literal">match_all</code></a>
+query.
+</dd>
+</dl>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="match-phrase-prefix-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-phrase-prefix-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="match-phrase-prefix-autocomplete"></a>Using the match phrase prefix query for search autocompletion<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/match-phrase-prefix-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>While easy to set up, using the <code class="literal">match_phrase_prefix</code> query for search
+autocompletion can sometimes produce confusing results.</p>
+<p>For example, consider the query string <code class="literal">quick brown f</code>. This query works by
+creating a phrase query out of <code class="literal">quick</code> and <code class="literal">brown</code> (i.e. the term <code class="literal">quick</code> must
+exist and must be followed by the term <code class="literal">brown</code>). Then it looks at the sorted
+term dictionary to find the first 50 terms that begin with <code class="literal">f</code>, and adds these
+terms to the phrase query.</p>
+<p>The problem is that the first 50 terms may not include the term <code class="literal">fox</code> so the
+phrase <code class="literal">quick brown fox</code> will not be found. This usually isn&#8217;t a problem as
+the user will continue to type more letters until the word they are looking
+for appears.</p>
+<p>For better solutions for <em>search-as-you-type</em> see the
+<a class="xref" href="search.html#completion-suggester" title="Completion Suggester">completion suggester</a> and
+the <a class="xref" href="mapping-types.html#search-as-you-type" title="Search-as-you-type field type"><code class="literal">search_as_you_type</code> field type</a>.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-multi-match-query"></a>Multi-match query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>The <code class="literal">multi_match</code> query builds on the <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code> query</a>
+to allow multi-field queries:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query":    "this is a test", <a id="CO202-1"></a><i class="conum" data-value="1"></i>
+      "fields": [ "subject", "message" ] <a id="CO202-2"></a><i class="conum" data-value="2"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/771.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO202-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The query string.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO202-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The fields to be queried.</p>
+</td>
+</tr>
+</table>
+</div>
+<h4><a id="field-boost"></a><code class="literal">fields</code> and per-field boosting<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h4>
+<p>Fields can be specified with wildcards, eg:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query":    "Will Smith",
+      "fields": [ "title", "*_name" ] <a id="CO203-1"></a><i class="conum" data-value="1"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/772.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO203-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Query the <code class="literal">title</code>, <code class="literal">first_name</code> and <code class="literal">last_name</code> fields.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>Individual fields can be boosted with the caret (<code class="literal">^</code>) notation:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query" : "this is a test",
+      "fields" : [ "subject^3", "message" ] <a id="CO204-1"></a><i class="conum" data-value="1"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/773.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO204-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The query multiplies the <code class="literal">subject</code> field&#8217;s score by three but leaves the
+<code class="literal">message</code> field&#8217;s score unchanged.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>If no <code class="literal">fields</code> are provided, the <code class="literal">multi_match</code> query defaults to the <code class="literal">index.query.default_field</code>
+index settings, which in turn defaults to <code class="literal">*</code>. <code class="literal">*</code> extracts all fields in the mapping that
+are eligible to term queries and filters the metadata fields. All extracted fields are then
+combined to build a query.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>There is a limit on the number of fields that can be queried
+at once. It is defined by the <code class="literal">indices.query.bool.max_clause_count</code> <a class="xref" href="settings.html#search-settings" title="Search settings">Search settings</a>
+which defaults to 1024.</p>
+</div>
+</div>
+<h4><a id="multi-match-types"></a>Types of <code class="literal">multi_match</code> query:<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h4>
+<p>The way the <code class="literal">multi_match</code> query is executed internally depends on the <code class="literal">type</code>
+parameter, which can be set to:</p>
+<div class="informaltable">
+<table border="0" cellpadding="4px">
+<colgroup>
+<col/>
+<col/>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td valign="top">
+<p>
+<code class="literal">best_fields</code>
+</p>
+</td>
+<td valign="top">
+<p>
+(<span class="strong strong"><strong>default</strong></span>) Finds documents which match any field, but
+uses the  <code class="literal">_score</code> from the best field.  See <a class="xref" href="full-text-queries.html#type-best-fields" title="best_fields"><code class="literal">best_fields</code></a>.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">most_fields</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Finds documents which match any field and combines
+the <code class="literal">_score</code> from each field.  See <a class="xref" href="full-text-queries.html#type-most-fields" title="most_fields"><code class="literal">most_fields</code></a>.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">cross_fields</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Treats fields with the same <code class="literal">analyzer</code> as though they
+were one big field. Looks for each word in <span class="strong strong"><strong>any</strong></span>
+field. See <a class="xref" href="full-text-queries.html#type-cross-fields" title="cross_fields"><code class="literal">cross_fields</code></a>.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">phrase</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Runs a <code class="literal">match_phrase</code> query on each field and uses the <code class="literal">_score</code>
+from the best field.  See <a class="xref" href="full-text-queries.html#type-phrase" title="phrase and phrase_prefix"><code class="literal">phrase</code> and <code class="literal">phrase_prefix</code></a>.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">phrase_prefix</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Runs a <code class="literal">match_phrase_prefix</code> query on each field and uses
+the <code class="literal">_score</code> from the best field.  See <a class="xref" href="full-text-queries.html#type-phrase" title="phrase and phrase_prefix"><code class="literal">phrase</code> and <code class="literal">phrase_prefix</code></a>.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">bool_prefix</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Creates a <code class="literal">match_bool_prefix</code> query on each field and
+combines the <code class="literal">_score</code> from each field. See
+<a class="xref" href="full-text-queries.html#type-bool-prefix" title="bool_prefix"><code class="literal">bool_prefix</code></a>.
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="type-best-fields"></a><code class="literal">best_fields</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">best_fields</code> type is most useful when you are searching for multiple
+words best found in the same field. For instance &#8220;brown fox&#8221; in a single
+field is more meaningful than &#8220;brown&#8221; in one field and &#8220;fox&#8221; in the other.</p>
+<p>The <code class="literal">best_fields</code> type generates a <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code> query</a> for
+each field and wraps them in a <a class="xref" href="compound-queries.html#query-dsl-dis-max-query" title="Disjunction max query"><code class="literal">dis_max</code></a> query, to
+find the single best matching field.  For instance, this query:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query":      "brown fox",
+      "type":       "best_fields",
+      "fields":     [ "subject", "message" ],
+      "tie_breaker": 0.3
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/774.console"></div>
+<p>would be executed as:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "dis_max": {
+      "queries": [
+        { "match": { "subject": "brown fox" }},
+        { "match": { "message": "brown fox" }}
+      ],
+      "tie_breaker": 0.3
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/775.console"></div>
+<p>Normally the <code class="literal">best_fields</code> type uses the score of the <span class="strong strong"><strong>single</strong></span> best matching
+field, but if <code class="literal">tie_breaker</code> is specified, then it calculates the score as
+follows:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+the score from the best matching field
+</li>
+<li class="listitem">
+plus <code class="literal">tie_breaker * _score</code> for all other matching fields
+</li>
+</ul>
+</div>
+<p>Also, accepts <code class="literal">analyzer</code>, <code class="literal">boost</code>, <code class="literal">operator</code>, <code class="literal">minimum_should_match</code>,
+<code class="literal">fuzziness</code>, <code class="literal">lenient</code>, <code class="literal">prefix_length</code>, <code class="literal">max_expansions</code>, <code class="literal">fuzzy_rewrite</code>, <code class="literal">zero_terms_query</code>,
+ <code class="literal">cutoff_frequency</code>, <code class="literal">auto_generate_synonyms_phrase_query</code> and <code class="literal">fuzzy_transpositions</code>,
+  as explained in <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query">match query</a>.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3><code class="literal">operator</code> and <code class="literal">minimum_should_match</code><a id="operator-min"></a></h3>
+<p>The <code class="literal">best_fields</code> and <code class="literal">most_fields</code> types are <em>field-centric</em>&#8201;&#8212;&#8201;they generate
+a <code class="literal">match</code> query <span class="strong strong"><strong>per field</strong></span>.  This means that the <code class="literal">operator</code> and
+<code class="literal">minimum_should_match</code> parameters are applied to each field individually,
+which is probably not what you want.</p>
+<p>Take this query for example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query":      "Will Smith",
+      "type":       "best_fields",
+      "fields":     [ "first_name", "last_name" ],
+      "operator":   "and" <a id="CO205-1"></a><i class="conum" data-value="1"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/776.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO205-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>All terms must be present.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>This query is executed as:</p>
+<pre class="literallayout">  (+first_name:will +first_name:smith)
+| (+last_name:will  +last_name:smith)</pre>
+
+<p>In other words, <span class="strong strong"><strong>all terms</strong></span> must be present <span class="strong strong"><strong>in a single field</strong></span> for a document
+to match.</p>
+<p>See <a class="xref" href="full-text-queries.html#type-cross-fields" title="cross_fields"><code class="literal">cross_fields</code></a> for a better solution.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="type-most-fields"></a><code class="literal">most_fields</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">most_fields</code> type is most useful when querying multiple fields that
+contain the same text analyzed in different ways.  For instance, the main
+field may contain synonyms, stemming and terms without diacritics. A second
+field may contain the original terms, and a third field might contain
+shingles. By combining scores from all three fields we can match as many
+documents as possible with the main field, but use the second and third fields
+to push the most similar results to the top of the list.</p>
+<p>This query:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query":      "quick brown fox",
+      "type":       "most_fields",
+      "fields":     [ "title", "title.original", "title.shingles" ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/777.console"></div>
+<p>would be executed as:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "title":          "quick brown fox" }},
+        { "match": { "title.original": "quick brown fox" }},
+        { "match": { "title.shingles": "quick brown fox" }}
+      ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/778.console"></div>
+<p>The score from each <code class="literal">match</code> clause is added together, then divided by the
+number of <code class="literal">match</code> clauses.</p>
+<p>Also, accepts <code class="literal">analyzer</code>, <code class="literal">boost</code>, <code class="literal">operator</code>, <code class="literal">minimum_should_match</code>,
+<code class="literal">fuzziness</code>, <code class="literal">lenient</code>, <code class="literal">prefix_length</code>, <code class="literal">max_expansions</code>, <code class="literal">fuzzy_rewrite</code>, <code class="literal">zero_terms_query</code>
+and <code class="literal">cutoff_frequency</code>, as explained in <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query">match query</a>, but
+<span class="strong strong"><strong>see <a class="xref" href="full-text-queries.html#operator-min" title="operator and minimum_should_match"><code class="literal">operator</code> and <code class="literal">minimum_should_match</code></a></strong></span>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="type-phrase"></a><code class="literal">phrase</code> and <code class="literal">phrase_prefix</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">phrase</code> and <code class="literal">phrase_prefix</code> types behave just like <a class="xref" href="full-text-queries.html#type-best-fields" title="best_fields"><code class="literal">best_fields</code></a>,
+but they use a <code class="literal">match_phrase</code> or <code class="literal">match_phrase_prefix</code> query instead of a
+<code class="literal">match</code> query.</p>
+<p>This query:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query":      "quick brown f",
+      "type":       "phrase_prefix",
+      "fields":     [ "subject", "message" ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/779.console"></div>
+<p>would be executed as:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "dis_max": {
+      "queries": [
+        { "match_phrase_prefix": { "subject": "quick brown f" }},
+        { "match_phrase_prefix": { "message": "quick brown f" }}
+      ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/780.console"></div>
+<p>Also, accepts <code class="literal">analyzer</code>, <a class="xref" href="mapping-params.html#mapping-boost" title="boost"><code class="literal">boost</code></a>, <code class="literal">lenient</code> and <code class="literal">zero_terms_query</code> as explained
+in <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query">Match</a>, as well as <code class="literal">slop</code> which is explained in <a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase" title="Match phrase query">Match phrase</a>.
+Type <code class="literal">phrase_prefix</code> additionally accepts <code class="literal">max_expansions</code>.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3><code class="literal">phrase</code>, <code class="literal">phrase_prefix</code> and <code class="literal">fuzziness</code><a id="phrase-fuzziness"></a></h3>
+<p>The <code class="literal">fuzziness</code> parameter cannot be used with the <code class="literal">phrase</code> or <code class="literal">phrase_prefix</code> type.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="type-cross-fields"></a><code class="literal">cross_fields</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">cross_fields</code> type is particularly useful with structured documents where
+multiple fields <span class="strong strong"><strong>should</strong></span> match.  For instance, when querying the <code class="literal">first_name</code>
+and <code class="literal">last_name</code> fields for &#8220;Will Smith&#8221;, the best match is likely to have
+&#8220;Will&#8221; in one field and &#8220;Smith&#8221; in the other.</p>
+<div class="sidebar">
+<div class="titlepage"></div>
+<p>This sounds like a job for <a class="xref" href="full-text-queries.html#type-most-fields" title="most_fields"><code class="literal">most_fields</code></a> but there are two problems
+with that approach. The first problem is that <code class="literal">operator</code> and
+<code class="literal">minimum_should_match</code> are applied per-field, instead of per-term (see
+<a class="xref" href="full-text-queries.html#operator-min" title="operator and minimum_should_match">explanation above</a>).</p>
+<p>The second problem is to do with relevance: the different term frequencies in
+the <code class="literal">first_name</code> and <code class="literal">last_name</code> fields   can produce unexpected results.</p>
+<p>For instance, imagine we have two people: &#8220;Will Smith&#8221; and &#8220;Smith Jones&#8221;.
+&#8220;Smith&#8221; as a last name is very common (and so is of low importance) but
+&#8220;Smith&#8221; as a first name is very uncommon (and so is of great importance).</p>
+<p>If we do a search for &#8220;Will Smith&#8221;, the &#8220;Smith Jones&#8221; document will
+probably appear above the better matching &#8220;Will Smith&#8221; because the score of
+<code class="literal">first_name:smith</code> has trumped the combined scores of <code class="literal">first_name:will</code> plus
+<code class="literal">last_name:smith</code>.</p>
+</div>
+<p>One way of dealing with these types of queries is simply to index the
+<code class="literal">first_name</code> and <code class="literal">last_name</code> fields into a single <code class="literal">full_name</code> field.  Of
+course, this can only be done at index time.</p>
+<p>The <code class="literal">cross_field</code> type tries to solve these problems at query time by taking a
+<em>term-centric</em> approach.  It first analyzes the query string into individual
+terms, then looks for each term in any of the fields, as though they were one
+big field.</p>
+<p>A query like:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query":      "Will Smith",
+      "type":       "cross_fields",
+      "fields":     [ "first_name", "last_name" ],
+      "operator":   "and"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/781.console"></div>
+<p>is executed as:</p>
+<pre class="literallayout">+(first_name:will  last_name:will)
++(first_name:smith last_name:smith)</pre>
+
+<p>In other words, <span class="strong strong"><strong>all terms</strong></span> must be present <span class="strong strong"><strong>in at least one field</strong></span> for a
+document to match.  (Compare this to
+<a class="xref" href="full-text-queries.html#operator-min" title="operator and minimum_should_match">the logic used for <code class="literal">best_fields</code> and <code class="literal">most_fields</code></a>.)</p>
+<p>That solves one of the two problems. The problem of differing term frequencies
+is solved by <em>blending</em> the term frequencies for all fields in order to even
+out the differences.</p>
+<p>In practice, <code class="literal">first_name:smith</code> will be treated as though it has the same
+frequencies as <code class="literal">last_name:smith</code>, plus one. This will make matches on
+<code class="literal">first_name</code> and <code class="literal">last_name</code> have comparable scores, with a tiny advantage
+for <code class="literal">last_name</code> since it is the most likely field that contains <code class="literal">smith</code>.</p>
+<p>Note that <code class="literal">cross_fields</code> is usually only useful on short string fields
+that all have a <code class="literal">boost</code> of <code class="literal">1</code>. Otherwise boosts, term freqs and length
+normalization contribute to the score in such a way that the blending of term
+statistics is not meaningful anymore.</p>
+<p>If you run the above query through the <a class="xref" href="search.html#search-validate" title="Validate API">Validate</a>, it returns this
+explanation:</p>
+<pre class="literallayout">+blended("will",  fields: [first_name, last_name])
++blended("smith", fields: [first_name, last_name])</pre>
+
+<p>Also, accepts <code class="literal">analyzer</code>, <code class="literal">boost</code>, <code class="literal">operator</code>, <code class="literal">minimum_should_match</code>,
+<code class="literal">lenient</code>, <code class="literal">zero_terms_query</code> and <code class="literal">cutoff_frequency</code>, as explained in
+<a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query">match query</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="cross-field-analysis"></a><code class="literal">cross_field</code> and analysis<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">cross_field</code> type can only work in term-centric mode on fields that have
+the same analyzer. Fields with the same analyzer are grouped together as in
+the example above.  If there are multiple groups, they are combined with a
+<code class="literal">bool</code> query.</p>
+<p>For instance, if we have a <code class="literal">first</code> and <code class="literal">last</code> field which have
+the same analyzer, plus a <code class="literal">first.edge</code> and <code class="literal">last.edge</code> which
+both use an <code class="literal">edge_ngram</code> analyzer, this query:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query":      "Jon",
+      "type":       "cross_fields",
+      "fields":     [
+        "first", "first.edge",
+        "last",  "last.edge"
+      ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/782.console"></div>
+<p>would be executed as:</p>
+<pre class="literallayout">    blended("jon", fields: [first, last])
+| (
+    blended("j",   fields: [first.edge, last.edge])
+    blended("jo",  fields: [first.edge, last.edge])
+    blended("jon", fields: [first.edge, last.edge])
+)</pre>
+
+<p>In other words, <code class="literal">first</code> and <code class="literal">last</code> would be grouped together and
+treated as a single field, and <code class="literal">first.edge</code> and <code class="literal">last.edge</code> would be
+grouped together and treated as a single field.</p>
+<p>Having multiple groups is fine, but when combined with <code class="literal">operator</code> or
+<code class="literal">minimum_should_match</code>, it can suffer from the <a class="xref" href="full-text-queries.html#operator-min" title="operator and minimum_should_match">same problem</a>
+as <code class="literal">most_fields</code> or <code class="literal">best_fields</code>.</p>
+<p>You can easily rewrite this query yourself as two separate <code class="literal">cross_fields</code>
+queries combined with a <code class="literal">bool</code> query, and apply the <code class="literal">minimum_should_match</code>
+parameter to just one of them:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "multi_match" : {
+            "query":      "Will Smith",
+            "type":       "cross_fields",
+            "fields":     [ "first", "last" ],
+            "minimum_should_match": "50%" <a id="CO206-1"></a><i class="conum" data-value="1"></i>
+          }
+        },
+        {
+          "multi_match" : {
+            "query":      "Will Smith",
+            "type":       "cross_fields",
+            "fields":     [ "*.edge" ]
+          }
+        }
+      ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/783.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO206-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Either <code class="literal">will</code> or <code class="literal">smith</code> must be present in either of the <code class="literal">first</code>
+or <code class="literal">last</code> fields</p>
+</td>
+</tr>
+</table>
+</div>
+<p>You can force all fields into the same group by specifying the <code class="literal">analyzer</code>
+parameter in the query.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+   "multi_match" : {
+      "query":      "Jon",
+      "type":       "cross_fields",
+      "analyzer":   "standard", <a id="CO207-1"></a><i class="conum" data-value="1"></i>
+      "fields":     [ "first", "last", "*.edge" ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/784.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO207-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Use the <code class="literal">standard</code> analyzer for all fields.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>which will be executed as:</p>
+<pre class="literallayout">blended("will",  fields: [first, first.edge, last.edge, last])
+blended("smith", fields: [first, first.edge, last.edge, last])</pre>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="tie-breaker"></a><code class="literal">tie_breaker</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>By default, each per-term <code class="literal">blended</code> query will use the best score returned by
+any field in a group, then these scores are added together to give the final
+score. The <code class="literal">tie_breaker</code> parameter can change the default behaviour of the
+per-term <code class="literal">blended</code> queries. It accepts:</p>
+<div class="informaltable">
+<table border="0" cellpadding="4px">
+<colgroup>
+<col/>
+<col/>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td valign="top">
+<p>
+<code class="literal">0.0</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Take the single best score out of (eg) <code class="literal">first_name:will</code>
+and <code class="literal">last_name:will</code> (<span class="strong strong"><strong>default</strong></span> for all <code class="literal">multi_match</code>
+query types except <code class="literal">bool_prefix</code> and <code class="literal">most_fields</code>)
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">1.0</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Add together the scores for (eg) <code class="literal">first_name:will</code> and
+<code class="literal">last_name:will</code> (<span class="strong strong"><strong>default</strong></span> for the <code class="literal">bool_prefix</code> and
+<code class="literal">most_fields</code> <code class="literal">multi_match</code> query types)
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">0.0 &lt; n &lt; 1.0</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Take the single best score plus <code class="literal">tie_breaker</code> multiplied
+by each of the scores from other matching fields.
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3><code class="literal">cross_fields</code> and <code class="literal">fuzziness</code><a id="crossfields-fuzziness"></a></h3>
+<p>The <code class="literal">fuzziness</code> parameter cannot be used with the <code class="literal">cross_fields</code> type.</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="type-bool-prefix"></a><code class="literal">bool_prefix</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/multi-match-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">bool_prefix</code> type&#8217;s scoring behaves like <a class="xref" href="full-text-queries.html#type-most-fields" title="most_fields"><code class="literal">most_fields</code></a>, but using a
+<a class="xref" href="full-text-queries.html#query-dsl-match-bool-prefix-query" title="Match boolean prefix query"><code class="literal">match_bool_prefix</code> query</a> instead of a
+<code class="literal">match</code> query.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "multi_match" : {
+      "query":      "quick brown f",
+      "type":       "bool_prefix",
+      "fields":     [ "subject", "message" ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/785.console"></div>
+<p>The <code class="literal">analyzer</code>, <code class="literal">boost</code>, <code class="literal">operator</code>, <code class="literal">minimum_should_match</code>, <code class="literal">lenient</code>,
+<code class="literal">zero_terms_query</code>, and <code class="literal">auto_generate_synonyms_phrase_query</code> parameters as
+explained in <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query">match query</a> are supported. The
+<code class="literal">fuzziness</code>, <code class="literal">prefix_length</code>, <code class="literal">max_expansions</code>, <code class="literal">fuzzy_rewrite</code>, and
+<code class="literal">fuzzy_transpositions</code> parameters are supported for the terms that are used to
+construct term queries, but do not have an effect on the prefix query
+constructed from the final term.</p>
+<p>The <code class="literal">slop</code> and <code class="literal">cutoff_frequency</code> parameters are not supported by this query
+type.</p>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-common-terms-query"></a>Common Terms Query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/common-terms-query.asciidoc">edit</a></h2>
+</div></div></div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3>Deprecated in 7.3.0.</h3>
+<p>Use <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query">Match</a> instead, which skips blocks of documents efficiently, without any configuration, provided that the total number of hits is not tracked.</p>
+</div>
+</div>
+<p>The <code class="literal">common</code> terms query is a modern alternative to stopwords which
+improves the precision and recall of search results (by taking stopwords
+into account), without sacrificing performance.</p>
+<h4><a id="_the_problem"></a>The problem<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/common-terms-query.asciidoc">edit</a></h4>
+<p>Every term in a query has a cost. A search for <code class="literal">"The brown fox"</code>
+requires three term queries, one for each of <code class="literal">"the"</code>, <code class="literal">"brown"</code> and
+<code class="literal">"fox"</code>, all of which are executed against all documents in the index.
+The query for <code class="literal">"the"</code> is likely to match many documents and thus has a
+much smaller impact on relevance than the other two terms.</p>
+<p>Previously, the solution to this problem was to ignore terms with high
+frequency. By treating <code class="literal">"the"</code> as a <em>stopword</em>, we reduce the index size
+and reduce the number of term queries that need to be executed.</p>
+<p>The problem with this approach is that, while stopwords have a small
+impact on relevance, they are still important. If we remove stopwords,
+we lose precision, (eg we are unable to distinguish between <code class="literal">"happy"</code>
+and <code class="literal">"not happy"</code>) and we lose recall (eg text like <code class="literal">"The The"</code> or
+<code class="literal">"To be or not to be"</code> would simply not exist in the index).</p>
+<h4><a id="_the_solution"></a>The solution<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/common-terms-query.asciidoc">edit</a></h4>
+<p>The <code class="literal">common</code> terms query divides the query terms into two groups: more
+important (ie <em>low frequency</em> terms) and less important (ie <em>high
+frequency</em> terms which would previously have been stopwords).</p>
+<p>First it searches for documents which match the more important terms.
+These are the terms which appear in fewer documents and have a greater
+impact on relevance.</p>
+<p>Then, it executes a second query for the less important terms&#8201;&#8212;&#8201;terms
+which appear frequently and have a low impact on relevance. But instead
+of calculating the relevance score for <span class="strong strong"><strong>all</strong></span> matching documents, it only
+calculates the <code class="literal">_score</code> for documents already matched by the first
+query. In this way the high frequency terms can improve the relevance
+calculation without paying the cost of poor performance.</p>
+<p>If a query consists only of high frequency terms, then a single query is
+executed as an <code class="literal">AND</code> (conjunction) query, in other words all terms are
+required. Even though each individual term will match many documents,
+the combination of terms narrows down the resultset to only the most
+relevant. The single query can also be executed as an <code class="literal">OR</code> with a
+specific
+<a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code></a>,
+in this case a high enough value should probably be used.</p>
+<p>Terms are allocated to the high or low frequency groups based on the
+<code class="literal">cutoff_frequency</code>, which can be specified as an absolute frequency
+(<code class="literal">&gt;=1</code>) or as a relative frequency (<code class="literal">0.0 .. 1.0</code>). (Remember that document
+frequencies are computed on a per shard level as explained in the blog post
+<a href="https://www.elastic.co/guide/en/elasticsearch/guide/2.x/relevance-is-broken.html" class="ulink" target="_top">Relevance is broken</a>.)</p>
+<p>Perhaps the most interesting property of this query is that it adapts to
+domain specific stopwords automatically. For example, on a video hosting
+site, common terms like <code class="literal">"clip"</code> or <code class="literal">"video"</code> will automatically behave
+as stopwords without the need to maintain a manual list.</p>
+<h4><a id="_examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/common-terms-query.asciidoc">edit</a></h4>
+<p>In this example, words that have a document frequency greater than 0.1%
+(eg <code class="literal">"this"</code> and <code class="literal">"is"</code>) will be treated as <em>common terms</em>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "common": {
+      "body": {
+        "query": "this is bonsai cool",
+        "cutoff_frequency": 0.001
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/786.console"></div>
+<p>The number of terms which should match can be controlled with the
+<a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code></a>
+(<code class="literal">high_freq</code>, <code class="literal">low_freq</code>), <code class="literal">low_freq_operator</code> (default <code class="literal">"or"</code>) and
+<code class="literal">high_freq_operator</code> (default <code class="literal">"or"</code>) parameters.</p>
+<p>For low frequency terms, set the <code class="literal">low_freq_operator</code> to <code class="literal">"and"</code> to make
+all terms required:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "common": {
+      "body": {
+        "query": "nelly the elephant as a cartoon",
+        "cutoff_frequency": 0.001,
+        "low_freq_operator": "and"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/787.console"></div>
+<p>which is roughly equivalent to:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "must": [
+      { "term": { "body": "nelly"}},
+      { "term": { "body": "elephant"}},
+      { "term": { "body": "cartoon"}}
+      ],
+      "should": [
+      { "term": { "body": "the"}},
+      { "term": { "body": "as"}},
+      { "term": { "body": "a"}}
+      ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/788.console"></div>
+<p>Alternatively use
+<a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code></a>
+to specify a minimum number or percentage of low frequency terms which
+must be present, for instance:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "common": {
+      "body": {
+        "query": "nelly the elephant as a cartoon",
+        "cutoff_frequency": 0.001,
+        "minimum_should_match": 2
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/789.console"></div>
+<p>which is roughly equivalent to:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "bool": {
+          "should": [
+            { "term": { "body": "nelly"}},
+            { "term": { "body": "elephant"}},
+            { "term": { "body": "cartoon"}}
+          ],
+          "minimum_should_match": 2
+        }
+      },
+      "should": [
+        { "term": { "body": "the"}},
+        { "term": { "body": "as"}},
+        { "term": { "body": "a"}}
+      ]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/790.console"></div>
+<p>A different
+<a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code></a>
+can be applied for low and high frequency terms with the additional
+<code class="literal">low_freq</code> and <code class="literal">high_freq</code> parameters. Here is an example when providing
+additional parameters (note the change in structure):</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "common": {
+      "body": {
+        "query": "nelly the elephant not as a cartoon",
+        "cutoff_frequency": 0.001,
+        "minimum_should_match": {
+          "low_freq": 2,
+          "high_freq": 3
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/791.console"></div>
+<p>which is roughly equivalent to:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "bool": {
+          "should": [
+            { "term": { "body": "nelly"}},
+            { "term": { "body": "elephant"}},
+            { "term": { "body": "cartoon"}}
+          ],
+          "minimum_should_match": 2
+        }
+      },
+      "should": {
+        "bool": {
+          "should": [
+            { "term": { "body": "the"}},
+            { "term": { "body": "not"}},
+            { "term": { "body": "as"}},
+            { "term": { "body": "a"}}
+          ],
+          "minimum_should_match": 3
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/792.console"></div>
+<p>In this case it means the high frequency terms have only an impact on
+relevance when there are at least three of them. But the most
+interesting use of the
+<a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code></a>
+for high frequency terms is when there are only high frequency terms:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "common": {
+      "body": {
+        "query": "how not to be",
+        "cutoff_frequency": 0.001,
+        "minimum_should_match": {
+          "low_freq": 2,
+          "high_freq": 3
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/793.console"></div>
+<p>which is roughly equivalent to:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        { "term": { "body": "how"}},
+        { "term": { "body": "not"}},
+        { "term": { "body": "to"}},
+        { "term": { "body": "be"}}
+      ],
+      "minimum_should_match": "3&lt;50%"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/794.console"></div>
+<p>The high frequency generated query is then slightly less restrictive
+than with an <code class="literal">AND</code>.</p>
+<p>The <code class="literal">common</code> terms query also supports <code class="literal">boost</code> and <code class="literal">analyzer</code> as
+parameters.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-query-string-query"></a>Query string query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents based on a provided query string, using a parser with a strict
+syntax.</p>
+<p>This query uses a <a class="xref" href="full-text-queries.html#query-string-syntax" title="Query string syntax">syntax</a> to parse and split the provided
+query string based on operators, such as <code class="literal">AND</code> or <code class="literal">NOT</code>. The query
+then <a class="xref" href="analysis.html" title="Text analysis">analyzes</a> each split text independently before returning
+matching documents.</p>
+<p>You can use the <code class="literal">query_string</code> query to create a complex search that includes
+wildcard characters, searches across multiple fields, and more. While versatile,
+the query is strict and returns an error if the query string includes any
+invalid syntax.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Because it returns an error for any invalid syntax, we don&#8217;t recommend using
+the <code class="literal">query_string</code> query for search boxes.</p>
+<p>If you don&#8217;t need to support a query syntax, consider using the
+<a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code></a> query. If you need the features of a query
+syntax, use the <a class="xref" href="full-text-queries.html#query-dsl-simple-query-string-query" title="Simple query string query"><code class="literal">simple_query_string</code></a>
+query, which is less strict.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="query-string-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>When running the following search, the <code class="literal">query_string</code> query splits <code class="literal">(new york
+city) OR (big apple)</code> into two parts: <code class="literal">new york city</code> and <code class="literal">big apple</code>. The
+<code class="literal">content</code> field&#8217;s analyzer then independently converts each part into tokens
+before returning matching documents. Because the query syntax does not use
+whitespace as an operator, <code class="literal">new york city</code> is passed as-is to the analyzer.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string": {
+      "query": "(new york city) OR (big apple)",
+      "default_field": "content"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/795.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="query-string-top-level-params"></a>Top-level parameters for <code class="literal">query_string</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">query</code>
+</span>
+</dt>
+<dd>
+(Required, string) Query string you wish to parse and use for search. See
+<a class="xref" href="full-text-queries.html#query-string-syntax" title="Query string syntax">Query string syntax</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">default_field</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Default field you wish to search if no field is provided in
+the query string.</p>
+<p>Defaults to the <code class="literal">index.query.default_field</code> index setting, which has a default
+value of <code class="literal">*</code>. The <code class="literal">*</code> value extracts all fields that are eligible for term
+queries and filters the metadata fields. All extracted fields are then
+combined to build a query if no <code class="literal">prefix</code> is specified.</p>
+<p>Searching across all eligible fields does not include <a class="xref" href="mapping-types.html#nested" title="Nested field type">nested
+documents</a>. Use a <a class="xref" href="joining-queries.html#query-dsl-nested-query" title="Nested query"><code class="literal">nested</code> query</a> to search those
+documents.</p>
+<div id="WARNING" class="exampleblock">
+<div class="content">
+<p>For mappings with a large number of fields, searching across all eligible fields
+could be expensive.</p>
+<p>There is a limit on the number of fields that can be queried at once.
+It is defined by the <code class="literal">indices.query.bool.max_clause_count</code>
+<a class="xref" href="settings.html#search-settings" title="Search settings">search setting</a>, which defaults to 1024.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">allow_leading_wildcard</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, the wildcard characters <code class="literal">*</code> and <code class="literal">?</code> are allowed
+as the first character of the query string. Defaults to <code class="literal">true</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyze_wildcard</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, the query attempts to analyze wildcard terms in
+the query string. Defaults to <code class="literal">false</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyzer</code>
+</span>
+</dt>
+<dd>
+(Optional, string) <a class="xref" href="analysis.html" title="Text analysis">Analyzer</a> used to convert text in the
+query string into tokens. Defaults to the
+<a class="xref" href="configure-text-analysis.html#specify-index-time-analyzer" title="How Elasticsearch determines the index analyzer">index-time analyzer</a> mapped for the
+<code class="literal">default_field</code>. If no analyzer is mapped, the index&#8217;s default analyzer is used.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">auto_generate_synonyms_phrase_query</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, <a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase" title="Match phrase query">match phrase</a>
+queries are automatically created for multi-term synonyms. Defaults to <code class="literal">true</code>.
+See <a class="xref" href="full-text-queries.html#query-string-synonyms" title="Synonyms and the query_string query">Synonyms and the <code class="literal">query_string</code> query</a> for an example.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">boost</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, float) Floating point number used to decrease or increase the
+<a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores">relevance scores</a> of the query. Defaults to <code class="literal">1.0</code>.</p>
+<p>Boost values are relative to the default value of <code class="literal">1.0</code>. A boost value between
+<code class="literal">0</code> and <code class="literal">1.0</code> decreases the relevance score. A value greater than <code class="literal">1.0</code>
+increases the relevance score.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">default_operator</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Default boolean logic used to interpret text in the query
+string if no operators are specified. Valid values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">OR</code> (Default)
+</span>
+</dt>
+<dd>
+For example, a query string of <code class="literal">capital of Hungary</code> is interpreted as <code class="literal">capital
+OR of OR Hungary</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">AND</code>
+</span>
+</dt>
+<dd>
+For example, a query string of <code class="literal">capital of Hungary</code> is interpreted as <code class="literal">capital
+AND of AND Hungary</code>.
+</dd>
+</dl>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">enable_position_increments</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, enable position increments in queries constructed
+from a <code class="literal">query_string</code> search. Defaults to <code class="literal">true</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fields</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, array of strings) Array of fields you wish to search.</p>
+<p>You can use this parameter query to search across multiple fields. See
+<a class="xref" href="full-text-queries.html#query-string-multi-field" title="Search multiple fields">Search multiple fields</a>.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzziness</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Maximum edit distance allowed for matching. See <a class="xref" href="api-conventions.html#fuzziness" title="Fuzziness">Fuzziness</a>
+for valid values and more information.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzzy_max_expansions</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Maximum number of terms to which the query expands for fuzzy
+matching. Defaults to <code class="literal">50</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzzy_prefix_length</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Number of beginning characters left unchanged for fuzzy
+matching. Defaults to <code class="literal">0</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzzy_transpositions</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, edits for fuzzy matching include
+transpositions of two adjacent characters (ab → ba). Defaults to <code class="literal">true</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">lenient</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, format-based errors, such as providing a text
+value for a <a class="xref" href="mapping-types.html#number" title="Numeric field types">numeric</a> field, are ignored. Defaults to <code class="literal">false</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_determinized_states</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, integer) Maximum number of
+<a href="https://en.wikipedia.org/wiki/Deterministic_finite_automaton" class="ulink" target="_top">automaton states</a>
+required for the query. Default is <code class="literal">10000</code>.</p>
+<p>Elasticsearch uses <a href="https://lucene.apache.org/core/" class="ulink" target="_top">Apache Lucene</a> internally to parse
+regular expressions. Lucene converts each regular expression to a finite
+automaton containing a number of determinized states.</p>
+<p>You can use this parameter to prevent that conversion from unintentionally
+consuming too many resources. You may need to increase this limit to run complex
+regular expressions.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">minimum_should_match</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Minimum number of clauses that must match for a document to
+be returned. See the <a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code>
+parameter</a> for valid values and more information. See
+<a class="xref" href="full-text-queries.html#query-string-min-should-match" title="How minimum_should_match works">How <code class="literal">minimum_should_match</code> works</a> for an example.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">quote_analyzer</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) <a class="xref" href="analysis.html" title="Text analysis">Analyzer</a> used to convert quoted text in the
+query string into tokens. Defaults to the
+<a class="xref" href="mapping-params.html#search-quote-analyzer" title="search_quote_analyzer"><code class="literal">search_quote_analyzer</code></a> mapped for the
+<code class="literal">default_field</code>.</p>
+<p>For quoted text, this parameter overrides the analyzer specified in the
+<code class="literal">analyzer</code> parameter.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">phrase_slop</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Maximum number of positions allowed between matching tokens
+for phrases. Defaults to <code class="literal">0</code>. If <code class="literal">0</code>, exact phrase matches are required.
+Transposed terms have a slop of <code class="literal">2</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">quote_field_suffix</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Suffix appended to quoted text in the query string.</p>
+<p>You can use this suffix to use a different analysis method for exact matches.
+See <a class="xref" href="recipes.html#mixing-exact-search-with-stemming" title="Mixing exact search with stemming">Mixing exact search with stemming</a>.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">rewrite</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Method used to rewrite the query. For valid values and more
+information, see the <a class="xref" href="query-dsl-multi-term-rewrite.html" title="rewrite parameter"><code class="literal">rewrite</code> parameter</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">time_zone</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string)
+<a href="https://en.wikipedia.org/wiki/List_of_UTC_time_offsets" class="ulink" target="_top">Coordinated Universal
+Time (UTC) offset</a> or
+<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" class="ulink" target="_top">IANA time zone</a>
+used to convert <code class="literal">date</code> values in the query string to UTC.</p>
+<p>Valid values are ISO 8601 UTC offsets, such as <code class="literal">+01:00</code> or -<code class="literal">08:00</code>, and IANA
+time zone IDs, such as <code class="literal">America/Los_Angeles</code>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">time_zone</code> parameter does <span class="strong strong"><strong>not</strong></span> affect the <a class="xref" href="api-conventions.html#date-math" title="Date Math">date math</a> value
+of <code class="literal">now</code>. <code class="literal">now</code> is always the current system time in UTC. However, the
+<code class="literal">time_zone</code> parameter does convert dates calculated using <code class="literal">now</code> and
+<a class="xref" href="api-conventions.html#date-math" title="Date Math">date math rounding</a>. For example, the <code class="literal">time_zone</code> parameter will
+convert a value of <code class="literal">now/d</code>.</p>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="query-string-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-string-syntax"></a>Query string syntax<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The query string &#8220;mini-language&#8221; is used by the
+<a class="xref" href="full-text-queries.html#query-dsl-query-string-query" title="Query string query">Query string</a> and by the
+<code class="literal">q</code> query string parameter in the <a class="xref" href="search.html#search-search" title="Search API"><code class="literal">search</code> API</a>.</p>
+<p>The query string is parsed into a series of <em>terms</em> and <em>operators</em>. A
+term can be a single word&#8201;&#8212;&#8201;<code class="literal">quick</code> or <code class="literal">brown</code>&#8201;&#8212;&#8201;or a phrase, surrounded by
+double quotes&#8201;&#8212;&#8201;<code class="literal">"quick brown"</code>&#8201;&#8212;&#8201;which searches for all the words in the
+phrase, in the same order.</p>
+<p>Operators allow you to customize the search&#8201;&#8212;&#8201;the available options are
+explained below.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="_field_names"></a>Field names<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>You can specify fields to search in the query syntax:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p>where the <code class="literal">status</code> field contains <code class="literal">active</code></p>
+<pre class="literallayout">status:active</pre>
+
+</li>
+<li class="listitem">
+<p>where the <code class="literal">title</code> field contains <code class="literal">quick</code> or <code class="literal">brown</code></p>
+<pre class="literallayout">title:(quick OR brown)</pre>
+
+</li>
+<li class="listitem">
+<p>where the <code class="literal">author</code> field contains the exact phrase <code class="literal">"john smith"</code></p>
+<pre class="literallayout">author:"John Smith"</pre>
+
+</li>
+<li class="listitem">
+<p>where the <code class="literal">first name</code> field contains <code class="literal">Alice</code> (note how we need to escape
+the space with a backslash)</p>
+<pre class="literallayout">first\ name:Alice</pre>
+
+</li>
+<li class="listitem">
+<p>where any of the fields <code class="literal">book.title</code>, <code class="literal">book.content</code> or <code class="literal">book.date</code> contains
+<code class="literal">quick</code> or <code class="literal">brown</code> (note how we need to escape the <code class="literal">*</code> with a backslash):</p>
+<pre class="literallayout">book.\*:(quick OR brown)</pre>
+
+</li>
+<li class="listitem">
+<p>where the field <code class="literal">title</code> has any non-null value:</p>
+<pre class="literallayout">_exists_:title</pre>
+
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="query-string-wildcard"></a>Wildcards<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>Wildcard searches can be run on individual terms, using <code class="literal">?</code> to replace
+a single character, and <code class="literal">*</code> to replace zero or more characters:</p>
+<pre class="literallayout">qu?ck bro*</pre>
+
+<p>Be aware that wildcard queries can use an enormous amount of memory and
+perform very badly&#8201;&#8212;&#8201;just think how many terms need to be queried to
+match the query string <code class="literal">"a* b* c*"</code>.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Pure wildcards <code class="literal">\*</code> are rewritten to <a class="xref" href="term-level-queries.html#query-dsl-exists-query" title="Exists query"><code class="literal">exists</code></a> queries for efficiency.
+As a consequence, the wildcard <code class="literal">"field:*"</code> would match documents with an empty value
+ like the following:</p>
+<pre class="screen">{
+  "field": ""
+}</pre>
+<p>... and would <span class="strong strong"><strong>not</strong></span> match if the field is missing or set with an explicit null
+value like the following:</p>
+<pre class="screen">{
+  "field": null
+}</pre>
+</div>
+</div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Allowing a wildcard at the beginning of a word (eg <code class="literal">"*ing"</code>) is particularly
+heavy, because all terms in the index need to be examined, just in case
+they match.  Leading wildcards can be disabled by setting
+<code class="literal">allow_leading_wildcard</code> to <code class="literal">false</code>.</p>
+</div>
+</div>
+<p>Only parts of the analysis chain that operate at the character level are
+applied. So for instance, if the analyzer performs both lowercasing and
+stemming, only the lowercasing will be applied: it would be wrong to perform
+stemming on a word that is missing some of its letters.</p>
+<p>By setting <code class="literal">analyze_wildcard</code> to true, queries that end with a <code class="literal">*</code> will be
+analyzed and a boolean query will be built out of the different tokens, by
+ensuring exact matches on the first N-1 tokens, and prefix match on the last
+token.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="_regular_expressions"></a>Regular expressions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>Regular expression patterns can be embedded in the query string by
+wrapping them in forward-slashes (<code class="literal">"/"</code>):</p>
+<pre class="literallayout">name:/joh?n(ath[oa]n)/</pre>
+
+<p>The supported regular expression syntax is explained in <a class="xref" href="regexp-syntax.html" title="Regular expression syntax"><em>Regular expression syntax</em></a>.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">allow_leading_wildcard</code> parameter does not have any control over
+regular expressions.  A query string such as the following would force
+Elasticsearch to visit every term in the index:</p>
+<pre class="literallayout">/.*n/</pre>
+
+<p>Use with caution!</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="query-string-fuzziness"></a>Fuzziness<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>We can search for terms that are
+similar to, but not exactly like our search terms, using the &#8220;fuzzy&#8221;
+operator:</p>
+<pre class="literallayout">quikc~ brwn~ foks~</pre>
+
+<p>This uses the
+<a href="https://en.wikipedia.org/wiki/Damerau-Levenshtein_distance" class="ulink" target="_top">Damerau-Levenshtein distance</a>
+to find all terms with a maximum of
+two changes, where a change is the insertion, deletion
+or substitution of a single character, or transposition of two adjacent
+characters.</p>
+<p>The default <em>edit distance</em> is <code class="literal">2</code>, but an edit distance of <code class="literal">1</code> should be
+sufficient to catch 80% of all human misspellings. It can be specified as:</p>
+<pre class="literallayout">quikc~1</pre>
+
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3>Avoid mixing fuzziness with wildcards<a id="avoid-widlcards-fuzzy-searches"></a></h3>
+<p>Mixing <a class="xref" href="api-conventions.html#fuzziness" title="Fuzziness">fuzzy</a> and <a class="xref" href="full-text-queries.html#query-string-wildcard" title="Wildcards">wildcard</a> operators is
+<em>not</em> supported. When mixed, one of the operators is not applied. For example,
+you can search for <code class="literal">app~1</code> (fuzzy) or <code class="literal">app*</code> (wildcard), but searches for
+<code class="literal">app*~1</code> do not apply the fuzzy operator (<code class="literal">~1</code>).</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="_proximity_searches"></a>Proximity searches<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>While a phrase query (eg <code class="literal">"john smith"</code>) expects all of the terms in exactly
+the same order, a proximity query allows the specified words to be further
+apart or in a different order.  In the same way that fuzzy queries can
+specify a maximum edit distance for characters in a word, a proximity search
+allows us to specify a maximum edit distance of words in a phrase:</p>
+<pre class="literallayout">"fox quick"~5</pre>
+
+<p>The closer the text in a field is to the original order specified in the
+query string, the more relevant that document is considered to be. When
+compared to the above example query, the phrase <code class="literal">"quick fox"</code> would be
+considered more relevant than <code class="literal">"quick brown fox"</code>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="_ranges"></a>Ranges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>Ranges can be specified for date, numeric or string fields. Inclusive ranges
+are specified with square brackets <code class="literal">[min TO max]</code> and exclusive ranges with
+curly brackets <code class="literal">{min TO max}</code>.</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p>All days in 2012:</p>
+<pre class="literallayout">date:[2012-01-01 TO 2012-12-31]</pre>
+
+</li>
+<li class="listitem">
+<p>Numbers 1..5</p>
+<pre class="literallayout">count:[1 TO 5]</pre>
+
+</li>
+<li class="listitem">
+<p>Tags between <code class="literal">alpha</code> and <code class="literal">omega</code>, excluding <code class="literal">alpha</code> and <code class="literal">omega</code>:</p>
+<pre class="literallayout">tag:{alpha TO omega}</pre>
+
+</li>
+<li class="listitem">
+<p>Numbers from 10 upwards</p>
+<pre class="literallayout">count:[10 TO *]</pre>
+
+</li>
+<li class="listitem">
+<p>Dates before 2012</p>
+<pre class="literallayout">date:{* TO 2012-01-01}</pre>
+
+</li>
+</ul>
+</div>
+<p>Curly and square brackets can be combined:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p>Numbers from 1 up to but not including 5</p>
+<pre class="literallayout">count:[1 TO 5}</pre>
+
+</li>
+</ul>
+</div>
+<p>Ranges with one side unbounded can use the following syntax:</p>
+<pre class="literallayout">age:&gt;10
+age:&gt;=10
+age:&lt;10
+age:&lt;=10</pre>
+
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>To combine an upper and lower bound with the simplified syntax, you
+would need to join two clauses with an <code class="literal">AND</code> operator:</p>
+<pre class="literallayout">age:(&gt;=10 AND &lt;20)
+age:(+&gt;=10 +&lt;20)</pre>
+
+</div>
+</div>
+<p>The parsing of ranges in query strings can be complex and error prone. It is
+much more reliable to use an explicit <a class="xref" href="term-level-queries.html#query-dsl-range-query" title="Range query"><code class="literal">range</code> query</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="_boosting"></a>Boosting<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>Use the <em>boost</em> operator <code class="literal">^</code> to make one term more relevant than another.
+For instance, if we want to find all documents about foxes, but we are
+especially interested in quick foxes:</p>
+<pre class="literallayout">quick^2 fox</pre>
+
+<p>The default <code class="literal">boost</code> value is 1, but can be any positive floating point number.
+Boosts between 0 and 1 reduce relevance.</p>
+<p>Boosts can also be applied to phrases or to groups:</p>
+<pre class="literallayout">"john smith"^2   (foo bar)^4</pre>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="_boolean_operators"></a>Boolean operators<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>By default, all terms are optional, as long as one term matches.  A search
+for <code class="literal">foo bar baz</code> will find any document that contains one or more of
+<code class="literal">foo</code> or <code class="literal">bar</code> or <code class="literal">baz</code>.  We have already discussed the <code class="literal">default_operator</code>
+above which allows you to force all terms to be required, but there are
+also <em>boolean operators</em> which can be used in the query string itself
+to provide more control.</p>
+<p>The preferred operators are <code class="literal">+</code> (this term <span class="strong strong"><strong>must</strong></span> be present) and <code class="literal">-</code>
+(this term <span class="strong strong"><strong>must not</strong></span> be present). All other terms are optional.
+For example, this query:</p>
+<pre class="literallayout">quick brown +fox -news</pre>
+
+<p>states that:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">fox</code> must be present
+</li>
+<li class="listitem">
+<code class="literal">news</code> must not be present
+</li>
+<li class="listitem">
+<code class="literal">quick</code> and <code class="literal">brown</code> are optional&#8201;&#8212;&#8201;their presence increases the relevance
+</li>
+</ul>
+</div>
+<p>The familiar boolean operators <code class="literal">AND</code>, <code class="literal">OR</code> and <code class="literal">NOT</code> (also written <code class="literal">&amp;&amp;</code>, <code class="literal">||</code>
+and <code class="literal">!</code>) are also supported but beware that they do not honor the usual
+precedence rules, so parentheses should be used whenever multiple operators are
+used together. For instance the previous query could be rewritten as:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">((quick AND fox) OR (brown AND fox) OR fox) AND NOT news</code>
+</span>
+</dt>
+<dd>
+This form now replicates the logic from the original query correctly, but
+the relevance scoring bears little resemblance to the original.
+</dd>
+</dl>
+</div>
+<p>In contrast, the same query rewritten using the <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code> query</a>
+would look like this:</p>
+<pre class="literallayout">{
+    "bool": {
+        "must":     { "match": "fox"         },
+        "should":   { "match": "quick brown" },
+        "must_not": { "match": "news"        }
+    }
+}</pre>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="_grouping"></a>Grouping<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>Multiple terms or clauses can be grouped together with parentheses, to form
+sub-queries:</p>
+<pre class="literallayout">(quick OR brown) AND fox</pre>
+
+<p>Groups can be used to target a particular field, or to boost the result
+of a sub-query:</p>
+<pre class="literallayout">status:(active OR pending) title:(full text search)^2</pre>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="_reserved_characters"></a>Reserved characters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>If you need to use any of the characters which function as operators in your
+query itself (and not as operators), then you should escape them with
+a leading backslash. For instance, to search for <code class="literal">(1+1)=2</code>, you would
+need to write your query as <code class="literal">\(1\+1\)\=2</code>. When using JSON for the request body, two preceding backslashes (<code class="literal">\\</code>) are required; the backslash is a reserved escaping character in JSON strings.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /my-index-000001/_search
+{
+  "query" : {
+    "query_string" : {
+      "query" : "kimchy\\!",
+      "fields"  : ["user.id"]
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/796.console"></div>
+<p>The reserved characters are:  <code class="literal">+ - = &amp;&amp; || &gt; &lt; ! ( ) { } [ ] ^ " ~ * ? : \ /</code></p>
+<p>Failing to escape these special characters correctly could lead to a syntax error which prevents your query from running.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p><code class="literal">&lt;</code> and <code class="literal">&gt;</code> can&#8217;t be escaped at all. The only way to prevent them from
+attempting to create a range query is to remove them from the query string
+entirely.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="_whitespaces_and_empty_queries"></a>Whitespaces and empty queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-syntax.asciidoc">edit</a></h5>
+</div></div></div>
+<p>Whitespace is not considered an operator.</p>
+<p>If the query string is empty or only contains whitespaces the query will
+yield an empty result set.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="query-string-nested"></a>Avoid using the <code class="literal">query_string</code> query for nested documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h5>
+</div></div></div>
+<p><code class="literal">query_string</code> searches do not return <a class="xref" href="mapping-types.html#nested" title="Nested field type">nested</a> documents. To search
+nested documents, use the <a class="xref" href="joining-queries.html#query-dsl-nested-query" title="Nested query"><code class="literal">nested</code> query</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="query-string-multi-field"></a>Search multiple fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h5>
+</div></div></div>
+<p>You can use the <code class="literal">fields</code> parameter to perform a <code class="literal">query_string</code> search across
+multiple fields.</p>
+<p>The idea of running the <code class="literal">query_string</code> query against multiple fields is to
+expand each query term to an OR clause like this:</p>
+<pre class="screen">field1:query_term OR field2:query_term | ...</pre>
+<p>For example, the following query</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string": {
+      "fields": [ "content", "name" ],
+      "query": "this AND that"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/797.console"></div>
+<p>matches the same words as</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string": {
+      "query": "(content:this OR name:this) AND (content:that OR name:that)"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/798.console"></div>
+<p>Since several queries are generated from the individual search terms,
+combining them is automatically done using a <code class="literal">dis_max</code> query with a <code class="literal">tie_breaker</code>.
+For example (the <code class="literal">name</code> is boosted by 5 using <code class="literal">^5</code> notation):</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string" : {
+      "fields" : ["content", "name^5"],
+      "query" : "this AND that OR thus",
+      "tie_breaker" : 0
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/799.console"></div>
+<p>Simple wildcard can also be used to search "within" specific inner
+elements of the document. For example, if we have a <code class="literal">city</code> object with
+several fields (or inner object with fields) in it, we can automatically
+search on all "city" fields:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string" : {
+      "fields" : ["city.*"],
+      "query" : "this AND that OR thus"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/800.console"></div>
+<p>Another option is to provide the wildcard fields search in the query
+string itself (properly escaping the <code class="literal">*</code> sign), for example:
+<code class="literal">city.\*:something</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string" : {
+      "query" : "city.\\*:(this AND that OR thus)"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/801.console"></div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Since <code class="literal">\</code> (backslash) is a special character in json strings, it needs to
+be escaped, hence the two backslashes in the above <code class="literal">query_string</code>.</p>
+</div>
+</div>
+<p>The fields parameter can also include pattern based field names,
+allowing to automatically expand to the relevant fields (dynamically
+introduced fields included). For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string" : {
+      "fields" : ["content", "name.*^5"],
+      "query" : "this AND that OR thus"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/802.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="query-string-multi-field-parms"></a>Additional parameters for multiple field searches<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h5>
+</div></div></div>
+<p>When running the <code class="literal">query_string</code> query against multiple fields, the
+following additional parameters are supported.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">type</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Determines how the query matches and scores documents. Valid
+values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">best_fields</code> (Default)
+</span>
+</dt>
+<dd>
+Finds documents which match any field and uses the highest
+<a class="xref" href="query-filter-context.html#relevance-scores" title="Relevance scores"><code class="literal">_score</code></a> from any matching field. See
+<a class="xref" href="full-text-queries.html#type-best-fields" title="best_fields"><code class="literal">best_fields</code></a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">bool_prefix</code>
+</span>
+</dt>
+<dd>
+Creates a <code class="literal">match_bool_prefix</code> query on each field and combines the <code class="literal">_score</code> from
+each field. See <a class="xref" href="full-text-queries.html#type-bool-prefix" title="bool_prefix"><code class="literal">bool_prefix</code></a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">cross_fields</code>
+</span>
+</dt>
+<dd>
+Treats fields with the same <code class="literal">analyzer</code> as though they were one big field. Looks
+for each word in <span class="strong strong"><strong>any</strong></span> field. See <a class="xref" href="full-text-queries.html#type-cross-fields" title="cross_fields"><code class="literal">cross_fields</code></a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">most_fields</code>
+</span>
+</dt>
+<dd>
+Finds documents which match any field and combines the <code class="literal">_score</code> from each field.
+See <a class="xref" href="full-text-queries.html#type-most-fields" title="most_fields"><code class="literal">most_fields</code></a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">phrase</code>
+</span>
+</dt>
+<dd>
+Runs a <code class="literal">match_phrase</code> query on each field and uses the <code class="literal">_score</code> from the best
+field. See <a class="xref" href="full-text-queries.html#type-phrase" title="phrase and phrase_prefix"><code class="literal">phrase</code> and <code class="literal">phrase_prefix</code></a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">phrase_prefix</code>
+</span>
+</dt>
+<dd>
+Runs a <code class="literal">match_phrase_prefix</code> query on each field and uses the <code class="literal">_score</code> from the
+best field. See <a class="xref" href="full-text-queries.html#type-phrase" title="phrase and phrase_prefix"><code class="literal">phrase</code> and <code class="literal">phrase_prefix</code></a>.
+</dd>
+</dl>
+</div>
+<p>NOTE:
+Additional top-level <code class="literal">multi_match</code> parameters may be available based on the
+<a class="xref" href="full-text-queries.html#multi-match-types" title="Types of multi_match query:"><code class="literal">type</code></a> value.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-string-synonyms"></a>Synonyms and the <code class="literal">query_string</code> query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">query_string</code> query supports multi-terms synonym expansion with the <a class="xref" href="analysis-tokenfilters.html#analysis-synonym-graph-tokenfilter" title="Synonym graph token filter">synonym_graph</a> token filter. When this filter is used, the parser creates a phrase query for each multi-terms synonyms.
+For example, the following synonym: <code class="literal">ny, new york</code> would produce:</p>
+<p><code class="literal">(ny OR ("new york"))</code></p>
+<p>It is also possible to match multi terms synonyms with conjunctions instead:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+   "query": {
+       "query_string" : {
+           "default_field": "title",
+           "query" : "ny city",
+           "auto_generate_synonyms_phrase_query" : false
+       }
+   }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/803.console"></div>
+<p>The example above creates a boolean query:</p>
+<p><code class="literal">(ny OR (new AND york)) city</code></p>
+<p>that matches documents with the term <code class="literal">ny</code> or the conjunction <code class="literal">new AND york</code>.
+By default the parameter <code class="literal">auto_generate_synonyms_phrase_query</code> is set to <code class="literal">true</code>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-string-min-should-match"></a>How <code class="literal">minimum_should_match</code> works<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">query_string</code> splits the query around each operator to create a boolean
+query for the entire input. You can use <code class="literal">minimum_should_match</code> to control how
+many "should" clauses in the resulting query should match.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string": {
+      "fields": [
+        "title"
+      ],
+      "query": "this that thus",
+      "minimum_should_match": 2
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/804.console"></div>
+<p>The example above creates a boolean query:</p>
+<p><code class="literal">(title:this title:that title:thus)~2</code></p>
+<p>that matches documents with at least two of the terms <code class="literal">this</code>, <code class="literal">that</code> or <code class="literal">thus</code>
+in the single field <code class="literal">title</code>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-string-min-should-match-multi"></a>How <code class="literal">minimum_should_match</code> works for multiple fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h4>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string": {
+      "fields": [
+        "title",
+        "content"
+      ],
+      "query": "this that thus",
+      "minimum_should_match": 2
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/805.console"></div>
+<p>The example above creates a boolean query:</p>
+<p><code class="literal">((content:this content:that content:thus) | (title:this title:that title:thus))</code></p>
+<p>that matches documents with the disjunction max over the fields <code class="literal">title</code> and
+<code class="literal">content</code>. Here the <code class="literal">minimum_should_match</code> parameter can&#8217;t be applied.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string": {
+      "fields": [
+        "title",
+        "content"
+      ],
+      "query": "this OR that OR thus",
+      "minimum_should_match": 2
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/806.console"></div>
+<p>Adding explicit operators forces each term to be considered as a separate clause.</p>
+<p>The example above creates a boolean query:</p>
+<p><code class="literal">((content:this | title:this) (content:that | title:that) (content:thus | title:thus))~2</code></p>
+<p>that matches documents with at least two of the three "should" clauses, each of
+them made of the disjunction max over the fields for each term.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="query-string-min-should-match-cross"></a>How <code class="literal">minimum_should_match</code> works for cross-field searches<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>A <code class="literal">cross_fields</code> value in the <code class="literal">type</code> field indicates fields with the same
+analyzer are grouped together when the input is analyzed.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "query_string": {
+      "fields": [
+        "title",
+        "content"
+      ],
+      "query": "this OR that OR thus",
+      "type": "cross_fields",
+      "minimum_should_match": 2
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/807.console"></div>
+<p>The example above creates a boolean query:</p>
+<p><code class="literal">(blended(terms:[field2:this, field1:this]) blended(terms:[field2:that, field1:that]) blended(terms:[field2:thus, field1:thus]))~2</code></p>
+<p>that matches documents with at least two of the three per-term blended queries.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_allow_expensive_queries"></a>Allow expensive queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/query-string-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Query string query can be internally be transformed to a <a class="xref" href="term-level-queries.html#query-dsl-prefix-query" title="Prefix query"><code class="literal">prefix query</code></a> which means
+that if the prefix queries are disabled as explained <a class="xref" href="term-level-queries.html#prefix-query-allow-expensive-queries" title="Allow expensive queries">here</a> the query will not be
+executed and an exception will be thrown.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-simple-query-string-query"></a>Simple query string query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/simple-query-string-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Returns documents based on a provided query string, using a parser with a
+limited but fault-tolerant syntax.</p>
+<p>This query uses a <a class="xref" href="full-text-queries.html#simple-query-string-syntax" title="Simple query string syntax">simple syntax</a> to parse and
+split the provided query string into terms based on special operators. The query
+then <a class="xref" href="analysis.html" title="Text analysis">analyzes</a> each term independently before returning matching
+documents.</p>
+<p>While its syntax is more limited than the
+<a class="xref" href="full-text-queries.html#query-dsl-query-string-query" title="Query string query"><code class="literal">query_string</code> query</a>, the <code class="literal">simple_query_string</code>
+query does not return errors for invalid syntax. Instead, it ignores any invalid
+parts of the query string.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="simple-query-string-query-ex-request"></a>Example request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/simple-query-string-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "simple_query_string" : {
+        "query": "\"fried eggs\" +(eggplant | potato) -frittata",
+        "fields": ["title^5", "body"],
+        "default_operator": "and"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/808.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="simple-query-string-top-level-params"></a>Top-level parameters for <code class="literal">simple_query_string</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/simple-query-string-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">query</code>
+</span>
+</dt>
+<dd>
+(Required, string) Query string you wish to parse and use for search. See <a class="xref" href="full-text-queries.html#simple-query-string-syntax" title="Simple query string syntax">Simple query string syntax</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fields</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, array of strings) Array of fields you wish to search.</p>
+<p>This field accepts wildcard expressions. You also can boost relevance scores for
+matches to particular fields using a caret (<code class="literal">^</code>) notation. See
+<a class="xref" href="full-text-queries.html#simple-query-string-boost" title="Wildcards and per-field boosts in the fields parameter">Wildcards and per-field boosts in the <code class="literal">fields</code> parameter</a> for examples.</p>
+<p>Defaults to the <code class="literal">index.query.default_field</code> index setting, which has a default
+value of <code class="literal">*</code>. The <code class="literal">*</code> value extracts all fields that are eligible to term
+queries and filters the metadata fields. All extracted fields are then combined
+to build a query if no <code class="literal">prefix</code> is specified.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>There is a limit on the number of fields that can be queried at once.
+It is defined by the <code class="literal">indices.query.bool.max_clause_count</code>
+<a class="xref" href="settings.html#search-settings" title="Search settings">search setting</a>, which defaults to <code class="literal">1024</code>.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">default_operator</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Default boolean logic used to interpret text in the query
+string if no operators are specified. Valid values are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">OR</code> (Default)
+</span>
+</dt>
+<dd>
+For example, a query string of <code class="literal">capital of Hungary</code> is interpreted as <code class="literal">capital
+OR of OR Hungary</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">AND</code>
+</span>
+</dt>
+<dd>
+For example, a query string of <code class="literal">capital of Hungary</code> is interpreted as <code class="literal">capital
+AND of AND Hungary</code>.
+</dd>
+</dl>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">all_fields</code>
+</span>
+</dt>
+<dd>
+<span class="Admonishment Admonishment--change">
+[<span class="Admonishment-version u-mono u-strikethrough">6.0.0</span>]
+<span class="Admonishment-detail">
+Deprecated in 6.0.0. set <code class="literal">fields</code> to <code class="literal">*</code> instead
+</span>
+</span>(Optional, boolean) If <code class="literal">true</code>,
+search all searchable fields in the index&#8217;s field mapping.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyze_wildcard</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, the query attempts to analyze wildcard terms in
+the query string. Defaults to <code class="literal">false</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">analyzer</code>
+</span>
+</dt>
+<dd>
+(Optional, string) <a class="xref" href="analysis.html" title="Text analysis">Analyzer</a> used to convert text in the
+query string into tokens. Defaults to the
+<a class="xref" href="configure-text-analysis.html#specify-index-time-analyzer" title="How Elasticsearch determines the index analyzer">index-time analyzer</a> mapped for the
+<code class="literal">default_field</code>. If no analyzer is mapped, the index&#8217;s default analyzer is used.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">auto_generate_synonyms_phrase_query</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, the parser creates a
+<a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase" title="Match phrase query"><code class="literal">match_phrase</code></a> query for each
+<a class="xref" href="analysis-concepts.html#token-graphs-multi-position-tokens" title="Multi-position tokens">multi-position token</a>. Defaults to <code class="literal">true</code>.
+For examples, see <a class="xref" href="full-text-queries.html#simple-query-string-synonyms" title="Multi-position tokens">Multi-position tokens</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">flags</code>
+</span>
+</dt>
+<dd>
+(Optional, string) List of enabled operators for the
+<a class="xref" href="full-text-queries.html#simple-query-string-syntax" title="Simple query string syntax">simple query string syntax</a>. Defaults to <code class="literal">ALL</code>
+(all operators). See <a class="xref" href="full-text-queries.html#supported-flags" title="Limit operators">Limit operators</a> for valid values.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzzy_max_expansions</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Maximum number of terms to which the query expands for fuzzy
+matching. Defaults to <code class="literal">50</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzzy_prefix_length</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Number of beginning characters left unchanged for fuzzy
+matching. Defaults to <code class="literal">0</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">fuzzy_transpositions</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, edits for fuzzy matching include
+transpositions of two adjacent characters (ab → ba). Defaults to <code class="literal">true</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">lenient</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean) If <code class="literal">true</code>, format-based errors, such as providing a text
+value for a <a class="xref" href="mapping-types.html#number" title="Numeric field types">numeric</a> field, are ignored. Defaults to <code class="literal">false</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">minimum_should_match</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Minimum number of clauses that must match for a document to
+be returned. See the <a class="xref" href="query-dsl-minimum-should-match.html" title="minimum_should_match parameter"><code class="literal">minimum_should_match</code>
+parameter</a> for valid values and more information.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">quote_field_suffix</code>
+</span>
+</dt>
+<dd>
+<p>(Optional, string) Suffix appended to quoted text in the query string.</p>
+<p>You can use this suffix to use a different analysis method for exact matches.
+See <a class="xref" href="recipes.html#mixing-exact-search-with-stemming" title="Mixing exact search with stemming">Mixing exact search with stemming</a>.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="simple-query-string-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/simple-query-string-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="simple-query-string-syntax"></a>Simple query string syntax<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/simple-query-string-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">simple_query_string</code> query supports the following operators:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">+</code> signifies AND operation
+</li>
+<li class="listitem">
+<code class="literal">|</code> signifies OR operation
+</li>
+<li class="listitem">
+<code class="literal">-</code> negates a single token
+</li>
+<li class="listitem">
+<code class="literal">"</code> wraps a number of tokens to signify a phrase for searching
+</li>
+<li class="listitem">
+<code class="literal">*</code> at the end of a term signifies a prefix query
+</li>
+<li class="listitem">
+<code class="literal">(</code> and <code class="literal">)</code> signify precedence
+</li>
+<li class="listitem">
+<code class="literal">~N</code> after a word signifies edit distance (fuzziness)
+</li>
+<li class="listitem">
+<code class="literal">~N</code> after a phrase signifies slop amount
+</li>
+</ul>
+</div>
+<p>To use one of these characters literally, escape it with a preceding backslash
+(<code class="literal">\</code>).</p>
+<p>The behavior of these operators may differ depending on the <code class="literal">default_operator</code>
+value. For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "simple_query_string": {
+      "fields": [ "content" ],
+      "query": "foo bar -baz"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/809.console"></div>
+<p>This search is intended to only return documents containing <code class="literal">foo</code> or <code class="literal">bar</code> that
+also do <span class="strong strong"><strong>not</strong></span> contain <code class="literal">baz</code>. However because of a <code class="literal">default_operator</code> of <code class="literal">OR</code>,
+this search actually returns documents that contain <code class="literal">foo</code> or <code class="literal">bar</code> and any
+documents that don&#8217;t contain <code class="literal">baz</code>. To return documents as intended, change the
+query string to <code class="literal">foo bar +-baz</code>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="supported-flags"></a>Limit operators<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/simple-query-string-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>You can use the <code class="literal">flags</code> parameter to limit the supported operators for the
+simple query string syntax.</p>
+<p>To explicitly enable only specific operators, use a <code class="literal">|</code> separator. For example,
+a <code class="literal">flags</code> value of <code class="literal">OR|AND|PREFIX</code> disables all operators except <code class="literal">OR</code>, <code class="literal">AND</code>,
+and <code class="literal">PREFIX</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "simple_query_string": {
+      "query": "foo | bar + baz*",
+      "flags": "OR|AND|PREFIX"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/810.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h5 class="title"><a id="supported-flags-values"></a>Valid values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/simple-query-string-query.asciidoc">edit</a></h5>
+</div></div></div>
+<p>The available flags are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">ALL</code> (Default)
+</span>
+</dt>
+<dd>
+Enables all optional operators.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">AND</code>
+</span>
+</dt>
+<dd>
+Enables the <code class="literal">+</code> AND operator.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">ESCAPE</code>
+</span>
+</dt>
+<dd>
+Enables <code class="literal">\</code> as an escape character.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">FUZZY</code>
+</span>
+</dt>
+<dd>
+Enables the <code class="literal">~N</code> operator after a word, where <code class="literal">N</code> is an integer denoting the
+allowed edit distance for matching. See <a class="xref" href="api-conventions.html#fuzziness" title="Fuzziness">Fuzziness</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">NEAR</code>
+</span>
+</dt>
+<dd>
+Enables the <code class="literal">~N</code> operator, after a phrase where <code class="literal">N</code> is the maximum number of
+positions allowed between matching tokens. Synonymous to <code class="literal">SLOP</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">NONE</code>
+</span>
+</dt>
+<dd>
+Disables all operators.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">NOT</code>
+</span>
+</dt>
+<dd>
+Enables the <code class="literal">-</code> NOT operator.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">OR</code>
+</span>
+</dt>
+<dd>
+Enables the <code class="literal">\|</code> OR operator.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">PHRASE</code>
+</span>
+</dt>
+<dd>
+Enables the <code class="literal">"</code> quotes operator used to search for phrases.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">PRECEDENCE</code>
+</span>
+</dt>
+<dd>
+Enables the <code class="literal">(</code> and <code class="literal">)</code> operators to control operator precedence.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">PREFIX</code>
+</span>
+</dt>
+<dd>
+Enables the <code class="literal">*</code> prefix operator.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">SLOP</code>
+</span>
+</dt>
+<dd>
+Enables the <code class="literal">~N</code> operator, after a phrase where <code class="literal">N</code> is maximum number of
+positions allowed between matching tokens. Synonymous to <code class="literal">NEAR</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">WHITESPACE</code>
+</span>
+</dt>
+<dd>
+Enables whitespace as split characters.
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="simple-query-string-boost"></a>Wildcards and per-field boosts in the <code class="literal">fields</code> parameter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/simple-query-string-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Fields can be specified with wildcards, eg:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "simple_query_string" : {
+      "query":    "Will Smith",
+      "fields": [ "title", "*_name" ] <a id="CO208-1"></a><i class="conum" data-value="1"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/811.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO208-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Query the <code class="literal">title</code>, <code class="literal">first_name</code> and <code class="literal">last_name</code> fields.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>Individual fields can be boosted with the caret (<code class="literal">^</code>) notation:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "simple_query_string" : {
+      "query" : "this is a test",
+      "fields" : [ "subject^3", "message" ] <a id="CO209-1"></a><i class="conum" data-value="1"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/812.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO209-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">subject</code> field is three times as important as the <code class="literal">message</code> field.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="simple-query-string-synonyms"></a>Multi-position tokens<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/simple-query-string-query.asciidoc">edit</a></h4>
+</div></div></div>
+<p>By default, the <code class="literal">simple_query_string</code> query parser creates a
+<a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase" title="Match phrase query"><code class="literal">match_phrase</code></a> query for each
+<a class="xref" href="analysis-concepts.html#token-graphs-multi-position-tokens" title="Multi-position tokens">multi-position token</a> in the query string.
+For example, the parser creates a <code class="literal">match_phrase</code> query for the multi-word
+synonym <code class="literal">ny, new york</code>:</p>
+<p><code class="literal">(ny OR ("new york"))</code></p>
+<p>To match multi-position tokens with an <code class="literal">AND</code> conjunction instead, set
+<code class="literal">auto_generate_synonyms_phrase_query</code> to <code class="literal">false</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "simple_query_string": {
+      "query": "ny city",
+      "auto_generate_synonyms_phrase_query": false
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/813.console"></div>
+<p>For the above example, the parser creates the following
+<a class="xref" href="compound-queries.html#query-dsl-bool-query" title="Boolean query"><code class="literal">bool</code></a> query:</p>
+<p><code class="literal">(ny OR (new AND york)) city)</code></p>
+<p>This <code class="literal">bool</code> query matches documents with the term <code class="literal">ny</code> or the conjunction
+<code class="literal">new AND york</code>.</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="compound-queries.html">« Compound queries</a>
+</span>
+<span class="next">
+<a href="geo-queries.html">Geo queries »</a>
+</span>
+</div>
+</div>
+
+                  <!-- end body -->
+                </div>
+
+                <div class="col-12 order-3 col-lg-2 order-lg-3 h-almost-full-lg sticky-top-lg" id="right_col">
+                  <div id="sticky_content">
+                    <!-- The OTP is appended here -->
+                    <div class="row">
+                      <div class="col-0 col-md-4 col-lg-0" id="bottom_left_col"></div>
+                      <div class="col-12 col-md-8 col-lg-12">
+                        <div id="rtpcontainer">
+                          <div class="mktg-promo" id="most-popular">
+                            <p class="aside-heading">Most Popular</p>
+                            <div class="pb-2">
+                              <p class="media-type">Video</p>
+                              <a href="https://www.elastic.co/webinars/getting-started-elasticsearch?page=docs&placement=top-video">
+                                <p class="mb-0">Get Started with Elasticsearch</p>
+                              </a>
+                            </div>
+                            <div class="pb-2">
+                              <p class="media-type">Video</p>
+                              <a href="https://www.elastic.co/webinars/getting-started-kibana?page=docs&placement=top-video">
+                                <p class="mb-0">Intro to Kibana</p>
+                              </a>
+                            </div>
+                            <div class="pb-2">
+                              <p class="media-type">Video</p>
+                              <a href="https://www.elastic.co/webinars/introduction-elk-stack?page=docs&placement=top-video">
+                                <p class="mb-0">ELK for Logs & Metrics</p>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+
+<div id='elastic-footer'></div>
+<script src='https://www.elastic.co/elastic-footer.js'></script>
+<!-- Footer Section end-->
+
+      </section>
+    </div>
+
+<script src="/guide/static/jquery.js"></script>
+<script type="text/javascript" src="/guide/static/docs.js"></script>
+<script type="text/javascript">
+  window.initial_state = {}</script>
+  </body>
+</html>

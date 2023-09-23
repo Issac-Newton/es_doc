@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Troubleshooting security | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Troubleshooting security | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="secure-cluster.html" title="Secure a cluster"/>
+<link rel="prev" href="encrypting-internode-communications.html" title="Tutorial: Encrypting communications"/>
+<link rel="next" href="security-limitations.html" title="Security limitations"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="secure-cluster.html">Secure a cluster</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="encrypting-internode-communications.html">« Tutorial: Encrypting communications</a>
+</span>
+<span class="next">
+<a href="security-limitations.html">Security limitations »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="security-troubleshooting"></a>Troubleshooting security<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Use the information in this section to troubleshoot common problems and find
+answers for frequently asked questions.</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#security-trb-settings" title="Some settings are not returned via the nodes settings API">Some settings are not returned via the nodes settings API</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#security-trb-roles" title="Authorization exceptions">Authorization exceptions</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#security-trb-extraargs" title="Users command fails due to extra arguments">Users command fails due to extra arguments</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#trouble-shoot-active-directory" title="Users are frequently locked out of Active Directory">Users are frequently locked out of Active Directory</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#trb-security-maccurl" title="Certificate verification fails for curl on Mac">Certificate verification fails for curl on Mac</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#trb-security-sslhandshake" title="SSLHandshakeException causes connections to fail">SSLHandshakeException causes connections to fail</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#trb-security-ssl" title="Common SSL/TLS exceptions">Common SSL/TLS exceptions</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#trb-security-kerberos" title="Common Kerberos exceptions">Common Kerberos exceptions</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#trb-security-saml" title="Common SAML issues">Common SAML issues</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#trb-security-internalserver" title="Internal Server Error in Kibana">Internal Server Error in Kibana</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#trb-security-setup" title="Setup-passwords command fails due to connection failure">Setup-passwords command fails due to connection failure</a>
+</li>
+<li class="listitem">
+<a class="xref" href="security-troubleshooting.html#trb-security-path" title="Failures due to relocation of the configuration files">Failures due to relocation of the configuration files</a>
+</li>
+</ul>
+</div>
+<p>For issues that you cannot fix yourself … we’re here to help.
+If you are an existing Elastic customer with a support contract, please create
+a ticket in the
+<a href="https://support.elastic.co/customers/s/login/" class="ulink" target="_top">Elastic Support portal</a>.
+Or post in the <a href="https://discuss.elastic.co/" class="ulink" target="_top">Elastic forum</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="security-trb-settings"></a>Some settings are not returned via the nodes settings API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+When you use the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/cluster-nodes-info.html" class="ulink" target="_top">nodes info API</a> to retrieve
+settings for a node, some information is missing.
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>This is intentional. Some of the settings are considered to be highly
+sensitive: all <code class="literal">ssl</code> settings, ldap <code class="literal">bind_dn</code>, and <code class="literal">bind_password</code>.
+For this reason, we filter these settings and do not expose them via
+the nodes info API rest endpoint. You can also define additional
+sensitive settings that should be hidden using the
+<code class="literal">xpack.security.hide_settings</code> setting. For example, this snippet
+hides the <code class="literal">url</code> settings of the <code class="literal">ldap1</code> realm and all settings of the
+<code class="literal">ad1</code> realm.</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.hide_settings: xpack.security.authc.realms.ldap1.url,
+xpack.security.authc.realms.ad1.*</pre>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="security-trb-roles"></a>Authorization exceptions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+I configured the appropriate roles and the users, but I still get an
+authorization exception.
+</li>
+<li class="listitem">
+I can authenticate to LDAP, but I still get an authorization exception.
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Verify that the role names associated with the users match the roles defined
+in the <code class="literal">roles.yml</code> file. You can use the <code class="literal">elasticsearch-users</code> tool to list all
+the users. Any unknown roles are marked with <code class="literal">*</code>.</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">bin/elasticsearch-users list
+rdeniro        : admin
+alpacino       : power_user
+jacknich       : monitoring,unknown_role* <a id="CO551-1"></a><i class="conum" data-value="1"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO551-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">unknown_role</code> was not found in <code class="literal">roles.yml</code></p>
+</td>
+</tr>
+</table>
+</div>
+<p>For more information about this command, see the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/users-command.html" class="ulink" target="_top"><code class="literal">elasticsearch-users</code> command</a>.</p>
+</li>
+<li class="listitem">
+<p>If you are authenticating to LDAP, a number of configuration options can cause
+this error.</p>
+<div class="informaltable">
+<table border="1" cellpadding="4px">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><em>group identification</em></p></td>
+<td align="left" valign="top"><p>Groups are located by either an LDAP search or by the "memberOf" attribute on
+the user.  Also, If subtree search is turned off, it will search only one
+level deep. For all the options, see <a class="xref" href="settings.html#ref-ldap-settings" title="LDAP realm settings">LDAP realm settings</a>.
+There are many options here and sticking to the defaults will not work for all
+scenarios.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><em>group to role mapping</em></p></td>
+<td align="left" valign="top"><p>Either the <code class="literal">role_mapping.yml</code> file or the location for this file could be
+misconfigured. For more information, see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-files.html" class="ulink" target="_top">Security files</a>.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><em>role definition</em></p></td>
+<td align="left" valign="top"><p>The role definition might be missing or invalid.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>To help track down these possibilities, add the following lines to the end of
+the <code class="literal">log4j2.properties</code> configuration file in the <code class="literal">ES_PATH_CONF</code>:</p>
+<div class="pre_wrapper lang-properties">
+<pre class="programlisting prettyprint lang-properties">logger.authc.name = org.elasticsearch.xpack.security.authc
+logger.authc.level = DEBUG</pre>
+</div>
+<p>A successful authentication should produce debug statements that list groups and
+role mappings.</p>
+</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="security-trb-extraargs"></a>Users command fails due to extra arguments<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The <code class="literal">elasticsearch-users</code> command fails with the following message:
+<code class="literal">ERROR: extra arguments [...] were provided</code>.
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>This error occurs when the <code class="literal">elasticsearch-users</code> tool is parsing the input and
+finds unexpected arguments. This can happen when there are special characters
+used in some of the arguments. For example, on Windows systems the <code class="literal">,</code> character
+is considered a parameter separator; in other words <code class="literal">-r role1,role2</code> is
+translated to <code class="literal">-r role1 role2</code> and the <code class="literal">elasticsearch-users</code> tool only
+recognizes <code class="literal">role1</code> as an expected parameter. The solution here is to quote the
+parameter: <code class="literal">-r "role1,role2"</code>.</p>
+<p>For more information about this command, see
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/users-command.html" class="ulink" target="_top"><code class="literal">elasticsearch-users</code> command</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="trouble-shoot-active-directory"></a>Users are frequently locked out of Active Directory<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Certain users are being frequently locked out of Active Directory.
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>Check your realm configuration; realms are checked serially, one after another.
+If your Active Directory realm is being checked before other realms and there
+are usernames that appear in both Active Directory and another realm, a valid
+login for one realm might be causing failed login attempts in another realm.</p>
+<p>For example, if <code class="literal">UserA</code> exists in both Active Directory and a file realm, and
+the Active Directory realm is checked first and file is checked second, an
+attempt to authenticate as <code class="literal">UserA</code> in the file realm would first attempt to
+authenticate against Active Directory and fail, before successfully
+authenticating against the <code class="literal">file</code> realm. Because authentication is verified on
+each request, the Active Directory realm would be checked - and fail - on each
+request for <code class="literal">UserA</code> in the <code class="literal">file</code> realm. In this case, while the authentication
+request completed successfully, the account on Active Directory would have
+received several failed login attempts, and that account might become
+temporarily locked out. Plan the order of your realms accordingly.</p>
+<p>Also note that it is not typically necessary to define multiple Active Directory
+realms to handle domain controller failures. When using Microsoft DNS, the DNS
+entry for the domain should always point to an available domain controller.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="trb-security-maccurl"></a>Certificate verification fails for curl on Mac<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">curl</code> on the Mac returns a certificate verification error even when the
+<code class="literal">--cacert</code> option is used.
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>Apple&#8217;s integration of <code class="literal">curl</code> with their keychain technology disables the
+<code class="literal">--cacert</code> option.
+See <a href="http://curl.haxx.se/mail/archive-2013-10/0036.html" class="ulink" target="_top">http://curl.haxx.se/mail/archive-2013-10/0036.html</a> for more information.</p>
+<p>You can use another tool, such as <code class="literal">wget</code>, to test certificates. Alternately, you
+can add the certificate for the signing certificate authority MacOS system
+keychain, using a procedure similar to the one detailed at the
+<a href="http://support.apple.com/kb/PH14003" class="ulink" target="_top">Apple knowledge base</a>. Be sure to add the
+signing CA&#8217;s certificate and not the server&#8217;s certificate.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="trb-security-sslhandshake"></a>SSLHandshakeException causes connections to fail<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+A <code class="literal">SSLHandshakeException</code> causes a connection to a node to fail and indicates
+that there is a configuration issue. Some of the common exceptions are shown
+below with tips on how to resolve these issues.
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">java.security.cert.CertificateException: No name matching node01.example.com found</code>
+</span>
+</dt>
+<dd>
+<p>Indicates that a client connection was made to <code class="literal">node01.example.com</code> but the
+certificate returned did not contain the name <code class="literal">node01.example.com</code>. In most
+cases, the issue can be resolved by ensuring the name is specified during
+certificate creation. For more information, see <a class="xref" href="encrypting-communications.html#ssl-tls" title="Setting up TLS on a cluster">Setting up TLS on a cluster</a>. Another scenario is
+when the environment does not wish to use DNS names in certificates at all. In
+this scenario, all settings in <code class="literal">elasticsearch.yml</code> should only use IP addresses
+including the <code class="literal">network.publish_host</code> setting.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">java.security.cert.CertificateException: No subject alternative names present</code>
+</span>
+</dt>
+<dd>
+<p>Indicates that a client connection was made to an IP address but the returned
+certificate did not contain any <code class="literal">SubjectAlternativeName</code> entries. IP addresses
+are only used for hostname verification if they are specified as a
+<code class="literal">SubjectAlternativeName</code> during certificate creation. If the intent was to use
+IP addresses for hostname verification, then the certificate will need to be
+regenerated with the appropriate IP address. See <a class="xref" href="encrypting-communications.html#ssl-tls" title="Setting up TLS on a cluster">Setting up TLS on a cluster</a>.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">javax.net.ssl.SSLHandshakeException: null cert chain</code> and <code class="literal">javax.net.ssl.SSLException: Received fatal alert: bad_certificate</code>
+</span>
+</dt>
+<dd>
+<p>The <code class="literal">SSLHandshakeException</code> indicates that a self-signed certificate was
+returned by the client that is not trusted as it cannot be found in the
+<code class="literal">truststore</code> or <code class="literal">keystore</code>. This <code class="literal">SSLException</code> is seen on the client side of
+the connection.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target</code> and <code class="literal">javax.net.ssl.SSLException: Received fatal alert: certificate_unknown</code>
+</span>
+</dt>
+<dd>
+<p>This <code class="literal">SunCertPathBuilderException</code> indicates that a certificate was returned
+during the handshake that is not trusted. This message is seen on the client
+side of the connection. The <code class="literal">SSLException</code> is seen on the server side of the
+connection. The CA certificate that signed the returned certificate was not
+found in the <code class="literal">keystore</code> or <code class="literal">truststore</code> and needs to be added to trust this
+certificate.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">javax.net.ssl.SSLHandshakeException: Invalid ECDH ServerKeyExchange signature</code>
+</span>
+</dt>
+<dd>
+<p>The <code class="literal">Invalid ECDH ServerKeyExchange signature</code> can indicate that a key and a corresponding certificate don&#8217;t match and are
+causing the handshake to fail.
+Verify the contents of each of the files you are using for your configured certificate authorities, certificates and keys. In particular, check that the key and certificate belong to the same key pair.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="trb-security-ssl"></a>Common SSL/TLS exceptions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+You might see some exceptions related to SSL/TLS in your logs. Some of the
+common exceptions are shown below with tips on how to resolve these issues.<br>
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">WARN: received plaintext http traffic on a https channel, closing connection</code>
+</span>
+</dt>
+<dd>
+<p>Indicates that there was an incoming plaintext http request. This typically
+occurs when an external applications attempts to make an unencrypted call to the
+REST interface. Please ensure that all applications are using <code class="literal">https</code> when
+calling the REST interface with SSL enabled.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">org.elasticsearch.common.netty.handler.ssl.NotSslRecordException: not an SSL/TLS record:</code>
+</span>
+</dt>
+<dd>
+<p>Indicates that there was incoming plaintext traffic on an SSL connection. This
+typically occurs when a node is not configured to use encrypted communication
+and tries to connect to nodes that are using encrypted communication. Please
+verify that all nodes are using the same setting for
+<code class="literal">xpack.security.transport.ssl.enabled</code>.</p>
+<p>For more information about this setting, see
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security Settings in Elasticsearch</a>.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">java.io.StreamCorruptedException: invalid internal transport message format, got</code>
+</span>
+</dt>
+<dd>
+<p>Indicates an issue with data received on the transport interface in an unknown
+format. This can happen when a node with encrypted communication enabled
+connects to a node that has encrypted communication disabled. Please verify that
+all nodes are using the same setting for <code class="literal">xpack.security.transport.ssl.enabled</code>.</p>
+<p>For more information about this setting, see
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security Settings in Elasticsearch</a>.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">java.lang.IllegalArgumentException: empty text</code>
+</span>
+</dt>
+<dd>
+<p>This exception is typically seen when a <code class="literal">https</code> request is made to a node that
+is not using <code class="literal">https</code>. If <code class="literal">https</code> is desired, please ensure the following setting
+is in <code class="literal">elasticsearch.yml</code>:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.http.ssl.enabled: true</pre>
+</div>
+<p>For more information about this setting, see
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security Settings in Elasticsearch</a>.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">ERROR: unsupported ciphers [...] were requested but cannot be used in this JVM</code>
+</span>
+</dt>
+<dd>
+<p>This error occurs when a SSL/TLS cipher suite is specified that cannot supported
+by the JVM that Elasticsearch is running in. Security tries to use the specified cipher
+suites that are supported by this JVM. This error can occur when using the
+Security defaults as some distributions of OpenJDK do not enable the PKCS11
+provider by default. In this case, we recommend consulting your JVM
+documentation for details on how to enable the PKCS11 provider.</p>
+<p>Another common source of this error is requesting cipher suites that use
+encrypting with a key length greater than 128 bits when running on an Oracle JDK.
+In this case, you must install the
+<a class="xref" href="encrypting-communications.html#ciphers" title="Enabling cipher suites for stronger encryption">JCE Unlimited Strength Jurisdiction Policy Files</a>.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="trb-security-kerberos"></a>Common Kerberos exceptions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+User authentication fails due to either GSS negotiation failure
+or a service login failure (either on the server or in the Elasticsearch http client).
+Some of the common exceptions are listed below with some tips to help resolve
+them.
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">Failure unspecified at GSS-API level (Mechanism level: Checksum failed)</code>
+</span>
+</dt>
+<dd>
+<p>When you see this error message on the HTTP client side, then it may be
+related to an incorrect password.</p>
+<p>When you see this error message in the Elasticsearch server logs, then it may be
+related to the Elasticsearch service keytab. The keytab file is present but it failed
+to log in as the user. Please check the keytab expiry. Also check whether the
+keytab contain up-to-date credentials; if not, replace them.</p>
+<p>You can use tools like <code class="literal">klist</code> or <code class="literal">ktab</code> to list principals inside
+the keytab and validate them. You can use <code class="literal">kinit</code> to see if you can acquire
+initial tickets using the keytab. Please check the tools and their documentation
+in your Kerberos environment.</p>
+<p>Kerberos depends on proper hostname resolution, so please check your DNS infrastructure.
+Incorrect DNS setup, DNS SRV records or configuration for KDC servers in <code class="literal">krb5.conf</code>
+can cause problems with hostname resolution.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">Failure unspecified at GSS-API level (Mechanism level: Request is a replay (34))</code>
+</span>
+</dt>
+<dt>
+<span class="term">
+<code class="literal">Failure unspecified at GSS-API level (Mechanism level: Clock skew too great (37))</code>
+</span>
+</dt>
+<dd>
+<p>To prevent replay attacks, Kerberos V5 sets a maximum tolerance for computer
+clock synchronization and it is typically 5 minutes. Please check whether
+the time on the machines within the domain is in sync.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">gss_init_sec_context() failed: An unsupported mechanism was requested</code>
+</span>
+</dt>
+<dt>
+<span class="term">
+<code class="literal">No credential found for: 1.2.840.113554.1.2.2 usage: Accept</code>
+</span>
+</dt>
+<dd>
+<p>You would usually see this error message on the client side when using <code class="literal">curl</code> to
+test Elasticsearch Kerberos setup. For example, these messages occur when you are using
+an old version of curl on the client and therefore Kerberos Spnego support is missing.
+The Kerberos realm in Elasticsearch only supports Spengo mechanism (Oid 1.3.6.1.5.5.2);
+it does not yet support Kerberos mechanism (Oid 1.2.840.113554.1.2.2).</p>
+<p>Make sure that:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+You have installed curl version 7.49 or above as older versions of curl have
+known Kerberos bugs.
+</li>
+<li class="listitem">
+The curl installed on your machine has <code class="literal">GSS-API</code>, <code class="literal">Kerberos</code> and <code class="literal">SPNEGO</code>
+features listed when you invoke command <code class="literal">curl -V</code>. If not, you will need to
+compile <code class="literal">curl</code> version with this support.
+</li>
+</ul>
+</div>
+<p>To download latest curl version visit <a href="https://curl.haxx.se/download.html" class="ulink" target="_top">https://curl.haxx.se/download.html</a></p>
+</dd>
+</dl>
+</div>
+<p>As Kerberos logs are often cryptic in nature and many things can go wrong
+as it depends on external services like DNS and NTP. You might
+have to enable additional debug logs to determine the root cause of the issue.</p>
+<p>Elasticsearch uses a JAAS (Java Authentication and Authorization Service) Kerberos login
+module to provide Kerberos support. To enable debug logs on Elasticsearch for the login
+module use following Kerberos realm setting:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.authc.realms.kerberos.&lt;realm-name&gt;.krb.debug: true</pre>
+</div>
+<p>For detailed information, see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html#ref-kerberos-settings" class="ulink" target="_top">Kerberos realm settings</a>.</p>
+<p>Sometimes you may need to go deeper to understand the problem during SPNEGO
+GSS context negotiation or look at the Kerberos message exchange. To enable
+Kerberos/SPNEGO debug logging on JVM, add following JVM system properties:</p>
+<p><code class="literal">-Dsun.security.krb5.debug=true</code></p>
+<p><code class="literal">-Dsun.security.spnego.debug=true</code></p>
+<p>For more information about JVM system properties, see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/jvm-options.html" class="ulink" target="_top">configuring JVM options</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="trb-security-saml"></a>Common SAML issues<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Some of the common SAML problems are shown below with tips on how to resolve
+these issues.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>Authentication in Kibana fails and the following error is printed in the Elasticsearch
+logs:</p>
+<pre class="literallayout">Cannot find any matching realm for [SamlPrepareAuthenticationRequest{realmName=saml1,
+assertionConsumerServiceURL=https://my.kibana.url/api/security/v1/saml}]</pre>
+
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>In order to initiate a SAML authentication, Kibana needs to know which SAML realm
+it should use from the ones that are configured in Elasticsearch. You can use the
+<code class="literal">xpack.security.authc.providers.saml.&lt;provider-name&gt;.realm</code> setting to explicitly
+set the SAML realm name in Kibana. It must match the name of the SAML realm that is
+configured in Elasticsearch.</p>
+<p>If you get an error like the one above, it possibly means that the value of
+<code class="literal">xpack.security.authc.providers.saml.&lt;provider-name&gt;.realm</code> in your Kibana
+configuration is wrong. Verify that it matches the name of the configured realm
+in Elasticsearch, which is the string after <code class="literal">xpack.security.authc.realms.saml.</code> in your
+Elasticsearch configuration.</p>
+</li>
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>Authentication in Kibana fails and the following error is printed in the
+Elasticsearch logs:</p>
+<pre class="literallayout">Authentication to realm saml1 failed - Provided SAML response is not valid for realm
+saml/saml1 (Caused by ElasticsearchSecurityException[Conditions [https://some-url-here...]
+do not match required audience [https://my.kibana.url]])</pre>
+
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>We received a SAML response that is addressed to another SAML Service Provider.
+This usually means that the configured SAML Service Provider Entity ID in
+<code class="literal">elasticsearch.yml</code> (<code class="literal">sp.entity_id</code>) does not match what has been configured as
+the SAML Service Provider Entity ID in the SAML Identity Provider documentation.</p>
+<p>To resolve this issue, ensure that both the saml realm in Elasticsearch and the IdP are
+configured with the same string for the SAML Entity ID of the Service Provider.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>These strings are compared as case-sensitive strings and not as
+canonicalized URLs even when the values are URL-like. Be mindful of trailing
+slashes, port numbers, etc.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>Authentication in Kibana fails and the following error is printed in the
+Elasticsearch logs:</p>
+<pre class="literallayout">Cannot find metadata for entity [your:entity.id] in [metadata.xml]</pre>
+
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>We could not find the metadata for the SAML Entity ID <code class="literal">your:entity.id</code> in the
+configured metadata file (<code class="literal">metadata.xml</code>).</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+Ensure that the <code class="literal">metadata.xml</code> file you are using is indeed the one provided
+by your SAML Identity Provider.
+</li>
+<li class="listitem">
+Ensure that the <code class="literal">metadata.xml</code> file contains one &lt;EntityDescriptor&gt; element
+as follows: <code class="literal">&lt;EntityDescriptor ID="0597c9aa-e69b-46e7-a1c6-636c7b8a8070" entityID="https://saml.example.com/f174199a-a96e-4201-88f1-0d57a610c522/" ...</code>
+where the value of the <code class="literal">entityID</code> attribute is the same as the value of the
+<code class="literal">idp.entity_id</code> that you have set in your SAML realm configuration in
+<code class="literal">elasticsearch.yml</code>.
+</li>
+<li class="listitem">
+Note that these are also compared as case-sensitive strings and not as
+canonicalized URLs even when the values are URL-like.
+</li>
+</ol>
+</div>
+</li>
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>Authentication in Kibana fails and the following error is printed in the Elasticsearch
+logs:</p>
+<pre class="literallayout">unable to authenticate user [&lt;unauthenticated-saml-user&gt;]
+for action [cluster:admin/xpack/security/saml/authenticate]</pre>
+
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>This error indicates that Elasticsearch failed to process the incoming SAML
+authentication message. Since the message can&#8217;t be processed, Elasticsearch is not aware
+of who the to-be authenticated user is and the <code class="literal">&lt;unauthenticated-saml-user&gt;</code>
+placeholder is used instead. To diagnose the <em>actual</em> problem, you must check
+the Elasticsearch logs for further details.</p>
+</li>
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>Authentication in Kibana fails and the following error is printed in the Elasticsearch
+logs:</p>
+<pre class="literallayout">Authentication to realm &lt;saml-realm-name&gt; failed - SAML Attribute [&lt;AttributeName0&gt;] for
+[xpack.security.authc.realms.saml.&lt;saml-realm-name&gt;.attributes.principal] not found in saml attributes
+[&lt;AttributeName1&gt;=&lt;AttributeValue1&gt;, &lt;AttributeName2&gt;=&lt;AttributeValue2&gt;, ...] or NameID [ NameID(format)=value ]</pre>
+
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>This error indicates that Elasticsearch failed to find the necessary SAML attribute in the SAML response that the
+Identity Provider sent. In this example, Elasticsearch is configured as follows:</p>
+<pre class="literallayout">xpack.security.authc.realms.saml.&lt;saml-realm-name&gt;.attributes.principal: AttributeName0</pre>
+
+<p>This configuration means that Elasticsearch expects to find a SAML Attribute with the name <code class="literal">AttributeName0</code> or a <code class="literal">NameID</code> with the appropriate format in the SAML
+response so that <a class="xref" href="saml-guide.html#saml-attribute-mapping" title="Attribute mapping">it can map it</a> to the <code class="literal">principal</code> user property. The <code class="literal">principal</code> user property is a
+mandatory one, so if this mapping can&#8217;t happen, the authentication fails.</p>
+<p>If you are attempting to map a <code class="literal">NameID</code>, make sure that the expected <code class="literal">NameID</code> format matches the one that is sent.
+See <a class="xref" href="saml-guide.html#saml-attribute-mapping-nameid" title="Special attribute names">Special attribute names</a> for more details.</p>
+<p>If you are attempting to map a SAML attribute and it is not part of the list in the error message, it might mean
+that you have misspelled the attribute name, or that the IdP is not sending this particular attribute. You might
+be able to use another attribute from the list to map to <code class="literal">principal</code> or consult with your IdP administrator to
+determine if the required attribute can be sent.</p>
+</li>
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>Authentication in Kibana fails and the following error is printed in the Elasticsearch
+logs:</p>
+<pre class="literallayout">Cannot find [{urn:oasis:names:tc:SAML:2.0:metadata}IDPSSODescriptor]/[urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect] in descriptor</pre>
+
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>This error indicates that the SAML metadata for your Identity Provider do not contain a <code class="literal">&lt;SingleSignOnService&gt;</code> endpoint with binding of
+HTTP-Redirect (urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect). Elasticsearch supports only the <code class="literal">HTTP-Redirect</code> binding for SAML authentication
+requests (and it doesn&#8217;t support the <code class="literal">HTTP-POST</code> binding). Consult your IdP administrator in order to enable at least one
+<code class="literal">&lt;SingleSignOnService&gt;</code> supporting <code class="literal">HTTP-Redirect</code> binding and update your IdP SAML Metadata.</p>
+</li>
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>Authentication in Kibana fails and the following error is printed in the
+Elasticsearch logs:</p>
+<pre class="literallayout">Authentication to realm my-saml-realm failed -
+Provided SAML response is not valid for realm saml/my-saml-realm
+(Caused by ElasticsearchSecurityException[SAML Response is not a 'success' response:
+ The SAML IdP did not grant the request. It indicated that the Elastic Stack side sent
+ something invalid (urn:oasis:names:tc:SAML:2.0:status:Requester). Specific status code which might
+ indicate what the issue is: [urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy]]
+)</pre>
+
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>This means that the SAML Identity Provider failed to authenticate the user and
+sent a SAML Response to the Service Provider (Elastic Stack) indicating this failure.
+The message will convey whether the SAML Identity Provider thinks that the problem
+is with the Service Provider (Elastic Stack) or with the Identity Provider itself and
+the specific status code that follows is extremely useful as it usually indicates
+the underlying issue. The list of specific error codes is defined in the
+<a href="https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf" class="ulink" target="_top">SAML 2.0 Core specification - Section 3.2.2.2</a>
+and the most commonly encountered ones are:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<code class="literal">urn:oasis:names:tc:SAML:2.0:status:AuthnFailed</code>: The SAML Identity Provider failed to
+authenticate the user. There is not much to troubleshoot on the Elastic Stack side for this status, the logs of
+the SAML Identity Provider will hopefully offer much more information.
+</li>
+<li class="listitem">
+<code class="literal">urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy</code>: The SAML Identity Provider cannot support
+releasing a NameID with the requested format. When creating SAML Authentication Requests, Elasticsearch sets
+the NameIDPolicy element of the Authentication request with the appropriate value. This is controlled
+by the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html#ref-saml-settings" class="ulink" target="_top"><code class="literal">nameid_format</code></a> configuration parameter in
+<code class="literal">elasticsearch.yml</code>, which if not set defaults to <code class="literal">urn:oasis:names:tc:SAML:2.0:nameid-format:transient</code>.
+ This instructs the Identity Provider to return a NameID with that specific format in the SAML Response. If
+the SAML Identity Provider cannot grant that request, for example because it is configured to release a
+NameID format with <code class="literal">urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</code> format instead, it returns this error
+indicating an invalid NameID policy. This issue can be resolved by adjusting <code class="literal">nameid_format</code> to match the format
+the SAML Identity Provider can return or by setting it to <code class="literal">urn:oasis:names:tc:SAML:2.0:nameid-format:unspecified</code>
+so that the Identity Provider is allowed to return any format it wants.
+</li>
+</ol>
+</div>
+</li>
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>Authentication in Kibana fails and the following error is printed in the
+Elasticsearch logs:</p>
+<pre class="literallayout">The XML Signature of this SAML message cannot be validated. Please verify that the saml
+realm uses the correct SAMLmetadata file/URL for this Identity Provider</pre>
+
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>This means that Elasticsearch failed to validate the digital signature of the SAML
+message that the Identity Provider sent. Elasticsearch uses the public key of the
+Identity Provider that is included in the SAML metadata, in order to validate
+the signature that the IdP has created using its corresponding private key.
+Failure to do so, can have a number of causes:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+As the error message indicates, the most common cause is that the wrong
+metadata file is used and as such the public key it contains doesn&#8217;t correspond
+to the private key the Identity Provider uses.
+</li>
+<li class="listitem">
+The configuration of the Identity Provider has changed or the key has been
+rotated and the metadata file that Elasticsearch is using has not been updated.
+</li>
+<li class="listitem">
+The SAML Response has been altered in transit and the signature cannot be
+validated even though the correct key is used.
+</li>
+</ol>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The private keys and public keys and self-signed X.509 certificates that
+are used in SAML for digital signatures as described above have no relation to
+the keys and certificates that are used for TLS either on the transport or the
+http layer. A failure such as the one described above has nothing to do with
+your <code class="literal">xpack.ssl</code> related configuration.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<p>Users are unable to login with a local username and password in Kibana because
+SAML is enabled.</p>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>If you want your users to be able to use local credentials to authenticate to
+Kibana in addition to using the SAML realm for Single Sign-On, you must enable
+the <code class="literal">basic</code> <code class="literal">authProvider</code> in Kibana. The process is documented in the
+<a class="xref" href="saml-guide.html#saml-kibana-basic" title="Supporting SAML and basic authentication in Kibana">SAML Guide</a></p>
+</li>
+</ol>
+</div>
+<p><span class="strong strong"><strong>Logging:</strong></span></p>
+<p>Very detailed trace logging can be enabled specifically for the SAML realm by
+setting the following transient setting:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">PUT /_cluster/settings
+{
+  "transient": {
+    "logger.org.elasticsearch.xpack.security.authc.saml": "trace"
+  }
+}</pre>
+</div>
+<p>Alternatively, you can add the following lines to the end of the
+<code class="literal">log4j2.properties</code> configuration file in the <code class="literal">ES_PATH_CONF</code>:</p>
+<div class="pre_wrapper lang-properties">
+<pre class="programlisting prettyprint lang-properties">logger.saml.name = org.elasticsearch.xpack.security.authc.saml
+logger.saml.level = TRACE</pre>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="trb-security-internalserver"></a>Internal Server Error in Kibana<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+In 5.1.1, an <code class="literal">UnhandledPromiseRejectionWarning</code> occurs and Kibana displays an
+Internal Server Error.
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>If the Security plugin is enabled in Elasticsearch but disabled in Kibana, you must
+still set <code class="literal">elasticsearch.username</code> and <code class="literal">elasticsearch.password</code> in <code class="literal">kibana.yml</code>.
+Otherwise, Kibana cannot connect to Elasticsearch.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="trb-security-setup"></a>Setup-passwords command fails due to connection failure<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/setup-passwords.html" class="ulink" target="_top">elasticsearch-setup-passwords command</a> sets
+passwords for the built-in users by sending user management API requests. If
+your cluster uses SSL/TLS for the HTTP (REST) interface, the command attempts to
+establish a connection with the HTTPS protocol. If the connection attempt fails,
+the command fails.</p>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Elasticsearch is running HTTPS, but the command fails to detect it and returns the
+following errors:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">Cannot connect to elasticsearch node.
+java.net.SocketException: Unexpected end of file from server
+...
+ERROR: Failed to connect to elasticsearch at
+http://127.0.0.1:9200/_security/_authenticate?pretty.
+Is the URL correct and elasticsearch running?</pre>
+</div>
+</li>
+<li class="listitem">
+<p>SSL/TLS is configured, but trust cannot be established. The command returns
+the following errors:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">SSL connection to
+https://127.0.0.1:9200/_security/_authenticate?pretty
+failed: sun.security.validator.ValidatorException:
+PKIX path building failed:
+sun.security.provider.certpath.SunCertPathBuilderException:
+unable to find valid certification path to requested target
+Please check the elasticsearch SSL settings under
+xpack.security.http.ssl.
+...
+ERROR: Failed to establish SSL connection to elasticsearch at
+https://127.0.0.1:9200/_security/_authenticate?pretty.</pre>
+</div>
+</li>
+<li class="listitem">
+<p>The command fails because hostname verification fails, which results in the
+following errors:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">SSL connection to
+https://idp.localhost.test:9200/_security/_authenticate?pretty
+failed: java.security.cert.CertificateException:
+No subject alternative DNS name matching
+elasticsearch.example.com found.
+Please check the elasticsearch SSL settings under
+xpack.security.http.ssl.
+...
+ERROR: Failed to establish SSL connection to elasticsearch at
+https://elasticsearch.example.com:9200/_security/_authenticate?pretty.</pre>
+</div>
+</li>
+</ol>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+If your cluster uses TLS/SSL for the HTTP interface but the
+<code class="literal">elasticsearch-setup-passwords</code> command attempts to establish a non-secure
+connection, use the <code class="literal">--url</code> command option to explicitly specify an HTTPS URL.
+Alternatively, set the <code class="literal">xpack.security.http.ssl.enabled</code> setting to <code class="literal">true</code>.
+</li>
+<li class="listitem">
+If the command does not trust the Elasticsearch server, verify that you configured the
+<code class="literal">xpack.security.http.ssl.certificate_authorities</code> setting or the
+<code class="literal">xpack.security.http.ssl.truststore.path</code> setting.
+</li>
+<li class="listitem">
+If hostname verification fails, you can disable this verification by setting
+<code class="literal">xpack.security.http.ssl.verification_mode</code> to <code class="literal">certificate</code>.
+</li>
+</ol>
+</div>
+<p>For more information about these settings, see
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security Settings in Elasticsearch</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="trb-security-path"></a>Failures due to relocation of the configuration files<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/troubleshooting.asciidoc">edit</a></h2>
+</div></div></div>
+<p><span class="strong strong"><strong>Symptoms:</strong></span></p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Active Directory or LDAP realms might stop working after upgrading to Elasticsearch 6.3
+or later releases. In 6.4 or later releases, you might see messages in the Elasticsearch
+log that indicate a config file is in a deprecated location.
+</li>
+</ul>
+</div>
+<p><span class="strong strong"><strong>Resolution:</strong></span></p>
+<p>By default, in 6.2 and earlier releases, the security configuration files are
+located in the <code class="literal">ES_PATH_CONF/x-pack</code> directory, where <code class="literal">ES_PATH_CONF</code> is an
+environment variable that defines the location of the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/settings.html#config-files-location" class="ulink" target="_top">config directory</a>.</p>
+<p>In 6.3 and later releases, the config directory no longer contains an <code class="literal">x-pack</code>
+directory. The files that were stored in this folder, such as the
+<code class="literal">log4j2.properties</code>, <code class="literal">role_mapping.yml</code>, <code class="literal">roles.yml</code>, <code class="literal">users</code>, and <code class="literal">users_roles</code>
+files, now exist directly in the config directory.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If you upgraded to 6.3 or later releases, your old security
+configuration files still exist in an <code class="literal">x-pack</code> folder. That file path is
+deprecated, however, and you should move your files out of that folder.</p>
+</div>
+</div>
+<p>In 6.3 and later releases, settings such as <code class="literal">files.role_mapping</code> default to
+<code class="literal">ES_PATH_CONF/role_mapping.yml</code>. If you do not want to use the default locations,
+you must update the settings appropriately. See
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/security-settings.html" class="ulink" target="_top">Security settings in Elasticsearch</a>.</p>
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="encrypting-internode-communications.html">« Tutorial: Encrypting communications</a>
+</span>
+<span class="next">
+<a href="security-limitations.html">Security limitations »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

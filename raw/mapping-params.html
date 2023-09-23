@@ -1,0 +1,3474 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mapping parameters | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Mapping parameters | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="mapping.html" title="Mapping"/>
+<link rel="prev" href="mapping-fields.html" title="Metadata fields"/>
+<link rel="next" href="dynamic-mapping.html" title="Dynamic Mapping"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="mapping.html">Mapping</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="mapping-fields.html">« Metadata fields</a>
+</span>
+<span class="next">
+<a href="dynamic-mapping.html">Dynamic Mapping »</a>
+</span>
+</div>
+<div class="chapter">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="mapping-params"></a>Mapping parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The following pages provide detailed explanations of the various mapping
+parameters that are used by <a class="xref" href="mapping-types.html" title="Field data types">field mappings</a>:</p>
+<p>The following mapping parameters are common to some or all field data types:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="mapping-params.html#analyzer" title="analyzer"><code class="literal">analyzer</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#mapping-boost" title="boost"><code class="literal">boost</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#coerce" title="coerce"><code class="literal">coerce</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#copy-to" title="copy_to"><code class="literal">copy_to</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#doc-values" title="doc_values"><code class="literal">doc_values</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#dynamic" title="dynamic"><code class="literal">dynamic</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#eager-global-ordinals" title="eager_global_ordinals"><code class="literal">eager_global_ordinals</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#enabled" title="enabled"><code class="literal">enabled</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="getting-started-modify-data.html#fielddata" title="fielddata mapping parameter"><code class="literal">fielddata</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#multi-fields" title="fields"><code class="literal">fields</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#mapping-date-format" title="format"><code class="literal">format</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#ignore-above" title="ignore_above"><code class="literal">ignore_above</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#ignore-malformed" title="ignore_malformed"><code class="literal">ignore_malformed</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#index-options" title="index_options"><code class="literal">index_options</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#index-phrases" title="index_phrases"><code class="literal">index_phrases</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#index-prefixes" title="index_prefixes"><code class="literal">index_prefixes</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#mapping-index" title="index"><code class="literal">index</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#mapping-field-meta" title="meta"><code class="literal">meta</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#normalizer" title="normalizer"><code class="literal">normalizer</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#norms" title="norms"><code class="literal">norms</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#null-value" title="null_value"><code class="literal">null_value</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#position-increment-gap" title="position_increment_gap"><code class="literal">position_increment_gap</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#properties" title="properties"><code class="literal">properties</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#search-analyzer" title="search_analyzer"><code class="literal">search_analyzer</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#similarity" title="similarity"><code class="literal">similarity</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#mapping-store" title="store"><code class="literal">store</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-params.html#term-vector" title="term_vector"><code class="literal">term_vector</code></a>
+</li>
+</ul>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="analyzer"></a><code class="literal">analyzer</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/analyzer.asciidoc">edit</a></h2>
+</div></div></div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Only <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> fields support the <code class="literal">analyzer</code> mapping parameter.</p>
+</div>
+</div>
+<p>The <code class="literal">analyzer</code> parameter specifies the <a class="xref" href="analysis-concepts.html#analyzer-anatomy" title="Anatomy of an analyzer">analyzer</a> used for
+<a class="xref" href="analysis.html" title="Text analysis">text analysis</a> when indexing or searching a <code class="literal">text</code> field.</p>
+<p>Unless overridden with the <a class="xref" href="mapping-params.html#search-analyzer" title="search_analyzer"><code class="literal">search_analyzer</code></a> mapping
+parameter, this analyzer is used for both <a class="xref" href="analysis-concepts.html#analysis-index-search-time" title="Index and search analysis">index and
+search analysis</a>. See <a class="xref" href="configure-text-analysis.html#specify-analyzer" title="Specify an analyzer">Specify an analyzer</a>.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>We recommend testing analyzers before using them in production. See
+<a class="xref" href="configure-text-analysis.html#test-analyzer" title="Test an analyzer">Test an analyzer</a>.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="search-quote-analyzer"></a><code class="literal">search_quote_analyzer</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/analyzer.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">search_quote_analyzer</code> setting allows you to specify an analyzer for phrases, this is particularly useful when dealing with disabling
+stop words for phrase queries.</p>
+<p>To disable stop words for phrases a field utilising three analyzer settings will be required:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+An <code class="literal">analyzer</code> setting for indexing all terms including stop words
+</li>
+<li class="listitem">
+A <code class="literal">search_analyzer</code> setting for non-phrase queries that will remove stop words
+</li>
+<li class="listitem">
+A <code class="literal">search_quote_analyzer</code> setting for phrase queries that will not remove stop words
+</li>
+</ol>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+   "settings":{
+      "analysis":{
+         "analyzer":{
+            "my_analyzer":{ <a id="CO80-1"></a><i class="conum" data-value="1"></i>
+               "type":"custom",
+               "tokenizer":"standard",
+               "filter":[
+                  "lowercase"
+               ]
+            },
+            "my_stop_analyzer":{ <a id="CO80-2"></a><i class="conum" data-value="2"></i>
+               "type":"custom",
+               "tokenizer":"standard",
+               "filter":[
+                  "lowercase",
+                  "english_stop"
+               ]
+            }
+         },
+         "filter":{
+            "english_stop":{
+               "type":"stop",
+               "stopwords":"_english_"
+            }
+         }
+      }
+   },
+   "mappings":{
+       "properties":{
+          "title": {
+             "type":"text",
+             "analyzer":"my_analyzer", <a id="CO80-3"></a><i class="conum" data-value="3"></i>
+             "search_analyzer":"my_stop_analyzer", <a id="CO80-4"></a><i class="conum" data-value="4"></i>
+             "search_quote_analyzer":"my_analyzer" <a id="CO80-5"></a><i class="conum" data-value="5"></i>
+         }
+      }
+   }
+}
+
+PUT my-index-000001/_doc/1
+{
+   "title":"The Quick Brown Fox"
+}
+
+PUT my-index-000001/_doc/2
+{
+   "title":"A Quick Brown Fox"
+}
+
+GET my-index-000001/_search
+{
+   "query":{
+      "query_string":{
+         "query":"\"the quick brown fox\"" <a id="CO80-6"></a><i class="conum" data-value="6"></i>
+      }
+   }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/255.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO80-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">my_analyzer</code> analyzer which tokens all terms including stop words</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO80-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">my_stop_analyzer</code> analyzer which removes stop words</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO80-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">analyzer</code> setting that points to the <code class="literal">my_analyzer</code> analyzer which will be used at index time</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO80-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">search_analyzer</code> setting that points to the <code class="literal">my_stop_analyzer</code> and removes stop words for non-phrase queries</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO80-5"><i class="conum" data-value="5"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">search_quote_analyzer</code> setting that points to the <code class="literal">my_analyzer</code> analyzer and ensures that stop words are not removed from phrase queries</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO80-6"><i class="conum" data-value="6"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Since the query is wrapped in quotes it is detected as a phrase query therefore the <code class="literal">search_quote_analyzer</code> kicks in and ensures the stop words
+are not removed from the query. The <code class="literal">my_analyzer</code> analyzer will then return the following tokens [<code class="literal">the</code>, <code class="literal">quick</code>, <code class="literal">brown</code>, <code class="literal">fox</code>] which will match one
+of the documents. Meanwhile term queries will be analyzed with the <code class="literal">my_stop_analyzer</code> analyzer which will filter out stop words. So a search for either
+<code class="literal">The quick brown fox</code> or <code class="literal">A quick brown fox</code> will return both documents since both documents contain the following tokens [<code class="literal">quick</code>, <code class="literal">brown</code>, <code class="literal">fox</code>].
+Without the <code class="literal">search_quote_analyzer</code> it would not be possible to do exact matches for phrase queries as the stop words from phrase queries would be
+removed resulting in both documents matching.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="mapping-boost"></a><code class="literal">boost</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/boost.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Individual fields can be <em>boosted</em> automatically&#8201;&#8212;&#8201;count more towards the relevance score&#8201;&#8212;&#8201;at query time, with the <code class="literal">boost</code> parameter as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "boost": 2 <a id="CO81-1"></a><i class="conum" data-value="1"></i>
+      },
+      "content": {
+        "type": "text"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/256.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO81-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Matches on the <code class="literal">title</code> field will have twice the weight as those on the
+<code class="literal">content</code> field, which has the default <code class="literal">boost</code> of <code class="literal">1.0</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The boost is applied only for term queries (prefix, range and fuzzy queries are not <em>boosted</em>).</p>
+</div>
+</div>
+<p>You can achieve the same effect by using the boost parameter directly in the query, for instance the following query (with field time boost):</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _search
+{
+  "query": {
+    "match": {
+      "title": {
+        "query": "quick brown fox"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/257.console"></div>
+<p>is equivalent to:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _search
+{
+  "query": {
+    "match": {
+      "title": {
+        "query": "quick brown fox",
+        "boost": 2
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/258.console"></div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3>Deprecated in 5.0.0.</h3>
+<p>Index time boost is deprecated.  Instead, the field mapping boost is applied at query time. For indices created before 5.0.0, the boost will still be applied at index time.</p>
+</div>
+</div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3>Why index time boosting is a bad idea</h3>
+<p>We advise against using index time boosting for the following reasons:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+You cannot change index-time <code class="literal">boost</code> values without reindexing all of your
+documents.
+</li>
+<li class="listitem">
+Every query supports query-time boosting which achieves the same effect. The
+difference is that you can tweak the <code class="literal">boost</code> value without having to reindex.
+</li>
+<li class="listitem">
+Index-time boosts are stored as part of the <a class="xref" href="mapping-params.html#norms" title="norms"><code class="literal">norm</code></a>, which is only one
+byte.  This reduces the resolution of the field length normalization factor
+which can lead to lower quality relevance calculations.
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="coerce"></a><code class="literal">coerce</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/coerce.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Data is not always clean.  Depending on how it is produced a number might be
+rendered in the JSON body as a true JSON number, e.g. <code class="literal">5</code>, but it might also
+be rendered as a string, e.g. <code class="literal">"5"</code>.  Alternatively, a number that should be
+an integer might instead be rendered as a floating point, e.g. <code class="literal">5.0</code>, or even
+<code class="literal">"5.0"</code>.</p>
+<p>Coercion attempts to clean up dirty values to fit the data type of a field.
+For instance:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Strings will be coerced to numbers.
+</li>
+<li class="listitem">
+Floating points will be truncated for integer values.
+</li>
+</ul>
+</div>
+<p>For instance:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "number_one": {
+        "type": "integer"
+      },
+      "number_two": {
+        "type": "integer",
+        "coerce": false
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "number_one": "10" <a id="CO82-1"></a><i class="conum" data-value="1"></i>
+}
+
+PUT my-index-000001/_doc/2
+{
+  "number_two": "10" <a id="CO82-2"></a><i class="conum" data-value="2"></i>
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/259.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO82-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">number_one</code> field will contain the integer <code class="literal">10</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO82-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This document will be rejected because coercion is disabled.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">coerce</code> setting value can be updated on existing fields
+using the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping API</a>.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="coerce-setting"></a>Index-level default<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/coerce.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">index.mapping.coerce</code> setting can be set on the index level to disable
+coercion globally across all mapping types:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "settings": {
+    "index.mapping.coerce": false
+  },
+  "mappings": {
+    "properties": {
+      "number_one": {
+        "type": "integer",
+        "coerce": true
+      },
+      "number_two": {
+        "type": "integer"
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{ "number_one": "10" } <a id="CO83-1"></a><i class="conum" data-value="1"></i>
+
+PUT my-index-000001/_doc/2
+{ "number_two": "10" } <a id="CO83-2"></a><i class="conum" data-value="2"></i></pre>
+</div>
+<div class="console_widget" data-snippet="snippets/260.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO83-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">number_one</code> field overrides the index level setting to enable coercion.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO83-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This document will be rejected because the <code class="literal">number_two</code> field inherits the index-level coercion setting.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="copy-to"></a><code class="literal">copy_to</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/copy-to.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The <code class="literal">copy_to</code> parameter allows you to copy the values of multiple
+fields into a group field, which can then be queried as a single
+field.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If you often search multiple fields, you can improve search speeds by using
+<code class="literal">copy_to</code> to search fewer fields. See <a class="xref" href="tune-for-search-speed.html#search-as-few-fields-as-possible" title="Search as few fields as possible">Search as few fields as possible</a>.</p>
+</div>
+</div>
+<p>For example, the <code class="literal">first_name</code> and <code class="literal">last_name</code> fields can be copied to
+the <code class="literal">full_name</code> field as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "first_name": {
+        "type": "text",
+        "copy_to": "full_name" <a id="CO84-1"></a><i class="conum" data-value="1"></i>
+      },
+      "last_name": {
+        "type": "text",
+        "copy_to": "full_name" <a id="CO84-2"></a><i class="conum" data-value="1"></i>
+      },
+      "full_name": {
+        "type": "text"
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "first_name": "John",
+  "last_name": "Smith"
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "match": {
+      "full_name": { <a id="CO84-3"></a><i class="conum" data-value="2"></i>
+        "query": "John Smith",
+        "operator": "and"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/261.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO84-1"><i class="conum" data-value="1"></i></a><a href="#CO84-2"></a></p>
+</td>
+<td align="left" valign="top">
+<p>The values of the <code class="literal">first_name</code> and <code class="literal">last_name</code> fields are copied to the
+<code class="literal">full_name</code> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO84-3"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">first_name</code> and <code class="literal">last_name</code> fields can still be queried for the
+first name and last name respectively, but the <code class="literal">full_name</code> field can be
+queried for both first and last names.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>Some important points:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+It is the field <em>value</em> which is copied, not the terms (which result from the analysis process).
+</li>
+<li class="listitem">
+The original <a class="xref" href="mapping-fields.html#mapping-source-field" title="_source field"><code class="literal">_source</code></a> field will not be modified to show the copied values.
+</li>
+<li class="listitem">
+The same value can be copied to multiple fields, with <code class="literal">"copy_to": [ "field_1", "field_2" ]</code>
+</li>
+<li class="listitem">
+You cannot copy recursively via intermediary fields such as a <code class="literal">copy_to</code> on
+<code class="literal">field_1</code> to <code class="literal">field_2</code> and <code class="literal">copy_to</code> on <code class="literal">field_2</code> to <code class="literal">field_3</code> expecting
+indexing into <code class="literal">field_1</code> will eventuate in <code class="literal">field_3</code>, instead use copy_to
+directly to multiple fields from the originating field.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="doc-values"></a><code class="literal">doc_values</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/doc-values.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Most fields are <a class="xref" href="mapping-params.html#mapping-index" title="index">indexed</a> by default, which makes them
+searchable. The inverted index allows queries to look up the search term in
+unique sorted list of terms, and from that immediately have access to the list
+of documents that contain the term.</p>
+<p>Sorting, aggregations, and access to field values in scripts requires a
+different data access pattern.  Instead of looking up the term and finding
+documents, we need to be able to look up the document and find the terms that
+it has in a field.</p>
+<p>Doc values are the on-disk data structure, built at document index time, which
+makes this data access pattern possible. They store the same values as the
+<code class="literal">_source</code> but in a column-oriented fashion that is way more efficient for
+sorting and aggregations. Doc values are supported on almost all field types,
+with the <em>notable exception of <code class="literal">text</code> and <code class="literal">annotated_text</code> fields</em>.</p>
+<p>All fields which support doc values have them enabled by default. If you are
+sure that you don&#8217;t need to sort or aggregate on a field, or access the field
+value from a script, you can disable doc values in order to save disk space:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "status_code": { <a id="CO85-1"></a><i class="conum" data-value="1"></i>
+        "type":       "keyword"
+      },
+      "session_id": { <a id="CO85-2"></a><i class="conum" data-value="2"></i>
+        "type":       "keyword",
+        "doc_values": false
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/262.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO85-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">status_code</code> field has <code class="literal">doc_values</code> enabled by default.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO85-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">session_id</code> has <code class="literal">doc_values</code> disabled, but can still be queried.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You cannot disable doc values for <a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a>
+fields.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="dynamic"></a><code class="literal">dynamic</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/dynamic.asciidoc">edit</a></h2>
+</div></div></div>
+<p>By default, fields can be added <em>dynamically</em> to a document, or to
+<a class="xref" href="mapping-types.html#object" title="Object field type">inner objects</a> within a document, just by indexing a document
+containing the new field.  For instance:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/1 <a id="CO86-1"></a><i class="conum" data-value="1"></i>
+{
+  "username": "johnsmith",
+  "name": {
+    "first": "John",
+    "last": "Smith"
+  }
+}
+
+GET my-index-000001/_mapping <a id="CO86-2"></a><i class="conum" data-value="2"></i>
+
+PUT my-index-000001/_doc/2 <a id="CO86-3"></a><i class="conum" data-value="3"></i>
+{
+  "username": "marywhite",
+  "email": "mary@white.com",
+  "name": {
+    "first": "Mary",
+    "middle": "Alice",
+    "last": "White"
+  }
+}
+
+GET my-index-000001/_mapping <a id="CO86-4"></a><i class="conum" data-value="4"></i></pre>
+</div>
+<div class="console_widget" data-snippet="snippets/263.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO86-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This document introduces the string field <code class="literal">username</code>, the object field
+<code class="literal">name</code>, and two string fields under the <code class="literal">name</code> object which can be
+referred to as <code class="literal">name.first</code> and <code class="literal">name.last</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO86-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Check the mapping to verify the above.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO86-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This document adds two string fields: <code class="literal">email</code> and <code class="literal">name.middle</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO86-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Check the mapping to verify the changes.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The details of how new fields are detected and added to the mapping is explained in <a class="xref" href="dynamic-mapping.html" title="Dynamic Mapping"><em>Dynamic Mapping</em></a>.</p>
+<p>The <code class="literal">dynamic</code> setting controls whether new fields can be added dynamically or
+not.  It accepts three settings:</p>
+<div class="informaltable">
+<table border="0" cellpadding="4px">
+<colgroup>
+<col/>
+<col/>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td valign="top">
+<p>
+<code class="literal">true</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Newly detected fields are added to the mapping. (default)
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">false</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Newly detected fields are ignored. These fields will not be indexed so will not be searchable
+but will still appear in the <code class="literal">_source</code> field of returned hits. These fields will not be added
+to the mapping,  new fields must be added explicitly.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">strict</code>
+</p>
+</td>
+<td valign="top">
+<p>
+If new fields are detected, an exception is thrown and the document is rejected. New fields
+must be explicitly added to the mapping.
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The <code class="literal">dynamic</code> setting may be set at the mapping type level, and on each
+<a class="xref" href="mapping-types.html#object" title="Object field type">inner object</a>.  Inner objects inherit the setting from their parent
+object or from the mapping type.  For instance:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "dynamic": false, <a id="CO87-1"></a><i class="conum" data-value="1"></i>
+    "properties": {
+      "user": { <a id="CO87-2"></a><i class="conum" data-value="2"></i>
+        "properties": {
+          "name": {
+            "type": "text"
+          },
+          "social_networks": { <a id="CO87-3"></a><i class="conum" data-value="3"></i>
+            "dynamic": true,
+            "properties": {}
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/264.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO87-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Dynamic mapping is disabled at the type level, so no new top-level fields will be added dynamically.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO87-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">user</code> object inherits the type-level setting.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO87-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">user.social_networks</code> object enables dynamic mapping, so new fields may be added to this inner object.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">dynamic</code> setting can be updated on existing fields
+using the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping API</a>.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="eager-global-ordinals"></a><code class="literal">eager_global_ordinals</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/eager-global-ordinals.asciidoc">edit</a></h2>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_what_are_global_ordinals"></a>What are global ordinals?<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/eager-global-ordinals.asciidoc">edit</a></h3>
+</div></div></div>
+<p>To support aggregations and other operations that require looking up field
+values on a per-document basis, Elasticsearch uses a data structure called
+<a class="xref" href="mapping-params.html#doc-values" title="doc_values">doc values</a>. Term-based field types such as <code class="literal">keyword</code> store
+their doc values using an ordinal mapping for a more compact representation.
+This mapping works by assigning each term an incremental integer or <em>ordinal</em>
+based on its lexicographic order. The field&#8217;s doc values store only the
+ordinals for each document instead of the original terms, with a separate
+lookup structure to convert between ordinals and terms.</p>
+<p>When used during aggregations, ordinals can greatly improve performance. As an
+example, the <code class="literal">terms</code> aggregation relies only on ordinals to collect documents
+into buckets at the shard-level, then converts the ordinals back to their
+original term values when combining results across shards.</p>
+<p>Each index segment defines its own ordinal mapping, but aggregations collect
+data across an entire shard. So to be able to use ordinals for shard-level
+operations like aggregations, Elasticsearch creates a unified mapping called
+<em>global ordinals</em>. The global ordinal mapping is built on top of segment
+ordinals, and works by maintaining a map from global ordinal to the local
+ordinal for each segment.</p>
+<p>Global ordinals are used if a search contains any of the following components:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Certain bucket aggregations on <code class="literal">keyword</code>, <code class="literal">ip</code>, and <code class="literal">flattened</code> fields. This
+includes <code class="literal">terms</code> aggregations as mentioned above, as well as <code class="literal">composite</code>,
+<code class="literal">diversified_sampler</code>, and <code class="literal">significant_terms</code>.
+</li>
+<li class="listitem">
+Bucket aggregations on <code class="literal">text</code> fields that require <a class="xref" href="getting-started-modify-data.html#fielddata" title="fielddata mapping parameter"><code class="literal">fielddata</code></a>
+to be enabled.
+</li>
+<li class="listitem">
+Operations on parent and child documents from a <code class="literal">join</code> field, including
+<code class="literal">has_child</code> queries and <code class="literal">parent</code> aggregations.
+</li>
+</ul>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The global ordinal mapping uses heap memory as part of the
+<a class="xref" href="settings.html#modules-fielddata" title="Field data cache settings">field data cache</a>. Aggregations on high cardinality fields
+can use a lot of memory and trigger the <a class="xref" href="settings.html#fielddata-circuit-breaker" title="Field data circuit breaker">field data
+circuit breaker</a>.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_loading_global_ordinals"></a>Loading global ordinals<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/eager-global-ordinals.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The global ordinal mapping must be built before ordinals can be used during a
+search. By default, the mapping is loaded during search on the first time that
+global ordinals are needed. This is is the right approach if you are optimizing
+for indexing speed, but if search performance is a priority, it&#8217;s recommended
+to eagerly load global ordinals eagerly on fields that will be used in
+aggregations:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_mapping
+{
+  "properties": {
+    "tags": {
+      "type": "keyword",
+      "eager_global_ordinals": true
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/265.console"></div>
+<p>When <code class="literal">eager_global_ordinals</code> is enabled, global ordinals are built when a shard
+is <a class="xref" href="indices.html#indices-refresh" title="Refresh API">refreshed</a>&#8201;&#8212;&#8201;Elasticsearch always loads them before
+exposing changes to the content of the index. This shifts the cost of building
+global ordinals from search to index-time. Elasticsearch will also eagerly
+build global ordinals when creating a new copy of a shard, as can occur when
+increasing the number of replicas or relocating a shard onto a new node.</p>
+<p>Eager loading can be disabled at any time by updating the <code class="literal">eager_global_ordinals</code> setting:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_mapping
+{
+  "properties": {
+    "tags": {
+      "type": "keyword",
+      "eager_global_ordinals": false
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/266.console"></div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>On a <a class="xref" href="frozen-indices.html" title="Frozen indices">frozen index</a>, global ordinals are discarded
+after each search and rebuilt again when they&#8217;re requested. This means that
+<code class="literal">eager_global_ordinals</code> should not be used on frozen indices: it would
+cause global ordinals to be reloaded on every search. Instead, the index should
+be force-merged to a single segment before being frozen. This avoids building
+global ordinals altogether (more details can be found in the next section).</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_avoiding_global_ordinal_loading"></a>Avoiding global ordinal loading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/eager-global-ordinals.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Usually, global ordinals do not present a large overhead in terms of their
+loading time and memory usage. However, loading global ordinals can be
+expensive on indices with large shards, or if the fields contain a large
+number of unique term values. Because global ordinals provide a unified mapping
+for all segments on the shard, they also need to be rebuilt entirely when a new
+segment becomes visible.</p>
+<p>In some cases it is possible to avoid global ordinal loading altogether:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The <code class="literal">terms</code>, <code class="literal">sampler</code>, and <code class="literal">significant_terms</code> aggregations support a
+parameter
+<a class="xref" href="search-aggregations-bucket.html#search-aggregations-bucket-terms-aggregation-execution-hint" title="Execution hint"><code class="literal">execution_hint</code></a>
+that helps control how buckets are collected. It defaults to <code class="literal">global_ordinals</code>,
+but can be set to <code class="literal">map</code> to instead use the term values directly.
+</li>
+<li class="listitem">
+If a shard has been <a class="xref" href="indices.html#indices-forcemerge" title="Force merge API">force-merged</a> down to a single
+segment, then its segment ordinals are already <em>global</em> to the shard. In this
+case, Elasticsearch does not need to build a global ordinal mapping and there
+is no additional overhead from using global ordinals. Note that for performance
+reasons you should only force-merge an index to which you will never write to
+again.
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="enabled"></a><code class="literal">enabled</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/enabled.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Elasticsearch tries to index all of the fields you give it, but sometimes you
+want to just store the field without indexing it.  For instance, imagine that
+you are using Elasticsearch as a web session store.  You may want to index the
+session ID and last update time, but you don&#8217;t need to query or run
+aggregations on the session data itself.</p>
+<p>The <code class="literal">enabled</code> setting, which can be applied only to the top-level mapping
+definition and to <a class="xref" href="mapping-types.html#object" title="Object field type"><code class="literal">object</code></a> fields, causes Elasticsearch to skip
+parsing of the contents of the field entirely.  The JSON can still be retrieved
+from the <a class="xref" href="mapping-fields.html#mapping-source-field" title="_source field"><code class="literal">_source</code></a> field, but it is not searchable or
+stored in any other way:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "user_id": {
+        "type":  "keyword"
+      },
+      "last_updated": {
+        "type": "date"
+      },
+      "session_data": { <a id="CO88-1"></a><i class="conum" data-value="1"></i>
+        "type": "object",
+        "enabled": false
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/session_1
+{
+  "user_id": "kimchy",
+  "session_data": { <a id="CO88-2"></a><i class="conum" data-value="2"></i>
+    "arbitrary_object": {
+      "some_array": [ "foo", "bar", { "baz": 2 } ]
+    }
+  },
+  "last_updated": "2015-12-06T18:20:22"
+}
+
+PUT my-index-000001/_doc/session_2
+{
+  "user_id": "jpountz",
+  "session_data": "none", <a id="CO88-3"></a><i class="conum" data-value="3"></i>
+  "last_updated": "2015-12-06T18:22:13"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/267.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO88-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">session_data</code> field is disabled.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO88-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Any arbitrary data can be passed to the <code class="literal">session_data</code> field as it will be entirely ignored.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO88-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">session_data</code> will also ignore values that are not JSON objects.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The entire mapping may be disabled as well, in which case the document is
+stored in the <a class="xref" href="mapping-fields.html#mapping-source-field" title="_source field"><code class="literal">_source</code></a> field, which means it can be
+retrieved, but none of its contents are indexed in any way:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "enabled": false <a id="CO89-1"></a><i class="conum" data-value="1"></i>
+  }
+}
+
+PUT my-index-000001/_doc/session_1
+{
+  "user_id": "kimchy",
+  "session_data": {
+    "arbitrary_object": {
+      "some_array": [ "foo", "bar", { "baz": 2 } ]
+    }
+  },
+  "last_updated": "2015-12-06T18:20:22"
+}
+
+GET my-index-000001/_doc/session_1 <a id="CO89-2"></a><i class="conum" data-value="2"></i>
+
+GET my-index-000001/_mapping <a id="CO89-3"></a><i class="conum" data-value="3"></i></pre>
+</div>
+<div class="console_widget" data-snippet="snippets/268.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO89-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The entire mapping is disabled.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO89-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The document can be retrieved.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO89-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Checking the mapping reveals that no fields have been added.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The <code class="literal">enabled</code> setting for existing fields and the top-level mapping
+definition cannot be updated.</p>
+<p>Note that because Elasticsearch completely skips parsing the field
+contents, it is possible to add non-object data to a disabled field:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "session_data": {
+        "type": "object",
+        "enabled": false
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/session_1
+{
+  "session_data": "foo bar" <a id="CO90-1"></a><i class="conum" data-value="1"></i>
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/269.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO90-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The document is added successfully, even though <code class="literal">session_data</code> contains non-object data.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="mapping-date-format"></a><code class="literal">format</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/format.asciidoc">edit</a></h2>
+</div></div></div>
+<p>In JSON documents, dates are represented as strings. Elasticsearch uses a set
+of preconfigured formats to recognize and parse these strings into a long
+value representing <em>milliseconds-since-the-epoch</em> in UTC.</p>
+<p>Besides the <a class="xref" href="mapping-params.html#built-in-date-formats" title="Built In Formats">built-in formats</a>, your own
+<a class="xref" href="mapping-params.html#custom-date-formats" title="Custom date formats">custom formats</a> can be specified using the familiar
+<code class="literal">yyyy/MM/dd</code> syntax:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "date": {
+        "type":   "date",
+        "format": "yyyy-MM-dd"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/270.console"></div>
+<p>Many APIs which support date values also support <a class="xref" href="api-conventions.html#date-math" title="Date Math">date math</a>
+expressions, such as <code class="literal">now-1m/d</code>&#8201;&#8212;&#8201;the current time, minus one month, rounded
+down to the nearest day.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="custom-date-formats"></a>Custom date formats<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/format.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Completely customizable date formats are supported.  The syntax for these is explained
+<a href="https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html" class="ulink" target="_top">DateTimeFormatter docs</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="built-in-date-formats"></a>Built In Formats<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/format.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Most of the below formats have a <code class="literal">strict</code> companion format, which means that
+year, month and day parts of the week must use respectively 4, 2 and 2 digits
+exactly, potentially prepending zeros. For instance a date like <code class="literal">5/11/1</code> would
+be considered invalid and would need to be rewritten to <code class="literal">2005/11/01</code> to be
+accepted by the date parser.</p>
+<p>To use them, you need to prepend <code class="literal">strict_</code> to the name of the date format, for
+instance <code class="literal">strict_date_optional_time</code> instead of <code class="literal">date_optional_time</code>.</p>
+<p>These strict date formats are especially useful when
+<a class="xref" href="dynamic-mapping.html#date-detection" title="Date detection">date fields are dynamically mapped</a> in order to make sure to
+not accidentally map irrelevant strings as dates.</p>
+<p>The following tables lists all the defaults ISO formats supported:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">epoch_millis</code>
+</span>
+</dt>
+<dd>
+A formatter for the number of milliseconds since the epoch. Note, that
+this timestamp is subject to the limits of a Java <code class="literal">Long.MIN_VALUE</code> and
+<code class="literal">Long.MAX_VALUE</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">epoch_second</code>
+</span>
+</dt>
+<dd>
+A formatter for the number of seconds since the epoch. Note, that this
+timestamp is subject to the limits of a Java <code class="literal">Long.MIN_VALUE</code> and <code class="literal">Long.
+MAX_VALUE</code> divided by 1000 (the number of milliseconds in a second).
+</dd>
+<dt>
+<span class="term">
+<a id="strict-date-time"></a><code class="literal">date_optional_time</code> or <code class="literal">strict_date_optional_time</code>
+</span>
+</dt>
+<dd>
+A generic ISO datetime parser, where the date must include the year at a minimum, and the time
+(separated by <code class="literal">T</code>), is optional.
+Examples: <code class="literal">yyyy-MM-dd'T'HH:mm:ss.SSSZ</code> or  <code class="literal">yyyy-MM-dd</code>.
+</dd>
+<dt>
+<span class="term">
+<a id="strict-date-time-nanos"></a><code class="literal">strict_date_optional_time_nanos</code>
+</span>
+</dt>
+<dd>
+A generic ISO datetime parser, where the date must include the year at a minimum, and the time
+(separated by <code class="literal">T</code>), is optional. The fraction of a second
+part has a nanosecond resolution.
+Examples: <code class="literal">yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ</code> or  <code class="literal">yyyy-MM-dd</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_date</code>
+</span>
+</dt>
+<dd>
+A basic formatter for a full date as four digit year, two digit month of
+year, and two digit day of month: <code class="literal">yyyyMMdd</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_date_time</code>
+</span>
+</dt>
+<dd>
+A basic formatter that combines a basic date and time, separated by a <em>T</em>:
+<code class="literal">yyyyMMdd'T'HHmmss.SSSZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_date_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A basic formatter that combines a basic date and time without millis,
+separated by a <em>T</em>: <code class="literal">yyyyMMdd'T'HHmmssZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_ordinal_date</code>
+</span>
+</dt>
+<dd>
+A formatter for a full ordinal date, using a four digit year and three
+digit dayOfYear: <code class="literal">yyyyDDD</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_ordinal_date_time</code>
+</span>
+</dt>
+<dd>
+A formatter for a full ordinal date and time, using a four digit year and
+three digit dayOfYear: <code class="literal">yyyyDDD'T'HHmmss.SSSZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_ordinal_date_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A formatter for a full ordinal date and time without millis, using a four
+digit year and three digit dayOfYear: <code class="literal">yyyyDDD'T'HHmmssZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_time</code>
+</span>
+</dt>
+<dd>
+A basic formatter for a two digit hour of day, two digit minute of hour,
+two digit second of minute, three digit millis, and time zone offset:
+<code class="literal">HHmmss.SSSZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A basic formatter for a two digit hour of day, two digit minute of hour,
+two digit second of minute, and time zone offset: <code class="literal">HHmmssZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_t_time</code>
+</span>
+</dt>
+<dd>
+A basic formatter for a two digit hour of day, two digit minute of hour,
+two digit second of minute, three digit millis, and time zone off set
+prefixed by <em>T</em>: <code class="literal">'T'HHmmss.SSSZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_t_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A basic formatter for a two digit hour of day, two digit minute of hour,
+two digit second of minute, and time zone offset prefixed by <em>T</em>:
+<code class="literal">'T'HHmmssZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_week_date</code> or <code class="literal">strict_basic_week_date</code>
+</span>
+</dt>
+<dd>
+A basic formatter for a full date as four digit weekyear, two digit week
+of weekyear, and one digit day of week: <code class="literal">xxxx'W'wwe</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_week_date_time</code> or <code class="literal">strict_basic_week_date_time</code>
+</span>
+</dt>
+<dd>
+A basic formatter that combines a basic weekyear date and time, separated
+by a <em>T</em>: <code class="literal">xxxx'W'wwe'T'HHmmss.SSSZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">basic_week_date_time_no_millis</code> or <code class="literal">strict_basic_week_date_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A basic formatter that combines a basic weekyear date and time without
+millis, separated by a <em>T</em>: <code class="literal">xxxx'W'wwe'T'HHmmssZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">date</code> or <code class="literal">strict_date</code>
+</span>
+</dt>
+<dd>
+A formatter for a full date as four digit year, two digit month of year,
+and two digit day of month: <code class="literal">yyyy-MM-dd</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">date_hour</code> or <code class="literal">strict_date_hour</code>
+</span>
+</dt>
+<dd>
+A formatter that combines a full date and two digit hour of day:
+<code class="literal">yyyy-MM-dd'T'HH</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">date_hour_minute</code> or <code class="literal">strict_date_hour_minute</code>
+</span>
+</dt>
+<dd>
+A formatter that combines a full date, two digit hour of day, and two
+digit minute of hour: <code class="literal">yyyy-MM-dd'T'HH:mm</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">date_hour_minute_second</code> or <code class="literal">strict_date_hour_minute_second</code>
+</span>
+</dt>
+<dd>
+A formatter that combines a full date, two digit hour of day, two digit
+minute of hour, and two digit second of minute: <code class="literal">yyyy-MM-dd'T'HH:mm:ss</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">date_hour_minute_second_fraction</code> or <code class="literal">strict_date_hour_minute_second_fraction</code>
+</span>
+</dt>
+<dd>
+A formatter that combines a full date, two digit hour of day, two digit
+minute of hour, two digit second of minute, and three digit fraction of
+second: <code class="literal">yyyy-MM-dd'T'HH:mm:ss.SSS</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">date_hour_minute_second_millis</code> or <code class="literal">strict_date_hour_minute_second_millis</code>
+</span>
+</dt>
+<dd>
+A formatter that combines a full date, two digit hour of day, two digit
+minute of hour, two digit second of minute, and three digit fraction of
+second: <code class="literal">yyyy-MM-dd'T'HH:mm:ss.SSS</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">date_time</code> or <code class="literal">strict_date_time</code>
+</span>
+</dt>
+<dd>
+A formatter that combines a full date and time, separated by a <em>T</em>:
+<code class="literal">yyyy-MM-dd'T'HH:mm:ss.SSSZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">date_time_no_millis</code> or <code class="literal">strict_date_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A formatter that combines a full date and time without millis, separated
+by a <em>T</em>: <code class="literal">yyyy-MM-dd'T'HH:mm:ssZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">hour</code> or <code class="literal">strict_hour</code>
+</span>
+</dt>
+<dd>
+A formatter for a two digit hour of day: <code class="literal">HH</code>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">hour_minute</code> or <code class="literal">strict_hour_minute</code>
+</span>
+</dt>
+<dd>
+A formatter for a two digit hour of day and two digit minute of hour:
+<code class="literal">HH:mm</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">hour_minute_second</code> or <code class="literal">strict_hour_minute_second</code>
+</span>
+</dt>
+<dd>
+A formatter for a two digit hour of day, two digit minute of hour, and two
+digit second of minute: <code class="literal">HH:mm:ss</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">hour_minute_second_fraction</code> or <code class="literal">strict_hour_minute_second_fraction</code>
+</span>
+</dt>
+<dd>
+A formatter for a two digit hour of day, two digit minute of hour, two
+digit second of minute, and three digit fraction of second: <code class="literal">HH:mm:ss.SSS</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">hour_minute_second_millis</code> or <code class="literal">strict_hour_minute_second_millis</code>
+</span>
+</dt>
+<dd>
+A formatter for a two digit hour of day, two digit minute of hour, two
+digit second of minute, and three digit fraction of second: <code class="literal">HH:mm:ss.SSS</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">ordinal_date</code> or <code class="literal">strict_ordinal_date</code>
+</span>
+</dt>
+<dd>
+A formatter for a full ordinal date, using a four digit year and three
+digit dayOfYear: <code class="literal">yyyy-DDD</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">ordinal_date_time</code> or <code class="literal">strict_ordinal_date_time</code>
+</span>
+</dt>
+<dd>
+A formatter for a full ordinal date and time, using a four digit year and
+three digit dayOfYear: <code class="literal">yyyy-DDD'T'HH:mm:ss.SSSZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">ordinal_date_time_no_millis</code> or <code class="literal">strict_ordinal_date_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A formatter for a full ordinal date and time without millis, using a four
+digit year and three digit dayOfYear: <code class="literal">yyyy-DDD'T'HH:mm:ssZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">time</code> or <code class="literal">strict_time</code>
+</span>
+</dt>
+<dd>
+A formatter for a two digit hour of day, two digit minute of hour, two
+digit second of minute, three digit fraction of second, and time zone
+offset: <code class="literal">HH:mm:ss.SSSZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">time_no_millis</code> or <code class="literal">strict_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A formatter for a two digit hour of day, two digit minute of hour, two
+digit second of minute, and time zone offset: <code class="literal">HH:mm:ssZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">t_time</code> or <code class="literal">strict_t_time</code>
+</span>
+</dt>
+<dd>
+A formatter for a two digit hour of day, two digit minute of hour, two
+digit second of minute, three digit fraction of second, and time zone
+offset prefixed by <em>T</em>: <code class="literal">'T'HH:mm:ss.SSSZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">t_time_no_millis</code> or <code class="literal">strict_t_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A formatter for a two digit hour of day, two digit minute of hour, two
+digit second of minute, and time zone offset prefixed by <em>T</em>: <code class="literal">'T'HH:mm:ssZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">week_date</code> or <code class="literal">strict_week_date</code>
+</span>
+</dt>
+<dd>
+A formatter for a full date as four digit weekyear, two digit week of
+weekyear, and one digit day of week: <code class="literal">xxxx-'W'ww-e</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">week_date_time</code> or <code class="literal">strict_week_date_time</code>
+</span>
+</dt>
+<dd>
+A formatter that combines a full weekyear date and time, separated by a
+<em>T</em>: <code class="literal">xxxx-'W'ww-e'T'HH:mm:ss.SSSZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">week_date_time_no_millis</code> or <code class="literal">strict_week_date_time_no_millis</code>
+</span>
+</dt>
+<dd>
+A formatter that combines a full weekyear date and time without millis,
+separated by a <em>T</em>: <code class="literal">xxxx-'W'ww-e'T'HH:mm:ssZZ</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">weekyear</code> or <code class="literal">strict_weekyear</code>
+</span>
+</dt>
+<dd>
+A formatter for a four digit weekyear: <code class="literal">xxxx</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">weekyear_week</code> or <code class="literal">strict_weekyear_week</code>
+</span>
+</dt>
+<dd>
+A formatter for a four digit weekyear and two digit week of weekyear:
+<code class="literal">xxxx-'W'ww</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">weekyear_week_day</code> or <code class="literal">strict_weekyear_week_day</code>
+</span>
+</dt>
+<dd>
+A formatter for a four digit weekyear, two digit week of weekyear, and one
+digit day of week: <code class="literal">xxxx-'W'ww-e</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">year</code> or <code class="literal">strict_year</code>
+</span>
+</dt>
+<dd>
+A formatter for a four digit year: <code class="literal">yyyy</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">year_month</code> or <code class="literal">strict_year_month</code>
+</span>
+</dt>
+<dd>
+A formatter for a four digit year and two digit month of year: <code class="literal">yyyy-MM</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">year_month_day</code> or <code class="literal">strict_year_month_day</code>
+</span>
+</dt>
+<dd>
+A formatter for a four digit year, two digit month of year, and two digit
+day of month: <code class="literal">yyyy-MM-dd</code>.
+</dd>
+</dl>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ignore-above"></a><code class="literal">ignore_above</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/ignore-above.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Strings longer than the <code class="literal">ignore_above</code> setting will not be indexed or stored.
+For arrays of strings, <code class="literal">ignore_above</code> will be applied for each array element separately and string elements longer than <code class="literal">ignore_above</code> will not be indexed or stored.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>All strings/array elements will still be present in the <code class="literal">_source</code> field, if the latter is enabled which is the default in Elasticsearch.</p>
+</div>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "message": {
+        "type": "keyword",
+        "ignore_above": 20 <a id="CO91-1"></a><i class="conum" data-value="1"></i>
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1 <a id="CO91-2"></a><i class="conum" data-value="2"></i>
+{
+  "message": "Syntax error"
+}
+
+PUT my-index-000001/_doc/2 <a id="CO91-3"></a><i class="conum" data-value="3"></i>
+{
+  "message": "Syntax error with some long stacktrace"
+}
+
+GET my-index-000001/_search <a id="CO91-4"></a><i class="conum" data-value="4"></i>
+{
+  "aggs": {
+    "messages": {
+      "terms": {
+        "field": "message"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/271.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO91-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This field will ignore any string longer than 20 characters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO91-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This document is indexed successfully.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO91-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This document will be indexed, but without indexing the <code class="literal">message</code> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO91-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Search returns both documents, but only the first is present in the terms aggregation.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">ignore_above</code> setting can be updated on
+existing fields using the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping API</a>.</p>
+</div>
+</div>
+<p>This option is also useful for protecting against Lucene&#8217;s term byte-length
+limit of <code class="literal">32766</code>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The value for <code class="literal">ignore_above</code> is the <em>character count</em>, but Lucene counts
+bytes. If you use UTF-8 text with many non-ASCII characters, you may want to
+set the limit to <code class="literal">32766 / 4 = 8191</code> since UTF-8 characters may occupy at most
+4 bytes.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ignore-malformed"></a><code class="literal">ignore_malformed</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/ignore-malformed.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Sometimes you don&#8217;t have much control over the data that you receive.  One
+user may send a <code class="literal">login</code> field that is a <a class="xref" href="mapping-types.html#date" title="Date field type"><code class="literal">date</code></a>, and another sends a
+<code class="literal">login</code> field that is an email address.</p>
+<p>Trying to index the wrong data type into a field throws an exception by
+default, and rejects the whole document.  The <code class="literal">ignore_malformed</code> parameter, if
+set to <code class="literal">true</code>, allows the exception to be ignored. The malformed field is not
+indexed, but other fields in the document are processed normally.</p>
+<p>For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "number_one": {
+        "type": "integer",
+        "ignore_malformed": true
+      },
+      "number_two": {
+        "type": "integer"
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "text":       "Some text value",
+  "number_one": "foo" <a id="CO92-1"></a><i class="conum" data-value="1"></i>
+}
+
+PUT my-index-000001/_doc/2
+{
+  "text":       "Some text value",
+  "number_two": "foo" <a id="CO92-2"></a><i class="conum" data-value="2"></i>
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/272.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO92-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This document will have the <code class="literal">text</code> field indexed, but not the <code class="literal">number_one</code> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO92-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This document will be rejected because <code class="literal">number_two</code> does not allow malformed values.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The <code class="literal">ignore_malformed</code> setting is currently supported by the following <a class="xref" href="mapping-types.html" title="Field data types">mapping types</a>:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<a class="xref" href="mapping-types.html#number" title="Numeric field types">Numeric</a>
+</span>
+</dt>
+<dd>
+<code class="literal">long</code>, <code class="literal">integer</code>, <code class="literal">short</code>, <code class="literal">byte</code>, <code class="literal">double</code>, <code class="literal">float</code>, <code class="literal">half_float</code>, <code class="literal">scaled_float</code>
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="mapping-types.html#date" title="Date field type">Date</a>
+</span>
+</dt>
+<dd>
+<code class="literal">date</code>
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="mapping-types.html#date_nanos" title="Date nanoseconds field type">Date nanoseconds</a>
+</span>
+</dt>
+<dd>
+<code class="literal">date_nanos</code>
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type">Geo-point</a>
+</span>
+</dt>
+<dd>
+<code class="literal">geo_point</code> for lat/lon points
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="mapping-types.html#geo-shape" title="Geo-shape field type">Geo-shape</a>
+</span>
+</dt>
+<dd>
+<code class="literal">geo_shape</code> for complex shapes like polygons
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="mapping-types.html#ip" title="IP field type">IP</a>
+</span>
+</dt>
+<dd>
+<code class="literal">ip</code> for IPv4 and IPv6 addresses
+</dd>
+</dl>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">ignore_malformed</code> setting value can be updated on
+existing fields using the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping API</a>.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ignore-malformed-setting"></a>Index-level default<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/ignore-malformed.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <code class="literal">index.mapping.ignore_malformed</code> setting can be set on the index level to
+ignore malformed content globally across all allowed mapping types.
+Mapping types that don&#8217;t support the setting will ignore it if set on the index level.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "settings": {
+    "index.mapping.ignore_malformed": true <a id="CO93-1"></a><i class="conum" data-value="1"></i>
+  },
+  "mappings": {
+    "properties": {
+      "number_one": { <a id="CO93-2"></a><i class="conum" data-value="1"></i>
+        "type": "byte"
+      },
+      "number_two": {
+        "type": "integer",
+        "ignore_malformed": false <a id="CO93-3"></a><i class="conum" data-value="2"></i>
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/273.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO93-1"><i class="conum" data-value="1"></i></a><a href="#CO93-2"></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">number_one</code> field inherits the index-level setting.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO93-3"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">number_two</code> field overrides the index-level setting to turn off <code class="literal">ignore_malformed</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_dealing_with_malformed_fields"></a>Dealing with malformed fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/ignore-malformed.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Malformed fields are silently ignored at indexing time when <code class="literal">ignore_malformed</code>
+is turned on. Whenever possible it is recommended to keep the number of
+documents that have a malformed field contained, or queries on this field will
+become meaningless. Elasticsearch makes it easy to check how many documents
+have malformed fields by using <code class="literal">exists</code>,<code class="literal">term</code> or <code class="literal">terms</code> queries on the special
+<a class="xref" href="mapping-fields.html#mapping-ignored-field" title="_ignored field"><code class="literal">_ignored</code></a> field.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="json-object-limits"></a>Limits for JSON Objects<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/ignore-malformed.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can&#8217;t use <code class="literal">ignore_malformed</code> with the following data types:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="mapping-types.html#nested" title="Nested field type">Nested data type</a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-types.html#object" title="Object field type">Object data type</a>
+</li>
+<li class="listitem">
+<a class="xref" href="mapping-types.html#range" title="Range field types">Range data types</a>
+</li>
+</ul>
+</div>
+<p>You also can&#8217;t use <code class="literal">ignore_malformed</code> to ignore JSON objects submitted to fields
+of the wrong data type. A JSON object is any data surrounded by curly brackets
+<code class="literal">"{}"</code> and includes data mapped to the nested, object, and range data types.</p>
+<p>If you submit a JSON object to an unsupported field, Elasticsearch will return an error
+and reject the entire document regardless of the <code class="literal">ignore_malformed</code> setting.</p>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="mapping-index"></a><code class="literal">index</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/index.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The <code class="literal">index</code> option controls whether field values are indexed. It accepts <code class="literal">true</code>
+or <code class="literal">false</code> and defaults to <code class="literal">true</code>. Fields that are not indexed are not queryable.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="index-options"></a><code class="literal">index_options</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/index-options.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The <code class="literal">index_options</code> parameter controls what information is added to the
+inverted index for search and highlighting purposes.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">index_options</code> parameter is intended for use with <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> fields
+only. Avoid using <code class="literal">index_options</code> with other field data types.</p>
+</div>
+</div>
+<p>It accepts the following values:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">docs</code>
+</span>
+</dt>
+<dd>
+Only the doc number is indexed.  Can answer the question <em>Does this term
+exist in this field?</em>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">freqs</code>
+</span>
+</dt>
+<dd>
+Doc number and term frequencies are indexed.  Term frequencies are used to
+score repeated terms higher than single terms.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">positions</code> (default)
+</span>
+</dt>
+<dd>
+Doc number, term frequencies, and term positions (or order) are indexed.
+Positions can be used for
+<a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase" title="Match phrase query">proximity or phrase queries</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">offsets</code>
+</span>
+</dt>
+<dd>
+Doc number, term frequencies, positions, and start and end character
+offsets (which map the term back to the original string) are indexed.
+Offsets are used by the <a class="xref" href="highlighting.html#unified-highlighter" title="Unified highlighter">unified highlighter</a> to speed up highlighting.
+</dd>
+</dl>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "text": {
+        "type": "text",
+        "index_options": "offsets"
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "text": "Quick brown fox"
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "match": {
+      "text": "brown fox"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "text": {} <a id="CO94-1"></a><i class="conum" data-value="1"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/274.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO94-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">text</code> field will use the postings for the highlighting by default because <code class="literal">offsets</code> are indexed.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="index-phrases"></a><code class="literal">index_phrases</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/index-phrases.asciidoc">edit</a></h2>
+</div></div></div>
+<p>If enabled, two-term word combinations (<em>shingles</em>) are indexed into a separate
+field.  This allows exact phrase queries (no slop) to run more efficiently, at the expense
+of a larger index.  Note that this works best when stopwords are not removed,
+as phrases containing stopwords will not use the subsidiary field and will fall
+back to a standard phrase query.  Accepts <code class="literal">true</code> or <code class="literal">false</code> (default).</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="index-prefixes"></a><code class="literal">index_prefixes</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/index-prefixes.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The <code class="literal">index_prefixes</code> parameter enables the indexing of term prefixes to speed
+up prefix searches.  It accepts the following optional settings:</p>
+<div class="informaltable">
+<table border="0" cellpadding="4px">
+<colgroup>
+<col/>
+<col/>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td valign="top">
+<p>
+<code class="literal">min_chars</code>
+</p>
+</td>
+<td valign="top">
+<p>
+The minimum prefix length to index.  Must be greater than 0, and defaults
+to 2.  The value is inclusive.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">max_chars</code>
+</p>
+</td>
+<td valign="top">
+<p>
+The maximum prefix length to index.  Must be less than 20, and defaults to 5.
+The value is inclusive.
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This example creates a text field using the default prefix length settings:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "body_text": {
+        "type": "text",
+        "index_prefixes": { }    <a id="CO95-1"></a><i class="conum" data-value="1"></i>
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/275.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO95-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>An empty settings object will use the default <code class="literal">min_chars</code> and <code class="literal">max_chars</code>
+settings</p>
+</td>
+</tr>
+</table>
+</div>
+<p>This example uses custom prefix length settings:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "full_name": {
+        "type": "text",
+        "index_prefixes": {
+          "min_chars" : 1,
+          "max_chars" : 10
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/276.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="mapping-field-meta"></a><code class="literal">meta</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/meta.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Metadata attached to the field. This metadata is opaque to Elasticsearch, it is
+only useful for multiple applications that work on the same indices to share
+meta information about fields such as units</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "latency": {
+        "type": "long",
+        "meta": {
+          "unit": "ms"
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/277.console"></div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Field metadata enforces at most 5 entries, that keys have a length that
+is less than or equal to 20, and that values are strings whose length is less
+than or equal to 50.</p>
+</div>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Field metadata is updatable by submitting a mapping update. The metadata
+of the update will override the metadata of the existing field.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="multi-fields"></a><code class="literal">fields</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/multi-fields.asciidoc">edit</a></h2>
+</div></div></div>
+<p>It is often useful to index the same field in different ways for different
+purposes.  This is the purpose of <em>multi-fields</em>. For instance, a <code class="literal">string</code>
+field could be mapped as a <code class="literal">text</code> field for full-text
+search, and as a <code class="literal">keyword</code> field for sorting or aggregations:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "city": {
+        "type": "text",
+        "fields": {
+          "raw": { <a id="CO96-1"></a><i class="conum" data-value="1"></i>
+            "type":  "keyword"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "city": "New York"
+}
+
+PUT my-index-000001/_doc/2
+{
+  "city": "York"
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "match": {
+      "city": "york" <a id="CO96-2"></a><i class="conum" data-value="2"></i>
+    }
+  },
+  "sort": {
+    "city.raw": "asc" <a id="CO96-3"></a><i class="conum" data-value="3"></i>
+  },
+  "aggs": {
+    "Cities": {
+      "terms": {
+        "field": "city.raw" <a id="CO96-4"></a><i class="conum" data-value="3"></i>
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/278.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO96-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">city.raw</code> field is a <code class="literal">keyword</code> version of the <code class="literal">city</code> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO96-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">city</code> field can be used for full text search.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO96-3"><i class="conum" data-value="3"></i></a><a href="#CO96-4"></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">city.raw</code> field can be used for sorting and aggregations</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Multi-fields do not change the original <code class="literal">_source</code> field.</p>
+</div>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>New multi-fields can be added to existing
+fields using the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping API</a>.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_multi_fields_with_multiple_analyzers"></a>Multi-fields with multiple analyzers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/multi-fields.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Another use case of multi-fields is to analyze the same field in different
+ways for better relevance. For instance we could index a field with the
+<a class="xref" href="analysis-analyzers.html#analysis-standard-analyzer" title="Standard analyzer"><code class="literal">standard</code> analyzer</a> which breaks text up into
+words, and again with the <a class="xref" href="analysis-analyzers.html#english-analyzer" title="english analyzer"><code class="literal">english</code> analyzer</a>
+which stems words into their root form:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "text": { <a id="CO97-1"></a><i class="conum" data-value="1"></i>
+        "type": "text",
+        "fields": {
+          "english": { <a id="CO97-2"></a><i class="conum" data-value="2"></i>
+            "type":     "text",
+            "analyzer": "english"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{ "text": "quick brown fox" } <a id="CO97-3"></a><i class="conum" data-value="3"></i>
+
+PUT my-index-000001/_doc/2
+{ "text": "quick brown foxes" } <a id="CO97-4"></a><i class="conum" data-value="3"></i>
+
+GET my-index-000001/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "quick brown foxes",
+      "fields": [ <a id="CO97-5"></a><i class="conum" data-value="4"></i>
+        "text",
+        "text.english"
+      ],
+      "type": "most_fields" <a id="CO97-6"></a><i class="conum" data-value="4"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/279.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO97-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">text</code> field uses the <code class="literal">standard</code> analyzer.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO97-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">text.english</code> field uses the <code class="literal">english</code> analyzer.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO97-3"><i class="conum" data-value="3"></i></a><a href="#CO97-4"></a></p>
+</td>
+<td align="left" valign="top">
+<p>Index two documents, one with <code class="literal">fox</code> and the other with <code class="literal">foxes</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO97-5"><i class="conum" data-value="4"></i></a><a href="#CO97-6"></a></p>
+</td>
+<td align="left" valign="top">
+<p>Query both the <code class="literal">text</code> and <code class="literal">text.english</code> fields and combine the scores.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The <code class="literal">text</code> field contains the term <code class="literal">fox</code> in the first document and <code class="literal">foxes</code> in
+the second document.  The <code class="literal">text.english</code> field contains <code class="literal">fox</code> for both
+documents, because <code class="literal">foxes</code> is stemmed to <code class="literal">fox</code>.</p>
+<p>The query string is also analyzed by the <code class="literal">standard</code> analyzer for the <code class="literal">text</code>
+field, and by the <code class="literal">english</code> analyzer for the <code class="literal">text.english</code> field.  The
+stemmed field allows a query for <code class="literal">foxes</code> to also match the document containing
+just <code class="literal">fox</code>.  This allows us to match as many documents as possible.  By also
+querying the unstemmed <code class="literal">text</code> field, we improve the relevance score of the
+document which matches <code class="literal">foxes</code> exactly.</p>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="normalizer"></a><code class="literal">normalizer</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/normalizer.asciidoc">edit</a></h2>
+</div></div></div>
+<p>The <code class="literal">normalizer</code> property of <a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> fields is similar to
+<a class="xref" href="mapping-params.html#analyzer" title="analyzer"><code class="literal">analyzer</code></a> except that it guarantees that the analysis chain
+produces a single token.</p>
+<p>The <code class="literal">normalizer</code> is applied prior to indexing the keyword, as well as at
+search-time when the <code class="literal">keyword</code> field is searched via a query parser such as
+the <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code></a> query or via a term-level query
+such as the <a class="xref" href="term-level-queries.html#query-dsl-term-query" title="Term query"><code class="literal">term</code></a> query.</p>
+<p>A simple normalizer called <code class="literal">lowercase</code> ships with elasticsearch and can be used.
+Custom normalizers can be defined as part of analysis settings as follows.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT index
+{
+  "settings": {
+    "analysis": {
+      "normalizer": {
+        "my_normalizer": {
+          "type": "custom",
+          "char_filter": [],
+          "filter": ["lowercase", "asciifolding"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "foo": {
+        "type": "keyword",
+        "normalizer": "my_normalizer"
+      }
+    }
+  }
+}
+
+PUT index/_doc/1
+{
+  "foo": "BÀR"
+}
+
+PUT index/_doc/2
+{
+  "foo": "bar"
+}
+
+PUT index/_doc/3
+{
+  "foo": "baz"
+}
+
+POST index/_refresh
+
+GET index/_search
+{
+  "query": {
+    "term": {
+      "foo": "BAR"
+    }
+  }
+}
+
+GET index/_search
+{
+  "query": {
+    "match": {
+      "foo": "BAR"
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/280.console"></div>
+<p>The above queries match documents 1 and 2 since <code class="literal">BÀR</code> is converted to <code class="literal">bar</code> at
+both index and query time.</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "took": $body.took,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped" : 0,
+    "failed": 0
+  },
+  "hits": {
+    "total" : {
+        "value": 2,
+        "relation": "eq"
+    },
+    "max_score": 0.4700036,
+    "hits": [
+      {
+        "_index": "index",
+        "_type": "_doc",
+        "_id": "1",
+        "_score": 0.4700036,
+        "_source": {
+          "foo": "BÀR"
+        }
+      },
+      {
+        "_index": "index",
+        "_type": "_doc",
+        "_id": "2",
+        "_score": 0.4700036,
+        "_source": {
+          "foo": "bar"
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+<p>Also, the fact that keywords are converted prior to indexing also means that
+aggregations return normalized values:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET index/_search
+{
+  "size": 0,
+  "aggs": {
+    "foo_terms": {
+      "terms": {
+        "field": "foo"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/281.console"></div>
+<p>returns</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "took": 43,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped" : 0,
+    "failed": 0
+  },
+  "hits": {
+    "total" : {
+        "value": 3,
+        "relation": "eq"
+    },
+    "max_score": null,
+    "hits": []
+  },
+  "aggregations": {
+    "foo_terms": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "bar",
+          "doc_count": 2
+        },
+        {
+          "key": "baz",
+          "doc_count": 1
+        }
+      ]
+    }
+  }
+}</pre>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="norms"></a><code class="literal">norms</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/norms.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Norms store various normalization factors that are later used at query time
+in order to compute the score of a document relatively to a query.</p>
+<p>Although useful for scoring, norms also require quite a lot of disk
+(typically in the order of one byte per document per field in your index, even
+for documents that don&#8217;t have this specific field). As a consequence, if you
+don&#8217;t need scoring on a specific field, you should disable norms on that
+field. In  particular, this is the case for fields that are used solely for
+filtering or aggregations.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Norms can be disabled on existing fields using
+the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping API</a>.</p>
+</div>
+</div>
+<p>Norms can be disabled (but not reenabled after the fact), using the
+<a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping API</a> like so:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_mapping
+{
+  "properties": {
+    "title": {
+      "type": "text",
+      "norms": false
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/282.console"></div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Norms will not be removed instantly, but will be removed as old segments
+are merged into new segments as you continue indexing new documents. Any score
+computation on a field that has had norms removed might return inconsistent
+results since some documents won&#8217;t have norms anymore while other documents
+might still have norms.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="null-value"></a><code class="literal">null_value</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/null-value.asciidoc">edit</a></h2>
+</div></div></div>
+<p>A <code class="literal">null</code> value cannot be indexed or searched.  When a field is set to <code class="literal">null</code>,
+(or an empty array or an array of <code class="literal">null</code> values)  it is treated as though that
+field has no values.</p>
+<p>The <code class="literal">null_value</code> parameter allows you to replace explicit <code class="literal">null</code> values with
+the specified value so that it can be indexed and searched.  For instance:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "status_code": {
+        "type":       "keyword",
+        "null_value": "NULL" <a id="CO98-1"></a><i class="conum" data-value="1"></i>
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "status_code": null
+}
+
+PUT my-index-000001/_doc/2
+{
+  "status_code": [] <a id="CO98-2"></a><i class="conum" data-value="2"></i>
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "term": {
+      "status_code": "NULL" <a id="CO98-3"></a><i class="conum" data-value="3"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/283.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO98-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Replace explicit <code class="literal">null</code> values with the term <code class="literal">NULL</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO98-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>An empty array does not contain an explicit <code class="literal">null</code>, and so won&#8217;t be replaced with the <code class="literal">null_value</code>.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO98-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>A query for <code class="literal">NULL</code> returns document 1, but not document 2.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">null_value</code> needs to be the same data type as the field.  For
+instance, a <code class="literal">long</code> field cannot have a string <code class="literal">null_value</code>.</p>
+</div>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">null_value</code> only influences how data is indexed, it doesn&#8217;t modify
+the <code class="literal">_source</code> document.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="position-increment-gap"></a><code class="literal">position_increment_gap</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/position-increment-gap.asciidoc">edit</a></h2>
+</div></div></div>
+<p><a class="xref" href="mapping-params.html#mapping-index" title="index">Analyzed</a> text fields take term <a class="xref" href="mapping-params.html#index-options" title="index_options">positions</a>
+into account, in order to be able to support
+<a class="xref" href="full-text-queries.html#query-dsl-match-query-phrase" title="Match phrase query">proximity or phrase queries</a>.
+When indexing text fields with multiple values a "fake" gap is added between
+the values to prevent most phrase queries from matching across the values. The
+size of this gap is configured using <code class="literal">position_increment_gap</code> and defaults to
+<code class="literal">100</code>.</p>
+<p>For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001/_doc/1
+{
+  "names": [ "John Abraham", "Lincoln Smith"]
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "match_phrase": {
+      "names": {
+        "query": "Abraham Lincoln" <a id="CO99-1"></a><i class="conum" data-value="1"></i>
+      }
+    }
+  }
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "match_phrase": {
+      "names": {
+        "query": "Abraham Lincoln",
+        "slop": 101 <a id="CO99-2"></a><i class="conum" data-value="2"></i>
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/284.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO99-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This phrase query doesn&#8217;t match our document which is totally expected.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO99-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This phrase query matches our document, even though <code class="literal">Abraham</code> and <code class="literal">Lincoln</code>
+are in separate strings, because <code class="literal">slop</code> &gt; <code class="literal">position_increment_gap</code>.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The <code class="literal">position_increment_gap</code> can be specified in the mapping.  For instance:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "names": {
+        "type": "text",
+        "position_increment_gap": 0 <a id="CO100-1"></a><i class="conum" data-value="1"></i>
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "names": [ "John Abraham", "Lincoln Smith"]
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "match_phrase": {
+      "names": "Abraham Lincoln" <a id="CO100-2"></a><i class="conum" data-value="2"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/285.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO100-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The first term in the next array element will be 0 terms apart from the
+last term in the previous array element.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO100-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The phrase query matches our document which is weird, but its what we asked
+for in the mapping.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="properties"></a><code class="literal">properties</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/properties.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Type mappings, <a class="xref" href="mapping-types.html#object" title="Object field type"><code class="literal">object</code> fields</a> and <a class="xref" href="mapping-types.html#nested" title="Nested field type"><code class="literal">nested</code> fields</a>
+contain sub-fields, called <code class="literal">properties</code>. These properties may be of any
+<a class="xref" href="mapping-types.html" title="Field data types">data type</a>, including <code class="literal">object</code> and <code class="literal">nested</code>.  Properties can
+be added:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+explicitly by defining them when <a class="xref" href="indices.html#indices-create-index" title="Create index API">creating an index</a>.
+</li>
+<li class="listitem">
+explicitly by defining them when adding or updating a mapping type with the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping</a> API.
+</li>
+<li class="listitem">
+<a class="xref" href="dynamic-mapping.html" title="Dynamic Mapping">dynamically</a> just by indexing documents containing new fields.
+</li>
+</ul>
+</div>
+<p>Below is an example of adding <code class="literal">properties</code> to a mapping type, an <code class="literal">object</code>
+field, and a <code class="literal">nested</code> field:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": { <a id="CO101-1"></a><i class="conum" data-value="1"></i>
+      "manager": {
+        "properties": { <a id="CO101-2"></a><i class="conum" data-value="2"></i>
+          "age":  { "type": "integer" },
+          "name": { "type": "text"  }
+        }
+      },
+      "employees": {
+        "type": "nested",
+        "properties": { <a id="CO101-3"></a><i class="conum" data-value="3"></i>
+          "age":  { "type": "integer" },
+          "name": { "type": "text"  }
+        }
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1 <a id="CO101-4"></a><i class="conum" data-value="4"></i>
+{
+  "region": "US",
+  "manager": {
+    "name": "Alice White",
+    "age": 30
+  },
+  "employees": [
+    {
+      "name": "John Smith",
+      "age": 34
+    },
+    {
+      "name": "Peter Brown",
+      "age": 26
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/286.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO101-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Properties in the top-level mappings definition.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO101-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Properties under the <code class="literal">manager</code> object field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO101-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Properties under the <code class="literal">employees</code> nested field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO101-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>An example document which corresponds to the above mapping.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">properties</code> setting is allowed to have different settings for fields
+of the same name in the same index.  New properties can be added to existing
+fields using the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping API</a>.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_dot_notation"></a>Dot notation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/properties.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Inner fields can be referred to in queries, aggregations, etc., using <em>dot
+notation</em>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index-000001/_search
+{
+  "query": {
+    "match": {
+      "manager.name": "Alice White"
+    }
+  },
+  "aggs": {
+    "Employees": {
+      "nested": {
+        "path": "employees"
+      },
+      "aggs": {
+        "Employee Ages": {
+          "histogram": {
+            "field": "employees.age",
+            "interval": 5
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/287.console"></div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The full path to the inner field must be specified.</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="search-analyzer"></a><code class="literal">search_analyzer</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/search-analyzer.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Usually, the same <a class="xref" href="mapping-params.html#analyzer" title="analyzer">analyzer</a> should be applied at index time and at
+search time, to ensure that the terms in the query are in the same format as
+the terms in the inverted index.</p>
+<p>Sometimes, though, it can make sense to use a different analyzer at search
+time, such as when using the  <a class="xref" href="analysis-tokenizers.html#analysis-edgengram-tokenizer" title="Edge n-gram tokenizer"><code class="literal">edge_ngram</code></a>
+tokenizer for autocomplete.</p>
+<p>By default, queries will use the <code class="literal">analyzer</code> defined in the field mapping, but
+this can be overridden with the <code class="literal">search_analyzer</code> setting:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "autocomplete_filter": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 20
+        }
+      },
+      "analyzer": {
+        "autocomplete": { <a id="CO102-1"></a><i class="conum" data-value="1"></i>
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "autocomplete_filter"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "text": {
+        "type": "text",
+        "analyzer": "autocomplete", <a id="CO102-2"></a><i class="conum" data-value="2"></i>
+        "search_analyzer": "standard" <a id="CO102-3"></a><i class="conum" data-value="2"></i>
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "text": "Quick Brown Fox" <a id="CO102-4"></a><i class="conum" data-value="3"></i>
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "match": {
+      "text": {
+        "query": "Quick Br", <a id="CO102-5"></a><i class="conum" data-value="4"></i>
+        "operator": "and"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/288.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO102-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Analysis settings to define the custom <code class="literal">autocomplete</code> analyzer.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO102-2"><i class="conum" data-value="2"></i></a><a href="#CO102-3"></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">text</code> field uses the <code class="literal">autocomplete</code> analyzer at index time, but the <code class="literal">standard</code> analyzer at search time.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO102-4"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This field is indexed as the terms: [ <code class="literal">q</code>, <code class="literal">qu</code>, <code class="literal">qui</code>, <code class="literal">quic</code>, <code class="literal">quick</code>, <code class="literal">b</code>, <code class="literal">br</code>, <code class="literal">bro</code>, <code class="literal">brow</code>, <code class="literal">brown</code>, <code class="literal">f</code>, <code class="literal">fo</code>, <code class="literal">fox</code> ]</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO102-5"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The query searches for both of these terms: [ <code class="literal">quick</code>, <code class="literal">br</code> ]</p>
+</td>
+</tr>
+</table>
+</div>
+<p>See <a href="https://www.elastic.co/guide/en/elasticsearch/guide/2.x/_index_time_search_as_you_type.html" class="ulink" target="_top">Index time search-as-you-
+type</a> for a full explanation of this example.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">search_analyzer</code> setting can be updated on existing fields
+using the <a class="xref" href="indices.html#indices-put-mapping" title="Put mapping API">PUT mapping API</a>.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="similarity"></a><code class="literal">similarity</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/similarity.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Elasticsearch allows you to configure a scoring algorithm or <em>similarity</em> per
+field. The <code class="literal">similarity</code> setting provides a simple way of choosing a similarity
+algorithm other than the default <code class="literal">BM25</code>, such as <code class="literal">TF/IDF</code>.</p>
+<p>Similarities are mostly useful for <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> fields, but can also apply
+to other field types.</p>
+<p>Custom similarities can be configured by tuning the parameters of the built-in
+similarities. For more details about this expert options, see the
+<a class="xref" href="index-modules-similarity.html" title="Similarity module">similarity module</a>.</p>
+<p>The only similarities which can be used out of the box, without any further
+configuration are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">BM25</code>
+</span>
+</dt>
+<dd>
+The <a href="https://en.wikipedia.org/wiki/Okapi_BM25" class="ulink" target="_top">Okapi BM25 algorithm</a>. The
+algorithm used by default in Elasticsearch and Lucene.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">classic</code>
+</span>
+</dt>
+<dd>
+<span class="Admonishment Admonishment--change">
+[<span class="Admonishment-version u-mono u-strikethrough">7.0.0</span>]
+<span class="Admonishment-detail">
+Deprecated in 7.0.0.
+</span>
+</span>
+The <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf" class="ulink" target="_top">TF/IDF algorithm</a>, the former
+default in Elasticsearch and Lucene.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">boolean</code>
+</span>
+</dt>
+<dd>
+A simple boolean similarity, which is used when full-text ranking is not needed
+and the score should only be based on whether the query terms match or not.
+Boolean similarity gives terms a score equal to their query boost.
+</dd>
+</dl>
+</div>
+<p>The <code class="literal">similarity</code> can be set on the field level when a field is first created,
+as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "default_field": { <a id="CO103-1"></a><i class="conum" data-value="1"></i>
+        "type": "text"
+      },
+      "boolean_sim_field": {
+        "type": "text",
+        "similarity": "boolean" <a id="CO103-2"></a><i class="conum" data-value="2"></i>
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/289.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO103-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">default_field</code> uses the <code class="literal">BM25</code> similarity.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO103-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">boolean_sim_field</code> uses the <code class="literal">boolean</code> similarity.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="mapping-store"></a><code class="literal">store</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/store.asciidoc">edit</a></h2>
+</div></div></div>
+<p>By default, field values are <a class="xref" href="mapping-params.html#mapping-index" title="index">indexed</a> to make them searchable,
+but they are not <em>stored</em>.  This means that the field can be queried, but the
+original field value cannot be retrieved.</p>
+<p>Usually this doesn&#8217;t matter.  The field value is already part of the
+<a class="xref" href="mapping-fields.html#mapping-source-field" title="_source field"><code class="literal">_source</code> field</a>, which is stored by default. If you
+only want to retrieve the value of a single field or of a few fields, instead
+of the whole <code class="literal">_source</code>, then this can be achieved with
+<a class="xref" href="search-fields.html#source-filtering" title="Source filtering">source filtering</a>.</p>
+<p>In certain situations it can make sense to <code class="literal">store</code> a field.  For instance, if
+you have a document with a <code class="literal">title</code>, a <code class="literal">date</code>, and a very large <code class="literal">content</code>
+field, you may want to retrieve just the <code class="literal">title</code> and the <code class="literal">date</code> without having
+to extract those fields from a large <code class="literal">_source</code> field:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "store": true <a id="CO104-1"></a><i class="conum" data-value="1"></i>
+      },
+      "date": {
+        "type": "date",
+        "store": true <a id="CO104-2"></a><i class="conum" data-value="1"></i>
+      },
+      "content": {
+        "type": "text"
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "title":   "Some short title",
+  "date":    "2015-01-01",
+  "content": "A very long content field..."
+}
+
+GET my-index-000001/_search
+{
+  "stored_fields": [ "title", "date" ] <a id="CO104-3"></a><i class="conum" data-value="2"></i>
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/290.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO104-1"><i class="conum" data-value="1"></i></a><a href="#CO104-2"></a></p>
+</td>
+<td align="left" valign="top">
+<p>The <code class="literal">title</code> and <code class="literal">date</code> fields are stored.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO104-3"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This request will retrieve the values of the <code class="literal">title</code> and <code class="literal">date</code> fields.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3>Stored fields returned as arrays</h3>
+<p>For consistency, stored fields are always returned as an <em>array</em> because there
+is no way of knowing if the original field value was a single value, multiple
+values, or an empty array.</p>
+<p>If you need the original value, you should retrieve it from the <code class="literal">_source</code>
+field instead.</p>
+</div>
+</div>
+<p>Another situation where it can make sense to make a field stored is for those
+that don&#8217;t appear in the <code class="literal">_source</code> field (such as <a class="xref" href="mapping-params.html#copy-to" title="copy_to"><code class="literal">copy_to</code> fields</a>).</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="term-vector"></a><code class="literal">term_vector</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/mapping/params/term-vector.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Term vectors contain information about the terms produced by the
+<a class="xref" href="analysis.html" title="Text analysis">analysis</a> process, including:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+a list of terms.
+</li>
+<li class="listitem">
+the position (or order) of each term.
+</li>
+<li class="listitem">
+the start and end character offsets mapping the term to its
+origin in the original string.
+</li>
+<li class="listitem">
+payloads (if they are available) — user-defined binary data
+associated with each term position.
+</li>
+</ul>
+</div>
+<p>These term vectors can be stored so that they can be retrieved for a
+particular document.</p>
+<p>The <code class="literal">term_vector</code> setting accepts:</p>
+<div class="informaltable">
+<table border="0" cellpadding="4px">
+<colgroup>
+<col/>
+<col/>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td valign="top">
+<p>
+<code class="literal">no</code>
+</p>
+</td>
+<td valign="top">
+<p>
+No term vectors are stored. (default)
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">yes</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Just the terms in the field are stored.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">with_positions</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Terms and positions are stored.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">with_offsets</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Terms and character offsets are stored.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">with_positions_offsets</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Terms, positions, and character offsets are stored.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">with_positions_payloads</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Terms, positions, and payloads are stored.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">with_positions_offsets_payloads</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Terms, positions, offsets and payloads are stored.
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The fast vector highlighter requires <code class="literal">with_positions_offsets</code>.
+<a class="xref" href="docs.html#docs-termvectors" title="Term vectors API">The term vectors API</a> can retrieve whatever is stored.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Setting <code class="literal">with_positions_offsets</code> will double the size of a field&#8217;s
+index.</p>
+</div>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "mappings": {
+    "properties": {
+      "text": {
+        "type":        "text",
+        "term_vector": "with_positions_offsets"
+      }
+    }
+  }
+}
+
+PUT my-index-000001/_doc/1
+{
+  "text": "Quick brown fox"
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "match": {
+      "text": "brown fox"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "text": {} <a id="CO105-1"></a><i class="conum" data-value="1"></i>
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/291.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO105-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The fast vector highlighter will be used by default for the <code class="literal">text</code> field
+because term vectors are enabled.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="mapping-fields.html">« Metadata fields</a>
+</span>
+<span class="next">
+<a href="dynamic-mapping.html">Dynamic Mapping »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

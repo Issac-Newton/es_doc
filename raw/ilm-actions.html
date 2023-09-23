@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Index lifecycle actions | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Index lifecycle actions | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle"/>
+<link rel="prev" href="example-using-index-lifecycle-policy.html" title="Tutorial: Manage Filebeat time-based indices"/>
+<link rel="next" href="set-up-lifecycle-policy.html" title="Configure a lifecycle policy"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index-lifecycle-management.html">ILM: Manage the index lifecycle</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="example-using-index-lifecycle-policy.html">« Tutorial: Manage Filebeat time-based indices</a>
+</span>
+<span class="next">
+<a href="set-up-lifecycle-policy.html">Configure a lifecycle policy <a id="ilm-policy-definition"></a> »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-actions"></a>Index lifecycle actions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/ilm-actions.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-allocate" title="Allocate">Allocate</a>
+</span>
+</dt>
+<dd>
+Move shards to nodes with different performance characteristics
+and reduce the number of replicas.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-delete" title="Delete">Delete</a>
+</span>
+</dt>
+<dd>
+Permanently remove the index.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-forcemerge" title="Force merge">Force merge</a>
+</span>
+</dt>
+<dd>
+Reduce the number of index segments and purge deleted documents.
+Makes the index read-only.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-freeze" title="Freeze">Freeze</a>
+</span>
+</dt>
+<dd>
+Freeze the index to minimize its memory footprint.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-migrate" title="Migrate">Migrate</a>
+</span>
+</dt>
+<dd>
+Move the index shards to the <a class="xref" href="data-tiers.html" title="Data tiers">data tier</a> that corresponds
+to the current ILM phase.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-readonly" title="Read only">Read only</a>
+</span>
+</dt>
+<dd>
+Block write operations to the index.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-rollover" title="Rollover">Rollover</a>
+</span>
+</dt>
+<dd>
+Remove the index as the write index for the rollover alias and
+start indexing to a new index.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-searchable-snapshot" title="Searchable snapshot">Searchable snapshot</a>
+</span>
+</dt>
+<dd>
+<span class="Admonishment Admonishment--beta">
+[<span class="Admonishment-title u-mono">beta</span>]
+<span class="Admonishment-detail">
+This functionality is in beta and is subject to change. The design and code is less mature than official GA features and is being provided as-is with no warranties. Beta features are not subject to the support SLA of official GA features.
+</span>
+</span>
+Take a snapshot of the managed index in the configured repository
+and mount it as a searchable snapshot.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-set-priority" title="Set priority">Set priority</a>
+</span>
+</dt>
+<dd>
+Lower the priority of an index as it moves through the lifecycle
+to ensure that hot indices are recovered first.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-shrink" title="Shrink">Shrink</a>
+</span>
+</dt>
+<dd>
+Reduce the number of primary shards by shrinking the index into a new index.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-unfollow" title="Unfollow">Unfollow</a>
+</span>
+</dt>
+<dd>
+Convert a follower index to a regular index.
+Performed automatically before a rollover, shrink, or searchable snapshot action.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="ilm-actions.html#ilm-wait-for-snapshot" title="Wait for snapshot">Wait for snapshot</a>
+</span>
+</dt>
+<dd>
+Ensure that a snapshot exists before deleting the index.
+</dd>
+</dl>
+</div>
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-allocate"></a>Allocate<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-allocate.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: warm, cold.</p>
+<p>Updates the index settings to change which nodes are allowed to host the index shards
+and change the number of replicas.</p>
+<p>The allocate action is not allowed in the hot phase.
+The initial allocation for the index must be done manually or via
+<a class="xref" href="index-templates.html" title="Index templates">index templates</a>.</p>
+<p>You can configure this action to modify both the allocation rules and number of replicas,
+only the allocation rules, or only the number of replicas.
+For more information about how Elasticsearch uses replicas for scaling, see
+<a class="xref" href="elasticsearch-intro.html#scalability" title="Scalability and resilience: clusters, nodes, and shards">Scalability and resilience</a>. See <a class="xref" href="index-modules-allocation.html#shard-allocation-filtering" title="Index-level shard allocation filtering">Index-level shard allocation filtering</a> for more information about
+controlling where Elasticsearch allocates shards of a particular index.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-allocate-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-allocate.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You must specify the number of replicas or at least one
+<code class="literal">include</code>, <code class="literal">exclude</code>, or <code class="literal">require</code> option.
+An empty allocate action is invalid.</p>
+<p>For more information about using custom attributes for shard allocation,
+see <a class="xref" href="index-modules-allocation.html#shard-allocation-filtering" title="Index-level shard allocation filtering">Index-level shard allocation filtering</a>.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">number_of_replicas</code>
+</span>
+</dt>
+<dd>
+(Optional, integer)
+Number of replicas to assign to the index.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">include</code>
+</span>
+</dt>
+<dd>
+(Optional, object)
+Assigns an index to nodes that have at least <em>one</em> of the specified custom attributes.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">exclude</code>
+</span>
+</dt>
+<dd>
+(Optional, object)
+Assigns an index to nodes that have <em>none</em> of the specified custom attributes.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">require</code>
+</span>
+</dt>
+<dd>
+(Optional, object)
+Assigns an index to nodes that have <em>all</em> of the specified custom attributes.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-allocate-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-allocate.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The allocate action in the following policy changes the index&#8217;s number of replicas to <code class="literal">2</code>.
+The index allocation rules are not changed.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "allocate" : {
+            "number_of_replicas" : 2
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1313.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="ilm-allocate-assign-index-attribute-ex"></a>Assign index to nodes using a custom attribute<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-allocate.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The allocate action in the following policy assigns the index to nodes
+that have a <code class="literal">box_type</code> of <em>hot</em> or <em>warm</em>.</p>
+<p>To designate a node&#8217;s <code class="literal">box_type</code>, you set a custom attribute in the node configuration.
+For example, set <code class="literal">node.attr.box_type: hot</code> in <code class="literal">elasticsearch.yml</code>.
+For more information, see <a class="xref" href="index-modules-allocation.html#index-allocation-filters" title="Enabling index-level shard allocation filtering">Enabling index-level shard allocation filtering</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "allocate" : {
+            "include" : {
+              "box_type": "hot,warm"
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1314.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="ilm-allocate-assign-index-multi-attribute-ex"></a>Assign index to nodes based on multiple attributes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-allocate.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The allocate action can also assign indices to nodes based on multiple node
+attributes. The following action assigns indices based on the <code class="literal">box_type</code> and
+<code class="literal">storage</code> node attributes.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "cold": {
+        "actions": {
+          "allocate" : {
+            "require" : {
+              "box_type": "cold",
+              "storage": "high"
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1315.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="ilm-allocate-assign-index-node-ex"></a>Assign index to a specific node and update replica settings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-allocate.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The allocate action in the following policy updates the index to have one replica per shard
+and be allocated to nodes that have a <code class="literal">box_type</code> of <em>cold</em>.</p>
+<p>To designate a node&#8217;s <code class="literal">box_type</code>, you set a custom attribute in the node configuration.
+For example, set <code class="literal">node.attr.box_type: cold</code> in <code class="literal">elasticsearch.yml</code>.
+For more information, see <a class="xref" href="index-modules-allocation.html#index-allocation-filters" title="Enabling index-level shard allocation filtering">Enabling index-level shard allocation filtering</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "allocate" : {
+            "number_of_replicas": 1,
+            "require" : {
+              "box_type": "cold"
+            }
+        }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1316.console"></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-delete"></a>Delete<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-delete.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: delete.</p>
+<p>Permanently removes the index.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-delete-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-delete.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">delete_searchable_snapshot</code>
+</span>
+</dt>
+<dd>
+<span class="Admonishment Admonishment--beta">
+[<span class="Admonishment-title u-mono">beta</span>]
+<span class="Admonishment-detail">
+This functionality is in beta and is subject to change. The design and code is less mature than official GA features and is being provided as-is with no warranties. Beta features are not subject to the support SLA of official GA features.
+</span>
+</span>
+(Optional, Boolean)
+Deletes the searchable snapshot created in the cold phase.
+Defaults to <code class="literal">true</code>.
+This option is applicable when the <a class="xref" href="ilm-actions.html#ilm-searchable-snapshot" title="Searchable snapshot">searchable
+snapshot</a> action is used in the cold phase.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-delete-action-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-delete.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "delete": {
+        "actions": {
+          "delete" : { }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1317.console"></div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-forcemerge"></a>Force merge<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-forcemerge.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: hot, warm.</p>
+<p><a class="xref" href="indices.html#indices-forcemerge" title="Force merge API">Force merges</a> the index into
+the specified maximum number of <a class="xref" href="indices.html#indices-segments" title="Index segments API">segments</a>.</p>
+<p>This action makes the index <a class="xref" href="index-modules.html#dynamic-index-settings" title="Dynamic index settings">read-only</a>.</p>
+<p>To use the <code class="literal">forcemerge</code> action in the <code class="literal">hot</code> phase, the <code class="literal">rollover</code> action <span class="strong strong"><strong>must</strong></span> be present.
+If no rollover action is configured, ILM will reject the policy.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">forcemerge</code> action is best effort. It might happen that some of the
+shards are relocating, in which case they will not be merged.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-forcemerge-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-forcemerge.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">max_num_segments</code>
+</span>
+</dt>
+<dd>
+(Required, integer)
+Number of segments to merge to. To fully merge the index, set to <code class="literal">1</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">index_codec</code>
+</span>
+</dt>
+<dd>
+<p>
+(Optional, string)
+Codec used to compress the document store. The only accepted value is
+<code class="literal">best_compression</code>, which uses <a href="https://en.wikipedia.org/wiki/DEFLATE" class="ulink" target="_top">DEFLATE</a> for a higher
+compression ratio but slower stored fields performance. To use the default LZ4
+codec, omit this argument.
+</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If using <code class="literal">best_compression</code>, ILM will <a class="xref" href="indices.html#indices-close" title="Close index API">close</a>
+and then <a class="xref" href="indices.html#indices-open-close" title="Open index API">re-open</a> the index prior to the force merge.
+While closed, the index will be unavailable for read or write operations.</p>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-forcemerge-action-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-forcemerge.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "forcemerge" : {
+            "max_num_segments": 1
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1318.console"></div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-freeze"></a>Freeze<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-freeze.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: cold.</p>
+<p><a class="xref" href="frozen-indices.html" title="Frozen indices">Freezes</a> an index to minimize its memory footprint.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Freezing an index closes the index and reopens it within the same API call.
+This means that for a short time no primaries are allocated.
+The cluster will go red until the primaries are allocated.
+This limitation might be removed in the future.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-freeze-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-freeze.asciidoc">edit</a></h3>
+</div></div></div>
+<p>None.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-freeze-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-freeze.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "cold": {
+        "actions": {
+          "freeze" : { }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1319.console"></div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-migrate"></a>Migrate<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-migrate.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: warm, cold.</p>
+<p>Moves the index to the <a class="xref" href="data-tiers.html" title="Data tiers">data tier</a> that corresponds
+to the current phase by updating the <a class="xref" href="index-modules-allocation.html#tier-preference-allocation-filter"><code class="literal">index.routing.allocation.include._tier_preference</code></a>
+index setting.
+ILM automatically injects the migrate action in the warm and cold
+phases if no allocation options are specified with the <a class="xref" href="ilm-actions.html#ilm-allocate" title="Allocate">allocate</a> action.
+If you specify an allocate action that only modifies the number of index
+replicas, ILM reduces the number of replicas before migrating the index.
+To prevent automatic migration without specifying allocation options,
+you can explicitly include the migrate action and set the enabled option to <code class="literal">false</code>.</p>
+<p>In the warm phase, the <code class="literal">migrate</code> action sets <a class="xref" href="index-modules-allocation.html#tier-preference-allocation-filter"><code class="literal">index.routing.allocation.include._tier_preference</code></a>
+to <code class="literal">data_warm,data_hot</code>. This moves the index to nodes in the
+<a class="xref" href="data-tiers.html#warm-tier" title="Warm tier">warm tier</a>. If there are no nodes in the warm tier,  it falls back to the
+<a class="xref" href="data-tiers.html#hot-tier" title="Hot tier">hot tier</a>.</p>
+<p>In the cold phase, the <code class="literal">migrate</code> action sets
+<a class="xref" href="index-modules-allocation.html#tier-preference-allocation-filter"><code class="literal">index.routing.allocation.include._tier_preference</code></a>
+to <code class="literal">data_cold,data_warm,data_hot</code>. This moves the index to nodes in the
+<a class="xref" href="data-tiers.html#cold-tier" title="Cold tier">cold tier</a>. If there are no nodes in the cold tier, it falls back to the
+<a class="xref" href="data-tiers.html#warm-tier" title="Warm tier">warm</a> tier, or the <a class="xref" href="data-tiers.html#hot-tier" title="Hot tier">hot</a> tier if there are no warm nodes available.</p>
+<p>The migrate action is not allowed in the hot phase.
+The initial index allocation is performed <a class="xref" href="data-tiers.html#data-tier-allocation" title="Data tier index allocation">automatically</a>,
+and can be configured manually or via <a class="xref" href="index-templates.html" title="Index templates">index templates</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-migrate-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-migrate.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">enabled</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean)
+Controls whether ILM automatically migrates the index during this phase.
+Defaults to <code class="literal">true</code>.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-enabled-migrate-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-migrate.asciidoc">edit</a></h3>
+</div></div></div>
+<p>In the following policy, the allocate action is specified to reduce the number of replicas before ILM migrates the index to warm nodes.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Explicitly specifying the migrate action is not required&#8212;&#8203;ILM automatically performs the migrate action unless you specify allocation options or disable migration.</p>
+</div>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "migrate" : {
+          },
+          "allocate": {
+            "number_of_replicas": 1
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1320.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-disable-migrate-ex"></a>Disable automatic migration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-migrate.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The migrate action in the following policy is disabled and
+the allocate action assigns the index to nodes that have a
+<code class="literal">rack_id</code> of <em>one</em> or <em>two</em>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Explicitly disabling the migrate action is not required&#8212;&#8203;ILM does not inject the migrate action if you specify allocation options.</p>
+</div>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "migrate" : {
+           "enabled": false
+          },
+          "allocate": {
+            "include" : {
+              "rack_id": "one,two"
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1321.console"></div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-readonly"></a>Read only<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-readonly.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: warm.</p>
+<p>Makes the index <a class="xref" href="index-modules-blocks.html#index-blocks-read-only">read-only</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-read-only-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-readonly.asciidoc">edit</a></h3>
+</div></div></div>
+<p>None.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-read-only-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-readonly.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "readonly" : { }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1322.console"></div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-rollover"></a>Rollover<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-rollover.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: hot.</p>
+<p>Rolls over a target to a new index when the existing index meets one of the rollover conditions.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If the rollover action is used on a <a class="xref" href="ccr-apis.html#ccr-put-follow" title="Create follower API">follower index</a>,
+policy execution waits until the leader index rolls over (or is
+<a class="xref" href="skipping-rollover.html" title="Skip rollover">otherwise marked complete</a>),
+then converts the follower index into a regular index with the
+<a class="xref" href="ilm-actions.html#ilm-unfollow" title="Unfollow">Unfollow action</a>.</p>
+</div>
+</div>
+<p>A rollover target can be a <a class="xref" href="data-streams.html" title="Data streams">data stream</a> or an <a class="xref" href="indices.html#indices-aliases" title="Update index alias API">index alias</a>.
+When targeting a data stream, the new index becomes the data stream&#8217;s
+<a class="xref" href="data-streams.html#data-stream-write-index" title="Write index">write index</a> and its generation is incremented.</p>
+<p>To roll over an <a class="xref" href="indices.html#indices-aliases" title="Update index alias API">index alias</a>, the alias and its write index
+must meet the following conditions:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The index name must match the pattern <em>^.*-\d+$</em>, for example (<code class="literal">my-index-000001</code>).
+</li>
+<li class="listitem">
+The <code class="literal">index.lifecycle.rollover_alias</code> must be configured as the alias to roll over.
+</li>
+<li class="listitem">
+The index must be the <a class="xref" href="indices.html#indices-rollover-is-write-index" title="Roll over a write index">write index</a> for the alias.
+</li>
+</ul>
+</div>
+<p>For example, if <code class="literal">my-index-000001</code> has the alias <code class="literal">my_data</code>,
+the following settings must be configured.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT my-index-000001
+{
+  "settings": {
+    "index.lifecycle.name": "my_policy",
+    "index.lifecycle.rollover_alias": "my_data"
+  },
+  "aliases": {
+    "my_data": {
+      "is_write_index": true
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1323.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-rollover-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-rollover.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You must specify at least one rollover condition.
+An empty rollover action is invalid.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">max_age</code>
+</span>
+</dt>
+<dd>
+(Optional,  <a class="xref" href="api-conventions.html#time-units" title="Time units">time units</a>)
+Triggers roll over after the maximum elapsed time from index creation is reached.
+The elapsed time is always calculated since the index creation time, even if the
+index origination date is configured to a custom date (via the
+<a class="xref" href="settings.html#index-lifecycle-parse-origination-date">index.lifecycle.parse_origination_date</a> or
+<a class="xref" href="settings.html#index-lifecycle-origination-date">index.lifecycle.origination_date</a> settings)
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_docs</code>
+</span>
+</dt>
+<dd>
+(Optional, integer)
+Triggers roll over after the specified maximum number of documents is reached.
+Documents added since the last refresh are not included in the document count.
+The document count does <span class="strong strong"><strong>not</strong></span> include documents in replica shards.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_size</code>
+</span>
+</dt>
+<dd>
+<p>
+(Optional, <a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte units</a>)
+Triggers roll over when the index reaches a certain size.
+This is the total size of all primary shards in the index.
+Replicas are not counted toward the maximum index size.
+</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>To see the current index size, use the <a class="xref" href="cat.html#cat-indices" title="cat indices API">_cat indices</a> API.
+The <code class="literal">pri.store.size</code> value shows the combined size of all primary shards.</p>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-rollover-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-rollover.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="ilm-rollover-size-ex"></a>Roll over based on index size<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-rollover.asciidoc">edit</a></h4>
+</div></div></div>
+<p>This example rolls the index over when it is at least 100 gigabytes.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover" : {
+            "max_size": "100GB"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1324.console"></div>
+</div>
+
+<div class="ilm-rollover-documents-ex]">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_roll_over_based_on_document_count"></a>Roll over based on document count<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-rollover.asciidoc">edit</a></h4>
+</div></div></div>
+<p>This example rolls the index over when it contains at least one hundred million documents.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover" : {
+            "max_docs": 100000000
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1325.console"></div>
+</div>
+
+<div class="ilm-rollover-age-ex]">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_roll_over_based_on_index_age"></a>Roll over based on index age<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-rollover.asciidoc">edit</a></h4>
+</div></div></div>
+<p>This example rolls the index over if it was created at least 7 days ago.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover" : {
+            "max_age": "7d"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1326.console"></div>
+</div>
+
+<div class="ilm-rollover-conditions-ex]">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_roll_over_using_multiple_conditions"></a>Roll over using multiple conditions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-rollover.asciidoc">edit</a></h4>
+</div></div></div>
+<p>When you specify multiple rollover conditions,
+the index is rolled over when <em>any</em> of the conditions are met.
+This example rolls the index over if it is at least 7 days old or at least 100 gigabytes.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover" : {
+            "max_age": "7d",
+            "max_size": "100GB"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1327.console"></div>
+</div>
+
+<div class="ilm-rollover-block-ex]">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_rollover_condition_blocks_phase_transition"></a>Rollover condition blocks phase transition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-rollover.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The rollover action only completes if one of its conditions is met.
+This means that any subsequent phases are blocked until rollover succeeds.</p>
+<p>For example, the following policy deletes the index one day after it rolls over.
+It does not delete the index one day after it was created.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_ilm/policy/rollover_policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_size": "50G"
+          }
+        }
+      },
+      "delete": {
+        "min_age": "1d",
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1328.console"></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-searchable-snapshot"></a>Searchable snapshot<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-searchable-snapshot.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This functionality is in beta and is subject to change. The design and code is less mature than official GA features and is being provided as-is with no warranties. Beta features are not subject to the support SLA of official GA features.</p>
+</div>
+</div>
+<p>Takes a snapshot of the managed index in the configured repository and mounts it
+as a <a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshot</a>. If the index is part of a
+<a class="xref" href="data-streams.html" title="Data streams">data stream</a>, the mounted index replaces the original index in
+the stream.</p>
+<p>The <code class="literal">searchable_snapshot</code> action requires <a class="xref" href="data-tiers.html" title="Data tiers">data tiers</a>. The action
+uses the
+<a class="xref" href="index-modules-allocation.html#tier-preference-allocation-filter"><code class="literal">index.routing.allocation.include._tier_preference</code></a>
+setting to mount the index directly to the phase&#8217;s corresponding data tier. For
+example, in the cold phase, the action mounts a searchable snapshot index to the
+cold data tier.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If the <code class="literal">searchable_snapshot</code> action is used in the hot phase the
+subsequent phases cannot include the <code class="literal">shrink</code>, <code class="literal">forcemerge</code>, or <code class="literal">freeze</code>
+actions.</p>
+</div>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This action cannot be performed on a data stream&#8217;s write index. Attempts to do
+so will fail. To convert the index to a searchable snapshot, first
+<a class="xref" href="use-a-data-stream.html#manually-roll-over-a-data-stream" title="Manually roll over a data stream">manually roll over</a> the data stream. This
+creates a new write index. Because the index is no longer the stream&#8217;s write
+index, the action can then convert it to a searchable snapshot.
+Using a policy that makes use of the <a class="xref" href="ilm-actions.html#ilm-rollover" title="Rollover">rollover</a> action
+in the hot phase will avoid this situation and the need for a manual rollover for future
+managed indices.</p>
+</div>
+</div>
+<p>By default, this snapshot is deleted by the <a class="xref" href="ilm-actions.html#ilm-delete" title="Delete">delete action</a> in the delete phase.
+To keep the snapshot, set <code class="literal">delete_searchable_snapshot</code> to <code class="literal">false</code> in the delete action.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-searchable-snapshot-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-searchable-snapshot.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">snapshot_repository</code>
+</span>
+</dt>
+<dd>
+(Required, string)
+Specifies where to store the snapshot.
+See <a class="xref" href="snapshots-register-repository.html" title="Register a snapshot repository"><em>Register repository</em></a> for more information.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">force_merge_index</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean)
+Force merges the managed index to one segment.
+Defaults to <code class="literal">true</code>.
+If the managed index was already force merged using the
+<a class="xref" href="ilm-actions.html#ilm-forcemerge" title="Force merge">force merge action</a> in a previous action
+the <code class="literal">searchable snapshot</code> action force merge step will be a no-op.
+</dd>
+</dl>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">forcemerge</code> action is best effort. It might happen that some of
+the shards are relocating, in which case they will not be merged.
+The <code class="literal">searchable_snapshot</code> action will continue executing even if not all shards
+are force merged.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-searchable-snapshot-ex"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-searchable-snapshot.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "cold": {
+        "actions": {
+          "searchable_snapshot" : {
+            "snapshot_repository" : "backing_repo"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1329.console"></div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-set-priority"></a>Set priority<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-set-priority.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: hot, warm, cold.</p>
+<p>Sets the <a class="xref" href="index-modules-allocation.html#recovery-prioritization" title="Index recovery prioritization">priority</a> of the index as
+soon as the policy enters the hot, warm, or cold phase.
+Higher priority indices are recovered before indices with lower priorities following a node restart.</p>
+<p>Generally, indexes in the hot phase should have the highest value and
+indexes in the cold phase should have the lowest values.
+For example: 100 for the hot phase, 50 for the warm phase, and 0 for the cold phase.
+Indices that don&#8217;t set this value have a default priority of 1.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-set-priority-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-set-priority.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">priority</code>
+</span>
+</dt>
+<dd>
+(Required, integer)
+The priority for the index.
+Must be 0 or greater.
+Set to <code class="literal">null</code> to remove the priority.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-set-priority-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-set-priority.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "set_priority" : {
+            "priority": 50
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1330.console"></div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-shrink"></a>Shrink<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-shrink.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: warm</p>
+<p>Sets an index to <a class="xref" href="index-modules.html#dynamic-index-settings" title="Dynamic index settings">read-only</a>
+and shrinks it into a new index with fewer primary shards.
+The name of the new index is of the form <code class="literal">shrink-&lt;original-index-name&gt;</code>.
+For example, if the name of the source index is <em>logs</em>,
+the name of the shrunken index is <em>shrink-logs</em>.</p>
+<p>The shrink action allocates all primary shards of the index to one node so it
+can call  the <a class="xref" href="indices.html#indices-shrink-index" title="Shrink index API">Shrink API</a> to shrink the index.
+After shrinking, it swaps aliases that point to the original index to the new shrunken index.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If the shrink action is used on a <a class="xref" href="ccr-apis.html#ccr-put-follow" title="Create follower API">follower index</a>,
+policy execution waits until the leader index rolls over (or is
+<a class="xref" href="skipping-rollover.html" title="Skip rollover">otherwise marked complete</a>),
+then converts the follower index into a regular index with the
+<a class="xref" href="ilm-actions.html#ilm-unfollow" title="Unfollow">unfollow</a> action before performing the shrink operation.</p>
+</div>
+</div>
+<p>If the managed index is part of a <a class="xref" href="data-streams.html" title="Data streams">data stream</a>,
+the shrunken index replaces the original index in the data stream.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This action cannot be performed on a data stream&#8217;s write index. Attempts to do
+so will fail. To shrink the index, first
+<a class="xref" href="use-a-data-stream.html#manually-roll-over-a-data-stream" title="Manually roll over a data stream">manually roll over</a> the data stream. This
+creates a new write index. Because the index is no longer the stream&#8217;s write
+index, the action can resume shrinking it.
+Using a policy that makes use of the <a class="xref" href="ilm-actions.html#ilm-rollover" title="Rollover">rollover</a> action
+in the hot phase will avoid this situation and the need for a manual rollover for future
+managed indices.</p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-shrink-options"></a>Shrink options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-shrink.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">number_of_shards</code>
+</span>
+</dt>
+<dd>
+(Required, integer)
+Number of shards to shrink to.
+Must be a factor of the number of shards in the source index.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-shrink-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-shrink.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "warm": {
+        "actions": {
+          "shrink" : {
+            "number_of_shards": 1
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1331.console"></div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-unfollow"></a>Unfollow<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-unfollow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: hot, warm, cold.</p>
+<p>Converts a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ccr-apis.html" class="ulink" target="_top">CCR</a> follower index into a regular index.
+This enables the shrink, rollover, and searchable snapshot actions
+to be be performed safely on follower indices.
+You can also use unfollow directly when moving follower indices through the lifecycle.
+Has no effect on indices that are not followers, phase execution just moves to the next action.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This action is triggered automatically by the <a class="xref" href="ilm-actions.html#ilm-rollover" title="Rollover">rollover</a>,
+<a class="xref" href="ilm-actions.html#ilm-shrink" title="Shrink">shrink</a>, and
+<a class="xref" href="ilm-actions.html#ilm-searchable-snapshot" title="Searchable snapshot">searchable snapshot</a> actions when they are
+applied to follower indices.</p>
+</div>
+</div>
+<p>This action waits until is it safe to convert a follower index into a regular index.
+The following conditions must be met:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The leader index must have <code class="literal">index.lifecycle.indexing_complete</code> set to <code class="literal">true</code>.
+This happens automatically if the leader index is rolled over using the
+<a class="xref" href="ilm-actions.html#ilm-rollover" title="Rollover">rollover</a> action, and can be set manually using
+the <a class="xref" href="indices.html#indices-update-settings" title="Update index settings API">index settings</a> API.
+</li>
+<li class="listitem">
+All operations performed on the leader index have been replicated to the follower index.
+This ensures that no operations are lost when the index is converted.
+</li>
+</ul>
+</div>
+<p>Once these conditions are met, unfollow performs the following operations:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Pauses indexing following for the follower index.
+</li>
+<li class="listitem">
+Closes the follower index.
+</li>
+<li class="listitem">
+Unfollows the leader index.
+</li>
+<li class="listitem">
+Opens the follower index (which is at this point is a regular index).
+</li>
+</ul>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-unfollow-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-unfollow.asciidoc">edit</a></h3>
+</div></div></div>
+<p>None.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-unfollow-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-unfollow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "unfollow" : {}
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1332.console"></div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-wait-for-snapshot"></a>Wait for snapshot<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-wait-for-snapshot.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>Phases allowed: delete.</p>
+<p>Waits for the specified SLM policy to be executed before removing the index.
+This ensures that a snapshot of the deleted index is available.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-wait-for-snapshot-options"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-wait-for-snapshot.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">policy</code>
+</span>
+</dt>
+<dd>
+(Required, string)
+Name of the SLM policy that the delete action should wait for.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-wait-for-snapshot-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/actions/ilm-wait-for-snapshot.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "delete": {
+        "actions": {
+          "wait_for_snapshot" : {
+            "policy": "slm-policy-name"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1333.console"></div>
+</div>
+
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="example-using-index-lifecycle-policy.html">« Tutorial: Manage Filebeat time-based indices</a>
+</span>
+<span class="next">
+<a href="set-up-lifecycle-policy.html">Configure a lifecycle policy <a id="ilm-policy-definition"></a> »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

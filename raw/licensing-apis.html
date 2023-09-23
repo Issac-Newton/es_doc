@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Licensing APIs | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Licensing APIs | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="rest-apis.html" title="REST APIs"/>
+<link rel="prev" href="info-api.html" title="Info API"/>
+<link rel="next" href="ml-apis.html" title="Machine learning anomaly detection APIs"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="rest-apis.html">REST APIs</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="info-api.html">« Info API</a>
+</span>
+<span class="next">
+<a href="ml-apis.html">Machine learning anomaly detection APIs »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="licensing-apis"></a>Licensing APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can use the following APIs to manage your licenses:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="licensing-apis.html#delete-license" title="Delete license API">Delete license</a>
+</li>
+<li class="listitem">
+<a class="xref" href="licensing-apis.html#get-license" title="Get license API">Get license</a>
+</li>
+<li class="listitem">
+<a class="xref" href="licensing-apis.html#get-trial-status" title="Get trial status API">Get trial status</a>
+</li>
+<li class="listitem">
+<a class="xref" href="licensing-apis.html#start-trial" title="Start trial API">Start trial</a>
+</li>
+<li class="listitem">
+<a class="xref" href="licensing-apis.html#get-basic-status" title="Get basic status API">Get basic status</a>
+</li>
+<li class="listitem">
+<a class="xref" href="licensing-apis.html#start-basic" title="Start basic API">Start basic</a>
+</li>
+<li class="listitem">
+<a class="xref" href="licensing-apis.html#update-license" title="Update license API">Update license</a>
+</li>
+</ul>
+</div>
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="delete-license"></a>Delete license API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/delete-license.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>This API enables you to delete licensing information.</p>
+<h4><a id="_request_2"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/delete-license.asciidoc">edit</a></h4>
+<p><code class="literal">DELETE /_license</code></p>
+<h4><a id="_description_12"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/delete-license.asciidoc">edit</a></h4>
+<p>When your license expires, X-Pack operates in a degraded mode.  For more
+information, see
+<a href="https://www.elastic.co/guide/en/kibana/7.10/managing-licenses.html#license-expiration" class="ulink" target="_top">License expiration</a>.</p>
+<h4><a id="_authorization"></a>Authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/delete-license.asciidoc">edit</a></h4>
+<p>You must have <code class="literal">manage</code> cluster privileges to use this API.
+For more information, see
+<a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.</p>
+<h4><a id="_examples_14"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/delete-license.asciidoc">edit</a></h4>
+<p>The following example queries the info API:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">DELETE /_license</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2040.console"></div>
+<p>When the license is successfully deleted, the API returns the following response:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">{
+  "acknowledged": true
+}</pre>
+</div>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="get-license"></a>Get license API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-license.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>This API enables you to retrieve licensing information.</p>
+<h4><a id="_request_3"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-license.asciidoc">edit</a></h4>
+<p><code class="literal">GET /_license</code></p>
+<h4><a id="_description_13"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-license.asciidoc">edit</a></h4>
+<p>This API returns information about the type of license, when it was issued, and
+when it expires, for example.</p>
+<p>For more information about the different types of licenses, see
+<a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">https://www.elastic.co/subscriptions</a>.</p>
+<h4><a id="_query_parameters"></a>Query Parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-license.asciidoc">edit</a></h4>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">local</code>
+</span>
+</dt>
+<dd>
+(Boolean) Specifies whether to retrieve local information. The default value
+is <code class="literal">false</code>, which means the information is retrieved from the master node.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">accept_enterprise</code>
+</span>
+</dt>
+<dd>
+(Boolean) If <code class="literal">true</code>, this parameter returns <code class="literal">enterprise</code> for Enterprise
+license types. If <code class="literal">false</code>, this parameter returns <code class="literal">platinum</code> for both
+<code class="literal">platinum</code> and <code class="literal">enterprise</code> license types. This behavior is maintained for
+backwards compatibility.
+</dd>
+</dl>
+</div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3>Deprecated in 7.6.0.</h3>
+<p>This parameter is deprecated and will always be set to <code class="literal">true</code> in 8.x.</p>
+</div>
+</div>
+<h4><a id="_authorization_2"></a>Authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-license.asciidoc">edit</a></h4>
+<p>You must have <code class="literal">monitor</code> cluster privileges to use this API.
+For more information, see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.</p>
+<h4><a id="_examples_15"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-license.asciidoc">edit</a></h4>
+<p>The following example provides information about a trial license:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_license</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2041.console"></div>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "license" : {
+    "status" : "active",
+    "uid" : "cbff45e7-c553-41f7-ae4f-9205eabd80xx",
+    "type" : "trial",
+    "issue_date" : "2018-10-20T22:05:12.332Z",
+    "issue_date_in_millis" : 1540073112332,
+    "expiry_date" : "2018-11-19T22:05:12.332Z",
+    "expiry_date_in_millis" : 1542665112332,
+    "max_nodes" : 1000,
+    "issued_to" : "test",
+    "issuer" : "elasticsearch",
+    "start_date_in_millis" : -1
+  }
+}</pre>
+</div>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="get-trial-status"></a>Get trial status API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-trial-status.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Enables you to check the status of your trial.</p>
+<h4><a id="_request_4"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-trial-status.asciidoc">edit</a></h4>
+<p><code class="literal">GET /_license/trial_status</code></p>
+<h4><a id="_description_14"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-trial-status.asciidoc">edit</a></h4>
+<p>If you want to try all the subscription features, you can start a 30-day trial.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You are allowed to initiate a trial only if your cluster has not
+already activated a trial for the current major product version. For example, if
+you have already activated a trial for v6.0, you cannot start a new trial until
+v7.0. You can, however, request an extended trial at <a href="https://www.elastic.co/trialextension" class="ulink" target="_top">https://www.elastic.co/trialextension</a>.</p>
+</div>
+</div>
+<p>For more information about features and subscriptions, see
+<a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">https://www.elastic.co/subscriptions</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_authorization_3"></a>Authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-trial-status.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You must have <code class="literal">monitor</code> cluster privileges to use this API.
+For more information, see
+<a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.</p>
+<h4><a id="_examples_16"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-trial-status.asciidoc">edit</a></h4>
+<p>The following example checks whether you are eligible to start a trial:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_license/trial_status</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2042.console"></div>
+<p>Example response:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "eligible_to_start_trial": true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="start-trial"></a>Start trial API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-trial.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Starts a 30-day trial.</p>
+<h4><a id="_request_5"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-trial.asciidoc">edit</a></h4>
+<p><code class="literal">POST /_license/start_trial</code></p>
+<h4><a id="_description_15"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-trial.asciidoc">edit</a></h4>
+<p>The <code class="literal">start trial</code> API enables you to start a 30-day trial, which gives access to
+all subscription features.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You are allowed to initiate a trial only if your cluster has not already
+activated a trial for the current major product version. For example, if you
+have already activated a trial for v6.0, you cannot start a new trial until v7.0.
+You can, however, request an extended trial at <a href="https://www.elastic.co/trialextension" class="ulink" target="_top">https://www.elastic.co/trialextension</a>.</p>
+</div>
+</div>
+<p>To check the status of your trial, use <a class="xref" href="licensing-apis.html#get-trial-status" title="Get trial status API">Get trial status</a>.</p>
+<p>For more information about features and subscriptions, see
+<a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">https://www.elastic.co/subscriptions</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_authorization_4"></a>Authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-trial.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You must have <code class="literal">manage</code> cluster privileges to use this API.
+For more information, see
+<a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.</p>
+<h4><a id="_examples_17"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-trial.asciidoc">edit</a></h4>
+<p>The following example starts a 30-day trial. The acknowledge parameter is
+required as you are initiating a license that will expire.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_license/start_trial?acknowledge=true</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2043.console"></div>
+<p>Example response:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">{
+  "trial_was_started": true,
+  "acknowledged": true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="get-basic-status"></a>Get basic status API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-basic-status.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>This API enables you to check the status of your basic license.</p>
+<h4><a id="_request_6"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-basic-status.asciidoc">edit</a></h4>
+<p><code class="literal">GET /_license/basic_status</code></p>
+<h4><a id="_description_16"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-basic-status.asciidoc">edit</a></h4>
+<p>In order to initiate a basic license, you must not currently have a basic
+license.</p>
+<p>For more information about the different types of licenses, see
+<a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">https://www.elastic.co/subscriptions</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_authorization_5"></a>Authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-basic-status.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You must have <code class="literal">monitor</code> cluster privileges to use this API.
+For more information, see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.</p>
+<h4><a id="_examples_18"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/get-basic-status.asciidoc">edit</a></h4>
+<p>The following example checks whether you are eligible to start a basic:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_license/basic_status</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2044.console"></div>
+<p>Example response:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "eligible_to_start_basic": true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="start-basic"></a>Start basic API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-basic.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>This API starts an indefinite basic license.</p>
+<h4><a id="_request_7"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-basic.asciidoc">edit</a></h4>
+<p><code class="literal">POST /_license/start_basic</code></p>
+<h4><a id="_description_17"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-basic.asciidoc">edit</a></h4>
+<p>The <code class="literal">start basic</code> API enables you to initiate an indefinite basic license, which
+gives access to all the basic features. If the basic license does not support
+all of the features that are available with your current license, however, you are
+notified in the response.  You must then re-submit the API request with the
+<code class="literal">acknowledge</code> parameter set to <code class="literal">true</code>.</p>
+<p>To check the status of your basic license, use the following API:
+<a class="xref" href="licensing-apis.html#get-basic-status" title="Get basic status API">Get basic status</a>.</p>
+<p>For more information about the different types of licenses, see
+<a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">https://www.elastic.co/subscriptions</a>.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_authorization_6"></a>Authorization<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-basic.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You must have <code class="literal">manage</code> cluster privileges to use this API.
+For more information, see
+<a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.</p>
+<h4><a id="_examples_19"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/start-basic.asciidoc">edit</a></h4>
+<p>The following example starts a basic license if you do not currently have a license:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_license/start_basic</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2045.console"></div>
+<p>Example response:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">{
+  "basic_was_started": true,
+  "acknowledged": true
+}</pre>
+</div>
+<p>The following example starts a basic license if you currently have a license with more
+features than a basic license. As you are losing features, you must pass the acknowledge
+parameter:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_license/start_basic?acknowledge=true</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2046.console"></div>
+<p>Example response:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">{
+  "basic_was_started": true,
+  "acknowledged": true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="update-license"></a>Update license API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/update-license.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Updates the license for your Elasticsearch cluster.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="update-license-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/update-license.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">PUT _license</code></p>
+<p><code class="literal">POST _license</code></p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="update-license-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/update-license.asciidoc">edit</a></h3>
+</div></div></div>
+<p>If Elasticsearch security features are enabled, you need <code class="literal">manage</code> cluster privileges to
+install the license.</p>
+<p>If Elasticsearch security features are enabled and you are installing a gold or higher
+license, you must enable TLS on the transport networking layer before you
+install the license. See <a class="xref" href="encrypting-communications.html#configuring-tls" title="Encrypting communications in Elasticsearch">Encrypting communications in Elasticsearch</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="update-license-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/update-license.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can update your license at runtime without shutting down your nodes. License
+updates take effect immediately. If the license you are installing does not
+support all of the features that were available with your previous license,
+however, you are notified in the response. You must then re-submit the API
+request with the <code class="literal">acknowledge</code> parameter set to <code class="literal">true</code>.</p>
+<p>For more information about the different types of licenses, see
+<a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">https://www.elastic.co/subscriptions</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="update-license-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/update-license.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">acknowledge</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean)
+Specifies whether you acknowledge the license changes. The default
+value is <code class="literal">false</code>.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="update-license-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/update-license.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">licenses</code>
+</span>
+</dt>
+<dd>
+(Required, array)
+A sequence of one or more JSON documents containing the license information.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="update-license-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/licensing/update-license.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The following example updates to a basic license:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _license
+{
+  "licenses": [
+    {
+      "uid":"893361dc-9749-4997-93cb-802e3d7fa4xx",
+      "type":"basic",
+      "issue_date_in_millis":1411948800000,
+      "expiry_date_in_millis":1914278399999,
+      "max_nodes":1,
+      "issued_to":"issuedTo",
+      "issuer":"issuer",
+      "signature":"xx"
+    }
+    ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2047.console"></div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>These values are invalid; you must substitute the appropriate content
+from your license file.</p>
+</div>
+</div>
+<p>You can also install your license file using a <code class="literal">curl</code> command. Be sure to add
+<code class="literal">@</code> before the license file path to instruct curl to treat it as an input file.</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">curl -XPUT -u &lt;user&gt; 'http://&lt;host&gt;:&lt;port&gt;/_license' -H "Content-Type: application/json" -d @license.json</pre>
+</div>
+<p>On Windows, use the following command:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">Invoke-WebRequest -uri http://&lt;host&gt;:&lt;port&gt;/_license -Credential elastic -Method Put -ContentType "application/json" -InFile .\license.json</pre>
+</div>
+<p>In these examples,</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">&lt;user&gt;</code> is a user ID with the appropriate authority.
+</li>
+<li class="listitem">
+<code class="literal">&lt;host&gt;</code> is the hostname of any node in the Elasticsearch cluster  (<code class="literal">localhost</code> if
+executing locally)
+</li>
+<li class="listitem">
+<code class="literal">&lt;port&gt;</code> is the http port (defaults to <code class="literal">9200</code>)
+</li>
+<li class="listitem">
+<code class="literal">license.json</code> is the license JSON file
+</li>
+</ul>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If your Elasticsearch node has SSL enabled on the HTTP interface, you must
+  start your URL with <code class="literal">https://</code></p>
+</div>
+</div>
+<p>If you previously had a license with more features than the basic license, you
+receive the following response:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">  {
+  "acknowledged": false,
+  "license_status": "valid",
+  "acknowledge": {
+    "message": """This license update requires acknowledgement. To acknowledge the license, please read the following messages and update the license again, this time with the "acknowledge=true" parameter:""",
+    "watcher": [
+      "Watcher will be disabled"
+    ],
+    "logstash": [
+      "Logstash will no longer poll for centrally-managed pipelines"
+    ],
+    "security": [
+      "The following X-Pack security functionality will be disabled: ..." ]
+    }
+}</pre>
+</div>
+<p>To complete the update, you must re-submit the API request and set the
+<code class="literal">acknowledge</code> parameter to <code class="literal">true</code>. For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _license?acknowledge=true
+{
+  "licenses": [
+    {
+      "uid":"893361dc-9749-4997-93cb-802e3d7fa4xx",
+      "type":"basic",
+      "issue_date_in_millis":1411948800000,
+      "expiry_date_in_millis":1914278399999,
+      "max_nodes":1,
+      "issued_to":"issuedTo",
+      "issuer":"issuer",
+      "signature":"xx"
+    }
+    ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2048.console"></div>
+<p>Alternatively:</p>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">curl -XPUT -u elastic 'http://&lt;host&gt;:&lt;port&gt;/_license?acknowledge=true' -H "Content-Type: application/json" -d @license.json</pre>
+</div>
+<p>For more information about the features that are disabled when your license
+expires, see
+<a href="https://www.elastic.co/guide/en/kibana/7.10/managing-licenses.html#license-expiration" class="ulink" target="_top">License expiration</a>.</p>
+</div>
+
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="info-api.html">« Info API</a>
+</span>
+<span class="next">
+<a href="ml-apis.html">Machine learning anomaly detection APIs »</a>
+</span>
+</div>
+</div>
+</body>
+</html>
