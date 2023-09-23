@@ -1,0 +1,2518 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cross-cluster replication APIs | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Cross-cluster replication APIs | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="rest-apis.html" title="REST APIs"/>
+<link rel="prev" href="cluster.html" title="Cluster APIs"/>
+<link rel="next" href="data-stream-apis.html" title="Data stream APIs"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="rest-apis.html">REST APIs</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="cluster.html">« Cluster APIs</a>
+</span>
+<span class="next">
+<a href="data-stream-apis.html">Data stream APIs »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-apis"></a>Cross-cluster replication APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>You can use the following APIs to perform cross-cluster replication operations.</p>
+<h3><a id="ccr-api-top-level"></a>Top-Level<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h3>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-get-stats" title="Get cross-cluster replication stats API">Get cross-cluster replication stats</a>
+</li>
+</ul>
+</div>
+<h3><a id="ccr-api-follow"></a>Follow<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h3>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-put-follow" title="Create follower API">Create follower index</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-post-pause-follow" title="Pause follower API">Pause follower</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-post-resume-follow" title="Resume follower API">Resume follower</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-post-unfollow" title="Unfollow API">Convert follower index to a regular index</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-post-forget-follower" title="Forget follower API">Remove follower retention leases from the leader</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-get-follow-stats" title="Get follower stats API">Get stats about follower indices</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-get-follow-info" title="Get follower info API">Get info about follower indices</a>
+</li>
+</ul>
+</div>
+<h3><a id="ccr-api-auto-follow"></a>Auto-follow<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h3>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-put-auto-follow-pattern" title="Create auto-follow pattern API">Create auto-follow pattern</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-delete-auto-follow-pattern" title="Delete auto-follow pattern API">Delete auto-follow pattern</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-get-auto-follow-pattern" title="Get auto-follow pattern API">Get auto-follow patterns</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-pause-auto-follow-pattern" title="Pause auto-follow pattern API">Pause auto-follow pattern</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ccr-apis.html#ccr-resume-auto-follow-pattern" title="Resume auto-follow pattern API">Resume auto-follow pattern</a>
+</li>
+</ul>
+</div>
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-get-stats"></a>Get cross-cluster replication stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Get cross-cluster replication stats.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-stats-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_ccr/stats</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1643.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_prerequisites_10"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">monitor</code> cluster
+privileges on the cluster that contains the follower index. For more information,
+see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-stats-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API gets cross-cluster replication stats. This API will return all stats related to cross-cluster replication. In
+particular, this API returns stats about auto-following, and returns the same
+shard-level stats as in the <a class="xref" href="ccr-apis.html#ccr-get-follow-stats" title="Get follower stats API">get follower stats API</a>.</p>
+</div>
+
+<div class="section child_attributes">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-stats-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">auto_follow_stats</code>
+</span>
+</dt>
+<dd>
+<p>
+(object) An object representing stats for the auto-follow coordinator.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">auto_follow_stats</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">number_of_failed_follow_indices</code>
+</span>
+</dt>
+<dd>
+(long) The number of indices that the auto-follow coordinator failed to
+automatically follow. The causes of recent failures are captured in the logs
+of the elected master node and in the
+<code class="literal">auto_follow_stats.recent_auto_follow_errors</code> field.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">number_of_failed_remote_cluster_state_requests</code>
+</span>
+</dt>
+<dd>
+(long) The number of times that the auto-follow coordinator failed to retrieve
+the cluster state from a remote cluster registered in a collection of
+auto-follow patterns.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">number_of_successful_follow_indices</code>
+</span>
+</dt>
+<dd>
+(long) The number of indices that the auto-follow coordinator successfully
+followed.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">recent_auto_follow_errors</code>
+</span>
+</dt>
+<dd>
+(array) An array of objects representing failures by the auto-follow coordinator.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follow_stats</code>
+</span>
+</dt>
+<dd>
+(object) An object representing shard-level stats for follower indices; refer to
+the details of the response in the
+<a class="xref" href="ccr-apis.html#ccr-get-follow-stats" title="Get follower stats API">get follower stats API</a>.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-stats-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example retrieves cross-cluster replication stats:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_ccr/stats</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1644.console"></div>
+<p>The API returns the following results:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "auto_follow_stats" : {
+    "number_of_failed_follow_indices" : 0,
+    "number_of_failed_remote_cluster_state_requests" : 0,
+    "number_of_successful_follow_indices" : 1,
+    "recent_auto_follow_errors" : [],
+    "auto_followed_clusters" : []
+  },
+  "follow_stats" : {
+    "indices" : [
+      {
+        "index" : "follower_index",
+        "shards" : [
+          {
+            "remote_cluster" : "remote_cluster",
+            "leader_index" : "leader_index",
+            "follower_index" : "follower_index",
+            "shard_id" : 0,
+            "leader_global_checkpoint" : 1024,
+            "leader_max_seq_no" : 1536,
+            "follower_global_checkpoint" : 768,
+            "follower_max_seq_no" : 896,
+            "last_requested_seq_no" : 897,
+            "outstanding_read_requests" : 8,
+            "outstanding_write_requests" : 2,
+            "write_buffer_operation_count" : 64,
+            "follower_mapping_version" : 4,
+            "follower_settings_version" : 2,
+            "follower_aliases_version" : 8,
+            "total_read_time_millis" : 32768,
+            "total_read_remote_exec_time_millis" : 16384,
+            "successful_read_requests" : 32,
+            "failed_read_requests" : 0,
+            "operations_read" : 896,
+            "bytes_read" : 32768,
+            "total_write_time_millis" : 16384,
+            "write_buffer_size_in_bytes" : 1536,
+            "successful_write_requests" : 16,
+            "failed_write_requests" : 0,
+            "operations_written" : 832,
+            "read_exceptions" : [ ],
+            "time_since_last_read_millis" : 8
+          }
+        ]
+      }
+    ]
+  }
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-put-follow"></a>Create follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Creates a follower index.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-follow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /&lt;follower_index&gt;/_ccr/follow?wait_for_active_shards=1
+{
+  "remote_cluster" : "&lt;remote_cluster&gt;",
+  "leader_index" : "&lt;leader_index&gt;"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1645.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-follow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">write</code>, <code class="literal">monitor</code>,
+and <code class="literal">manage_follow_index</code> index privileges for the follower index. You must have
+<code class="literal">read</code> and <code class="literal">monitor</code> index privileges for the leader index. You must also have
+<code class="literal">manage_ccr</code> cluster privileges on the cluster that contains the follower index.
+For more information, see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-follow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API creates a new follower index that is configured to follow the
+referenced leader index. When this API returns, the follower index exists, and
+cross-cluster replication starts replicating operations from the leader index to the follower index.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-follow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;follower_index&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) The name of the follower index.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-follow-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">wait_for_active_shards</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Specifies the number of shards to wait on being active before
+responding. This defaults to waiting on none of the shards to be active. A
+shard must be restored from the leader index before being active. Restoring a
+follower shard requires transferring all the remote Lucene segment files to
+the follower index.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-follow-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">leader_index</code>
+</span>
+</dt>
+<dd>
+(Required, string) The name of the index in the leader cluster to follow.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">remote_cluster</code>
+</span>
+</dt>
+<dd>
+(Required, string) The <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a> containing
+the leader index.
+</dd>
+</dl>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">settings</code>
+</span>
+</dt>
+<dd>
+(object) Settings to override from the leader index. Note that certain
+settings can not be overrode (e.g., <code class="literal">index.number_of_shards</code>).
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_read_request_operation_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations to pull per read from the remote
+cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_outstanding_read_requests</code>
+</span>
+</dt>
+<dd>
+(long) The maximum number of outstanding reads requests from the remote
+cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_read_request_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum size in bytes of per read of a batch
+of operations pulled from the remote cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_request_operation_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations per bulk write request executed on
+the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_request_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum total bytes of operations per bulk write request
+executed on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_outstanding_write_requests</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of outstanding write requests on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_buffer_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations that can be queued for writing.
+When this limit is reached, reads from the remote cluster will be deferred
+until the number of queued operations goes below the limit.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_buffer_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum total bytes of operations that can be
+queued for
+writing. When this limit is reached, reads from the remote cluster will be
+deferred until the total bytes of queued operations goes below the limit.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_retry_delay</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>) The maximum time to wait before retrying an
+operation that failed exceptionally. An exponential backoff strategy is
+employed when retrying.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">read_poll_timeout</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>) The maximum time to wait for new operations on the
+remote cluster when the follower index is synchronized with the leader index.
+When the timeout has elapsed, the poll for operations will return to the
+follower so that it can update some statistics. Then the follower will
+immediately attempt to read from the leader again.
+</dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_default_values"></a>Default values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The following output from the follow info api describes all the default
+values for the above described index follow request parameters:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "follower_indices" : [
+    {
+      "parameters" : {
+        "max_read_request_operation_count" : 5120,
+        "max_read_request_size" : "32mb",
+        "max_outstanding_read_requests" : 12,
+        "max_write_request_operation_count" : 5120,
+        "max_write_request_size" : "9223372036854775807b",
+        "max_outstanding_write_requests" : 9,
+        "max_write_buffer_count" : 2147483647,
+        "max_write_buffer_size" : "512mb",
+        "max_retry_delay" : "500ms",
+        "read_poll_timeout" : "1m"
+      }
+    }
+  ]
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-follow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example creates a follower index named <code class="literal">follower_index</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /follower_index/_ccr/follow?wait_for_active_shards=1
+{
+  "remote_cluster" : "remote_cluster",
+  "leader_index" : "leader_index",
+  "settings": {
+    "index.number_of_replicas": 0
+  },
+  "max_read_request_operation_count" : 1024,
+  "max_outstanding_read_requests" : 16,
+  "max_read_request_size" : "1024k",
+  "max_write_request_operation_count" : 32768,
+  "max_write_request_size" : "16k",
+  "max_outstanding_write_requests" : 8,
+  "max_write_buffer_count" : 512,
+  "max_write_buffer_size" : "512k",
+  "max_retry_delay" : "10s",
+  "read_poll_timeout" : "30s"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1646.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "follow_index_created" : true,
+  "follow_index_shards_acked" : true,
+  "index_following_started" : true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-post-pause-follow"></a>Pause follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Pauses a follower index.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-pause-follow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /&lt;follower_index&gt;/_ccr/pause_follow</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1647.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-pause-follow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">manage_ccr</code> cluster
+privileges on the cluster that contains the follower index. For more information,
+see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-pause-follow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API pauses a follower index. When this API returns, the follower index will
+not fetch any additional operations from the leader index. You can resume
+following with the <a class="xref" href="ccr-apis.html#ccr-post-resume-follow" title="Resume follower API">resume follower API</a>. Pausing and
+resuming a follower index can be used to change the configuration of the
+following task.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-pause-follow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;follower_index&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) The name of the follower index.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-pause-follow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example pauses a follower index named <code class="literal">follower_index</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /follower_index/_ccr/pause_follow</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1648.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged" : true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-post-resume-follow"></a>Resume follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Resumes a follower index.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-resume-follow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /&lt;follower_index&gt;/_ccr/resume_follow
+{
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1649.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-resume-follow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">write</code> and <code class="literal">monitor</code>
+index privileges for the follower index. You must have <code class="literal">read</code> and <code class="literal">monitor</code>
+index privileges for the leader index. You must also have <code class="literal">manage_ccr</code> cluster
+privileges on the cluster that contains the follower index. For more information,
+see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-resume-follow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API resumes a follower index that has been paused either explicitly with
+the <a class="xref" href="ccr-apis.html#ccr-post-pause-follow" title="Pause follower API">pause follower API</a> or implicitly due to
+execution that can not be retried due to failure during following. When this API
+returns, the follower index will resume fetching operations from the leader index.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-resume-follow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;follower_index&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) The name of the follower index.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-resume-follow-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">settings</code>
+</span>
+</dt>
+<dd>
+(object) Settings to override from the leader index. Note that certain
+settings can not be overrode (e.g., <code class="literal">index.number_of_shards</code>).
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_read_request_operation_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations to pull per read from the remote
+cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_outstanding_read_requests</code>
+</span>
+</dt>
+<dd>
+(long) The maximum number of outstanding reads requests from the remote
+cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_read_request_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum size in bytes of per read of a batch
+of operations pulled from the remote cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_request_operation_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations per bulk write request executed on
+the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_request_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum total bytes of operations per bulk write request
+executed on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_outstanding_write_requests</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of outstanding write requests on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_buffer_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations that can be queued for writing.
+When this limit is reached, reads from the remote cluster will be deferred
+until the number of queued operations goes below the limit.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_buffer_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum total bytes of operations that can be
+queued for
+writing. When this limit is reached, reads from the remote cluster will be
+deferred until the total bytes of queued operations goes below the limit.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_retry_delay</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>) The maximum time to wait before retrying an
+operation that failed exceptionally. An exponential backoff strategy is
+employed when retrying.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">read_poll_timeout</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>) The maximum time to wait for new operations on the
+remote cluster when the follower index is synchronized with the leader index.
+When the timeout has elapsed, the poll for operations will return to the
+follower so that it can update some statistics. Then the follower will
+immediately attempt to read from the leader again.
+</dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_default_values_2"></a>Default values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The following output from the follow info api describes all the default
+values for the above described index follow request parameters:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "follower_indices" : [
+    {
+      "parameters" : {
+        "max_read_request_operation_count" : 5120,
+        "max_read_request_size" : "32mb",
+        "max_outstanding_read_requests" : 12,
+        "max_write_request_operation_count" : 5120,
+        "max_write_request_size" : "9223372036854775807b",
+        "max_outstanding_write_requests" : 9,
+        "max_write_buffer_count" : 2147483647,
+        "max_write_buffer_size" : "512mb",
+        "max_retry_delay" : "500ms",
+        "read_poll_timeout" : "1m"
+      }
+    }
+  ]
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-resume-follow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example resumes a follower index named <code class="literal">follower_index</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /follower_index/_ccr/resume_follow
+{
+  "max_read_request_operation_count" : 1024,
+  "max_outstanding_read_requests" : 16,
+  "max_read_request_size" : "1024k",
+  "max_write_request_operation_count" : 32768,
+  "max_write_request_size" : "16k",
+  "max_outstanding_write_requests" : 8,
+  "max_write_buffer_count" : 512,
+  "max_write_buffer_size" : "512k",
+  "max_retry_delay" : "10s",
+  "read_poll_timeout" : "30s"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1650.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged" : true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-post-unfollow"></a>Unfollow API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Converts a follower index to a regular index.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-unfollow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /&lt;follower_index&gt;/_ccr/unfollow</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1651.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-unfollow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">manage_follow_index</code>
+index privileges for the follower index. For more information, see
+<a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-unfollow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API stops the following task associated with a follower index and removes
+index metadata and settings associated with cross-cluster replication. This enables the index to
+treated as a regular index. The follower index must be paused and closed before
+invoking the unfollow API.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Currently cross-cluster replication does not support converting an existing regular index to a
+follower index. Converting a follower index to a regular index is an
+irreversible operation.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-unfollow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;follower_index&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) The name of the follower index.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-unfollow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example converts <code class="literal">follower_index</code> from a follower index to a regular index:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /follower_index/_ccr/unfollow</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1652.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged" : true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-post-forget-follower"></a>Forget follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Removes the follower retention leases from the leader.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-forget-follower-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /&lt;leader_index&gt;/_ccr/forget_follower
+{
+  "follower_cluster" : "&lt;follower_cluster&gt;",
+  "follower_index" : "&lt;follower_index&gt;",
+  "follower_index_uuid" : "&lt;follower_index_uuid&gt;",
+  "leader_remote_cluster" : "&lt;leader_remote_cluster&gt;"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1653.console"></div>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "failed" : 0,
+    "failures" : [ ]
+  }
+}</pre>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-forget-follower-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">manage_leader_index</code>
+index privileges for the leader index. For more information, see
+<a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-forget-follower-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+</div></div></div>
+<p>A following index takes out retention leases on its leader index. These
+retention leases are used to increase the likelihood that the shards of the
+leader index retain the history of operations that the shards of the following
+index need to execute replication. When a follower index is converted to a
+regular index via the <a class="xref" href="ccr-apis.html#ccr-post-unfollow" title="Unfollow API">unfollow API</a> (either via explicit
+execution of this API, or implicitly via index lifecycle management), these retention leases are
+removed. However, removing these retention leases can fail (e.g., if the remote
+cluster containing the leader index is unavailable). While these retention
+leases will eventually expire on their own, their extended existence can cause
+the leader index to hold more history than necessary, and prevent index lifecycle management from
+performing some operations on the leader index. This API exists to enable
+manually removing these retention leases when the unfollow API was unable to do
+so.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This API does not stop replication by a following index. If you use this
+API targeting a follower index that is still actively following, the following
+index will add back retention leases on the leader. The only purpose of this API
+is to handle the case of failure to remove the following retention leases after
+the <a class="xref" href="ccr-apis.html#ccr-post-unfollow" title="Unfollow API">unfollow API</a> is invoked.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-forget-follower-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;leader_index&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) The name of the leader index.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-forget-follower-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">follower_cluster</code>
+</span>
+</dt>
+<dd>
+(Required, string) The name of the cluster containing the follower index.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follower_index</code>
+</span>
+</dt>
+<dd>
+(Required, string) The name of the follower index.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follower_index_uuid</code>
+</span>
+</dt>
+<dd>
+(Required, string) The UUID of the follower index.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">leader_remote_cluster</code>
+</span>
+</dt>
+<dd>
+(Required, string) The alias (from the perspective of the cluster containing
+the follower index) of the <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a>
+containing the leader index.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-post-forget-follower-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example removes the follower retention leases for <code class="literal">follower_index</code> from
+<code class="literal">leader_index</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /leader_index/_ccr/forget_follower
+{
+  "follower_cluster" : "follower_cluster",
+  "follower_index" : "follower_index",
+  "follower_index_uuid" : "vYpnaWPRQB6mNspmoCeYyA",
+  "leader_remote_cluster" : "leader_cluster"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1654.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "failed" : 0,
+    "failures" : [ ]
+  }
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-get-follow-stats"></a>Get follower stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Get follower stats.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-stats-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /&lt;index&gt;/_ccr/stats</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1655.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-stats-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">monitor</code> cluster
+privileges on the cluster that contains the follower index. For more information,
+see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-stats-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API gets follower stats. This API will return shard-level stats about the
+following tasks associated with each shard for the specified indices.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-stats-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;index&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) A comma-delimited list of index patterns.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section child_attributes">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-stats-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">indices</code>
+</span>
+</dt>
+<dd>
+<p>
+(array) An array of follower index statistics.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">indices</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">fatal_exception</code>
+</span>
+</dt>
+<dd>
+(object) An object representing a fatal exception that cancelled the following
+task. In this situation, the following task must be resumed manually with the
+<a class="xref" href="ccr-apis.html#ccr-post-resume-follow" title="Resume follower API">resume follower API</a>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">index</code>
+</span>
+</dt>
+<dd>
+(string) The name of the follower index.
+</dd>
+</dl>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">shards</code>
+</span>
+</dt>
+<dd>
+<p>
+(array) An array of shard-level following task statistics.
+</p>
+<details open>
+<summary class="title">Properties of objects in <code class="literal">shards</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">bytes_read</code>
+</span>
+</dt>
+<dd>
+<p>
+(long) The total of transferred bytes read from the leader.
+</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This is only an estimate and does not account for compression if enabled.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">failed_read_requests</code>
+</span>
+</dt>
+<dd>
+(long) The number of failed reads.
+</dd>
+<dt>
+<span class="term">
+failed_write_requests`
+</span>
+</dt>
+<dd>
+(long) The number of failed bulk write requests executed on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follower_aliases_version</code>
+</span>
+</dt>
+<dd>
+(long) The index aliases version the follower is synced up to.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follower_global_checkpoint</code>
+</span>
+</dt>
+<dd>
+(long) The current global checkpoint on the follower. The difference between the
+<code class="literal">leader_global_checkpoint</code> and the <code class="literal">follower_global_checkpoint</code> is an
+indication of how much the follower is lagging the leader.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follower_index</code>
+</span>
+</dt>
+<dd>
+(string) The name of the follower index.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follower_mapping_version</code>
+</span>
+</dt>
+<dd>
+(long) The mapping version the follower is synced up to.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follower_max_seq_no</code>
+</span>
+</dt>
+<dd>
+(long) The current maximum sequence number on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follower_settings_version</code>
+</span>
+</dt>
+<dd>
+(long) The index settings version the follower is synced up to.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">last_requested_seq_no</code>
+</span>
+</dt>
+<dd>
+(long) The starting sequence number of the last batch of operations requested
+from the leader.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">leader_global_checkpoint</code>
+</span>
+</dt>
+<dd>
+(long) The current global checkpoint on the leader known to the follower task.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">leader_index</code>
+</span>
+</dt>
+<dd>
+(string) The name of the index in the leader cluster being followed.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">leader_max_seq_no</code>
+</span>
+</dt>
+<dd>
+(long) The current maximum sequence number on the leader known to the follower
+task.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">operations_read</code>
+</span>
+</dt>
+<dd>
+(long) The total number of operations read from the leader.
+</dd>
+<dt>
+<span class="term">
+operations_written`
+</span>
+</dt>
+<dd>
+(long) The number of operations written on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">outstanding_read_requests</code>
+</span>
+</dt>
+<dd>
+(integer) The number of active read requests from the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">outstanding_write_requests</code>
+</span>
+</dt>
+<dd>
+(integer) The number of active bulk write requests on the follower.
+</dd>
+</dl>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">read_exceptions</code>
+</span>
+</dt>
+<dd>
+<p>
+(array) An array of objects representing failed reads.
+</p>
+<details open>
+<summary class="title">Properties of objects in <code class="literal">read_exceptions</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">exception</code>
+</span>
+</dt>
+<dd>
+(object) Represents the exception that caused the read to fail.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">from_seq_no</code>
+</span>
+</dt>
+<dd>
+(long) The starting sequence number of the batch requested from the leader.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">retries</code>
+</span>
+</dt>
+<dd>
+(integer) The number of times the batch has been retried.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">remote_cluster</code>
+</span>
+</dt>
+<dd>
+(string) The <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a> containing the leader
+index.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">shard_id</code>
+</span>
+</dt>
+<dd>
+(integer) The numerical shard ID, with values from 0 to one less than the
+number of replicas.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">successful_read_requests</code>
+</span>
+</dt>
+<dd>
+(long) The number of successful fetches.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">successful_write_requests</code>
+</span>
+</dt>
+<dd>
+(long) The number of bulk write requests executed on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">time_since_last_read_millis</code>
+</span>
+</dt>
+<dd>
+<p>
+(long) The number of milliseconds since a read request was sent to the leader.
+</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>When the follower is caught up to the leader, this number will increase up
+to the configured <code class="literal">read_poll_timeout</code> at which point another read request will
+be sent to the leader.</p>
+</div>
+</div>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">total_read_remote_exec_time_millis</code>
+</span>
+</dt>
+<dd>
+(long) The total time reads spent executing on the remote cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">total_read_time_millis</code>
+</span>
+</dt>
+<dd>
+(long) The total time reads were outstanding, measured from the time a read was
+sent to the leader to the time a reply was returned to the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">total_write_time_millis</code>
+</span>
+</dt>
+<dd>
+(long) The total time spent writing on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">write_buffer_operation_count</code>
+</span>
+</dt>
+<dd>
+(integer) The number of write operations queued on the follower.
+</dd>
+<dt>
+<span class="term">
+write_buffer_size_in_bytes`
+</span>
+</dt>
+<dd>
+(long) The total number of bytes of operations currently queued for writing.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-stats-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example retrieves follower stats:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /follower_index/_ccr/stats</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1656.console"></div>
+<p>The API returns the following results:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "indices" : [
+    {
+      "index" : "follower_index",
+      "shards" : [
+        {
+          "remote_cluster" : "remote_cluster",
+          "leader_index" : "leader_index",
+          "follower_index" : "follower_index",
+          "shard_id" : 0,
+          "leader_global_checkpoint" : 1024,
+          "leader_max_seq_no" : 1536,
+          "follower_global_checkpoint" : 768,
+          "follower_max_seq_no" : 896,
+          "last_requested_seq_no" : 897,
+          "outstanding_read_requests" : 8,
+          "outstanding_write_requests" : 2,
+          "write_buffer_operation_count" : 64,
+          "follower_mapping_version" : 4,
+          "follower_settings_version" : 2,
+          "follower_aliases_version" : 8,
+          "total_read_time_millis" : 32768,
+          "total_read_remote_exec_time_millis" : 16384,
+          "successful_read_requests" : 32,
+          "failed_read_requests" : 0,
+          "operations_read" : 896,
+          "bytes_read" : 32768,
+          "total_write_time_millis" : 16384,
+          "write_buffer_size_in_bytes" : 1536,
+          "successful_write_requests" : 16,
+          "failed_write_requests" : 0,
+          "operations_written" : 832,
+          "read_exceptions" : [ ],
+          "time_since_last_read_millis" : 8
+        }
+      ]
+    }
+  ]
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-get-follow-info"></a>Get follower info API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Retrieves information about all follower indices.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-info-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /&lt;index&gt;/_ccr/info</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1657.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-info-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">monitor</code> cluster
+privileges. For more information, see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-info-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API lists the parameters and the status for each follower index.
+For example, the results include follower index names, leader index names,
+replication options and whether the follower indices are active or paused.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-info-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;index&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) A comma-delimited list of follower index patterns.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section child_attributes">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-info-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">follower_indices</code>
+</span>
+</dt>
+<dd>
+<p>
+(array) An array of follower index statistics.
+</p>
+<details open>
+<summary class="title">Properties of objects in <code class="literal">follower_indices</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">follower_index</code>
+</span>
+</dt>
+<dd>
+(string) The name of the follower index.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">leader_index</code>
+</span>
+</dt>
+<dd>
+(string) The name of the index in the leader cluster that is followed.
+</dd>
+</dl>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">parameters</code>
+</span>
+</dt>
+<dd>
+<p>
+(object) An object that encapsulates cross-cluster replication parameters. If the follower index&#8217;s <code class="literal">status</code> is <code class="literal">paused</code>,
+this object is omitted.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">parameters</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">max_outstanding_read_requests</code>
+</span>
+</dt>
+<dd>
+(long) The maximum number of outstanding read requests from the remote cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_outstanding_write_requests</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of outstanding write requests on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_read_request_operation_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations to pull per read from the remote
+cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_read_request_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum size in bytes of per read of a batch of
+operations pulled from the remote cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_retry_delay</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>) The maximum time to wait before retrying an
+operation that failed exceptionally. An exponential backoff strategy is employed
+when retrying.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_buffer_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations that can be queued for writing. When
+this limit is reached, reads from the remote cluster are deferred until the
+number of queued operations goes below the limit.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_buffer_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum total bytes of operations that can be
+queued for writing. When this limit is reached, reads from the remote cluster
+are deferred until the total bytes of queued operations goes below the limit.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_request_operation_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations per bulk write request executed on
+the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_request_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum total bytes of operations per bulk write
+request executed on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">read_poll_timeout</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>) The maximum time to wait for new operations on the
+remote cluster when the follower index is synchronized with the leader index.
+When the timeout has elapsed, the poll for operations returns to the follower so
+that it can update some statistics, then the follower immediately attempts
+to read from the leader again.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">remote_cluster</code>
+</span>
+</dt>
+<dd>
+(string) The <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a> that contains the
+leader index.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">status</code>
+</span>
+</dt>
+<dd>
+(string) Whether index following is <code class="literal">active</code> or <code class="literal">paused</code>.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-follow-info-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example retrieves follower info:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /follower_index/_ccr/info</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1658.console"></div>
+<p>If the follower index is <code class="literal">active</code>, the API returns the following results:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "follower_indices": [
+    {
+      "follower_index": "follower_index",
+      "remote_cluster": "remote_cluster",
+      "leader_index": "leader_index",
+      "status": "active",
+      "parameters": {
+        "max_read_request_operation_count": 5120,
+        "max_read_request_size": "32mb",
+        "max_outstanding_read_requests": 12,
+        "max_write_request_operation_count": 5120,
+        "max_write_request_size": "9223372036854775807b",
+        "max_outstanding_write_requests": 9,
+        "max_write_buffer_count": 2147483647,
+        "max_write_buffer_size": "512mb",
+        "max_retry_delay": "500ms",
+        "read_poll_timeout": "1m"
+      }
+    }
+  ]
+}</pre>
+</div>
+<p>If the follower index is <code class="literal">paused</code>, the API returns the following results:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "follower_indices": [
+    {
+      "follower_index": "follower_index",
+      "remote_cluster": "remote_cluster",
+      "leader_index": "leader_index",
+      "status": "paused"
+    }
+  ]
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-put-auto-follow-pattern"></a>Create auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Creates an auto-follow pattern.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;
+{
+  "remote_cluster" : "&lt;remote_cluster&gt;",
+  "leader_index_patterns" :
+  [
+    "&lt;leader_index_pattern&gt;"
+  ],
+  "follow_index_pattern" : "&lt;follow_index_pattern&gt;"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1659.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">read</code> and <code class="literal">monitor</code>
+index privileges for the leader index patterns. You must also have <code class="literal">manage_ccr</code>
+cluster privileges on the cluster that contains the follower index. For more
+information, see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API creates a new named collection of
+<a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow patterns</a> against the remote cluster
+specified in the request body. Newly created indices on the remote cluster
+matching any of the specified patterns will be automatically configured as follower
+indices.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;auto_follow_pattern_name&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) The name of the collection of auto-follow patterns.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">remote_cluster</code>
+</span>
+</dt>
+<dd>
+(Required, string) The <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a> containing
+the leader indices to match against.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">leader_index_patterns</code>
+</span>
+</dt>
+<dd>
+(Optional, array) An array of simple index patterns to match against indices
+in the remote cluster specified by the <code class="literal">remote_cluster</code> field.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">follow_index_pattern</code>
+</span>
+</dt>
+<dd>
+(Optional, string) The name of follower index. The template <code class="literal">{{leader_index}}</code>
+can be used to derive the name of the follower index from the name of the
+leader index.
+</dd>
+</dl>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">settings</code>
+</span>
+</dt>
+<dd>
+(object) Settings to override from the leader index. Note that certain
+settings can not be overrode (e.g., <code class="literal">index.number_of_shards</code>).
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_read_request_operation_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations to pull per read from the remote
+cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_outstanding_read_requests</code>
+</span>
+</dt>
+<dd>
+(long) The maximum number of outstanding reads requests from the remote
+cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_read_request_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum size in bytes of per read of a batch
+of operations pulled from the remote cluster.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_request_operation_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations per bulk write request executed on
+the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_request_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum total bytes of operations per bulk write request
+executed on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_outstanding_write_requests</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of outstanding write requests on the follower.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_buffer_count</code>
+</span>
+</dt>
+<dd>
+(integer) The maximum number of operations that can be queued for writing.
+When this limit is reached, reads from the remote cluster will be deferred
+until the number of queued operations goes below the limit.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_write_buffer_size</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#byte-units" title="Byte size units">byte value</a>) The maximum total bytes of operations that can be
+queued for
+writing. When this limit is reached, reads from the remote cluster will be
+deferred until the total bytes of queued operations goes below the limit.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">max_retry_delay</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>) The maximum time to wait before retrying an
+operation that failed exceptionally. An exponential backoff strategy is
+employed when retrying.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">read_poll_timeout</code>
+</span>
+</dt>
+<dd>
+(<a class="xref" href="api-conventions.html#time-units" title="Time units">time value</a>) The maximum time to wait for new operations on the
+remote cluster when the follower index is synchronized with the leader index.
+When the timeout has elapsed, the poll for operations will return to the
+follower so that it can update some statistics. Then the follower will
+immediately attempt to read from the leader again.
+</dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_default_values_3"></a>Default values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The following output from the follow info api describes all the default
+values for the above described index follow request parameters:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "follower_indices" : [
+    {
+      "parameters" : {
+        "max_read_request_operation_count" : 5120,
+        "max_read_request_size" : "32mb",
+        "max_outstanding_read_requests" : 12,
+        "max_write_request_operation_count" : 5120,
+        "max_write_request_size" : "9223372036854775807b",
+        "max_outstanding_write_requests" : 9,
+        "max_write_buffer_count" : 2147483647,
+        "max_write_buffer_size" : "512mb",
+        "max_retry_delay" : "500ms",
+        "read_poll_timeout" : "1m"
+      }
+    }
+  ]
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example creates an auto-follow pattern named <code class="literal">my_auto_follow_pattern</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_ccr/auto_follow/my_auto_follow_pattern
+{
+  "remote_cluster" : "remote_cluster",
+  "leader_index_patterns" :
+  [
+    "leader_index*"
+  ],
+  "follow_index_pattern" : "{{leader_index}}-follower",
+  "settings": {
+    "index.number_of_replicas": 0
+  },
+  "max_read_request_operation_count" : 1024,
+  "max_outstanding_read_requests" : 16,
+  "max_read_request_size" : "1024k",
+  "max_write_request_operation_count" : 32768,
+  "max_write_request_size" : "16k",
+  "max_outstanding_write_requests" : 8,
+  "max_write_buffer_count" : 512,
+  "max_write_buffer_size" : "512k",
+  "max_retry_delay" : "10s",
+  "read_poll_timeout" : "30s"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1660.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged" : true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-delete-auto-follow-pattern"></a>Delete auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Delete auto-follow patterns.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">DELETE /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1661.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">manage_ccr</code> cluster
+privileges on the cluster that contains the follower index. For more information,
+see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API deletes a configured collection of
+<a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow patterns</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;auto_follow_pattern_name&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) Specifies the auto-follow pattern collection to delete.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example deletes an auto-follow pattern collection named
+<code class="literal">my_auto_follow_pattern</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">DELETE /_ccr/auto_follow/my_auto_follow_pattern</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1662.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged" : true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-get-auto-follow-pattern"></a>Get auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Get auto-follow patterns.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_ccr/auto_follow/</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1663.console"></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1664.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">manage_ccr</code> cluster
+privileges on the cluster that contains the follower index. For more information,
+see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API gets configured <a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow patterns</a>.
+This API will return the specified auto-follow pattern collection.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;auto_follow_pattern_name&gt;</code>
+</span>
+</dt>
+<dd>
+(Optional, string) Specifies the auto-follow pattern collection that you want
+to retrieve. If you do not specify a name, the API returns information for all
+collections.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example retrieves information about an auto-follow pattern collection
+named <code class="literal">my_auto_follow_pattern</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_ccr/auto_follow/my_auto_follow_pattern</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1665.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "patterns": [
+    {
+      "name": "my_auto_follow_pattern",
+      "pattern": {
+        "active": true,
+        "remote_cluster" : "remote_cluster",
+        "leader_index_patterns" :
+        [
+          "leader_index*"
+        ],
+        "follow_index_pattern" : "{{leader_index}}-follower"
+      }
+    }
+  ]
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-pause-auto-follow-pattern"></a>Pause auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Pauses an auto-follow pattern.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">POST /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;/pause</code></p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">manage_ccr</code> cluster
+privileges on the cluster that contains the follower index. For more information,
+see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API pauses an <a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow pattern</a>. When this API returns, the auto-follow pattern
+is inactive and ignores any new index created on the remote cluster that matches any of
+the auto-follow&#8217;s patterns. Paused auto-follow patterns appear with the <code class="literal">active</code> field
+set to <code class="literal">false</code> in the <a class="xref" href="ccr-apis.html#ccr-get-auto-follow-pattern" title="Get auto-follow pattern API">GET auto-follow patterns API</a>.</p>
+<p>You can resume auto-following with the <a class="xref" href="ccr-apis.html#ccr-resume-auto-follow-pattern" title="Resume auto-follow pattern API">resume auto-follow pattern API</a>.
+Once resumed, the auto-follow pattern is active again and automatically configure
+follower indices for newly created indices on the remote cluster that match its patterns.
+Remote indices created while the
+pattern was paused will also be followed, unless they have been deleted or closed in the
+meantime.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;auto_follow_pattern_name&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) Name of the auto-follow pattern to pause.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example pauses an auto-follow pattern named <code class="literal">my_auto_follow_pattern</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_ccr/auto_follow/my_auto_follow_pattern/pause</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1666.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged" : true
+}</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ccr-resume-auto-follow-pattern"></a>Resume auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>Resumes an auto-follow pattern.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">POST /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;/resume</code></p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have <code class="literal">manage_ccr</code> cluster
+privileges on the cluster that contains the follower index. For more information,
+see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This API resumes an <a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow pattern</a> that has been paused with the
+<a class="xref" href="ccr-apis.html#ccr-pause-auto-follow-pattern" title="Pause auto-follow pattern API">pause auto-follow pattern API</a>. When this API
+returns, the auto-follow pattern will resume configuring following indices for
+newly created indices on the remote cluster that match its patterns. Remote
+indices created while the pattern was paused will also be followed, unless they
+have been deleted or closed in the meantime.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;auto_follow_pattern_name&gt;</code>
+</span>
+</dt>
+<dd>
+(Required, string) Specifies the name of the auto-follow pattern to resume.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example resumes the activity of a paused auto-follow pattern
+named <code class="literal">my_auto_follow_pattern</code>:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_ccr/auto_follow/my_auto_follow_pattern/resume</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1667.console"></div>
+<p>The API returns the following result:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "acknowledged" : true
+}</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="cluster.html">« Cluster APIs</a>
+</span>
+<span class="next">
+<a href="data-stream-apis.html">Data stream APIs »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

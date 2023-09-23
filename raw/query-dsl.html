@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Query DSL | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Query DSL | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="index.html" title="Elasticsearch Guide"/>
+<link rel="prev" href="sort-search-results.html" title="Sort search results"/>
+<link rel="next" href="query-filter-context.html" title="Query and filter context"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="sort-search-results.html">« Sort search results</a>
+</span>
+<span class="next">
+<a href="query-filter-context.html">Query and filter context »</a>
+</span>
+</div>
+<div class="part">
+<div class="titlepage"><div><div>
+<h1 class="title"><a id="query-dsl"></a>Query DSL<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl.asciidoc">edit</a></h1>
+</div></div></div>
+<div class="openblock partintro">
+<div class="content">
+<p>Elasticsearch provides a full Query DSL (Domain Specific Language) based on JSON to define queries.
+Think of the Query DSL as an AST (Abstract Syntax Tree) of queries, consisting of two types of
+clauses:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+Leaf query clauses
+</span>
+</dt>
+<dd>
+Leaf query clauses look for a particular value in a particular field, such as the
+<a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code></a>, <a class="xref" href="term-level-queries.html#query-dsl-term-query" title="Term query"><code class="literal">term</code></a> or
+<a class="xref" href="term-level-queries.html#query-dsl-range-query" title="Range query"><code class="literal">range</code></a> queries.  These queries can be used
+by themselves.
+</dd>
+<dt>
+<span class="term">
+Compound query clauses
+</span>
+</dt>
+<dd>
+Compound query clauses wrap other leaf <span class="strong strong"><strong>or</strong></span> compound queries and are used to combine
+multiple queries in a logical fashion (such as the
+<a class="xref" href="compound-queries.html#query-dsl-bool-query" title="Boolean query"><code class="literal">bool</code></a> or <a class="xref" href="compound-queries.html#query-dsl-dis-max-query" title="Disjunction max query"><code class="literal">dis_max</code></a> query),
+or to alter their behaviour (such as the
+<a class="xref" href="compound-queries.html#query-dsl-constant-score-query" title="Constant score query"><code class="literal">constant_score</code></a> query).
+</dd>
+</dl>
+</div>
+<p>Query clauses behave differently depending on whether they are used in
+<a class="xref" href="query-filter-context.html" title="Query and filter context">query context or filter context</a>.</p>
+<div class="variablelist">
+<a id="query-dsl-allow-expensive-queries"></a>
+<dl class="variablelist">
+<dt>
+<span class="term">
+Allow expensive queries
+</span>
+</dt>
+<dd>
+<p>
+Certain types of queries will generally execute slowly due to the way they are implemented, which can affect
+the stability of the cluster. Those queries can be categorised as follows:
+</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p>Queries that need to do linear scans to identify matches:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#query-dsl-script-query" title="Script query"><code class="literal">script queries</code></a>
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>Queries that have a high up-front cost :</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="term-level-queries.html#query-dsl-fuzzy-query" title="Fuzzy query"><code class="literal">fuzzy queries</code></a> (except on <a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields)
+</li>
+<li class="listitem">
+<a class="xref" href="term-level-queries.html#query-dsl-regexp-query" title="Regexp query"><code class="literal">regexp queries</code></a> (except on <a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields)
+</li>
+<li class="listitem">
+<a class="xref" href="term-level-queries.html#query-dsl-prefix-query" title="Prefix query"><code class="literal">prefix queries</code></a>  (except on <a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields or those without <a class="xref" href="mapping-params.html#index-prefixes" title="index_prefixes"><code class="literal">index_prefixes</code></a>)
+</li>
+<li class="listitem">
+<a class="xref" href="term-level-queries.html#query-dsl-wildcard-query" title="Wildcard query"><code class="literal">wildcard queries</code></a> (except on <a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields)
+</li>
+<li class="listitem">
+<a class="xref" href="term-level-queries.html#query-dsl-range-query" title="Range query"><code class="literal">range queries&gt;&gt; on &lt;&lt;text, `text</code></a> and <a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> fields
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<a class="xref" href="joining-queries.html" title="Joining queries"><code class="literal">Joining queries</code></a>
+</li>
+<li class="listitem">
+Queries on <a class="xref" href="mapping-types.html#prefix-trees" title="Prefix trees">deprecated geo shapes</a>
+</li>
+<li class="listitem">
+<p>Queries that may have a high per-document cost:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#query-dsl-script-score-query" title="Script score query"><code class="literal">script score queries</code></a>
+</li>
+<li class="listitem">
+<a class="xref" href="specialized-queries.html#query-dsl-percolate-query" title="Percolate query"><code class="literal">percolate queries</code></a>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<p>The execution of such queries can be prevented by setting the value of the <code class="literal">search.allow_expensive_queries</code>
+setting to <code class="literal">false</code> (defaults to <code class="literal">true</code>).</p>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="sort-search-results.html">« Sort search results</a>
+</span>
+<span class="next">
+<a href="query-filter-context.html">Query and filter context »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

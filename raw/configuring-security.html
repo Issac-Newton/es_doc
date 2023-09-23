@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Configuring security in Elasticsearch | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Configuring security in Elasticsearch | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="secure-cluster.html" title="Secure a cluster"/>
+<link rel="prev" href="elasticsearch-security.html" title="Security overview"/>
+<link rel="next" href="setting-up-authentication.html" title="User authentication"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="secure-cluster.html">Secure a cluster</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="elasticsearch-security.html">« Security overview</a>
+</span>
+<span class="next">
+<a href="setting-up-authentication.html">User authentication »</a>
+</span>
+</div>
+<div class="chapter xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="configuring-security"></a>Configuring security in Elasticsearch<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/configuring-es.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+
+<p>The Elasticsearch security features enable you to easily secure a cluster. You can
+password-protect your data as well as implement more advanced security measures
+such as encrypting communications, role-based access control, IP filtering, and
+auditing. For more information, see
+<a class="xref" href="elasticsearch-security.html" title="Security overview"><em>Overview</em></a>.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Verify that you are using a license that includes the specific
+security features you want.</p>
+<p>For more information, see <a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">https://www.elastic.co/subscriptions</a> and
+<a href="https://www.elastic.co/guide/en/kibana/7.10/managing-licenses.html" class="ulink" target="_top">License management</a>.</p>
+</li>
+<li class="listitem">
+Verify that the <code class="literal">xpack.security.enabled</code> setting is <code class="literal">true</code> on each node in
+your cluster. If you are using basic or trial licenses, the default value is <code class="literal">false</code>.
+For more information, see <a class="xref" href="settings.html#security-settings" title="Security settings in Elasticsearch">Security settings</a>.
+</li>
+<li class="listitem">
+If you plan to run Elasticsearch in a Federal Information Processing Standard (FIPS)
+140-2 enabled JVM, see <a class="xref" href="configuring-security.html#fips-140-compliance" title="FIPS 140-2">FIPS 140-2</a>.
+</li>
+<li class="listitem">
+<p><a class="xref" href="encrypting-communications.html#configuring-tls" title="Encrypting communications in Elasticsearch">Configure Transport Layer Security (TLS/SSL) for internode-communication</a>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This requirement applies to clusters with more than one node and to
+clusters with a single node that listens on an external interface. Single-node
+clusters that use a loopback interface do not have this requirement.  For more
+information, see
+<a class="xref" href="encrypting-communications.html" title="Encrypting communications"><em>Encrypting communications</em></a>.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+If it is not already running, start Elasticsearch.
+</li>
+<li class="listitem">
+<p>Set the passwords for all built-in users.</p>
+<p>The Elasticsearch security features provide
+<a class="xref" href="setting-up-authentication.html#built-in-users" title="Built-in users">built-in users</a> to
+help you get up and running. The <code class="literal">elasticsearch-setup-passwords</code> command is the
+simplest method to set the built-in users' passwords for the first time.</p>
+<p>For example, you can run the command in an "interactive" mode, which prompts you
+to enter new passwords for the built-in users:</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">bin/elasticsearch-setup-passwords interactive</pre>
+</div>
+<p>For more information about the command options, see <a class="xref" href="setup-passwords.html" title="elasticsearch-setup-passwords"><em>elasticsearch-setup-passwords</em></a>.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The <code class="literal">elasticsearch-setup-passwords</code> command uses a transient bootstrap
+password that is no longer valid after the command runs successfully. You cannot
+run the <code class="literal">elasticsearch-setup-passwords</code> command a second time. Instead, you can
+update passwords from the <span class="strong strong"><strong>Management &gt; Users</strong></span> UI in Kibana or use the security
+user API.</p>
+</div>
+</div>
+</li>
+<li class="listitem">
+<p>Choose which types of realms you want to use to authenticate users.</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The types of authentication realms that you can enable varies according to
+your subscription. For more information, see <a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">https://www.elastic.co/subscriptions</a>.</p>
+</div>
+</div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="setting-up-authentication.html#active-directory-realm" title="Active Directory user authentication">Active Directory realms</a>
+</li>
+<li class="listitem">
+<a class="xref" href="setting-up-authentication.html#file-realm" title="File-based user authentication">File realms</a>
+</li>
+<li class="listitem">
+<a class="xref" href="setting-up-authentication.html#kerberos-realm" title="Kerberos authentication">Kerberos realms</a>
+</li>
+<li class="listitem">
+<a class="xref" href="setting-up-authentication.html#ldap-realm" title="LDAP user authentication">LDAP realms</a>
+</li>
+<li class="listitem">
+<a class="xref" href="setting-up-authentication.html#native-realm" title="Native user authentication">Native realms</a>
+</li>
+<li class="listitem">
+<a class="xref" href="setting-up-authentication.html#pki-realm" title="PKI user authentication">PKI realms</a>
+</li>
+<li class="listitem">
+<a class="xref" href="setting-up-authentication.html#saml-realm" title="SAML authentication">SAML realms</a>
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>Set up roles and users to control access to Elasticsearch.</p>
+<p>For example, to grant <em>John Doe</em> full access to all indices that match
+the pattern <code class="literal">events*</code> and enable them to create visualizations and dashboards
+for those indices in Kibana, you could create an <code class="literal">events_admin</code> role
+and assign the role to a new <code class="literal">johndoe</code> user.</p>
+<div class="pre_wrapper lang-shell">
+<pre class="programlisting prettyprint lang-shell">curl -XPOST -u elastic 'localhost:9200/_security/role/events_admin' -H "Content-Type: application/json" -d '{
+  "indices" : [
+    {
+      "names" : [ "events*" ],
+      "privileges" : [ "all" ]
+    },
+    {
+      "names" : [ ".kibana*" ],
+      "privileges" : [ "manage", "read", "index" ]
+    }
+  ]
+}'
+
+curl -XPOST -u elastic 'localhost:9200/_security/user/johndoe' -H "Content-Type: application/json" -d '{
+  "password" : "userpassword",
+  "full_name" : "John Doe",
+  "email" : "john.doe@anony.mous",
+  "roles" : [ "events_admin" ]
+}'</pre>
+</div>
+</li>
+<li class="listitem">
+<p><a id="enable-auditing"></a>(Optional) Enable auditing to keep track of attempted and
+successful interactions with your Elasticsearch cluster:</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Audit logging is available with specific subscriptions. For more
+information, see <a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">https://www.elastic.co/subscriptions</a>.</p>
+</div>
+</div>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Add the following setting to <code class="literal">elasticsearch.yml</code> on all nodes in your cluster:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">xpack.security.audit.enabled: true</pre>
+</div>
+<p>For more information, see <a class="xref" href="getting-started-modify-data.html#auditing" title="Audit logging">Audit logging</a> and <a class="xref" href="settings.html#auditing-settings" title="Auditing security settings">Auditing settings</a>.</p>
+</li>
+<li class="listitem">
+Restart Elasticsearch.
+</li>
+</ol>
+</div>
+<p>Events are logged to a dedicated <code class="literal">&lt;clustername&gt;_audit.json</code> file in
+<code class="literal">ES_HOME/logs</code>, on each cluster node.</p>
+</li>
+</ol>
+</div>
+<p>To walk through the configuration of security features in Elasticsearch, Kibana, Logstash, and Metricbeat, see <a class="xref" href="security-getting-started.html" title="Tutorial: Getting started with security"><em>Tutorial: Getting started with security</em></a>.</p>
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="separating-node-client-traffic"></a>Separating node-to-node and client traffic<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/securing-communications/separating-node-client-traffic.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<h3>Deprecated in 7.3.0.</h3>
+<p>Transport Client is deprecated and will be removed</p>
+</div>
+</div>
+<p>Elasticsearch has the feature of so called
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/modules-transport.html" class="ulink" target="_top">TCP transport profiles</a>
+that allows it to bind to several ports and addresses. The Elasticsearch
+security features extend on this functionality to enhance the security of the
+cluster by enabling the separation of node-to-node transport traffic from client
+transport traffic. This is important if the client transport traffic is not
+trusted and could potentially be malicious. To separate the node-to-node traffic
+from the client traffic, add the following to <code class="literal">elasticsearch.yml</code>:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">transport.profiles.client: <a id="CO509-1"></a><i class="conum" data-value="1"></i>
+  port: 9500-9600 <a id="CO509-2"></a><i class="conum" data-value="2"></i>
+  xpack.security:
+    type: client <a id="CO509-3"></a><i class="conum" data-value="3"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO509-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p><code class="literal">client</code> is the name of this example profile</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO509-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The port range that will be used by transport clients to communicate with
+this cluster</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO509-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Categorizes the profile as a <code class="literal">client</code>. This accounts for additional security
+filters by denying request attempts on for internal cluster operations
+(e.g shard level actions and ping requests) from this profile.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>If supported by your environment, an internal network can be used for node-to-node
+traffic and public network can be used for client traffic by adding the following
+to <code class="literal">elasticsearch.yml</code>:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">transport.profiles.default.bind_host: 10.0.0.1 <a id="CO510-1"></a><i class="conum" data-value="1"></i>
+transport.profiles.client.bind_host: 1.1.1.1 <a id="CO510-2"></a><i class="conum" data-value="2"></i></pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO510-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The bind address for the network that will be used for node-to-node communication</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO510-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The bind address for the network used for client communication</p>
+</td>
+</tr>
+</table>
+</div>
+<p>If separate networks are not available, then
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/ip-filtering.html" class="ulink" target="_top">IP Filtering</a> can
+be enabled to limit access to the profiles.</p>
+<p>When using SSL for transport, a different set of certificates can also be used
+for the client traffic by adding the following to <code class="literal">elasticsearch.yml</code>:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">transport.profiles.client.xpack.security.ssl.truststore:
+  path: /path/to/another/truststore
+  password: x-pack-test-password
+
+transport.profiles.client.xpack.security.ssl.keystore:
+  path: /path/to/another/keystore
+  password: x-pack-test-password</pre>
+</div>
+<p>To change the default behavior that requires certificates for transport clients,
+set the following value in the <code class="literal">elasticsearch.yml</code> file:</p>
+<div class="pre_wrapper lang-yaml">
+<pre class="programlisting prettyprint lang-yaml">transport.profiles.client.xpack.security.ssl.client_authentication: none</pre>
+</div>
+<p>This setting keeps certificate authentication active for node-to-node traffic,
+but removes the requirement to distribute a signed certificate to transport
+clients. For more information, see
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/java-clients.html#transport-client" class="ulink" target="_top">Configuring the Transport Client to work with a Secured Cluster</a>.</p>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="security-files"></a>Security files<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/reference/files.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<p>The Elasticsearch security features use the following files:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">ES_PATH_CONF/roles.yml</code> defines the roles in use on the cluster. See
+<a class="xref" href="authorization.html#defining-roles" title="Defining roles">Defining roles</a>.
+</li>
+<li class="listitem">
+<code class="literal">ES_PATH_CONF/elasticsearch-users</code> defines the users and their hashed passwords for
+the <code class="literal">file</code> realm. See <a class="xref" href="setting-up-authentication.html#file-realm" title="File-based user authentication">File-based user authentication</a>.
+</li>
+<li class="listitem">
+<code class="literal">ES_PATH_CONF/elasticsearch-users_roles</code> defines the user roles assignment for the
+the <code class="literal">file</code> realm. See <a class="xref" href="setting-up-authentication.html#file-realm" title="File-based user authentication">File-based user authentication</a>.
+</li>
+<li class="listitem">
+<code class="literal">ES_PATH_CONF/role_mapping.yml</code> defines the role assignments for a
+Distinguished Name (DN) to a role. This allows for LDAP and Active Directory
+groups and users and PKI users to be mapped to roles. See
+<a class="xref" href="authorization.html#mapping-roles" title="Mapping users and groups to roles">Mapping users and groups to roles</a>.
+</li>
+<li class="listitem">
+<code class="literal">ES_PATH_CONF/log4j2.properties</code> contains audit information. See
+<a class="xref" href="enable-audit-logging.html#audit-log-output" title="Logfile audit output">Logfile audit output</a>.
+</li>
+</ul>
+</div>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<a id="security-files-location"></a>
+<p>Any files that the security features use must be stored in the Elasticsearch
+            configuration directory. Elasticsearch runs with restricted permissions
+            and is only permitted to read from the locations configured in the
+            directory layout for enhanced security.</p>
+</div>
+</div>
+<p>Several of these files are in the YAML format. When you edit these files, be
+aware that YAML is indentation-level sensitive and indentation errors can lead
+to configuration errors. Avoid the tab character to set indentation levels, or
+use an editor that automatically expands tabs to spaces.</p>
+<p>Be careful to properly escape YAML constructs such as <code class="literal">:</code> or leading exclamation
+points within quoted strings. Using the <code class="literal">|</code> or <code class="literal">&gt;</code> characters to define block
+literals instead of escaping the problematic characters can help avoid problems.</p>
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="fips-140-compliance"></a>FIPS 140-2<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/fips-140-compliance.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+</div></div></div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If you consider configuring Elasticsearch for FIPS 140-2 compliance, we strongly
+suggest that you first upgrade your installation to 7.11 or later.
+See <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.11/release-notes-7.11.0.html" class="ulink" target="_top">7.11 release notes</a>
+for more details.</p>
+</div>
+</div>
+<p>The Federal Information Processing Standard (FIPS) Publication 140-2, (FIPS PUB
+140-2), titled "Security Requirements for Cryptographic Modules" is a U.S.
+government computer security standard used to approve cryptographic modules.
+Elasticsearch offers a FIPS 140-2 compliant mode and as such can run in a FIPS 140-2
+enabled JVM. In order to set Elasticsearch in fips mode, you must set the
+<code class="literal">xpack.security.fips_mode.enabled</code> to <code class="literal">true</code> in <code class="literal">elasticsearch.yml</code></p>
+<p>For Elasticsearch, adherence to FIPS 140-2 is ensured by</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Using FIPS approved / NIST recommended cryptographic algorithms.
+</li>
+<li class="listitem">
+Delegating the implementation of these cryptographic algorithms to a NIST
+validated cryptographic module (available via the Java Security Provider
+in use in the JVM).
+</li>
+<li class="listitem">
+Allowing the configuration of Elasticsearch in a FIPS 140-2 compliant manner, as
+documented below.
+</li>
+</ul>
+</div>
+<h3><a id="_upgrade_considerations"></a>Upgrade considerations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/fips-140-compliance.asciidoc">edit</a></h3>
+<p>If you plan to upgrade your existing cluster to a version that can be run in
+a FIPS 140-2 enabled JVM, the suggested approach is to first perform a rolling
+upgrade to the new version in your existing JVM and perform all necessary
+configuration changes in preparation for running in fips mode. You can then
+perform a rolling restart of the nodes, this time starting each node in the FIPS
+140-2 JVM. This enables Elasticsearch to take care of a couple of things automatically for you:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="settings.html#secure-settings" title="Secure settings">Secure settings</a> will be upgraded to the latest format version as
+previous format versions cannot be loaded in a FIPS 140-2 JVM.
+</li>
+<li class="listitem">
+Self-generated trial licenses will be upgraded to the latest format that
+is compliant with FIPS 140-2.
+</li>
+</ul>
+</div>
+<p>If you have a <a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">subscription</a> that supports FIPS 140-2 mode, you
+can elect to perform a rolling upgrade while at the same time running each
+upgraded node in a FIPS 140-2 JVM. In this case, you would need to also
+regenerate your <code class="literal">elasticsearch.keystore</code> and migrate all secure settings to it,
+in addition to the necessary configuration changes outlined below, before
+starting each node.</p>
+<h3><a id="_configuring_elasticsearch_for_fips_140_2"></a>Configuring Elasticsearch for FIPS 140-2<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/fips-140-compliance.asciidoc">edit</a></h3>
+<p>Apart from setting <code class="literal">xpack.security.fips_mode.enabled</code>, a number of security
+related settings need to be configured accordingly in order to be compliant
+and able to run Elasticsearch successfully in a FIPS 140-2 enabled JVM.</p>
+<h4><a id="_tls"></a>TLS<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/fips-140-compliance.asciidoc">edit</a></h4>
+<p>SSLv2 and SSLv3 are not allowed by FIPS 140-2, so <code class="literal">SSLv2Hello</code> and <code class="literal">SSLv3</code> cannot
+be used for <a class="xref" href="settings.html#ssl-tls-settings" title="General TLS settings"><code class="literal">ssl.supported_protocols</code></a>.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The use of TLS ciphers is mainly governed by the relevant crypto module
+(the FIPS Approved Security Provider that your JVM uses). All the ciphers that
+are configured by default in Elasticsearch are FIPS 140-2 compliant and as such can be
+used in a FIPS 140-2 JVM. See <a class="xref" href="settings.html#ssl-tls-settings" title="General TLS settings"><code class="literal">ssl.cipher_suites</code></a>.</p>
+</div>
+</div>
+<h4><a id="_tls_keystores_and_keys"></a>TLS Keystores and keys<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/fips-140-compliance.asciidoc">edit</a></h4>
+<p>Keystores can be used in a number of <a class="xref" href="settings.html#ssl-tls-settings" title="General TLS settings">General TLS settings</a> in order to
+conveniently store key and trust material. Neither <code class="literal">JKS</code>, nor <code class="literal">PKCS#12</code> keystores
+can be used in a FIPS 140-2 enabled JVM however, so you must refrain from using
+these keystores.  Your FIPS 140-2 provider may provide a compliant keystore that
+can be used or you can use PEM encoded files. To use PEM encoded key material,
+you can use the relevant <code class="literal">\*.key</code> and <code class="literal">*.certificate</code> configuration
+options, and for trust material you can use <code class="literal">*.certificate_authorities</code>.</p>
+<p>FIPS 140-2 compliance dictates that the length of the public keys used for TLS
+must correspond to the strength of the symmetric key algorithm in use in TLS.
+Depending on the value of <code class="literal">ssl.cipher_suites</code> that you select to use, the TLS
+keys must have corresponding length according to the following table:</p>
+<div class="table">
+<a id="comparable-key-strength"></a>
+<p class="title"><strong>Table 72. Comparable key strengths</strong></p>
+<div class="table-contents">
+<table border="1" cellpadding="4px" summary="Comparable key strengths">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+<col class="col_3"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Symmetric Key Algorithm</p></td>
+<td align="left" valign="top"><p>RSA key Length</p></td>
+<td align="left" valign="top"><p>ECC key length</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">3DES</code></p></td>
+<td align="left" valign="top"><p>2048</p></td>
+<td align="left" valign="top"><p>224-255</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">AES-128</code></p></td>
+<td align="left" valign="top"><p>3072</p></td>
+<td align="left" valign="top"><p>256-383</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">AES-256</code></p></td>
+<td align="left" valign="top"><p>15630</p></td>
+<td align="left" valign="top"><p>512+</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h4><a id="_password_hashing"></a>Password Hashing<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/fips-140-compliance.asciidoc">edit</a></h4>
+<p>Elasticsearch offers a number of algorithms for securely hashing credentials in memory and
+on disk. However, only the <code class="literal">PBKDF2</code> family of algorithms is compliant with FIPS
+140-2 for password hashing. You must set the <code class="literal">cache.hash_algo</code> realm settings
+and the <code class="literal">xpack.security.authc.password_hashing.algorithm</code> setting to one of the
+available <code class="literal">PBKDF2</code> values.
+See <a class="xref" href="settings.html#hashing-settings" title="User cache and password hash algorithms">User cache and password hash algorithms</a>.</p>
+<p>Password hashing configuration changes are not retroactive so the stored hashed
+credentials of existing users of the file and native realms will not be updated
+on disk.
+Authentication will still work, but in order to ensure FIPS 140-2 compliance,
+you would need to recreate users or change their password using the
+<a class="xref" href="users-command.html" title="elasticsearch-users">elasticsearch-user</a> CLI tool for the file realm and the
+<a class="xref" href="security-api.html#security-api-put-user" title="Create or update users API">create users</a> and <a class="xref" href="security-api.html#security-api-change-password" title="Change passwords API">change
+password</a> APIs for the native realm.</p>
+<p>The user cache will be emptied upon node restart, so any existing hashes using
+non-compliant algorithms will be discarded and the new ones will be created
+using the compliant <code class="literal">PBKDF2</code> algorithm you have selected.</p>
+<h3><a id="_limitations_11"></a>Limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/security/fips-140-compliance.asciidoc">edit</a></h3>
+<p>Due to the limitations that FIPS 140-2 compliance enforces, a small number of
+features are not available while running in fips mode. The list is as follows:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Azure Classic Discovery Plugin
+</li>
+<li class="listitem">
+Ingest Attachment Plugin
+</li>
+<li class="listitem">
+The <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/certutil.html" class="ulink" target="_top"><code class="literal">elasticsearch-certutil</code></a> tool. However,
+<code class="literal">elasticsearch-certutil</code> can very well be used in a non FIPS 140-2
+ enabled JVM (pointing <code class="literal">JAVA_HOME</code> environment variable to a different java
+ installation) in order to generate the keys and certificates that
+ can be later used in the FIPS 140-2 enabled JVM.
+</li>
+<li class="listitem">
+The SQL CLI client cannot run in a FIPS 140-2 enabled JVM while using
+TLS for transport security or PKI for client authentication.
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="elasticsearch-security.html">« Security overview</a>
+</span>
+<span class="next">
+<a href="setting-up-authentication.html">User authentication »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

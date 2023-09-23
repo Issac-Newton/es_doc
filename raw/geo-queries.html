@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Geo queries | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Geo queries | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="query-dsl.html" title="Query DSL"/>
+<link rel="prev" href="full-text-queries.html" title="Full text queries"/>
+<link rel="next" href="shape-queries.html" title="Shape queries"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="query-dsl.html">Query DSL</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="full-text-queries.html">« Full text queries</a>
+</span>
+<span class="next">
+<a href="shape-queries.html">Shape queries »</a>
+</span>
+</div>
+<div class="chapter">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="geo-queries"></a>Geo queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-queries.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Elasticsearch supports two types of geo data:
+<a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type"><code class="literal">geo_point</code></a> fields which support lat/lon pairs, and
+<a class="xref" href="mapping-types.html#geo-shape" title="Geo-shape field type"><code class="literal">geo_shape</code></a> fields, which support points,
+lines, circles, polygons, multi-polygons, etc.</p>
+<p>The queries in this group are:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<a class="xref" href="geo-queries.html#query-dsl-geo-bounding-box-query" title="Geo-bounding box query"><code class="literal">geo_bounding_box</code></a> query
+</span>
+</dt>
+<dd>
+Finds documents with geo-points that fall into the specified rectangle.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="geo-queries.html#query-dsl-geo-distance-query" title="Geo-distance query"><code class="literal">geo_distance</code></a> query
+</span>
+</dt>
+<dd>
+Finds documents with geo-points within the specified distance of a central point.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="geo-queries.html#query-dsl-geo-polygon-query" title="Geo-polygon query"><code class="literal">geo_polygon</code></a> query
+</span>
+</dt>
+<dd>
+Find documents with geo-points within the specified polygon.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="geo-queries.html#query-dsl-geo-shape-query" title="Geo-shape query"><code class="literal">geo_shape</code></a> query
+</span>
+</dt>
+<dd>
+<p>
+Finds documents with:
+</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">geo-shapes</code> which either intersect, are contained by, or do not intersect
+with the specified geo-shape
+</li>
+<li class="listitem">
+<code class="literal">geo-points</code> which intersect the specified
+geo-shape
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-geo-bounding-box-query"></a>Geo-bounding box query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>A query allowing to filter hits based on a point location using a
+bounding box. Assuming the following indexed document:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /my_locations
+{
+  "mappings": {
+    "properties": {
+      "pin": {
+        "properties": {
+          "location": {
+            "type": "geo_point"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /my_locations/_doc/1
+{
+  "pin": {
+    "location": {
+      "lat": 40.12,
+      "lon": -71.34
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/814.console"></div>
+<p>Then the following simple query can be executed with a
+<code class="literal">geo_bounding_box</code> filter:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "top_left": {
+              "lat": 40.73,
+              "lon": -74.1
+            },
+            "bottom_right": {
+              "lat": 40.01,
+              "lon": -71.12
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/815.console"></div>
+<h4><a id="_query_options"></a>Query Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h4>
+<div class="informaltable">
+<table border="1" cellpadding="4px">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Option</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">_name</code></p></td>
+<td align="left" valign="top"><p>Optional name field to identify the filter</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">validation_method</code></p></td>
+<td align="left" valign="top"><p>Set to <code class="literal">IGNORE_MALFORMED</code> to
+accept geo points with invalid latitude or longitude, set to
+<code class="literal">COERCE</code> to also try to infer correct latitude or longitude. (default is <code class="literal">STRICT</code>).</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">type</code></p></td>
+<td align="left" valign="top"><p>Set to one of <code class="literal">indexed</code> or <code class="literal">memory</code> to defines whether this filter will
+be executed in memory or indexed. See <a class="xref" href="geo-queries.html#geo-bbox-type" title="Type">Type</a> below for further details
+Default is <code class="literal">memory</code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4><a id="query-dsl-geo-bounding-box-query-accepted-formats"></a>Accepted Formats<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h4>
+<p>In much the same way the geo_point type can accept different
+representations of the geo point, the filter can accept it as well:</p>
+<h5><a id="_lat_lon_as_properties_2"></a>Lat Lon As Properties<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h5>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "top_left": {
+              "lat": 40.73,
+              "lon": -74.1
+            },
+            "bottom_right": {
+              "lat": 40.01,
+              "lon": -71.12
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/816.console"></div>
+<h5><a id="_lat_lon_as_array_2"></a>Lat Lon As Array<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h5>
+<p>Format in <code class="literal">[lon, lat]</code>, note, the order of lon/lat here in order to
+conform with <a href="http://geojson.org/" class="ulink" target="_top">GeoJSON</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "top_left": [ -74.1, 40.73 ],
+            "bottom_right": [ -71.12, 40.01 ]
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/817.console"></div>
+<h5><a id="_lat_lon_as_string_2"></a>Lat Lon As String<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h5>
+<p>Format in <code class="literal">lat,lon</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "top_left": "40.73, -74.1",
+            "bottom_right": "40.01, -71.12"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/818.console"></div>
+<h5><a id="_bounding_box_as_well_known_text_wkt"></a>Bounding Box as Well-Known Text (WKT)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h5>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "wkt": "BBOX (-74.1, -71.12, 40.73, 40.01)"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/819.console"></div>
+<h5><a id="_geohash_2"></a>Geohash<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h5>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "top_left": "dr5r9ydj2y73",
+            "bottom_right": "drj7teegpus6"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/820.console"></div>
+<p>When geohashes are used to specify the bounding the edges of the
+bounding box, the geohashes are treated as rectangles. The bounding
+box is defined in such a way that its top left corresponds to the top
+left corner of the geohash specified in the <code class="literal">top_left</code> parameter and
+its bottom right is defined as the bottom right of the geohash
+specified in the <code class="literal">bottom_right</code> parameter.</p>
+<p>In order to specify a bounding box that would match entire area of a
+geohash the geohash can be specified in both <code class="literal">top_left</code> and
+<code class="literal">bottom_right</code> parameters:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my_locations/_search
+{
+  "query": {
+    "geo_bounding_box": {
+      "pin.location": {
+        "top_left": "dr",
+        "bottom_right": "dr"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/821.console"></div>
+<p>In this example, the geohash <code class="literal">dr</code> will produce the bounding box
+query with the top left corner at <code class="literal">45.0,-78.75</code> and the bottom right
+corner at <code class="literal">39.375,-67.5</code>.</p>
+<h4><a id="_vertices"></a>Vertices<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h4>
+<p>The vertices of the bounding box can either be set by <code class="literal">top_left</code> and
+<code class="literal">bottom_right</code> or by <code class="literal">top_right</code> and <code class="literal">bottom_left</code> parameters. More
+over the names <code class="literal">topLeft</code>, <code class="literal">bottomRight</code>, <code class="literal">topRight</code> and <code class="literal">bottomLeft</code>
+are supported. Instead of setting the values pairwise, one can use
+the simple names <code class="literal">top</code>, <code class="literal">left</code>, <code class="literal">bottom</code> and <code class="literal">right</code> to set the
+values separately.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "top": 40.73,
+            "left": -74.1,
+            "bottom": 40.01,
+            "right": -71.12
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/822.console"></div>
+<h4><a id="_geo_point_type"></a>geo_point Type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h4>
+<p>The filter <span class="strong strong"><strong>requires</strong></span> the <code class="literal">geo_point</code> type to be set on the relevant
+field.</p>
+<h4><a id="_multi_location_per_document"></a>Multi Location Per Document<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h4>
+<p>The filter can work with multiple locations / points per document. Once
+a single location / point matches the filter, the document will be
+included in the filter</p>
+<h4><a id="geo-bbox-type"></a>Type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h4>
+<p>The type of the bounding box execution by default is set to <code class="literal">memory</code>,
+which means in memory checks if the doc falls within the bounding box
+range. In some cases, an <code class="literal">indexed</code> option will perform faster (but note
+that the <code class="literal">geo_point</code> type must have lat and lon indexed in this case).
+Note, when using the indexed option, multi locations per document field
+are not supported. Here is an example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_bounding_box": {
+          "pin.location": {
+            "top_left": {
+              "lat": 40.73,
+              "lon": -74.1
+            },
+            "bottom_right": {
+              "lat": 40.10,
+              "lon": -71.12
+            }
+          },
+          "type": "indexed"
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/823.console"></div>
+<h4><a id="_ignore_unmapped"></a>Ignore Unmapped<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h4>
+<p>When set to <code class="literal">true</code> the <code class="literal">ignore_unmapped</code> option will ignore an unmapped field
+and will not match any documents for this query. This can be useful when
+querying multiple indexes which might have different mappings. When set to
+<code class="literal">false</code> (the default value) the query will throw an exception if the field
+is not mapped.</p>
+<h4><a id="_notes_on_precision"></a>Notes on Precision<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-bounding-box-query.asciidoc">edit</a></h4>
+<p>Geopoints have limited precision and are always rounded down during index time.
+During the query time, upper boundaries of the bounding boxes are rounded down,
+while lower boundaries are rounded up. As a result, the points along on the
+lower bounds (bottom and left edges of the bounding box) might not make it into
+the bounding box due to the rounding error. At the same time points alongside
+the upper bounds (top and right edges) might be selected by the query even if
+they are located slightly outside the edge. The rounding error should be less
+than 4.20e-8 degrees on the latitude and less than 8.39e-8 degrees on the
+longitude, which translates to less than 1cm error even at the equator.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-geo-distance-query"></a>Geo-distance query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Filters documents that include only hits that exists within a specific
+distance from a geo point. Assuming the following mapping and indexed
+document:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /my_locations
+{
+  "mappings": {
+    "properties": {
+      "pin": {
+        "properties": {
+          "location": {
+            "type": "geo_point"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /my_locations/_doc/1
+{
+  "pin": {
+    "location": {
+      "lat": 40.12,
+      "lon": -71.34
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/824.console"></div>
+<p>Then the following simple query can be executed with a <code class="literal">geo_distance</code>
+filter:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "200km",
+          "pin.location": {
+            "lat": 40,
+            "lon": -70
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/825.console"></div>
+<h4><a id="_accepted_formats"></a>Accepted Formats<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h4>
+<p>In much the same way the <code class="literal">geo_point</code> type can accept different
+representations of the geo point, the filter can accept it as well:</p>
+<h5><a id="_lat_lon_as_properties_3"></a>Lat Lon As Properties<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h5>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "12km",
+          "pin.location": {
+            "lat": 40,
+            "lon": -70
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/826.console"></div>
+<h5><a id="_lat_lon_as_array_3"></a>Lat Lon As Array<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h5>
+<p>Format in <code class="literal">[lon, lat]</code>, note, the order of lon/lat here in order to
+conform with <a href="http://geojson.org/" class="ulink" target="_top">GeoJSON</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "12km",
+          "pin.location": [ -70, 40 ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/827.console"></div>
+<h5><a id="_lat_lon_as_string_3"></a>Lat Lon As String<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h5>
+<p>Format in <code class="literal">lat,lon</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "12km",
+          "pin.location": "40,-70"
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/828.console"></div>
+<h5><a id="_geohash_3"></a>Geohash<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h5>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /my_locations/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "12km",
+          "pin.location": "drm3btev3e86"
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/829.console"></div>
+<h4><a id="_options_2"></a>Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h4>
+<p>The following are options allowed on the filter:</p>
+<div class="informaltable">
+<table border="0" cellpadding="4px">
+<colgroup>
+<col/>
+<col/>
+</colgroup>
+<tbody valign="top">
+<tr>
+<td valign="top">
+<p>
+<code class="literal">distance</code>
+</p>
+</td>
+<td valign="top">
+<p>
+The radius of the circle centred on the specified location. Points which
+fall into this circle are considered to be matches. The <code class="literal">distance</code> can be
+specified in various units. See <a class="xref" href="api-conventions.html#distance-units" title="Distance Units">Distance Units</a>.
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">distance_type</code>
+</p>
+</td>
+<td valign="top">
+<p>
+How to compute the distance. Can either be <code class="literal">arc</code> (default), or <code class="literal">plane</code> (faster, but inaccurate on long distances and close to the poles).
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">_name</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Optional name field to identify the query
+</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p>
+<code class="literal">validation_method</code>
+</p>
+</td>
+<td valign="top">
+<p>
+Set to <code class="literal">IGNORE_MALFORMED</code> to accept geo points with invalid latitude or
+longitude, set to <code class="literal">COERCE</code> to additionally try and infer correct
+coordinates (default is <code class="literal">STRICT</code>).
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4><a id="_geo_point_type_2"></a>geo_point Type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h4>
+<p>The filter <span class="strong strong"><strong>requires</strong></span> the <code class="literal">geo_point</code> type to be set on the relevant
+field.</p>
+<h4><a id="_multi_location_per_document_2"></a>Multi Location Per Document<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h4>
+<p>The <code class="literal">geo_distance</code> filter can work with multiple locations / points per
+document. Once a single location / point matches the filter, the
+document will be included in the filter.</p>
+<h4><a id="_ignore_unmapped_2"></a>Ignore Unmapped<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-distance-query.asciidoc">edit</a></h4>
+<p>When set to <code class="literal">true</code> the <code class="literal">ignore_unmapped</code> option will ignore an unmapped field
+and will not match any documents for this query. This can be useful when
+querying multiple indexes which might have different mappings. When set to
+<code class="literal">false</code> (the default value) the query will throw an exception if the field
+is not mapped.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-geo-polygon-query"></a>Geo-polygon query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-polygon-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>A query returning hits that only fall within a polygon of
+points. Here is an example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_polygon": {
+          "person.location": {
+            "points": [
+              { "lat": 40, "lon": -70 },
+              { "lat": 30, "lon": -80 },
+              { "lat": 20, "lon": -90 }
+            ]
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/830.console"></div>
+<h4><a id="_query_options_2"></a>Query Options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-polygon-query.asciidoc">edit</a></h4>
+<div class="informaltable">
+<table border="1" cellpadding="4px">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Option</th>
+<th align="left" valign="top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p><code class="literal">_name</code></p></td>
+<td align="left" valign="top"><p>Optional name field to identify the filter</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><code class="literal">validation_method</code></p></td>
+<td align="left" valign="top"><p>Set to <code class="literal">IGNORE_MALFORMED</code> to accept geo points with
+invalid latitude or longitude, <code class="literal">COERCE</code> to try and infer correct latitude
+or longitude, or <code class="literal">STRICT</code> (default is <code class="literal">STRICT</code>).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4><a id="_allowed_formats"></a>Allowed Formats<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-polygon-query.asciidoc">edit</a></h4>
+<h5><a id="_lat_long_as_array"></a>Lat Long as Array<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-polygon-query.asciidoc">edit</a></h5>
+<p>Format as <code class="literal">[lon, lat]</code></p>
+<p>Note: the order of lon/lat here must
+conform with <a href="http://geojson.org/" class="ulink" target="_top">GeoJSON</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_polygon": {
+          "person.location": {
+            "points": [
+              [ -70, 40 ],
+              [ -80, 30 ],
+              [ -90, 20 ]
+            ]
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/831.console"></div>
+<h5><a id="_lat_lon_as_string_4"></a>Lat Lon as String<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-polygon-query.asciidoc">edit</a></h5>
+<p>Format in <code class="literal">lat,lon</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_polygon": {
+          "person.location": {
+            "points": [
+              "40, -70",
+              "30, -80",
+              "20, -90"
+            ]
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/832.console"></div>
+<h5><a id="_geohash_4"></a>Geohash<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-polygon-query.asciidoc">edit</a></h5>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_polygon": {
+          "person.location": {
+            "points": [
+              "drn5x1g8cu2y",
+              "30, -80",
+              "20, -90"
+            ]
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/833.console"></div>
+<h4><a id="_geo_point_type_3"></a>geo_point Type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-polygon-query.asciidoc">edit</a></h4>
+<p>The query <span class="strong strong"><strong>requires</strong></span> the <a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type"><code class="literal">geo_point</code></a> type to be set on the
+relevant field.</p>
+<h4><a id="_ignore_unmapped_3"></a>Ignore Unmapped<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-polygon-query.asciidoc">edit</a></h4>
+<p>When set to <code class="literal">true</code> the <code class="literal">ignore_unmapped</code> option will ignore an unmapped field
+and will not match any documents for this query. This can be useful when
+querying multiple indexes which might have different mappings. When set to
+<code class="literal">false</code> (the default value) the query will throw an exception if the field
+is not mapped.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="query-dsl-geo-shape-query"></a>Geo-shape query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-shape-query.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Filter documents indexed using the <code class="literal">geo_shape</code> or <code class="literal">geo_point</code> type.</p>
+<p>Requires the <a class="xref" href="mapping-types.html#geo-shape" title="Geo-shape field type"><code class="literal">geo_shape</code> Mapping</a> or the
+<a class="xref" href="mapping-types.html#geo-point" title="Geo-point field type"><code class="literal">geo_point</code> Mapping</a>.</p>
+<p>The <code class="literal">geo_shape</code> query uses the same grid square representation as the
+<code class="literal">geo_shape</code> mapping to find documents that have a shape that intersects
+with the query shape. It will also use the same Prefix Tree configuration
+as defined for the field mapping.</p>
+<p>The query supports two ways of defining the query shape, either by
+providing a whole shape definition, or by referencing the name of a shape
+pre-indexed in another index. Both formats are defined below with
+examples.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_inline_shape_definition"></a>Inline Shape Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-shape-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Similar to the <code class="literal">geo_shape</code> type, the <code class="literal">geo_shape</code> query uses
+<a href="http://geojson.org" class="ulink" target="_top">GeoJSON</a> to represent shapes.</p>
+<p>Given the following index with locations as <code class="literal">geo_shape</code> fields:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /example
+{
+  "mappings": {
+    "properties": {
+      "location": {
+        "type": "geo_shape"
+      }
+    }
+  }
+}
+
+POST /example/_doc?refresh
+{
+  "name": "Wind &amp; Wetter, Berlin, Germany",
+  "location": {
+    "type": "point",
+    "coordinates": [ 13.400544, 52.530286 ]
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/834.console"></div>
+<p>The following query will find the point using Elasticsearch&#8217;s <code class="literal">envelope</code> GeoJSON
+extension:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /example/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_shape": {
+          "location": {
+            "shape": {
+              "type": "envelope",
+              "coordinates": [ [ 13.0, 53.0 ], [ 14.0, 52.0 ] ]
+            },
+            "relation": "within"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/835.console"></div>
+<p>The above query can, similarly, be queried on <code class="literal">geo_point</code> fields.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /example_points
+{
+  "mappings": {
+    "properties": {
+      "location": {
+        "type": "geo_point"
+      }
+    }
+  }
+}
+
+PUT /example_points/_doc/1?refresh
+{
+  "name": "Wind &amp; Wetter, Berlin, Germany",
+  "location": [13.400544, 52.530286]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/836.console"></div>
+<p>Using the same query, the documents with matching <code class="literal">geo_point</code> fields are
+returned.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /example_points/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_shape": {
+          "location": {
+            "shape": {
+              "type": "envelope",
+              "coordinates": [ [ 13.0, 53.0 ], [ 14.0, 52.0 ] ]
+            },
+            "relation": "intersects"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/837.console"></div>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "took" : 17,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 1,
+      "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "example_points",
+        "_type" : "_doc",
+        "_id" : "1",
+        "_score" : 1.0,
+        "_source" : {
+          "name": "Wind &amp; Wetter, Berlin, Germany",
+          "location": [13.400544, 52.530286]
+        }
+      }
+    ]
+  }
+}</pre>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_pre_indexed_shape"></a>Pre-Indexed Shape<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-shape-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The query also supports using a shape which has already been indexed in another
+index. This is particularly useful for when you have a pre-defined list of
+shapes and you want to reference the list using
+a logical name (for example <em>New Zealand</em>) rather than having to provide
+coordinates each time. In this situation, it is only necessary to provide:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">id</code> - The ID of the document that containing the pre-indexed shape.
+</li>
+<li class="listitem">
+<code class="literal">index</code> - Name of the index where the pre-indexed shape is. Defaults to
+<em>shapes</em>.
+</li>
+<li class="listitem">
+<code class="literal">path</code> - The field specified as path containing the pre-indexed shape.
+Defaults to <em>shape</em>.
+</li>
+<li class="listitem">
+<code class="literal">routing</code> - The routing of the shape document if required.
+</li>
+</ul>
+</div>
+<p>The following is an example of using the Filter with a pre-indexed
+shape:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /shapes
+{
+  "mappings": {
+    "properties": {
+      "location": {
+        "type": "geo_shape"
+      }
+    }
+  }
+}
+
+PUT /shapes/_doc/deu
+{
+  "location": {
+    "type": "envelope",
+    "coordinates" : [[13.0, 53.0], [14.0, 52.0]]
+  }
+}
+
+GET /example/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "geo_shape": {
+          "location": {
+            "indexed_shape": {
+              "index": "shapes",
+              "id": "deu",
+              "path": "location"
+            }
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/838.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_spatial_relations"></a>Spatial Relations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-shape-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The <a class="xref" href="mapping-types.html#spatial-strategy" title="Spatial strategies">geo_shape strategy</a> mapping parameter determines which
+spatial relation operators may be used at search time.</p>
+<p>The following is a complete list of spatial relation operators available when
+searching a field of type <code class="literal">geo_shape</code>:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">INTERSECTS</code> - (default) Return all documents whose <code class="literal">geo_shape</code> field
+intersects the query geometry.
+</li>
+<li class="listitem">
+<code class="literal">DISJOINT</code> - Return all documents whose <code class="literal">geo_shape</code> field has nothing in
+common with the query geometry.
+</li>
+<li class="listitem">
+<code class="literal">WITHIN</code> - Return all documents whose <code class="literal">geo_shape</code> field is within the query
+geometry.
+</li>
+<li class="listitem">
+<code class="literal">CONTAINS</code> - Return all documents whose <code class="literal">geo_shape</code> field contains the query
+geometry.
+</li>
+</ul>
+</div>
+<p>When searching a field of type <code class="literal">geo_point</code> there is a single supported spatial
+relation operator:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">INTERSECTS</code> - (default) Return all documents whose <code class="literal">geo_point</code> field
+intersects the query geometry.
+</li>
+</ul>
+</div>
+<h4><a id="_ignore_unmapped_4"></a>Ignore Unmapped<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-shape-query.asciidoc">edit</a></h4>
+<p>When set to <code class="literal">true</code> the <code class="literal">ignore_unmapped</code> option will ignore an unmapped field
+and will not match any documents for this query. This can be useful when
+querying multiple indexes which might have different mappings. When set to
+<code class="literal">false</code> (the default value) the query will throw an exception if the field
+is not mapped.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="_shape_types_supported_for_geo_point"></a>Shape Types supported for Geo-Point<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-shape-query.asciidoc">edit</a></h3>
+</div></div></div>
+<p>When searching a field of type <code class="literal">geo_point</code> the following shape types are not
+supported:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">POINT</code>
+</li>
+<li class="listitem">
+<code class="literal">LINE</code>
+</li>
+<li class="listitem">
+<code class="literal">MULTIPOINT</code>
+</li>
+<li class="listitem">
+<code class="literal">MULTILINE</code>
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="geo-shape-query-notes"></a>Notes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/geo-shape-query.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Geo-shape queries on geo-shapes implemented with
+<a class="xref" href="mapping-types.html#prefix-trees" title="Prefix trees"><code class="literal">PrefixTrees</code></a> will not be executed if
+<a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a> is set
+to false.
+</li>
+<li class="listitem">
+When data is indexed in a <code class="literal">geo_shape</code> field as an array of shapes, the arrays
+are treated as one shape. For this reason, the following requests are
+equivalent.
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /test/_doc/1
+{
+  "location": [
+    {
+      "coordinates": [46.25,20.14],
+      "type": "point"
+    },
+    {
+      "coordinates": [47.49,19.04],
+      "type": "point"
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/839.console"></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /test/_doc/1
+{
+  "location":
+    {
+      "coordinates": [[46.25,20.14],[47.49,19.04]],
+      "type": "multipoint"
+    }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/840.console"></div>
+</div>
+
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="full-text-queries.html">« Full text queries</a>
+</span>
+<span class="next">
+<a href="shape-queries.html">Shape queries »</a>
+</span>
+</div>
+</div>
+</body>
+</html>
