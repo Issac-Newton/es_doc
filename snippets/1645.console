@@ -1,5 +1,5 @@
-PUT /<follower_index>/_ccr/follow?wait_for_active_shards=1
+PUT my-index/_settings
 {
-  "remote_cluster" : "<remote_cluster>",
-  "leader_index" : "<leader_index>"
+  "index.routing.allocation.require.data": null,
+  "index.routing.allocation.include._tier_preference": "data_warm,data_hot"
 }

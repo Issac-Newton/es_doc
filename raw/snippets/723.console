@@ -1,20 +1,14 @@
-POST /_search
+PUT /_ingest/pipeline/networks_lookup
 {
-   "query" : {
-      "term" : { "product" : "chocolate" }
-   },
-   "sort" : [
-       {
-          "offer.price" : {
-             "mode" :  "avg",
-             "order" : "asc",
-             "nested": {
-                "path": "offer",
-                "filter": {
-                   "term" : { "offer.color" : "blue" }
-                }
-             }
-          }
-       }
-    ]
+  "processors" : [
+    {
+      "enrich" : {
+        "description": "Add 'network' data based on 'ip'",
+        "policy_name": "networks-policy",
+        "field" : "ip",
+        "target_field": "network",
+        "max_matches": "10"
+      }
+    }
+  ]
 }

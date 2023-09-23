@@ -1,21 +1,9 @@
-GET /drivers/_search
+GET /_search
 {
+  "_source": [ "obj1.*", "obj2.*" ],
   "query": {
-    "nested": {
-      "path": "driver",
-      "query": {
-        "nested": {
-          "path": "driver.vehicle",
-          "query": {
-            "bool": {
-              "must": [
-                { "match": { "driver.vehicle.make": "Powell Motors" } },
-                { "match": { "driver.vehicle.model": "Canyonero" } }
-              ]
-            }
-          }
-        }
-      }
+    "match": {
+      "user.id": "kimchy"
     }
   }
 }

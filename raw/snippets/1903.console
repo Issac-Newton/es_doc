@@ -1,1 +1,1 @@
-GET /test1,test2/_segments
+GET _cat/count/my-index-000001?v=true

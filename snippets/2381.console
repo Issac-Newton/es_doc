@@ -1,11 +1,6 @@
-PUT my-index-000002
+GET /my-data-stream/_eql/search
 {
-  "mappings": {
-    "properties": {
-      "datetime": {
-        "type": "date",
-        "format": "8uuuu/MM/dd HH:mm:ss||uuuu/MM/dd||epoch_millis"
-      }
-    }
-  }
+  "query": """
+    process where (process.name == "cmd.exe" and process.pid != 2013)
+  """
 }

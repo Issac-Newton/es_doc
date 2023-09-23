@@ -1,6 +1,4 @@
-POST /my-index-000001/_search?size=0
+PUT my-index-000001/_doc/1
 {
-  "aggs": {
-    "message_stats": { "string_stats": { "field": "message.keyword" } }
-  }
+  "color":   ["blue", "green"]
 }

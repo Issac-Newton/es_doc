@@ -1,14 +1,17 @@
-PUT _ilm/policy/my_policy
+GET news/_search
 {
-  "policy": {
-    "phases": {
-      "hot": {
-        "actions": {
-          "rollover" : {
-            "max_docs": 100000000
-          }
-        }
-      }
+  "query": {
+    "simple_query_string": {
+      "query": "+elasticsearch  +pozmantier"
+    }
+  },
+  "_source": [
+    "title",
+    "source"
+  ],
+  "highlight": {
+    "fields": {
+      "content": {}
     }
   }
 }

@@ -1,30 +1,29 @@
-PUT my-index-000001/_doc/1?refresh
+PUT parent_example/_doc/2?routing=1
 {
-  "text": "quick brown fox",
-  "popularity": 1
+  "join": {
+    "name": "answer",
+    "parent": "1"
+  },
+  "owner": {
+    "location": "Norfolk, United Kingdom",
+    "display_name": "Sam",
+    "id": 48
+  },
+  "body": "<p>Unfortunately you're pretty much limited to FTP...",
+  "creation_date": "2009-05-04T13:45:37.030"
 }
 
-PUT my-index-000001/_doc/2?refresh
+PUT parent_example/_doc/3?routing=1&refresh
 {
-  "text": "quick fox",
-  "popularity": 5
-}
-
-GET my-index-000001/_search
-{
-  "query": {
-    "function_score": {
-      "query": {
-        "match": {
-          "text": "quick brown fox"
-        }
-      },
-      "script_score": {
-        "script": {
-          "lang": "expression",
-          "source": "_score * doc['popularity']"
-        }
-      }
-    }
-  }
+  "join": {
+    "name": "answer",
+    "parent": "1"
+  },
+  "owner": {
+    "location": "Norfolk, United Kingdom",
+    "display_name": "Troll",
+    "id": 49
+  },
+  "body": "<p>Use Linux...",
+  "creation_date": "2009-05-05T13:45:37.030"
 }

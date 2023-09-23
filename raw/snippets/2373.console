@@ -1,1 +1,1 @@
-GET _watcher/stats/current_watches
+GET /_enrich/policy/my-policy

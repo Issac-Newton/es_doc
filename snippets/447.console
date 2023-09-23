@@ -1,19 +1,5 @@
-PUT keep_types_example
+POST _analyze
 {
-  "settings": {
-    "analysis": {
-      "analyzer": {
-        "my_analyzer": {
-          "tokenizer": "standard",
-          "filter": [ "extract_alpha" ]
-        }
-      },
-      "filter": {
-        "extract_alpha": {
-          "type": "keep_types",
-          "types": [ "<ALPHANUM>" ]
-        }
-      }
-    }
-  }
+  "tokenizer": "pattern",
+  "text": "The foo_bar_size's default is 5."
 }

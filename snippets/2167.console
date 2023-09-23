@@ -1,1 +1,6 @@
-GET /my-index-000001/_search_shards
+PUT /_cluster/settings
+{
+  "transient" : {
+    "indices.recovery.max_bytes_per_sec" : null
+  }
+}

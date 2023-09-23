@@ -1,21 +1,4 @@
-GET /_search
+DELETE /_search/scroll
 {
-  "query": {
-    "bool": {
-      "must": {
-        "match_all": {}
-      },
-      "filter": {
-        "geo_polygon": {
-          "person.location": {
-            "points": [
-              [ -70, 40 ],
-              [ -80, 30 ],
-              [ -90, 20 ]
-            ]
-          }
-        }
-      }
-    }
-  }
+  "scroll_id" : "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAD4WYm9laVYtZndUQlNsdDcwakFMNjU1QQ=="
 }

@@ -1,21 +1,4 @@
-GET /_security/user/_has_privileges
+POST test/_update/1
 {
-  "cluster": [ "monitor", "manage" ],
-  "index" : [
-    {
-      "names": [ "suppliers", "products" ],
-      "privileges": [ "read" ]
-    },
-    {
-      "names": [ "inventory" ],
-      "privileges" : [ "read", "write" ]
-    }
-  ],
-  "application": [
-    {
-      "application": "inventory_manager",
-      "privileges" : [ "read", "data:write/inventory" ],
-      "resources" : [ "product/1852563" ]
-    }
-  ]
+  "script": "ctx._source['my-object'].remove('my-subfield')"
 }

@@ -1,8 +1,13 @@
-PUT my-index-000001/_doc/3?routing=1&refresh
+PUT idx
 {
-  "text": "This is a vote",
-  "my_join_field": {
-    "name": "vote",
-    "parent": "2"
+  "mappings": {
+    "_source": { "mode": "synthetic" },
+    "properties": {
+      "date": { "type": "date" }
+    }
   }
+}
+PUT idx/_doc/1
+{
+  "date": ["2015-01-01T12:10:30Z", "2014-01-01T12:10:30Z"]
 }

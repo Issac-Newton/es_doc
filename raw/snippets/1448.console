@@ -1,9 +1,22 @@
-PUT /_security/role_mapping/oidc-finance
+POST /sales/_search
 {
-  "roles": [ "finance_data" ],
-  "enabled": true,
-  "rules": { "all": [
-        { "field": { "realm.name": "oidc1" } },
-        { "field": { "groups": "finance-team" } }
-  ] }
+  "size": 0,
+  "runtime_mappings": {
+    "tags": {
+      "type": "keyword",
+      "script": """
+        emit(doc['type'].value);
+        if (doc['promoted'].value) {
+          emit('hot');
+        }
+      """
+    }
+  },
+  "aggs": {
+    "tags_count": {
+      "value_count": {
+        "field": "tags"
+      }
+    }
+  }
 }

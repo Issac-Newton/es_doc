@@ -8,7 +8,7 @@
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="index.html" title="Elasticsearch Guide"/>
-<link rel="prev" href="dynamic-mapping.html" title="Dynamic Mapping"/>
+<link rel="prev" href="removal-of-types.html" title="Removal of mapping types"/>
 <link rel="next" href="analysis-overview.html" title="Text analysis overview"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
@@ -108,7 +108,7 @@
 </div>
 <div class="navheader">
 <span class="prev">
-<a href="dynamic-mapping.html">« Dynamic Mapping</a>
+<a href="removal-of-types.html">« Removal of mapping types</a>
 </span>
 <span class="next">
 <a href="analysis-overview.html">Text analysis overview »</a>
@@ -116,15 +116,15 @@
 </div>
 <div class="part">
 <div class="titlepage"><div><div>
-<h1 class="title"><a id="analysis"></a>Text analysis<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis.asciidoc">edit</a></h1>
+<h1 class="title"><a id="analysis"></a>Text analysis<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis.asciidoc">edit</a></h1>
 </div></div></div>
 <div class="openblock partintro">
 <div class="content">
 <p><em>Text analysis</em> is the process of converting unstructured text, like
 the body of an email or a product description, into a structured format that&#8217;s
 optimized for search.</p>
-<h3><a id="when-to-configure-analysis"></a>When to configure text analysis<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis.asciidoc">edit</a></h3>
-<p>Elasticsearch performs text analysis when indexing or searching <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> fields.</p>
+<h3><a id="when-to-configure-analysis"></a>When to configure text analysis<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis.asciidoc">edit</a></h3>
+<p>Elasticsearch performs text analysis when indexing or searching <a class="xref" href="mapping-types.html#text" title="Text type family"><code class="literal">text</code></a> fields.</p>
 <p>If your index doesn&#8217;t contain <code class="literal">text</code> fields, no further setup is needed; you can
 skip the pages in this section.</p>
 <p>However, if you use <code class="literal">text</code> fields or your text searches aren&#8217;t returning results
@@ -146,7 +146,7 @@ Perform lexicographic or linguistic research
 </li>
 </ul>
 </div>
-<h3><a id="analysis-toc"></a>In this section<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis.asciidoc">edit</a></h3>
+<h3><a id="analysis-toc"></a>In this section<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -188,7 +188,7 @@ Perform lexicographic or linguistic research
 </div>
 <div class="navfooter">
 <span class="prev">
-<a href="dynamic-mapping.html">« Dynamic Mapping</a>
+<a href="removal-of-types.html">« Removal of mapping types</a>
 </span>
 <span class="next">
 <a href="analysis-overview.html">Text analysis overview »</a>

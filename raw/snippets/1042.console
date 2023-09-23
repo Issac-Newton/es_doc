@@ -1,14 +1,18 @@
-GET /_search
+GET my_geoshapes/_search
 {
-  "aggs": {
-    "price_ranges": {
-      "range": {
-        "field": "price",
-        "ranges": [
-          { "to": 100.0 },
-          { "from": 100.0, "to": 200.0 },
-          { "from": 200.0 }
-        ]
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "200km",
+          "pin.location": {
+            "lat": 40,
+            "lon": -70
+          }
+        }
       }
     }
   }

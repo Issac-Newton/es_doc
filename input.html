@@ -7,7 +7,7 @@
 <meta class="elastic" name="content" content="Watcher inputs | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="xpack-alerting.html" title="Watch for cluster and index events"/>
+<link rel="up" href="xpack-alerting.html" title="Watcher"/>
 <link rel="prev" href="encrypting-data.html" title="Encrypting sensitive data in Watcher"/>
 <link rel="next" href="trigger.html" title="Watcher triggers"/>
 <meta class="elastic" name="product_version" content=""/>
@@ -105,7 +105,7 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-alerting.html">Watch for cluster and index events</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-alerting.html">Watcher</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
@@ -117,7 +117,7 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="input"></a>Watcher inputs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="input"></a>Watcher inputs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>When a watch is triggered, its <em>input</em> loads data into the execution
@@ -153,7 +153,7 @@ execution context.
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="input-simple"></a>Watcher simple input<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/simple.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="input-simple"></a>Watcher simple input<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/simple.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Use the <code class="literal">simple</code> input to load static data into the execution
@@ -201,7 +201,7 @@ name for a daily reminder email:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="input-search"></a>Watcher search input<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/search.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="input-search"></a>Watcher search input<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Use the <code class="literal">search</code> input to load the results of an Elasticsearch search request
@@ -261,7 +261,7 @@ the following input loads the latest VIXZ quote from today&#8217;s daily quotes 
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_extracting_specific_fields"></a>Extracting specific fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_extracting_specific_fields"></a>Extracting specific fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
 </div></div></div>
 <p>You can specify which fields in the search response you want to load into the
 watch payload with the <code class="literal">extract</code> attribute. This is useful when a search
@@ -282,9 +282,9 @@ watch payload:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_using_templates"></a>Using Templates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_using_templates"></a>Using Templates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
 </div></div></div>
-<p>The <code class="literal">search</code> input supports <a class="xref" href="search.html#search-template" title="Search template API">search templates</a>. For
+<p>The <code class="literal">search</code> input supports <a class="xref" href="search-template.html" title="Search templates">search templates</a>. For
 example, the following snippet references the indexed template called
 <code class="literal">my_template</code> and passes a value of 23 to fill in the template&#8217;s <code class="literal">value</code>
 parameter:</p>
@@ -310,7 +310,7 @@ parameter:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_applying_conditions"></a>Applying conditions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_applying_conditions"></a>Applying conditions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">search</code> input is often used in conjunction with the
 <a class="xref" href="condition.html#condition-script" title="Watcher script condition"><code class="literal">script</code></a> condition. For example, the following snippet adds
@@ -337,7 +337,7 @@ a condition to check if the search returned more than five hits:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_accessing_the_search_results"></a>Accessing the search results<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_accessing_the_search_results"></a>Accessing the search results<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Conditions, transforms, and actions can access the search results through the
 watch execution context. For example:</p>
@@ -375,7 +375,7 @@ accurately.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="search-input-attributes"></a>Search Input Attributes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
+<h3 class="title"><a id="search-input-attributes"></a>Search Input Attributes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/search.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="informaltable">
 <table border="1" cellpadding="4px">
@@ -398,10 +398,9 @@ accurately.</p>
 <td align="left" valign="top"><p><code class="literal">request.search_type</code></p></td>
 <td align="center" valign="top"><p>no</p></td>
 <td align="left" valign="top"><p><code class="literal">query_then_fetch</code></p></td>
-<td align="left" valign="top"><p>The <a class="xref" href="search.html#search-type">type</a>
-                                                                                    of search request to perform. Valid values are: <code class="literal">dfs_query_and_fetch</code>,
-                                                                                    <code class="literal">dfs_query_then_fetch</code>, <code class="literal">query_and_fetch</code>, and <code class="literal">query_then_fetch</code>. The
-                                                                                    Elasticsearch default is <code class="literal">query_then_fetch</code>.</p></td>
+<td align="left" valign="top"><p>The <a class="xref" href="search.html#search-type">type</a> of search request to perform.
+                                                                                    Valid values are: <code class="literal">dfs_query_then_fetch</code> and <code class="literal">query_then_fetch</code>.
+                                                                                    The Elasticsearch default is <code class="literal">query_then_fetch</code>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><code class="literal">request.indices</code></p></td>
@@ -414,7 +413,7 @@ accurately.</p>
 <td align="left" valign="top"><p><code class="literal">request.body</code></p></td>
 <td align="center" valign="top"><p>no</p></td>
 <td align="left" valign="top"><p>-</p></td>
-<td align="left" valign="top"><p>The body of the request. The <a class="xref" href="getting-started-modify-data.html#search-request-body" title="Request body search">request body</a>
+<td align="left" valign="top"><p>The body of the request. The <a class="xref" href="search.html#search-search" title="Search API">request body</a>
                                                                                     follows the same structure you normally send in the body of a REST <code class="literal">_search</code>
                                                                                     request. The body can be static text or include <code class="literal">mustache</code> <a class="xref" href="how-watcher-works.html#templates" title="Using templates">templates</a>.</p></td>
 </tr>
@@ -430,21 +429,21 @@ accurately.</p>
 <td align="center" valign="top"><p>no</p></td>
 <td align="left" valign="top"><p><code class="literal">open</code></p></td>
 <td align="left" valign="top"><p>How to expand wildcards. Valid values are: <code class="literal">all</code>, <code class="literal">open</code>, <code class="literal">closed</code>, and <code class="literal">none</code>
-                                                                                    See <a class="xref" href="api-conventions.html#multi-index" title="Multi-target syntax"><code class="literal">expand_wildcards</code></a> for more information.</p></td>
+                                                                                    See <a class="xref" href="api-conventions.html#api-multi-index" title="Multi-target syntax"><code class="literal">expand_wildcards</code></a> for more information.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><code class="literal">request.indices_options.ignore_unavailable</code></p></td>
 <td align="center" valign="top"><p>no</p></td>
 <td align="left" valign="top"><p><code class="literal">true</code></p></td>
 <td align="left" valign="top"><p>Whether the search should ignore unavailable indices. See
-                                                                                    <a class="xref" href="api-conventions.html#multi-index" title="Multi-target syntax"><code class="literal">ignore_unavailable</code></a> for more information.</p></td>
+                                                                                    <a class="xref" href="api-conventions.html#api-multi-index" title="Multi-target syntax"><code class="literal">ignore_unavailable</code></a> for more information.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><code class="literal">request.indices_options.allow_no_indices</code></p></td>
 <td align="center" valign="top"><p>no</p></td>
 <td align="left" valign="top"><p><code class="literal">true</code></p></td>
 <td align="left" valign="top"><p>Whether to allow a search where a wildcard indices expression results in no
-                                                                                    concrete indices. See <a class="xref" href="api-conventions.html#multi-index" title="Multi-target syntax">allow_no_indices</a>
+                                                                                    concrete indices. See <a class="xref" href="api-conventions.html#api-multi-index" title="Multi-target syntax">allow_no_indices</a>
                                                                                     for more information.</p></td>
 </tr>
 <tr>
@@ -510,7 +509,7 @@ specifying the request <code class="literal">body</code>:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="input-http"></a>Watcher HTTP input<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/http.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="input-http"></a>Watcher HTTP input<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Use the <code class="literal">http</code> input to submit a request to an HTTP endpoint and load the
@@ -539,7 +538,7 @@ between Elasticsearch clusters and other systems.
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_querying_external_elasticsearch_clusters"></a>Querying external Elasticsearch clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_querying_external_elasticsearch_clusters"></a>Querying external Elasticsearch clusters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To query an external Elasticsearch cluster, you specify the cluster&#8217;s
 <code class="literal">host</code> and <code class="literal">port</code> attributes and the index&#8217;s search endpoint as the <code class="literal">path</code>.
@@ -556,7 +555,7 @@ index:</p>
   }
 }</pre>
 </div>
-<p>You can use the full Elasticsearch <a class="xref" href="query-dsl.html" title="Query DSL">query DSL</a> to perform
+<p>You can use the full Elasticsearch <a class="xref" href="query-dsl.html" title="Query DSL">Query DSL</a> to perform
 more sophisticated searches. For example, the following <code class="literal">http</code> input retrieves
 all documents that contain <code class="literal">event</code> in the <code class="literal">category</code> field:</p>
 <div class="pre_wrapper lang-js">
@@ -575,7 +574,7 @@ all documents that contain <code class="literal">event</code> in the <code class
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_calling_elasticsearch_apis"></a>Calling Elasticsearch APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_calling_elasticsearch_apis"></a>Calling Elasticsearch APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To load the data from other Elasticsearch APIs, specify the API
 endpoint as the <code class="literal">path</code> attribute. Use the <code class="literal">params</code> attribute to specify
@@ -589,7 +588,7 @@ calls the <a class="xref" href="cluster.html#cluster-stats" title="Cluster stats
       "port" : 9200,
       "path" : "/_cluster/stats",
       "params" : {
-        "human" : "true" <a id="CO556-1"></a><i class="conum" data-value="1"></i>
+        "human" : "true" <a id="CO596-1"></a><i class="conum" data-value="1"></i>
       }
     }
   }
@@ -599,7 +598,7 @@ calls the <a class="xref" href="cluster.html#cluster-stats" title="Cluster stats
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO556-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO596-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Enabling this attribute returns the <code class="literal">bytes</code> values in the response in human
@@ -612,7 +611,7 @@ readable format.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="input-http-auth-basic-example"></a>Calling external web services<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
+<h3 class="title"><a id="input-http-auth-basic-example"></a>Calling external web services<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
 </div></div></div>
 <p>You can use <code class="literal">http</code> input to get data from any external web service. The <code class="literal">http</code>
 input supports basic authentication. For example, the following input provides
@@ -652,11 +651,33 @@ input loads the current weather forecast for Amsterdam from the
   }
 }</pre>
 </div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="_using_token_based_authentication"></a>Using token-based authentication<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h4>
+</div></div></div>
+<p>You can also call an API using a <code class="literal">Bearer token</code> instead of basic authentication. The <code class="literal">request.headers</code> object contains the HTTP headers:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">"input" : {
+  "http" : {
+    "request" : {
+      "url": "https://api.example.com/v1/something",
+      "headers": {
+        "authorization" : "Bearer ABCD1234...",
+        "content-type": "application/json"
+        # other headers params..
+        },
+      "connection_timeout": "30s"
+    }
+  }
+}</pre>
+</div>
+</div>
+
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_using_templates_2"></a>Using templates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_using_templates_2"></a>Using templates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">http</code> input supports templating. You can use <a class="xref" href="how-watcher-works.html#templates" title="Using templates">templates</a> when
 specifying the <code class="literal">path</code>, <code class="literal">body</code>, header values, and parameter values.</p>
@@ -678,9 +699,9 @@ and restrict the results to documents added within the last five minutes:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_accessing_the_http_response"></a>Accessing the HTTP response<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_accessing_the_http_response"></a>Accessing the HTTP response<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
 </div></div></div>
-<p>If the response body is formatted in  JSON or YAML, it is parsed and loaded into
+<p>If the response body is formatted in JSON or YAML, it is parsed and loaded into
 the execution context. If the response body is not formatted in JSON or YAML, it
 is loaded into the payload&#8217;s <code class="literal">_value</code> field.</p>
 <p>Conditions, transforms, and actions access the response data through the
@@ -693,7 +714,7 @@ object, you can use <code class="literal">ctx.payload.message</code> to access t
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="http-input-attributes"></a>HTTP input attributes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
+<h3 class="title"><a id="http-input-attributes"></a>HTTP input attributes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/http.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="informaltable">
 <table border="1" cellpadding="4px">
@@ -883,7 +904,7 @@ specifying the <code class="literal">path</code>, <code class="literal">params</
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="input-chain"></a>Watcher chain input<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/chain.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="input-chain"></a>Watcher chain input<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/chain.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Use the <code class="literal">chain</code> input to load data from multiple sources into the watch
@@ -898,7 +919,7 @@ path set by a <code class="literal">simple</code> input:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"input" : {
   "chain" : {
-    "inputs" : [ <a id="CO557-1"></a><i class="conum" data-value="1"></i>
+    "inputs" : [ <a id="CO597-1"></a><i class="conum" data-value="1"></i>
       {
         "first" : {
           "simple" : { "path" : "/_search" }
@@ -910,7 +931,7 @@ path set by a <code class="literal">simple</code> input:</p>
             "request" : {
               "host" : "localhost",
               "port" : 9200,
-              "path" : "{{ctx.payload.first.path}}" <a id="CO557-2"></a><i class="conum" data-value="2"></i>
+              "path" : "{{ctx.payload.first.path}}" <a id="CO597-2"></a><i class="conum" data-value="2"></i>
             }
           }
         }
@@ -923,7 +944,7 @@ path set by a <code class="literal">simple</code> input:</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO557-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO597-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The inputs in a chain are specified as an array to guarantee the order in
@@ -933,7 +954,7 @@ arbitrary objects.)</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO557-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO597-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Loads the <code class="literal">path</code> set by the <code class="literal">first</code> input.</p>
@@ -943,7 +964,7 @@ arbitrary objects.)</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_accessing_chained_input_data"></a>Accessing chained input data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/chain.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_accessing_chained_input_data"></a>Accessing chained input data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/chain.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To reference data loaded by a particular input, you use the input&#8217;s name,
 <code class="literal">ctx.payload.&lt;input-name&gt;.&lt;value&gt;</code>.</p>
@@ -951,7 +972,7 @@ arbitrary objects.)</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_transforming_chained_input_data"></a>Transforming chained input data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/input/chain.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_transforming_chained_input_data"></a>Transforming chained input data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/input/chain.asciidoc">edit</a></h3>
 </div></div></div>
 <p>In certain use-cases the output of the first input should be used as input
 in a subsequent input. This requires you to do a transform, before you pass
@@ -962,7 +983,7 @@ still be available in its original form in <code class="literal">ctx.payload.fir
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"input" : {
   "chain" : {
-    "inputs" : [ <a id="CO558-1"></a><i class="conum" data-value="1"></i>
+    "inputs" : [ <a id="CO598-1"></a><i class="conum" data-value="1"></i>
       {
         "first" : {
           "simple" : { "path" : "/_search" }
@@ -981,7 +1002,7 @@ still be available in its original form in <code class="literal">ctx.payload.fir
             "request" : {
               "host" : "localhost",
               "port" : 9200,
-              "path" : "{{ctx.payload.second.path}}" <a id="CO558-2"></a><i class="conum" data-value="2"></i>
+              "path" : "{{ctx.payload.second.path}}" <a id="CO598-2"></a><i class="conum" data-value="2"></i>
             }
           }
         }

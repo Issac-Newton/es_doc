@@ -1,24 +1,19 @@
-POST /sales/_search
+PUT my-index-000001
 {
-  "size": 0,
-  "aggs": {
-    "sales_per_month": {
-      "date_histogram": {
-        "field": "date",
-        "calendar_interval": "month"
+  "settings": {
+    "index": {
+      "sort.field": [ "username", "timestamp" ],  
+      "sort.order": [ "asc", "desc" ]             
+    }
+  },
+  "mappings": {
+    "properties": {
+      "username": {
+        "type": "keyword",
+        "doc_values": true
       },
-      "aggs": {
-        "sales": {
-          "sum": {
-            "field": "price"
-          }
-        },
-        "sales_deriv": {
-          "derivative": {
-            "buckets_path": "sales",
-            "unit": "day"
-          }
-        }
+      "timestamp": {
+        "type": "date"
       }
     }
   }

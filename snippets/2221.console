@@ -1,33 +1,13 @@
-GET /my-index-000001/_search
+PUT /_ccr/auto_follow/<auto_follow_pattern_name>
 {
-  "profile": true,
-  "query": {
-    "term": {
-      "user.id": {
-        "value": "elkbee"
-      }
-    }
-  },
-  "aggs": {
-    "my_scoped_agg": {
-      "terms": {
-        "field": "http.response.status_code"
-      }
-    },
-    "my_global_agg": {
-      "global": {},
-      "aggs": {
-        "my_level_agg": {
-          "terms": {
-            "field": "http.response.status_code"
-          }
-        }
-      }
-    }
-  },
-  "post_filter": {
-    "match": {
-      "message": "search"
-    }
-  }
+  "remote_cluster" : "<remote_cluster>",
+  "leader_index_patterns" :
+  [
+    "<leader_index_pattern>"
+  ],
+  "leader_index_exclusion_patterns":
+  [
+    "<leader_index_exclusion_pattern>"
+  ],
+  "follow_index_pattern" : "<follow_index_pattern>"
 }

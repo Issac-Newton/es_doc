@@ -1,11 +1,11 @@
-PUT length_example
+PUT /asciifold_example
 {
   "settings": {
     "analysis": {
       "analyzer": {
-        "standard_length": {
+        "standard_asciifolding": {
           "tokenizer": "standard",
-          "filter": [ "length" ]
+          "filter": [ "asciifolding" ]
         }
       }
     }

@@ -1,4 +1,9 @@
-GET .watches/_search
+GET /my-index*/_eql/search
 {
-  "size" : 100
+  "query": """
+    sample by host
+      [any where uptime > 0]
+      [any where port > 100]
+      [any where bool == true]
+  """
 }

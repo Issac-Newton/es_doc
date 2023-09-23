@@ -1,7 +1,11 @@
-PUT /_snapshot/my_repository
+POST /my-index-000001/_search?size=0
 {
-  "type": "fs",
-  "settings": {
-    "location": "my_backup_location"
+  "aggs": {
+    "message_stats": {
+      "string_stats": {
+        "field": "message.keyword",
+        "missing": "[empty message]"
+      }
+    }
   }
 }

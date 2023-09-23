@@ -1,18 +1,11 @@
-GET sales/_search
+GET /_search
 {
-  "size": 0,
-  "aggs": {
-    "by_date": {
-      "date_histogram": {
-        "field": "date",
-        "calendar_interval": "month" 
-      },
-      "aggs": {
-        "my_rate": {
-          "rate": {
-            "unit": "year" 
-          }
-        }
+  "query": {
+    "range": {
+      "age": {
+        "gte": 10,
+        "lte": 20,
+        "boost": 2.0
       }
     }
   }

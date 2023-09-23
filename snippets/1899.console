@@ -1,1 +1,1 @@
-GET /_recovery?human
+GET _cat/shards?v=true

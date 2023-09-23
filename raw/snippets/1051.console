@@ -1,11 +1,12 @@
-GET /_search
+GET /my_locations/_search
 {
-  "aggs": {
-    "genres": {
-      "rare_terms": {
-        "field": "genre",
-        "max_doc_count": 2
-      }
-    }
+  "size" : 0,
+  "aggs" : {
+     "grouped" : {
+        "geotile_grid" : {
+           "field" : "location",
+           "precision" : 6
+        }
+     }
   }
 }

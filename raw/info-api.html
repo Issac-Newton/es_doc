@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>Info API | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="Info API | Elasticsearch Guide">
 
@@ -33,12 +34,12 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="info-api"></a>Info API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/info.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="info-api"></a>Info API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/info.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Provides general information about the installed X-Pack features.</p>
-<h3><a id="info-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/info.asciidoc">edit</a></h3>
+<h3><a id="info-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/info.asciidoc">edit</a></h3>
 <p><code class="literal">GET /_xpack</code></p>
-<h3><a id="info-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/info.asciidoc">edit</a></h3>
+<h3><a id="info-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/info.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -47,7 +48,7 @@ If the Elasticsearch security features are enabled, you must have the <code clas
 </li>
 </ul>
 </div>
-<h3><a id="info-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/info.asciidoc">edit</a></h3>
+<h3><a id="info-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/info.asciidoc">edit</a></h3>
 <p>The information provided by this API includes:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -63,7 +64,7 @@ under the current license.
 </li>
 </ul>
 </div>
-<h3><a id="info-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/info.asciidoc">edit</a></h3>
+<h3><a id="info-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/info.asciidoc">edit</a></h3>
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
@@ -87,12 +88,12 @@ The default value is <code class="literal">true</code>.
 </dd>
 </dl>
 </div>
-<h3><a id="info-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/info.asciidoc">edit</a></h3>
+<h3><a id="info-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/info.asciidoc">edit</a></h3>
 <p>The following example queries the info API:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_xpack</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2037.console"></div>
+<div class="console_widget" data-snippet="snippets/2589.console"></div>
 <p>Example response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -112,17 +113,21 @@ The default value is <code class="literal">true</code>.
         "available" : true,
         "enabled" : true
       },
+     "aggregate_metric" : {
+          "available" : true,
+          "enabled" : true
+      },
       "analytics" : {
+          "available" : true,
+          "enabled" : true
+      },
+      "archive" : {
           "available" : true,
           "enabled" : true
       },
       "enrich" : {
           "available" : true,
           "enabled" : true
-      },
-      "flattened" : {
-         "available" : true,
-         "enabled" : true
       },
       "frozen_indices" : {
          "available" : true,
@@ -142,11 +147,7 @@ The default value is <code class="literal">true</code>.
       },
       "ml" : {
          "available" : true,
-         "enabled" : true,
-         "native_code_info" : {
-           "version" : "7.0.0-alpha1-SNAPSHOT",
-           "build_hash" : "99a07c016d5a73"
-        }
+         "enabled" : true
       },
       "monitoring" : {
          "available" : true,
@@ -184,10 +185,6 @@ The default value is <code class="literal">true</code>.
          "available" : true,
          "enabled" : true
       },
-      "vectors" : {
-         "available" : true,
-         "enabled" : true
-      },
       "voting_only" : {
          "available" : true,
          "enabled" : true
@@ -198,11 +195,15 @@ The default value is <code class="literal">true</code>.
       },
       "data_streams" : {
          "available" : true,
-         "enabled" : true,
+         "enabled" : true
       },
       "data_tiers" : {
          "available" : true,
-         "enabled" : true,
+         "enabled" : true
+      },
+      "enterprise_search": {
+         "available": true,
+         "enabled": true
       }
    },
    "tagline" : "You know, for X"
@@ -212,12 +213,12 @@ The default value is <code class="literal">true</code>.
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_xpack?categories=build,features</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2038.console"></div>
+<div class="console_widget" data-snippet="snippets/2590.console"></div>
 <p>The following example removes the descriptions from the response:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_xpack?human=false</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2039.console"></div>
+<div class="console_widget" data-snippet="snippets/2591.console"></div>
 </div>
 <div class="navfooter">
 <span class="prev">

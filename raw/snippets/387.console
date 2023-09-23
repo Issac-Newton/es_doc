@@ -1,8 +1,32 @@
-GET file-path-test/_search
+PUT /danish_example
 {
-  "query": {
-    "term": {
-      "file_path.tree": "/User/alice/photos/2017/05/16"
+  "settings": {
+    "analysis": {
+      "filter": {
+        "danish_stop": {
+          "type":       "stop",
+          "stopwords":  "_danish_"
+        },
+        "danish_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["eksempel"]
+        },
+        "danish_stemmer": {
+          "type":       "stemmer",
+          "language":   "danish"
+        }
+      },
+      "analyzer": {
+        "rebuilt_danish": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "danish_stop",
+            "danish_keywords",
+            "danish_stemmer"
+          ]
+        }
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
-GET .watcher-history*/_search?pretty
+GET /my-data-stream/_eql/search
 {
-  "query" : {
-    "match" : { "result.condition.met" : true }
-  }
+  "tiebreaker_field": "event.sequence",
+  "query": """
+    process where process.name == "cmd.exe" and stringContains(process.executable, "System32")
+  """
 }

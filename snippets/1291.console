@@ -1,17 +1,17 @@
-GET my-index-000001/_search
+GET /products/_search
 {
-  "query": {
-    "script_score": {
-      "query": {
-        "match": {
-            "message": "some message"
-        }
-      },
-      "script": {
-        "id": "calculate-score",
-        "params": {
-          "my_modifier": 2
-        }
+  "aggs": {
+    "genres_and_products": {
+      "multi_terms": {
+        "terms": [
+          {
+            "field": "genre"
+          },
+          {
+            "field": "product",
+            "missing": "Product Z"
+          }
+        ]
       }
     }
   }

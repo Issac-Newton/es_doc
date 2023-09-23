@@ -1,40 +1,50 @@
-PUT logs
+PUT my_queries2
 {
-  "mappings": {
-    "_source": {
-      "includes": [
-        "*.count",
-        "meta.*"
-      ],
-      "excludes": [
-        "meta.description",
-        "meta.other.*"
-      ]
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "wildcard_suffix": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "reverse",
+            "wildcard_edge_ngram"
+          ]
+        },
+        "wildcard_suffix_search_time": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "reverse"
+          ]
+        }
+      },
+      "filter": {
+        "wildcard_edge_ngram": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 32
+        }
+      }
     }
-  }
-}
-
-PUT logs/_doc/1
-{
-  "requests": {
-    "count": 10,
-    "foo": "bar"
   },
-  "meta": {
-    "name": "Some metric",
-    "description": "Some metric description",
-    "other": {
-      "foo": "one",
-      "baz": "two"
-    }
-  }
-}
-
-GET logs/_search
-{
-  "query": {
-    "match": {
-      "meta.other.foo": "one"
+  "mappings": {
+    "properties": {
+      "query": {
+        "type": "percolator"
+      },
+      "my_field": {
+        "type": "text",
+        "fields": {
+          "suffix": {
+            "type": "text",
+            "analyzer": "wildcard_suffix",
+            "search_analyzer": "wildcard_suffix_search_time"
+          }
+        }
+      }
     }
   }
 }

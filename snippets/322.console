@@ -1,34 +1,40 @@
-PUT /arabic_example
+PUT logs
 {
-  "settings": {
-    "analysis": {
-      "filter": {
-        "arabic_stop": {
-          "type":       "stop",
-          "stopwords":  "_arabic_"
-        },
-        "arabic_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["مثال"]
-        },
-        "arabic_stemmer": {
-          "type":       "stemmer",
-          "language":   "arabic"
-        }
-      },
-      "analyzer": {
-        "rebuilt_arabic": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "decimal_digit",
-            "arabic_stop",
-            "arabic_normalization",
-            "arabic_keywords",
-            "arabic_stemmer"
-          ]
-        }
-      }
+  "mappings": {
+    "_source": {
+      "includes": [
+        "*.count",
+        "meta.*"
+      ],
+      "excludes": [
+        "meta.description",
+        "meta.other.*"
+      ]
+    }
+  }
+}
+
+PUT logs/_doc/1
+{
+  "requests": {
+    "count": 10,
+    "foo": "bar"
+  },
+  "meta": {
+    "name": "Some metric",
+    "description": "Some metric description",
+    "other": {
+      "foo": "one",
+      "baz": "two"
+    }
+  }
+}
+
+GET logs/_search
+{
+  "query": {
+    "match": {
+      "meta.other.foo": "one"
     }
   }
 }

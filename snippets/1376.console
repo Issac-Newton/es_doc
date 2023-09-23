@@ -1,1 +1,15 @@
-GET sample_weblogs_by_clientip/_search
+POST /tour/_search?filter_path=aggregations
+{
+  "aggregations": {
+    "path": {
+      "time_series": {},
+      "aggregations": {
+        "museum_tour": {
+          "geo_line": {
+            "point": {"field": "location"}
+          }
+        }
+      }
+    }
+  }
+}

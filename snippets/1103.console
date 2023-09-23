@@ -1,11 +1,15 @@
-GET latency/_search
+PUT /items
 {
-  "size": 0,
-  "aggs": {
-    "grade_boxplot": {
-      "boxplot": {
-        "field": "grade",
-        "missing": 10    
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "keyword"
+      },
+      "production_date": {
+        "type": "date"
+      },
+      "location": {
+        "type": "geo_point"
       }
     }
   }

@@ -1,5 +1,8 @@
-POST _analyze
+GET /_search
 {
-  "analyzer": "whitespace",
-  "text":     "The quick brown fox."
+    "aggs" : {
+        "histogram_titles" : {
+            "terms" : { "field" : "my_text" }
+        }
+    }
 }

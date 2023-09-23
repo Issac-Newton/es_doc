@@ -1,1 +1,9 @@
-GET /logs_20302801/_alias/*
+GET index/_search
+{
+  "query": {
+    "simple_query_string": {
+      "fields": [ "body" ],
+      "query": "ski"
+    }
+  }
+}

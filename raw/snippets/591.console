@@ -1,27 +1,28 @@
-PUT _scripts/not_prod
+PUT my-index-000001
 {
-  "script": {
-    "lang": "painless",
-    "source": """
-        Collection tags = ctx.tags;
-        if(tags != null){
-          for (String tag : tags) {
-              if (tag.toLowerCase().contains('prod')) {
-                  return false;
-              }
-          }
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "standard",
+          "char_filter": [
+            "my_char_filter"
+          ]
         }
-        return true;
-    """
-  }
-}
-PUT _ingest/pipeline/not_prod_dropper
-{
-  "processors": [
-    {
-      "drop": {
-        "if": { "id": "not_prod" }
+      },
+      "char_filter": {
+        "my_char_filter": {
+          "type": "pattern_replace",
+          "pattern": "(\\d+)-(?=\\d)",
+          "replacement": "$1_"
+        }
       }
     }
-  ]
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "My credit card is 123-456-789"
 }

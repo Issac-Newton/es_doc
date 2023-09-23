@@ -1,8 +1,9 @@
-PUT /my-index-000001/_doc/2?routing=1&refresh
+GET /cluster_one:my-index-000001/_search
 {
-  "text": "This is a child document.",
-  "my-join-field": {
-    "name": "my-child",
-    "parent": "1"
-  }
+  "query": {
+    "match": {
+      "user.id": "kimchy"
+    }
+  },
+  "_source": ["user.id", "message", "http.response.status_code"]
 }

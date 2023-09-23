@@ -1,13 +1,1 @@
-PUT /_ingest/pipeline/my-pipeline-id
-{
-  "description" : "describe pipeline",
-  "version" : 123,
-  "processors" : [
-    {
-      "set" : {
-        "field": "foo",
-        "value": "bar"
-      }
-    }
-  ]
-}
+POST kibana_sample_data_flights,.ds-my-data-stream-2022.06.17-000001/_close

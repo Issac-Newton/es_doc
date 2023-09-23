@@ -1,1 +1,5 @@
-POST /my-index-000001/_pit?keep_alive=1m
+POST /customer/_doc/1
+{
+  "firstname": "Jennifer",
+  "lastname": "Walters"
+}

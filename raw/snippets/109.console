@@ -1,10 +1,5 @@
-PUT /my-index-000001?include_type_name=false
+PUT my-index-000001/_doc/1
 {
-  "mappings": {
-    "properties": {
-      "foo": {
-        "type": "keyword"
-      }
-    }
-  }
+  "english": "Some English text",
+  "count":   5
 }

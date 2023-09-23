@@ -1,4 +1,6 @@
-PUT /customer/_doc/1
+PUT _cluster/settings
 {
-  "name": "John Doe"
+  "persistent": {
+    "cluster.routing.allocation.exclude._name": null
+  }
 }

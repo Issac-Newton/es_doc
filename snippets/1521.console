@@ -1,13 +1,6 @@
-GET index/_search
+PUT /_index_template/my-data-stream-template
 {
-  "query": {
-    "script_score": {
-      "query": {
-        "match": { "body": "elasticsearch" }
-      },
-      "script": {
-        "source": "_score * saturation(doc['pagerank'].value, 10)"
-      }
-    }
-  }
+  "index_patterns": [ "my-data-stream*" ],
+  "data_stream": { },
+  "priority": 500
 }

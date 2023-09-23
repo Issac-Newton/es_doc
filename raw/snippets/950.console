@@ -1,15 +1,19 @@
-GET /my-index-000001/_search
+PUT _ingest/pipeline/elser-v1-test
 {
-  "aggs": {
-    "my-first-agg-name": {
-      "terms": {
-        "field": "my-field"
-      }
-    },
-    "my-second-agg-name": {
-      "avg": {
-        "field": "my-other-field"
+  "processors": [
+    {
+      "inference": {
+        "model_id": ".elser_model_1",
+        "target_field": "ml",
+        "field_map": {
+          "text": "text_field"
+        },
+        "inference_config": {
+          "text_expansion": {
+            "results_field": "tokens"
+          }
+        }
       }
     }
-  }
+  ]
 }

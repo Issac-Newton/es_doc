@@ -1,15 +1,18 @@
-GET /_search
+PUT _ingest/pipeline/geoip
 {
-  "query": {
-    "function_score": {
-      "query": {
-        "match": { "message": "elasticsearch" }
-      },
-      "script_score": {
-        "script": {
-          "source": "Math.log(2 + doc['my-int'].value)"
-        }
+  "description" : "Add geoip info",
+  "processors" : [
+    {
+      "geoip" : {
+        "field" : "ip",
+        "target_field" : "geo",
+        "database_file" : "GeoLite2-Country.mmdb"
       }
     }
-  }
+  ]
 }
+PUT my-index-000001/_doc/my_id?pipeline=geoip
+{
+  "ip": "89.160.20.128"
+}
+GET my-index-000001/_doc/my_id

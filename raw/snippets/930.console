@@ -1,10 +1,16 @@
-GET /_search
+PUT byte-image-index
 {
-  "query": {
-    "term": {
-      "user.id": {
-        "value": "kimchy",
-        "boost": 1.0
+  "mappings": {
+    "properties": {
+      "byte-image-vector": {
+        "type": "dense_vector",
+        "element_type": "byte",
+        "dims": 2,
+        "index": true,
+        "similarity": "cosine"
+      },
+      "title": {
+        "type": "text"
       }
     }
   }

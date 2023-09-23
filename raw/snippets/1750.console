@@ -1,12 +1,15 @@
-GET /test/_doc/_mget?stored_fields=field1,field2
+PUT _slm/policy/monthly-snapshots
 {
-  "docs": [
-    {
-      "_id": "1"
-    },
-    {
-      "_id": "2",
-      "stored_fields": [ "field3", "field4" ]
-    }
-  ]
+  "name": "<monthly-snapshot-{now/d}>",
+  "schedule": "0 56 23 1 * ?",           
+  "repository": "my_repository",
+  "config": {
+    "indices": "*",
+    "include_global_state": true
+  },
+  "retention": {
+    "expire_after": "366d",
+    "min_count": 1,
+    "max_count": 12
+  }
 }

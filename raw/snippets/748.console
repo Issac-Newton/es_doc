@@ -1,10 +1,11 @@
-GET /_search
+PUT my_ip_locations
 {
-  "query": {
-    "function_score": {
-      "random_score": {
-        "seed": 10,
-        "field": "_seq_no"
+  "mappings": {
+    "properties": {
+      "geoip": {
+        "properties": {
+          "location": { "type": "geo_point" }
+        }
       }
     }
   }

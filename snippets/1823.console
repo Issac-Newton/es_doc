@@ -1,4 +1,10 @@
-GET /analyze_sample/_analyze
+POST /_security/role/click_role
 {
-  "text" : "this is a test"
+  "indices": [
+    {
+      "names": [ "events-*" ],
+      "privileges": [ "read" ],
+      "query": "{\"match\": {\"category\": \"click\"}}"
+    }
+  ]
 }

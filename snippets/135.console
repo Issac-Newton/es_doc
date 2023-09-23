@@ -1,4 +1,19 @@
-POST /example/_doc
+PUT my-index-000001/
 {
-  "location" : "POINT (-77.03653 38.897676)"
+  "mappings": {
+    "properties": {
+      "timestamp": {
+        "type": "date"
+      },
+      "temperature": {
+        "type": "long"
+      },
+      "voltage": {
+        "type": "double"
+      },
+      "node": {
+        "type": "keyword"
+      }
+    }
+  }
 }

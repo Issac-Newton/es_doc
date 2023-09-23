@@ -1,4 +1,5 @@
-POST text_payloads/_doc/1
+POST _analyze
 {
-  "text": "the|0 brown|3 fox|4 is|0 quick|10"
+  "analyzer": "whitespace",
+  "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }

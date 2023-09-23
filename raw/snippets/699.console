@@ -1,24 +1,29 @@
-PUT _cluster/settings
+PUT _scripts/my-prod-tag-script
 {
-  "persistent": {
-    "cluster": {
-      "remote": {
-        "cluster_one": {
-          "seeds": [
-            "127.0.0.1:9300"
-          ]
-        },
-        "cluster_two": {
-          "seeds": [
-            "127.0.0.1:9301"
-          ]
-        },
-        "cluster_three": {
-          "seeds": [
-            "127.0.0.1:9302"
-          ]
+  "script": {
+    "lang": "painless",
+    "source": """
+      Collection tags = ctx.tags;
+      if(tags != null){
+        for (String tag : tags) {
+          if (tag.toLowerCase().contains('prod')) {
+            return false;
+          }
         }
       }
-    }
+      return true;
+    """
   }
+}
+
+PUT _ingest/pipeline/my-pipeline
+{
+  "processors": [
+    {
+      "drop": {
+        "description": "Drop documents that don't contain 'prod' tag",
+        "if": { "id": "my-prod-tag-script" }
+      }
+    }
+  ]
 }

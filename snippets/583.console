@@ -1,4 +1,13 @@
-POST test/_doc/1?pipeline=drop_guests_network
+PUT /my-index-000001
 {
-  "network_name" : "Guest"
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "keyword",
+          "filter": [ "word_delimiter_graph" ]
+        }
+      }
+    }
+  }
 }

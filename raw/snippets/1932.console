@@ -1,18 +1,12 @@
-PUT _component_template/template_1
+PUT _settings
 {
-  "template": {
-    "settings" : {
-        "number_of_shards" : 1
-    },
-    "aliases" : {
-        "alias1" : {},
-        "alias2" : {
-            "filter" : {
-                "term" : {"user.id" : "kimchy" }
-            },
-            "routing" : "shard-1"
-        },
-        "{index}-alias" : {}
-    }
+  "index.max_result_window": 5000
+}
+
+PUT _cluster/settings
+{
+  "persistent": {
+    "search.max_buckets": 20000,
+    "search.allow_expensive_queries": false
   }
 }

@@ -1,35 +1,8 @@
-PUT my-index-000001
+GET /my_index/_search
 {
-  "mappings": {
-    "dynamic_templates": [
-      {
-        "integers": {
-          "match_mapping_type": "long",
-          "mapping": {
-            "type": "integer"
-          }
+    "query": {
+        "term" : {
+            "my_counter" : 18446744073709551615
         }
-      },
-      {
-        "strings": {
-          "match_mapping_type": "string",
-          "mapping": {
-            "type": "text",
-            "fields": {
-              "raw": {
-                "type":  "keyword",
-                "ignore_above": 256
-              }
-            }
-          }
-        }
-      }
-    ]
-  }
-}
-
-PUT my-index-000001/_doc/1
-{
-  "my_integer": 5,
-  "my_string": "Some string"
+    }
 }

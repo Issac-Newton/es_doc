@@ -1,11 +1,14 @@
-GET /_search
+PUT /my-index-000001
 {
-  "aggs": {
-    "tags": {
-      "terms": {
-        "field": "tags",
-        "min_doc_count": 10
+  "mappings": {
+    "properties": {
+      "my-join-field": {
+        "type": "join",
+        "relations": {
+          "parent": "child"
+        }
       }
     }
   }
 }
+

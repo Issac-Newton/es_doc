@@ -1,55 +1,14 @@
-GET /_search
+PUT metrics-weather_sensors-dev/_bulk
+{ "create":{ } }
+{ "@timestamp": "2099-05-06T16:21:15.000Z", "sensor_id": "HAL-000001", "location": "plains", "temperature": 26.7,"humidity": 49.9 }
+{ "create":{ } }
+{ "@timestamp": "2099-05-06T16:25:42.000Z", "sensor_id": "SYKENET-000001", "location": "swamp", "temperature": 32.4, "humidity": 88.9 }
+
+POST metrics-weather_sensors-dev/_doc
 {
-  "query": {
-    "match": {
-      "comment": {
-        "query": "foo bar"
-      }
-    }
-  },
-  "rescore": {
-    "window_size": 50,
-    "query": {
-      "rescore_query": {
-        "match_phrase": {
-          "comment": {
-            "query": "foo bar",
-            "slop": 1
-          }
-        }
-      },
-      "rescore_query_weight": 10
-    }
-  },
-  "_source": false,
-  "highlight": {
-    "order": "score",
-    "fields": {
-      "comment": {
-        "fragment_size": 150,
-        "number_of_fragments": 3,
-        "highlight_query": {
-          "bool": {
-            "must": {
-              "match": {
-                "comment": {
-                  "query": "foo bar"
-                }
-              }
-            },
-            "should": {
-              "match_phrase": {
-                "comment": {
-                  "query": "foo bar",
-                  "slop": 1,
-                  "boost": 10.0
-                }
-              }
-            },
-            "minimum_should_match": 0
-          }
-        }
-      }
-    }
-  }
+  "@timestamp": "2099-05-06T16:21:15.000Z",
+  "sensor_id": "SYKENET-000001",
+  "location": "swamp",
+  "temperature": 32.4,
+  "humidity": 88.9
 }

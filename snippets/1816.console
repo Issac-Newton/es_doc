@@ -1,16 +1,4 @@
-PUT /logs_20302801
+POST /_security/role/facilitator-role
 {
-  "mappings": {
-    "properties": {
-      "year": { "type": "integer" }
-    }
-  },
-  "aliases": {
-    "current_day": {},
-    "2030": {
-      "filter": {
-        "term": { "year": 2030 }
-      }
-    }
-  }
+  "cluster" : ["manage_oidc", "manage_token"]
 }

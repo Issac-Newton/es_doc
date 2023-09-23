@@ -1,4 +1,18 @@
-PUT my-index-000001/_doc/1
+PUT image-index
 {
-  "color":   ["blue", "green"]
+  "mappings": {
+    "properties": {
+      "image-vector": {
+        "type": "dense_vector",
+        "dims": 3,
+        "index": true,
+        "similarity": "l2_norm",
+        "index_options": {
+          "type": "hnsw",
+          "m": 32,
+          "ef_construction": 100
+        }
+      }
+    }
+  }
 }

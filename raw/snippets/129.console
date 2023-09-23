@@ -1,26 +1,17 @@
-PUT bug_reports
+PUT my-index-000001/
 {
   "mappings": {
-    "properties": {
-      "title": {
-        "type": "text"
-      },
-      "labels": {
-        "type": "flattened"
+    "dynamic": "runtime",
+    "runtime": {
+      "day_of_week": {
+        "type": "keyword",
+        "script": {
+          "source": "emit(doc['@timestamp'].value.dayOfWeekEnum.getDisplayName(TextStyle.FULL, Locale.ROOT))"
+        }
       }
-    }
-  }
-}
-
-POST bug_reports/_doc/1
-{
-  "title": "Results are not sorted correctly.",
-  "labels": {
-    "priority": "urgent",
-    "release": ["v1.2.5", "v1.3.0"],
-    "timestamp": {
-      "created": 1541458026,
-      "closed": 1541457010
+    },
+    "properties": {
+      "@timestamp": {"type": "date"}
     }
   }
 }

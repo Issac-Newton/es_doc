@@ -1,13 +1,27 @@
-POST /_security/role/test_role6
+POST /sales/_search
 {
-  "indices" : [
-    {
-      "names" : [ "*" ],
-      "privileges" : [ "read" ],
-      "field_security" : {
-        "except": [ "customer.handle" ],
-        "grant" : [ "customer.*" ]
+  "size": 0,
+  "aggs": {
+    "sales_per_month": {
+      "date_histogram": {
+        "field": "date",
+        "calendar_interval": "month"
+      },
+      "aggs": {
+        "total_sales": {
+          "sum": {
+            "field": "price"
+          }
+        },
+        "sales_bucket_filter": {
+          "bucket_selector": {
+            "buckets_path": {
+              "totalSales": "total_sales"
+            },
+            "script": "params.totalSales > 200"
+          }
+        }
       }
     }
-  ]
+  }
 }

@@ -1,8 +1,23 @@
-PUT /_snapshot/my_fs_backup
+GET latency/_search
 {
-  "type": "fs",
-  "settings": {
-    "location": "my_fs_backup_location",      
-    "compress": true
+  "size": 0,
+  "runtime_mappings": {
+    "load_time.seconds": {
+      "type": "long",
+      "script": {
+        "source": "emit(doc['load_time'].value / params.timeUnit)",
+        "params": {
+          "timeUnit": 1000
+        }
+      }
+    }
+  },
+  "aggs": {
+    "load_time_ranks": {
+      "percentile_ranks": {
+        "values": [ 500, 600 ],
+        "field": "load_time.seconds"
+      }
+    }
   }
 }

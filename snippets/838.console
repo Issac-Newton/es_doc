@@ -1,36 +1,42 @@
-PUT /shapes
+PUT test
 {
   "mappings": {
     "properties": {
-      "location": {
-        "type": "geo_shape"
+      "comments": {
+        "type": "nested"
       }
     }
   }
 }
 
-PUT /shapes/_doc/deu
+PUT test/_doc/1?refresh
 {
-  "location": {
-    "type": "envelope",
-    "coordinates" : [[13.0, 53.0], [14.0, 52.0]]
-  }
+  "title": "Test title",
+  "comments": [
+    {
+      "author": "kimchy",
+      "text": "comment text"
+    },
+    {
+      "author": "nik9000",
+      "text": "words words words"
+    }
+  ]
 }
 
-GET /example/_search
+POST test/_search
 {
   "query": {
-    "bool": {
-      "filter": {
-        "geo_shape": {
-          "location": {
-            "indexed_shape": {
-              "index": "shapes",
-              "id": "deu",
-              "path": "location"
-            }
-          }
-        }
+    "nested": {
+      "path": "comments",
+      "query": {
+        "match": {"comments.text" : "words"}
+      },
+      "inner_hits": {
+        "_source" : false,
+        "docvalue_fields" : [
+          "comments.text.keyword"
+        ]
       }
     }
   }

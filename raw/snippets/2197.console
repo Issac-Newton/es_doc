@@ -1,5 +1,18 @@
-GET _msearch/template
-{"index" : "my-index-000001"}
-{ "source" : "{ \"query\": { \"match\": { \"message\" : \"{{keywords}}\" } } } }", "params": { "query_type": "match", "keywords": "some message" } }
-{"index" : "my-index-000001"}
-{ "source" : "{ \"query\": { \"match_{{template}}\": {} } }", "params": { "template": "all" } }
+PUT /_internal/desired_nodes/Ywkh3INLQcuPT49f6kcppA/101
+{
+    "nodes" : [
+        {
+            "settings" : {
+                 "node.name" : "instance-000187",
+                 "node.external_id": "instance-000187",
+                 "node.roles" : ["data_hot", "master"],
+                 "node.attr.data" : "hot",
+                 "node.attr.logical_availability_zone" : "zone-0"
+            },
+            "processors_range" : {"min": 8.0, "max": 10.0},
+            "memory" : "58gb",
+            "storage" : "2tb",
+            "node_version" : "{version}"
+        }
+    ]
+}

@@ -1,5 +1,25 @@
-POST /_search/scroll                                                              
+PUT _ingest/pipeline/my-pipeline
 {
-  "scroll" : "1m",                                                                
-  "scroll_id" : "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAD4WYm9laVYtZndUQlNsdDcwakFMNjU1QQ=="
+  "description": "My optional pipeline description",
+  "processors": [
+    {
+      "set": {
+        "description": "My optional processor description",
+        "field": "my-long-field",
+        "value": 10
+      }
+    },
+    {
+      "set": {
+        "description": "Set 'my-boolean-field' to true",
+        "field": "my-boolean-field",
+        "value": true
+      }
+    },
+    {
+      "lowercase": {
+        "field": "my-keyword-field"
+      }
+    }
+  ]
 }

@@ -1,5 +1,12 @@
-POST /_sql?format=txt
+POST /sales/_search?size=0
 {
-  "query": "SELECT * FROM library ORDER BY page_count DESC",
-  "fetch_size": 5
+  "aggs": {
+    "quantity": {
+      "histogram": {
+        "field": "quantity",
+        "interval": 10,
+        "missing": 0
+      }
+    }
+  }
 }

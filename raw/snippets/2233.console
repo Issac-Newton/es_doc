@@ -1,1 +1,1 @@
-GET /_security/_authenticate
+GET _data_stream/my-data-stream*

@@ -1,12 +1,9 @@
-POST /sales/_search?size=0
+GET /_search
 {
-  "aggs": {
-    "prices": {
-      "histogram": {
-        "field": "price",
-        "interval": 50,
-        "min_doc_count": 1
-      }
+  "query": {
+    "simple_query_string": {
+      "fields": [ "content" ],
+      "query": "foo bar -baz"
     }
   }
 }

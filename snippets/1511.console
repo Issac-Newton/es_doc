@@ -1,6 +1,7 @@
-GET .watcher-history*/_search?pretty
+GET /my-data-stream/_eql/search
 {
-  "query" : {
-    "match" : { "result.condition.met" : true }
-  }
+  "wait_for_completion_timeout": "2s",
+  "query": """
+    process where process.name == "cmd.exe"
+  """
 }

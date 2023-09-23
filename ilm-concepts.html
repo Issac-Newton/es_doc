@@ -7,9 +7,9 @@
 <meta class="elastic" name="content" content="ILM concepts | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle"/>
+<link rel="up" href="data-management.html" title="Data management"/>
 <link rel="prev" href="overview-index-lifecycle-management.html" title="ILM overview"/>
-<link rel="next" href="getting-started-index-lifecycle-management.html" title="Tutorial: Automate rollover with ILM"/>
+<link rel="next" href="ilm-actions.html" title="Index lifecycle actions"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -105,19 +105,19 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index-lifecycle-management.html">ILM: Manage the index lifecycle</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="data-management.html">Data management</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
 <a href="overview-index-lifecycle-management.html">« ILM overview</a>
 </span>
 <span class="next">
-<a href="getting-started-index-lifecycle-management.html">Tutorial: Automate rollover with ILM »</a>
+<a href="ilm-actions.html">Index lifecycle actions »</a>
 </span>
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-concepts"></a>ILM concepts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/ilm-concepts.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-concepts"></a>ILM concepts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/ilm-concepts.asciidoc">edit</a></h2>
 </div></div></div>
 
 <div class="ulist itemizedlist">
@@ -135,10 +135,10 @@
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-index-lifecycle"></a>Index lifecycle<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/ilm-index-lifecycle.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-index-lifecycle"></a>Index lifecycle<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/ilm-index-lifecycle.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>ILM defines four index lifecycle <em>phases</em>:</p>
+<p>ILM defines five index lifecycle <em>phases</em>:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -148,9 +148,12 @@
 <span class="strong strong"><strong>Warm</strong></span>: The index is no longer being updated but is still being queried.
 </li>
 <li class="listitem">
-<span class="strong strong"><strong>Cold</strong></span>: The index is no longer being updated and is seldom queried. The
-information still needs to be searchable, but it&#8217;s okay if those queries are
-slower.
+<span class="strong strong"><strong>Cold</strong></span>: The index is no longer being updated and is queried infrequently. The information still
+needs to be searchable, but it&#8217;s okay if those queries are slower.
+</li>
+<li class="listitem">
+<span class="strong strong"><strong>Frozen</strong></span>: The index is no longer being updated and is queried rarely. The information still
+needs to be searchable, but it&#8217;s okay if those queries are extremely slow.
 </li>
 <li class="listitem">
 <span class="strong strong"><strong>Delete</strong></span>: The index is no longer needed and can safely be removed.
@@ -168,11 +171,13 @@ When an index rolls over, a manually-applied policy isn&#8217;t automatically ap
 who last updated the policy. ILM only has the
 <a class="xref" href="authorization.html#defining-roles" title="Defining roles">roles</a> assigned to the user at the time of the last policy
 update.</p>
-<h3><a id="ilm-phase-transitions"></a>Phase transitions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/ilm-index-lifecycle.asciidoc">edit</a></h3>
+<h3><a id="ilm-phase-transitions"></a>Phase transitions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/ilm-index-lifecycle.asciidoc">edit</a></h3>
 <p>ILM moves indices through the lifecycle according to their age.
-To control the timing of these transitions, you set a <em>minimum age</em> for each phase.
-For an index to move to the next phase, all actions in the current phase must be complete and
-the index must be older than the minimum age of the next phase.</p>
+To control the timing of these transitions, you set a <em>minimum age</em> for each phase. For an index to
+move to the next phase, all actions in the current phase must be complete and the index must be
+older than the minimum age of the next phase. Configured minimum ages must increase between
+subsequent phases, for example, a "warm" phase with a minimum age of 10 days can only be followed by
+a "cold" phase with a minimum age either unset, or &gt;= 10 days.</p>
 <p>The minimum age defaults to zero, which causes ILM to move indices to the next phase
 as soon as all actions in the current phase complete.</p>
 <p>If an index has unallocated shards and the <a class="xref" href="cluster.html#cluster-health" title="Cluster health API">cluster health status</a> is yellow,
@@ -181,7 +186,7 @@ However, because Elasticsearch can only perform certain clean up tasks on a gree
 cluster, there might be unexpected side effects.</p>
 <p>To avoid increased disk usage and reliability issues,
 address any cluster health problems in a timely fashion.</p>
-<h3><a id="ilm-phase-execution"></a>Phase execution<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/ilm-index-lifecycle.asciidoc">edit</a></h3>
+<h3><a id="ilm-phase-execution"></a>Phase execution<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/ilm-index-lifecycle.asciidoc">edit</a></h3>
 <p>ILM controls the order in which the actions in a phase are executed and
 what <em>steps</em> are executed to perform the necessary index operations for each action.</p>
 <p>When an index enters a phase, ILM caches the phase definition in the index metadata.
@@ -198,8 +203,9 @@ If it reaches a point where it is not safe to advance to the next step, executio
 The next time ILM runs, ILM picks up execution where it left off.
 This means that even if <code class="literal">indices.lifecycle.poll_interval</code> is set to 10 minutes and an index meets
 the rollover criteria, it could be 20 minutes before the rollover is complete.</p>
-<h3><a id="ilm-phase-actions"></a>Phase actions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/ilm-index-lifecycle.asciidoc">edit</a></h3>
-<p>ILM supports the following actions in each phase.</p>
+<h3><a id="ilm-phase-actions"></a>Phase actions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/ilm-index-lifecycle.asciidoc">edit</a></h3>
+<p>ILM supports the following actions in each phase. ILM executes the
+actions in the order listed.</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -213,10 +219,22 @@ the rollover criteria, it could be 20 minutes before the rollover is complete.</
 <a class="xref" href="ilm-actions.html#ilm-unfollow" title="Unfollow">Unfollow</a>
 </li>
 <li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-rollover" title="Rollover">Rollover</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-readonly" title="Read only">Read-Only</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-downsample" title="Downsample">Downsample</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-shrink" title="Shrink">Shrink</a>
+</li>
+<li class="listitem">
 <a class="xref" href="ilm-actions.html#ilm-forcemerge" title="Force merge">Force Merge</a>
 </li>
 <li class="listitem">
-<a class="xref" href="ilm-actions.html#ilm-rollover" title="Rollover">Rollover</a>
+<a class="xref" href="ilm-actions.html#ilm-searchable-snapshot" title="Searchable snapshot">Searchable Snapshot</a>
 </li>
 </ul>
 </div>
@@ -235,7 +253,13 @@ the rollover criteria, it could be 20 minutes before the rollover is complete.</
 <a class="xref" href="ilm-actions.html#ilm-readonly" title="Read only">Read-Only</a>
 </li>
 <li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-downsample" title="Downsample">Downsample</a>
+</li>
+<li class="listitem">
 <a class="xref" href="ilm-actions.html#ilm-allocate" title="Allocate">Allocate</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-migrate" title="Migrate">Migrate</a>
 </li>
 <li class="listitem">
 <a class="xref" href="ilm-actions.html#ilm-shrink" title="Shrink">Shrink</a>
@@ -257,10 +281,29 @@ the rollover criteria, it could be 20 minutes before the rollover is complete.</
 <a class="xref" href="ilm-actions.html#ilm-unfollow" title="Unfollow">Unfollow</a>
 </li>
 <li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-readonly" title="Read only">Read-Only</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-downsample" title="Downsample">Downsample</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-searchable-snapshot" title="Searchable snapshot">Searchable Snapshot</a>
+</li>
+<li class="listitem">
 <a class="xref" href="ilm-actions.html#ilm-allocate" title="Allocate">Allocate</a>
 </li>
 <li class="listitem">
-<a class="xref" href="ilm-actions.html#ilm-freeze" title="Freeze">Freeze</a>
+<a class="xref" href="ilm-actions.html#ilm-migrate" title="Migrate">Migrate</a>
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>Frozen</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="ilm-actions.html#ilm-unfollow" title="Unfollow">Unfollow</a>
 </li>
 <li class="listitem">
 <a class="xref" href="ilm-actions.html#ilm-searchable-snapshot" title="Searchable snapshot">Searchable Snapshot</a>
@@ -287,7 +330,7 @@ the rollover criteria, it could be 20 minutes before the rollover is complete.</
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="index-rollover"></a>Rollover<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/index-rollover.asciidoc">edit</a></h2>
+<h2 class="title"><a id="index-rollover"></a>Rollover<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/index-rollover.asciidoc">edit</a></h2>
 </div></div></div>
 <p>When indexing time series data like logs or metrics, you can&#8217;t write to a single index indefinitely.
 To meet your indexing and search performance requirements and manage resource usage,
@@ -330,8 +373,9 @@ The mappings and settings applied to each backing index when it&#8217;s created.
 </div>
 <p>Data streams are designed for append-only data, where the data stream name
 can be used as the operations (read, write, rollover, shrink etc.) target.
-If your use case requires data to be updated in place, you can instead manage your time series data using <a class="xref" href="indices.html#indices-aliases" title="Update index alias API">indices aliases</a>. However, there are a few more configuration steps and
-concepts:</p>
+If your use case requires data to be updated in place, you can instead manage
+your time series data using <a class="xref" href="aliases.html" title="Aliases">index aliases</a>. However, there are a few
+more configuration steps and concepts:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -348,9 +392,14 @@ On each rollover, the new index becomes the write index.
 </li>
 </ul>
 </div>
-<h3 class="xpack"><a id="ilm-automatic-rollover"></a>Automatic rollover<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/index-rollover.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h3>
-<p>ILM enables you to automatically roll over to a new index based
-on the index size, document count, or age. When a rollover is triggered, a new
+<h3><a id="ilm-automatic-rollover"></a>Automatic rollover<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/index-rollover.asciidoc">edit</a></h3>
+<p>ILM and the data stream lifecycle (in <span class="Admonishment Admonishment--preview">
+[<span class="Admonishment-title u-mono">preview</span>]
+<span class="Admonishment-detail">
+This functionality is in technical preview and may be changed or removed in a future release. Elastic will apply best effort to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.
+</span>
+</span>]) enable you to automatically roll over to a new index based
+on conditions like the index size, document count, or age. When a rollover is triggered, a new
 index is created, the write alias is updated to point to the new index, and all
 subsequent updates are written to the new index.</p>
 <div class="tip admon">
@@ -366,7 +415,7 @@ resource usage.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="update-lifecycle-policy"></a>Lifecycle policy updates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/update-lifecycle-policy.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="update-lifecycle-policy"></a>Lifecycle policy updates<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/update-lifecycle-policy.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>You can change how the lifecycle of an index or collection of rolling indices is managed
@@ -377,7 +426,7 @@ when it enters the phase. If changes can be safely applied, ILM updates
 the cached phase definition. If they cannot, phase execution continues using
 the cached definition.</p>
 <p>When the index advances to the next phase, it uses the phase definition from the updated policy.</p>
-<h3><a id="ilm-apply-changes"></a>How changes are applied<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/update-lifecycle-policy.asciidoc">edit</a></h3>
+<h3><a id="ilm-apply-changes"></a>How changes are applied<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/update-lifecycle-policy.asciidoc">edit</a></h3>
 <p>When a policy is initially applied to an index, the index gets the latest version of the policy.
 If you update the policy, the policy version is bumped and ILM can detect that the index
 is using an earlier version that needs to be updated.</p>
@@ -388,7 +437,7 @@ indices immediately enter the hot phase when the policy is applied.
 If you then update the policy to specify a <code class="literal">min_age</code> of 1 day for the hot phase,
 that has no effect on indices that are already in the hot phase.
 Indices created <em>after</em> the policy update won&#8217;t enter the hot phase until they are a day old.</p>
-<h3><a id="ilm-apply-new-policy"></a>How new policies are applied<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/update-lifecycle-policy.asciidoc">edit</a></h3>
+<h3><a id="ilm-apply-new-policy"></a>How new policies are applied<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/update-lifecycle-policy.asciidoc">edit</a></h3>
 <p>When you apply a different policy to a managed index,
 the index completes the current phase using the cached definition from the previous policy.
 The index starts using the new policy when it moves to the next phase.</p>
@@ -400,7 +449,7 @@ The index starts using the new policy when it moves to the next phase.</p>
 <a href="overview-index-lifecycle-management.html">« ILM overview</a>
 </span>
 <span class="next">
-<a href="getting-started-index-lifecycle-management.html">Tutorial: Automate rollover with ILM »</a>
+<a href="ilm-actions.html">Index lifecycle actions »</a>
 </span>
 </div>
 </div>

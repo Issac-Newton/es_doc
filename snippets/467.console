@@ -1,11 +1,11 @@
-PUT lowercase_example
+PUT /cjk_width_example
 {
   "settings": {
     "analysis": {
       "analyzer": {
-        "whitespace_lowercase": {
-          "tokenizer": "whitespace",
-          "filter": [ "lowercase" ]
+        "standard_cjk_width": {
+          "tokenizer": "standard",
+          "filter": [ "cjk_width" ]
         }
       }
     }

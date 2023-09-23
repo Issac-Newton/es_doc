@@ -1,5 +1,10 @@
-POST /_security/oauth2/token
+POST test/_update/1
 {
-  "grant_type": "refresh_token",
-  "refresh_token": "vLBPvmAB6KvwvJZr27cS"
+  "script": {
+    "source": "ctx._source.tags.add(params.tag)",
+    "lang": "painless",
+    "params": {
+      "tag": "blue"
+    }
+  }
 }

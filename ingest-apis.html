@@ -3,6 +3,7 @@
   <head>
     
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>Ingest APIs | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="Ingest APIs | Elasticsearch Guide">
 
@@ -117,57 +118,71 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ingest-apis"></a>Ingest APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/index.asciidoc">edit</a></h2>
+<h2 class="title"><a id="ingest-apis"></a>Ingest APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/index.asciidoc">edit</a></h2>
 </div></div></div>
-<p>The following ingest APIs are available for managing pipelines:</p>
+<p>Use ingest APIs to manage tasks and resources related to <a class="xref" href="ingest.html" title="Ingest pipelines">ingest
+pipelines</a> and processors.</p>
+<h3><a id="ingest-pipeline-apis"></a>Ingest pipeline APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/index.asciidoc">edit</a></h3>
+<p>Use the following APIs to create, manage, and test ingest pipelines:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="ingest-apis.html#put-pipeline-api" title="Put pipeline API">Put pipeline</a> to add or update a pipeline
+<a class="xref" href="ingest-apis.html#put-pipeline-api" title="Create or update pipeline API">Create or update pipeline</a> to create or update a pipeline
 </li>
 <li class="listitem">
-<a class="xref" href="ingest-apis.html#get-pipeline-api" title="Get pipeline API">Get pipeline</a> to return a specific pipeline
+<a class="xref" href="ingest-apis.html#get-pipeline-api" title="Get pipeline API">Get pipeline</a> to retrieve a pipeline configuration
 </li>
 <li class="listitem">
 <a class="xref" href="ingest-apis.html#delete-pipeline-api" title="Delete pipeline API">Delete pipeline</a> to delete a pipeline
 </li>
 <li class="listitem">
-<a class="xref" href="ingest-apis.html#simulate-pipeline-api" title="Simulate pipeline API">Simulate pipeline</a> to simulate a call to a pipeline
+<a class="xref" href="ingest-apis.html#simulate-pipeline-api" title="Simulate pipeline API">Simulate pipeline</a> to test a pipeline
+</li>
+</ul>
+</div>
+<h3><a id="ingest-stat-apis"></a>Stat APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/index.asciidoc">edit</a></h3>
+<p>Use the following APIs to get statistics about ingest processing:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="ingest-apis.html#geoip-stats-api" title="GeoIP stats API">GeoIP stats</a> to get download statistics for GeoIP2 databases used with
+the <a class="xref" href="processors.html#geoip-processor" title="GeoIP processor"><code class="literal">geoip</code> processor</a>.
 </li>
 </ul>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="put-pipeline-api"></a>Put pipeline API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h2>
+<h2 class="title"><a id="put-pipeline-api"></a>Create or update pipeline API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>Creates or updates an ingest pipeline.
-Changes made using this API take effect immediately.</p>
+<p>Creates or updates an <a class="xref" href="ingest.html" title="Ingest pipelines">ingest pipeline</a>. Changes made using this API
+take effect immediately.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT _ingest/pipeline/my-pipeline-id
 {
-  "description" : "describe pipeline",
+  "description" : "My optional pipeline description",
   "processors" : [
     {
       "set" : {
-        "field": "foo",
-        "value": "bar"
+        "description" : "My optional processor description",
+        "field": "my-keyword-field",
+        "value": "foo"
       }
     }
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2023.console"></div>
+<div class="console_widget" data-snippet="snippets/2576.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-pipeline-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="put-pipeline-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">PUT /_ingest/pipeline/&lt;pipeline&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-pipeline-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="put-pipeline-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -182,7 +197,7 @@ If the Elasticsearch security features are enabled, you must have the
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-pipeline-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="put-pipeline-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -200,7 +215,211 @@ If the Elasticsearch security features are enabled, you must have the
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-pipeline-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="put-pipeline-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">if_version</code>
+</span>
+</dt>
+<dd>
+(Optional, integer) Perform the operation only if the pipeline has this
+version. If specified and the update is successful, the pipeline&#8217;s
+version is incremented.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">master_timeout</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="api-conventions.html#time-units" title="Time units">time units</a>)
+Period to wait for a connection to the master node. If no response is received
+before the timeout expires, the request fails and returns an error. Defaults to
+<code class="literal">30s</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">timeout</code>
+</span>
+</dt>
+<dd>
+(Optional, <a class="xref" href="api-conventions.html#time-units" title="Time units">time units</a>)
+Period to wait for a response. If no response is received before the timeout
+expires, the request fails and returns an error. Defaults to <code class="literal">30s</code>.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="put-pipeline-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">description</code>
+</span>
+</dt>
+<dd>
+(Optional, string)
+Description of the ingest pipeline.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">on_failure</code>
+</span>
+</dt>
+<dd>
+<p>
+(Optional, array of <a class="xref" href="processors.html" title="Ingest processor reference">processor</a> objects)
+Processors to run immediately after a processor failure.
+</p>
+<p>Each processor supports a processor-level <code class="literal">on_failure</code> value. If a processor
+without an <code class="literal">on_failure</code> value fails, Elasticsearch uses this pipeline-level parameter as
+a fallback. The processors in this parameter run sequentially in the order
+specified. Elasticsearch will not attempt to run the pipeline&#8217;s remaining processors.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">processors</code>
+</span>
+</dt>
+<dd>
+(Required, array of <a class="xref" href="processors.html" title="Ingest processor reference">processor</a> objects)
+Processors used to perform transformations on documents before indexing.
+Processors run sequentially in the order specified.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">version</code>
+</span>
+</dt>
+<dd>
+<p>
+(Optional, integer)
+Version number used by external systems to track ingest pipelines.
+</p>
+<p>See the <a class="xref" href="ingest-apis.html#put-pipeline-api-query-params" title="Query parameters"><code class="literal">if_version</code></a> parameter above for
+how the version attribute is used.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">_meta</code>
+</span>
+</dt>
+<dd>
+(Optional, object)
+Optional metadata about the ingest pipeline. May have any contents. This
+map is not automatically generated by Elasticsearch.
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="put-pipeline-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="pipeline-metadata"></a>Pipeline metadata<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h4>
+</div></div></div>
+<p>You can use the <code class="literal">_meta</code> parameter to add arbitrary metadata to a pipeline.
+This user-defined object is stored in the cluster state,
+so keeping it short is preferable.</p>
+<p>The <code class="literal">_meta</code> parameter is optional and not automatically generated or used by Elasticsearch.</p>
+<p>To unset <code class="literal">_meta</code>, replace the pipeline without specifying one.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /_ingest/pipeline/my-pipeline-id
+{
+  "description" : "My optional pipeline description",
+  "processors" : [
+    {
+      "set" : {
+        "description" : "My optional processor description",
+        "field": "my-keyword-field",
+        "value": "foo"
+      }
+    }
+  ],
+  "_meta": {
+    "reason": "set my-keyword-field to foo",
+    "serialization": {
+      "class": "MyPipeline",
+      "id": 10
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2577.console"></div>
+<p>To check the <code class="literal">_meta</code>, use the <a class="xref" href="ingest-apis.html#get-pipeline-api" title="Get pipeline API">get pipeline</a> API.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="delete-pipeline-api"></a>Delete pipeline API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Deletes one or more existing ingest pipeline.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">DELETE /_ingest/pipeline/my-pipeline-id</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2578.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="delete-pipeline-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">DELETE /_ingest/pipeline/&lt;pipeline&gt;</code></p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="delete-pipeline-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have the
+<code class="literal">manage_pipeline</code>, <code class="literal">manage_ingest_pipelines</code>, or <code class="literal">manage</code>
+<a class="xref" href="authorization.html#privileges-list-cluster" title="Cluster privileges">cluster privilege</a> to use this API.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="delete-pipeline-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;pipeline&gt;</code>
+</span>
+</dt>
+<dd>
+<p>(Required, string) Pipeline ID or wildcard expression of pipeline IDs
+used to limit the request.</p>
+<p>To delete all ingest pipelines in a cluster,
+use a value of <code class="literal">*</code>.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="delete-pipeline-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -231,103 +450,238 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="put-pipeline-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="delete-pipeline-api-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="delete-pipeline-api-specific-ex"></a>Delete a specific ingest pipeline<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h4>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">DELETE /_ingest/pipeline/pipeline-one</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2579.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="delete-pipeline-api-wildcard-ex"></a>Delete ingest pipelines using a wildcard expression<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h4>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">DELETE /_ingest/pipeline/pipeline-*</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2580.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="delete-pipeline-api-all-ex"></a>Delete all ingest pipelines<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h4>
+</div></div></div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">DELETE /_ingest/pipeline/*</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2581.console"></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="geoip-stats-api"></a>GeoIP stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/geoip-stats-api.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Gets download statistics for GeoIP2 databases used with the
+<a class="xref" href="processors.html#geoip-processor" title="GeoIP processor"><code class="literal">geoip</code> processor</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _ingest/geoip/stats</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2582.console"></div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="geoip-stats-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/geoip-stats-api.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">GET _ingest/geoip/stats</code></p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="geoip-stats-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/geoip-stats-api.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+If the Elasticsearch security features are enabled, you must have the <code class="literal">monitor</code> or
+<code class="literal">manage</code> <a class="xref" href="authorization.html#privileges-list-cluster" title="Cluster privileges">cluster privilege</a> to use this API.
+</li>
+<li class="listitem">
+If <a class="xref" href="processors.html#ingest-geoip-downloader-enabled"><code class="literal">ingest.geoip.downloader.enabled</code></a> is
+disabled, this API returns zero values and an empty <code class="literal">nodes</code> object.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section child_attributes">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="geoip-stats-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/geoip-stats-api.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
 <span class="term">
-<code class="literal">description</code>
+<code class="literal">stats</code>
 </span>
 </dt>
 <dd>
-(Required, string)
-Description of the ingest pipeline.
+<p>
+(object)
+Download statistics for all GeoIP2 databases.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">stats</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">successful_downloads</code>
+</span>
+</dt>
+<dd>
+(integer)
+Total number of successful database downloads.
 </dd>
 <dt>
 <span class="term">
-<code class="literal">processors</code>
+<code class="literal">failed_downloads</code>
 </span>
 </dt>
 <dd>
-<p>(Required, array of <a class="xref" href="ingest-processors.html" title="Processors">processor objects</a>)
-Array of processors used to pre-process documents
-before indexing.</p>
-<p>Processors are executed in the order provided.</p>
-<p>See <a class="xref" href="ingest-processors.html" title="Processors"><em>Processors</em></a> for processor object definitions
-and a list of built-in processors.</p>
+(integer)
+Total number of failed database downloads.
 </dd>
 <dt>
 <span class="term">
-<code class="literal">version</code>
+<code class="literal">total_download_time</code>
 </span>
 </dt>
 <dd>
-<p>(Optional, integer)
-Optional version number used by external systems to manage ingest pipelines.</p>
-<p>Versions are not used or validated by Elasticsearch;
-they are intended for external management only.</p>
+(integer)
+Total milliseconds spent downloading databases.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">database_count</code>
+</span>
+</dt>
+<dd>
+(integer)
+Current number of databases available for use.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">skipped_updates</code>
+</span>
+</dt>
+<dd>
+(integer)
+Total number of database updates skipped.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">nodes</code>
+</span>
+</dt>
+<dd>
+<p>
+(object)
+Downloaded GeoIP2 databases for each node.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">nodes</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">&lt;node_id&gt;</code>
+</span>
+</dt>
+<dd>
+<p>
+(object)
+Downloaded databases for the node. The field key is the node ID.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">&lt;node_id&gt;</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">databases</code>
+</span>
+</dt>
+<dd>
+<p>
+(array of objects)
+Downloaded databases for the node.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">databases</code> objects</summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">name</code>
+</span>
+</dt>
+<dd>
+(string)
+Name of the database.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">files_in_temp</code>
+</span>
+</dt>
+<dd>
+(array of strings)
+Downloaded database files, including related license files. Elasticsearch stores these
+files in the node&#8217;s <a class="xref" href="settings.html#es-tmpdir" title="Temporary directory settings">temporary directory</a>:
+<code class="literal">$ES_TMPDIR/geoip-databases/&lt;node_id&gt;</code>.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+</dl>
+</div>
+</div>
+</details>
 </dd>
 </dl>
 </div>
 </div>
 
-<div class="section">
-<div class="titlepage"><div><div>
-<h3 class="title"><a id="put-pipeline-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h3>
-</div></div></div>
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="versioning-pipelines"></a>Pipeline versioning<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/put-pipeline.asciidoc">edit</a></h4>
-</div></div></div>
-<p>When creating or updating an ingest pipeline,
-you can specify an optional <code class="literal">version</code> parameter.
-The version is useful for managing changes to pipeline
-and viewing the current pipeline for an ingest node.</p>
-<p>The following request sets a version number of <code class="literal">123</code>
-for <code class="literal">my-pipeline-id</code>.</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /_ingest/pipeline/my-pipeline-id
-{
-  "description" : "describe pipeline",
-  "version" : 123,
-  "processors" : [
-    {
-      "set" : {
-        "field": "foo",
-        "value": "bar"
-      }
-    }
-  ]
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/2024.console"></div>
-<p>To unset the version number,
-replace the pipeline without specifying a <code class="literal">version</code> parameter.</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /_ingest/pipeline/my-pipeline-id
-{
-  "description" : "describe pipeline",
-  "processors" : [
-    {
-      "set" : {
-        "field": "foo",
-        "value": "bar"
-      }
-    }
-  ]
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/2025.console"></div>
-</div>
-
-</div>
-
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="get-pipeline-api"></a>Get pipeline API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h2>
+<h2 class="title"><a id="get-pipeline-api"></a>Get pipeline API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Returns information about one or more ingest pipelines.
@@ -335,10 +689,10 @@ This API returns a local reference of the pipeline.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_ingest/pipeline/my-pipeline-id</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2026.console"></div>
+<div class="console_widget" data-snippet="snippets/2583.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-pipeline-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-pipeline-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET /_ingest/pipeline/&lt;pipeline&gt;</code></p>
 <p><code class="literal">GET /_ingest/pipeline</code></p>
@@ -346,13 +700,13 @@ This API returns a local reference of the pipeline.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-pipeline-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-pipeline-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
 If the Elasticsearch security features are enabled, you must have the
-<code class="literal">manage_pipeline</code>, <code class="literal">manage_ingest_pipelines</code>, or <code class="literal">manage</code>
+<code class="literal">read_pipeline</code>, <code class="literal">manage_pipeline</code>, <code class="literal">manage_ingest_pipelines</code>, or <code class="literal">manage</code>
 <a class="xref" href="authorization.html#privileges-list-cluster" title="Cluster privileges">cluster privilege</a> to use this API.
 </li>
 </ul>
@@ -361,7 +715,7 @@ If the Elasticsearch security features are enabled, you must have the
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-pipeline-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-pipeline-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -384,7 +738,7 @@ supported.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-pipeline-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-pipeline-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -405,16 +759,16 @@ before the timeout expires, the request fails and returns an error. Defaults to
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-pipeline-api-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-pipeline-api-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="get-pipeline-api-specific-ex"></a>Get information for a specific ingest pipeline<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h4>
+<h4 class="title"><a id="get-pipeline-api-specific-ex"></a>Get information for a specific ingest pipeline<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h4>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_ingest/pipeline/my-pipeline-id</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2027.console"></div>
+<div class="console_widget" data-snippet="snippets/2584.console"></div>
 <p>The API returns the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -434,161 +788,13 @@ before the timeout expires, the request fails and returns an error. Defaults to
 </div>
 </div>
 
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="get-pipeline-api-version-ex"></a>Get the version of an ingest pipeline<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/get-pipeline.asciidoc">edit</a></h4>
-</div></div></div>
-<p>When you create or update an ingest pipeline,
-you can specify an optional <code class="literal">version</code> parameter.
-The version is useful for managing changes to pipeline
-and viewing the current pipeline for an ingest node.</p>
-<p>To check the pipeline version,
-use the <code class="literal">filter_path</code> query parameter
-to <a class="xref" href="api-conventions.html#common-options-response-filtering" title="Response Filtering">filter the response</a>
-to only the version.</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">GET /_ingest/pipeline/my-pipeline-id?filter_path=*.version</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/2028.console"></div>
-<p>The API returns the following response:</p>
-<div class="pre_wrapper lang-console-result">
-<pre class="programlisting prettyprint lang-console-result">{
-  "my-pipeline-id" : {
-    "version" : 123
-  }
-}</pre>
-</div>
-</div>
-
 </div>
 
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="delete-pipeline-api"></a>Delete pipeline API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h2>
-</div></div></div>
-
-<p>Deletes one or more existing ingest pipeline.</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">DELETE /_ingest/pipeline/my-pipeline-id</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/2029.console"></div>
-<div class="section">
-<div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-pipeline-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
-</div></div></div>
-<p><code class="literal">DELETE /_ingest/pipeline/&lt;pipeline&gt;</code></p>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-pipeline-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
-</div></div></div>
-<div class="ulist itemizedlist">
-<ul class="itemizedlist">
-<li class="listitem">
-If the Elasticsearch security features are enabled, you must have the
-<code class="literal">manage_pipeline</code>, <code class="literal">manage_ingest_pipelines</code>, or <code class="literal">manage</code>
-<a class="xref" href="authorization.html#privileges-list-cluster" title="Cluster privileges">cluster privilege</a> to use this API.
-</li>
-</ul>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-pipeline-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
-</div></div></div>
-<div class="variablelist">
-<dl class="variablelist">
-<dt>
-<span class="term">
-<code class="literal">&lt;pipeline&gt;</code>
-</span>
-</dt>
-<dd>
-<p>(Required, string) Pipeline ID or wildcard expression of pipeline IDs
-used to limit the request.</p>
-<p>To delete all ingest pipelines in a cluster,
-use a value of <code class="literal">*</code>.</p>
-</dd>
-</dl>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-pipeline-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
-</div></div></div>
-<div class="variablelist">
-<dl class="variablelist">
-<dt>
-<span class="term">
-<code class="literal">master_timeout</code>
-</span>
-</dt>
-<dd>
-(Optional, <a class="xref" href="api-conventions.html#time-units" title="Time units">time units</a>)
-Period to wait for a connection to the master node. If no response is received
-before the timeout expires, the request fails and returns an error. Defaults to
-<code class="literal">30s</code>.
-</dd>
-<dt>
-<span class="term">
-<code class="literal">timeout</code>
-</span>
-</dt>
-<dd>
-(Optional, <a class="xref" href="api-conventions.html#time-units" title="Time units">time units</a>)
-Period to wait for a response. If no response is received before the timeout
-expires, the request fails and returns an error. Defaults to <code class="literal">30s</code>.
-</dd>
-</dl>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h3 class="title"><a id="delete-pipeline-api-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h3>
-</div></div></div>
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="delete-pipeline-api-specific-ex"></a>Delete a specific ingest pipeline<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h4>
-</div></div></div>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">DELETE /_ingest/pipeline/pipeline-one</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/2030.console"></div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="delete-pipeline-api-wildcard-ex"></a>Delete ingest pipelines using a wildcard expression<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h4>
-</div></div></div>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">DELETE /_ingest/pipeline/pipeline-*</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/2031.console"></div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="delete-pipeline-api-all-ex"></a>Delete all ingest pipelines<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/delete-pipeline.asciidoc">edit</a></h4>
-</div></div></div>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">DELETE /_ingest/pipeline/*</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/2032.console"></div>
-</div>
-
-</div>
-
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h2 class="title"><a id="simulate-pipeline-api"></a>Simulate pipeline API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h2>
+<h2 class="title"><a id="simulate-pipeline-api"></a>Simulate pipeline API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Executes an ingest pipeline against
@@ -614,10 +820,10 @@ a set of provided documents.</p>
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2033.console"></div>
+<div class="console_widget" data-snippet="snippets/2585.console"></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="simulate-pipeline-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="simulate-pipeline-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST /_ingest/pipeline/&lt;pipeline&gt;/_simulate</code></p>
 <p><code class="literal">GET /_ingest/pipeline/&lt;pipeline&gt;/_simulate</code></p>
@@ -627,13 +833,13 @@ a set of provided documents.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="simulate-pipeline-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="simulate-pipeline-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
 If the Elasticsearch security features are enabled, you must have the
-<code class="literal">manage_pipeline</code>, <code class="literal">manage_ingest_pipelines</code>, or <code class="literal">manage</code>
+<code class="literal">read_pipeline</code>, <code class="literal">manage_pipeline</code>, <code class="literal">manage_ingest_pipelines</code>, or <code class="literal">manage</code>
 <a class="xref" href="authorization.html#privileges-list-cluster" title="Cluster privileges">cluster privilege</a> to use this API.
 </li>
 </ul>
@@ -642,7 +848,7 @@ If the Elasticsearch security features are enabled, you must have the
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="simulate-pipeline-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="simulate-pipeline-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The simulate pipeline API executes a specific pipeline
 against a set of documents provided in the body of the request.</p>
@@ -653,7 +859,7 @@ or supply a pipeline definition in the body of the request.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="simulate-pipeline-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="simulate-pipeline-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -663,8 +869,9 @@ or supply a pipeline definition in the body of the request.</p>
 </span>
 </dt>
 <dd>
-(Optional, string)
-Pipeline ID used to simulate an ingest.
+(Required*, string)
+Pipeline to test. If you don&#8217;t specify a <code class="literal">pipeline</code> in the request body, this
+parameter is required.
 </dd>
 </dl>
 </div>
@@ -672,7 +879,7 @@ Pipeline ID used to simulate an ingest.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="simulate-pipeline-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="simulate-pipeline-api-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -691,10 +898,27 @@ for each processor in the executed pipeline.
 </div>
 </div>
 
-<div class="section">
+<div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="simulate-pipeline-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="simulate-pipeline-api-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">pipeline</code>
+</span>
+</dt>
+<dd>
+<p>
+(Required*, object)
+Pipeline to test. If you don&#8217;t specify the <code class="literal">&lt;pipeline&gt;</code> request path parameter,
+this parameter is required. If you specify both this and the request path
+parameter, the API only uses the request path parameter.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">pipeline</code></summary>
+<div class="content">
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
@@ -708,16 +932,56 @@ Description of the ingest pipeline.
 </dd>
 <dt>
 <span class="term">
+<code class="literal">on_failure</code>
+</span>
+</dt>
+<dd>
+<p>
+(Optional, array of <a class="xref" href="processors.html" title="Ingest processor reference">processor</a> objects)
+Processors to run immediately after a processor failure.
+</p>
+<p>Each processor supports a processor-level <code class="literal">on_failure</code> value. If a processor
+without an <code class="literal">on_failure</code> value fails, Elasticsearch uses this pipeline-level parameter as
+a fallback. The processors in this parameter run sequentially in the order
+specified. Elasticsearch will not attempt to run the pipeline&#8217;s remaining processors.</p>
+</dd>
+<dt>
+<span class="term">
 <code class="literal">processors</code>
 </span>
 </dt>
 <dd>
-<p>(Optional, array of <a class="xref" href="ingest-processors.html" title="Processors">processor objects</a>)
-Array of processors used to pre-process documents
-during ingest.</p>
-<p>Processors are executed in the order provided.</p>
-<p>See <a class="xref" href="ingest-processors.html" title="Processors"><em>Processors</em></a> for processor object definitions
-and a list of built-in processors.</p>
+(Required, array of <a class="xref" href="processors.html" title="Ingest processor reference">processor</a> objects)
+Processors used to perform transformations on documents before indexing.
+Processors run sequentially in the order specified.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">version</code>
+</span>
+</dt>
+<dd>
+<p>
+(Optional, integer)
+Version number used by external systems to track ingest pipelines.
+</p>
+<p>See the <a class="xref" href="ingest-apis.html#put-pipeline-api-query-params" title="Query parameters"><code class="literal">if_version</code></a> parameter above for
+how the version attribute is used.</p>
+</dd>
+<dt>
+<span class="term">
+<code class="literal">_meta</code>
+</span>
+</dt>
+<dd>
+(Optional, object)
+Optional metadata about the ingest pipeline. May have any contents. This
+map is not automatically generated by Elasticsearch.
+</dd>
+</dl>
+</div>
+</div>
+</details>
 </dd>
 <dt>
 <span class="term">
@@ -725,12 +989,24 @@ and a list of built-in processors.</p>
 </span>
 </dt>
 <dd>
-<p>(Required, array)
-Array of documents
-ingested by the pipeline.</p>
-<p>Document object parameters include:</p>
+<p>
+(Required, array of objects)
+Sample documents to test in the pipeline.
+</p>
+<details open>
+<summary class="title">Properties of <code class="literal">docs</code> objects</summary>
+<div class="content">
 <div class="variablelist">
 <dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">_id</code>
+</span>
+</dt>
+<dd>
+(Optional, string)
+Unique identifier for the document. This ID must be unique within the <code class="literal">_index</code>.
+</dd>
 <dt>
 <span class="term">
 <code class="literal">_index</code>
@@ -742,13 +1018,13 @@ Name of the index containing the document.
 </dd>
 <dt>
 <span class="term">
-<code class="literal">_id</code>
+<code class="literal">_routing</code>
 </span>
 </dt>
 <dd>
 (Optional, string)
-Unique identifier for the document.
-This ID is only unique within the index.
+Value used to send the document to a specific primary shard. See the
+<a class="xref" href="mapping-fields.html#mapping-routing-field" title="_routing field"><code class="literal">_routing</code></a> field.
 </dd>
 <dt>
 <span class="term">
@@ -761,6 +1037,8 @@ JSON body for the document.
 </dd>
 </dl>
 </div>
+</div>
+</details>
 </dd>
 </dl>
 </div>
@@ -768,11 +1046,11 @@ JSON body for the document.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="simulate-pipeline-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
+<h3 class="title"><a id="simulate-pipeline-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="simulate-pipeline-api-path-parm-ex"></a>Specify a pipeline as a path parameter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h4>
+<h4 class="title"><a id="simulate-pipeline-api-path-parm-ex"></a>Specify a pipeline as a path parameter<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h4>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /_ingest/pipeline/my-pipeline-id/_simulate
@@ -795,7 +1073,7 @@ JSON body for the document.
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2034.console"></div>
+<div class="console_widget" data-snippet="snippets/2586.console"></div>
 <p>The API returns the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -804,7 +1082,7 @@ JSON body for the document.
          "doc": {
             "_id": "id",
             "_index": "index",
-            "_type": "_doc",
+            "_version": "-3",
             "_source": {
                "field2": "_value",
                "foo": "bar"
@@ -818,7 +1096,7 @@ JSON body for the document.
          "doc": {
             "_id": "id",
             "_index": "index",
-            "_type": "_doc",
+            "_version": "-3",
             "_source": {
                "field2": "_value",
                "foo": "rab"
@@ -835,7 +1113,7 @@ JSON body for the document.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="simulate-pipeline-api-request-body-ex"></a>Specify a pipeline in the request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h4>
+<h4 class="title"><a id="simulate-pipeline-api-request-body-ex"></a>Specify a pipeline in the request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h4>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /_ingest/pipeline/_simulate
@@ -870,7 +1148,7 @@ JSON body for the document.
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2035.console"></div>
+<div class="console_widget" data-snippet="snippets/2587.console"></div>
 <p>The API returns the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -879,7 +1157,7 @@ JSON body for the document.
          "doc": {
             "_id": "id",
             "_index": "index",
-            "_type": "_doc",
+            "_version": "-3",
             "_source": {
                "field2": "_value",
                "foo": "bar"
@@ -893,7 +1171,7 @@ JSON body for the document.
          "doc": {
             "_id": "id",
             "_index": "index",
-            "_type": "_doc",
+            "_version": "-3",
             "_source": {
                "field2": "_value",
                "foo": "rab"
@@ -910,7 +1188,7 @@ JSON body for the document.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="ingest-verbose-param"></a>View verbose results<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h4>
+<h4 class="title"><a id="ingest-verbose-param"></a>View verbose results<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ingest/apis/simulate-pipeline.asciidoc">edit</a></h4>
 </div></div></div>
 <p>You can use the simulate pipeline API
 to see how each processor affects the ingest document
@@ -957,84 +1235,84 @@ you can add the <code class="literal">verbose</code> parameter to the request.</
   ]
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2036.console"></div>
+<div class="console_widget" data-snippet="snippets/2588.console"></div>
 <p>The API returns the following response:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
-  "docs": [
+  "docs" : [
     {
-      "processor_results": [
+      "processor_results" : [
         {
-          "processor_type": "set",
-          "status": "success",
-          "doc": {
-            "_index": "index",
-            "_type": "_doc",
-            "_id": "id",
-            "_source": {
-              "field2": "_value2",
-              "foo": "bar"
+          "processor_type" : "set",
+          "status" : "success",
+          "doc" : {
+            "_index" : "index",
+            "_id" : "id",
+            "_version": "-3",
+            "_source" : {
+              "field2" : "_value2",
+              "foo" : "bar"
             },
-            "_ingest": {
-              "pipeline": "_simulate_pipeline",
-              "timestamp": "2020-07-30T01:21:24.251836Z"
+            "_ingest" : {
+              "pipeline" : "_simulate_pipeline",
+              "timestamp" : "2020-07-30T01:21:24.251836Z"
             }
           }
         },
         {
-          "processor_type": "set",
-          "status": "success",
-          "doc": {
-            "_index": "index",
-            "_type": "_doc",
-            "_id": "id",
-            "_source": {
-              "field3": "_value3",
-              "field2": "_value2",
-              "foo": "bar"
+          "processor_type" : "set",
+          "status" : "success",
+          "doc" : {
+            "_index" : "index",
+            "_id" : "id",
+            "_version": "-3",
+            "_source" : {
+              "field3" : "_value3",
+              "field2" : "_value2",
+              "foo" : "bar"
             },
-            "_ingest": {
-              "pipeline": "_simulate_pipeline",
-              "timestamp": "2020-07-30T01:21:24.251836Z"
+            "_ingest" : {
+              "pipeline" : "_simulate_pipeline",
+              "timestamp" : "2020-07-30T01:21:24.251836Z"
             }
           }
         }
       ]
     },
     {
-      "processor_results": [
+      "processor_results" : [
         {
-          "processor_type": "set",
-          "status": "success",
-          "doc": {
-            "_index": "index",
-            "_type": "_doc",
-            "_id": "id",
-            "_source": {
-              "field2": "_value2",
-              "foo": "rab"
+          "processor_type" : "set",
+          "status" : "success",
+          "doc" : {
+            "_index" : "index",
+            "_id" : "id",
+            "_version": "-3",
+            "_source" : {
+              "field2" : "_value2",
+              "foo" : "rab"
             },
-            "_ingest": {
-              "pipeline": "_simulate_pipeline",
-              "timestamp": "2020-07-30T01:21:24.251863Z"
+            "_ingest" : {
+              "pipeline" : "_simulate_pipeline",
+              "timestamp" : "2020-07-30T01:21:24.251863Z"
             }
           }
         },
         {
-          "processor_type": "set",
-          "status": "success",
-          "doc": {
-            "_index": "index",
-            "_type": "_doc",
-            "_id": "id",
-            "_source": {
-              "field3": "_value3",
-              "field2": "_value2",
-              "foo": "rab"
+          "processor_type" : "set",
+          "status" : "success",
+          "doc" : {
+            "_index" : "index",
+            "_id" : "id",
+            "_version": "-3",
+            "_source" : {
+              "field3" : "_value3",
+              "field2" : "_value2",
+              "foo" : "rab"
             },
-            "_ingest": {
-              "pipeline": "_simulate_pipeline",
-              "timestamp": "2020-07-30T01:21:24.251863Z"
+            "_ingest" : {
+              "pipeline" : "_simulate_pipeline",
+              "timestamp" : "2020-07-30T01:21:24.251863Z"
             }
           }
         }

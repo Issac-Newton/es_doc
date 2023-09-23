@@ -1,14 +1,12 @@
-PUT /my-index-000001
+GET /_search
 {
-  "mappings": {
-    "properties": {
-      "my-join-field": {
-        "type": "join",
-        "relations": {
-          "parent": "child"
-        }
-      }
+  "_source": {
+    "includes": [ "obj1.*", "obj2.*" ],
+    "excludes": [ "*.description" ]
+  },
+  "query": {
+    "term": {
+      "user.id": "kimchy"
     }
   }
 }
-

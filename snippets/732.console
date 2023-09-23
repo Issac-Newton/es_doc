@@ -1,15 +1,32 @@
-GET /_search
+PUT _ingest/pipeline/attachment
 {
-  "sort": [
+  "description" : "Extract attachment information from arrays",
+  "processors" : [
     {
-      "_geo_distance": {
-        "pin.location": [ [ -70, 40 ], [ -71, 42 ] ],
-        "order": "asc",
-        "unit": "km"
+      "foreach": {
+        "field": "attachments",
+        "processor": {
+          "attachment": {
+            "target_field": "_ingest._value.attachment",
+            "field": "_ingest._value.data",
+            "remove_binary": false
+          }
+        }
       }
     }
-  ],
-  "query": {
-    "term": { "user": "kimchy" }
-  }
+  ]
 }
+PUT my-index-000001/_doc/my_id?pipeline=attachment
+{
+  "attachments" : [
+    {
+      "filename" : "ipsum.txt",
+      "data" : "dGhpcyBpcwpqdXN0IHNvbWUgdGV4dAo="
+    },
+    {
+      "filename" : "test.txt",
+      "data" : "VGhpcyBpcyBhIHRlc3QK"
+    }
+  ]
+}
+GET my-index-000001/_doc/my_id

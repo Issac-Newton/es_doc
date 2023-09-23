@@ -1,9 +1,9 @@
-GET /my-index-000001/_search
+GET /my-index-000001,cluster_one:my-index-000001,cluster_two:my-index-000001/_search
 {
   "query": {
-      "parent_id": {
-          "type": "my-child",
-          "id": "1"
-      }
-  }
+    "match": {
+      "user.id": "kimchy"
+    }
+  },
+  "_source": ["user.id", "message", "http.response.status_code"]
 }

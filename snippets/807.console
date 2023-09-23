@@ -2,13 +2,17 @@ GET /_search
 {
   "query": {
     "query_string": {
-      "fields": [
-        "title",
-        "content"
-      ],
-      "query": "this OR that OR thus",
-      "type": "cross_fields",
-      "minimum_should_match": 2
+      "query": "comment.plain:running scissors",
+      "fields": [ "comment" ]
+    }
+  },
+  "highlight": {
+    "order": "score",
+    "fields": {
+      "comment": {
+        "matched_fields": [ "comment", "comment.plain" ],
+        "type": "fvh"
+      }
     }
   }
 }

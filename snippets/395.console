@@ -1,24 +1,36 @@
-PUT my-index-000001
+PUT /greek_example
 {
   "settings": {
     "analysis": {
-      "analyzer": {
-        "my_analyzer": {
-          "tokenizer": "my_tokenizer"
+      "filter": {
+        "greek_stop": {
+          "type":       "stop",
+          "stopwords":  "_greek_"
+        },
+        "greek_lowercase": {
+          "type":       "lowercase",
+          "language":   "greek"
+        },
+        "greek_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["παράδειγμα"]
+        },
+        "greek_stemmer": {
+          "type":       "stemmer",
+          "language":   "greek"
         }
       },
-      "tokenizer": {
-        "my_tokenizer": {
-          "type": "simple_pattern_split",
-          "pattern": "_"
+      "analyzer": {
+        "rebuilt_greek": {
+          "tokenizer":  "standard",
+          "filter": [
+            "greek_lowercase",
+            "greek_stop",
+            "greek_keywords",
+            "greek_stemmer"
+          ]
         }
       }
     }
   }
-}
-
-POST my-index-000001/_analyze
-{
-  "analyzer": "my_analyzer",
-  "text": "an_underscored_phrase"
 }

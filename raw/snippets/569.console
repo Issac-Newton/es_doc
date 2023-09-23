@@ -1,6 +1,6 @@
-PUT /my-data-stream/_settings
+GET _analyze
 {
-  "index": {
-    "refresh_interval": "30s"
-  }
+  "tokenizer" : "keyword",
+  "filter" : ["trim"],
+  "text" : " fox "
 }

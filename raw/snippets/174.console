@@ -1,12 +1,27 @@
-POST logs-debug/_doc
+PUT my-index
 {
-  "date": "2019-12-12",
-  "message": "Starting up Elasticsearch",
-  "level": "debug"
+  "mappings": {
+    "properties": {
+      "my_vector": {
+        "type": "dense_vector",
+        "dims": 3
+      },
+      "my_text" : {
+        "type" : "keyword"
+      }
+    }
+  }
 }
 
-POST logs-debug/_doc
+PUT my-index/_doc/1
 {
-  "date": "2019-12-12",
-  "message": "Starting up Elasticsearch"
+  "my_text" : "text1",
+  "my_vector" : [0.5, 10, 6]
 }
+
+PUT my-index/_doc/2
+{
+  "my_text" : "text2",
+  "my_vector" : [-0.5, 10, 10]
+}
+

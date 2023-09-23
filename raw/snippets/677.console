@@ -1,4 +1,24 @@
-DELETE /_search/scroll
+POST _ingest/pipeline/_simulate
 {
-  "scroll_id" : "DXF1ZXJ5QW5kRmV0Y2gBAAAAAAAAAD4WYm9laVYtZndUQlNsdDcwakFMNjU1QQ=="
+  "pipeline": {
+    "processors": [
+      {
+        "lowercase": {
+          "field": "my-keyword-field"
+        }
+      }
+    ]
+  },
+  "docs": [
+    {
+      "_source": {
+        "my-keyword-field": "FOO"
+      }
+    },
+    {
+      "_source": {
+        "my-keyword-field": "BAR"
+      }
+    }
+  ]
 }

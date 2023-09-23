@@ -1,32 +1,23 @@
-PUT /brazilian_example
+PUT my-index-000001
 {
   "settings": {
-    "analysis": {
-      "filter": {
-        "brazilian_stop": {
-          "type":       "stop",
-          "stopwords":  "_brazilian_"
-        },
-        "brazilian_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["exemplo"]
-        },
-        "brazilian_stemmer": {
-          "type":       "stemmer",
-          "language":   "brazilian"
-        }
+    "index.mapping.coerce": false
+  },
+  "mappings": {
+    "properties": {
+      "number_one": {
+        "type": "integer",
+        "coerce": true
       },
-      "analyzer": {
-        "rebuilt_brazilian": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "brazilian_stop",
-            "brazilian_keywords",
-            "brazilian_stemmer"
-          ]
-        }
+      "number_two": {
+        "type": "integer"
       }
     }
   }
 }
+
+PUT my-index-000001/_doc/1
+{ "number_one": "10" }
+
+PUT my-index-000001/_doc/2
+{ "number_two": "10" }

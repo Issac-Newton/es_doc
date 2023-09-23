@@ -1,2 +1,1 @@
-# PUT /<my-index-{now/d}>
-PUT /%3Cmy-index-%7Bnow%2Fd%7D%3E
+GET _sql/async/status/FnR0TDhyWUVmUmVtWXRWZER4MXZiNFEad2F5UDk2ZVdTVHV1S0xDUy00SklUdzozMTU=

@@ -1,4 +1,8 @@
-POST _ml/datafeeds/datafeed-total-requests/_start
+PUT /_autoscaling/policy/my_autoscaling_policy
 {
-  "start": "2017-04-07T18:22:16Z"
+  "roles" : [ "data_hot" ],
+  "deciders": {
+    "fixed": {
+    }
+  }
 }

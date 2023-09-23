@@ -2,12 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>REST APIs | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="REST APIs | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="index.html" title="Elasticsearch Guide"/>
-<link rel="prev" href="glossary.html" title="Glossary of terms"/>
+<link rel="prev" href="troubleshooting-shards-capacity-issues.html" title="Troubleshooting shards capacity health issues"/>
 <link rel="next" href="api-conventions.html" title="API conventions"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
@@ -24,7 +25,7 @@
 </div>
 <div class="navheader">
 <span class="prev">
-<a href="glossary.html">« Glossary of terms</a>
+<a href="troubleshooting-shards-capacity-issues.html">« Troubleshooting shards capacity health issues</a>
 </span>
 <span class="next">
 <a href="api-conventions.html">API conventions »</a>
@@ -32,7 +33,7 @@
 </div>
 <div class="part">
 <div class="titlepage"><div><div>
-<h1 class="title"><a id="rest-apis"></a>REST APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/index.asciidoc">edit</a></h1>
+<h1 class="title"><a id="rest-apis"></a>REST APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/index.asciidoc">edit</a></h1>
 </div></div></div>
 <div class="openblock partintro">
 <div class="content">
@@ -51,10 +52,25 @@ not be included yet.</p>
 <a class="xref" href="api-conventions.html" title="API conventions">API conventions</a>
 </li>
 <li class="listitem">
+<a class="xref" href="common-options.html" title="Common options">Common Options</a>
+</li>
+<li class="listitem">
+<a class="xref" href="rest-api-compatibility.html" title="REST API compatibility">REST API Compatibility</a>
+</li>
+<li class="listitem">
+<a class="xref" href="autoscaling-apis.html" title="Autoscaling APIs">Autoscaling APIs</a>
+</li>
+<li class="listitem">
+<a class="xref" href="behavioral-analytics-apis.html" title="Behavioral Analytics APIs">Behavioral Analytics APIs</a>
+</li>
+<li class="listitem">
 <a class="xref" href="cat.html" title="Compact and aligned text (CAT) APIs">cat APIs</a>
 </li>
 <li class="listitem">
 <a class="xref" href="cluster.html" title="Cluster APIs">Cluster APIs</a>
+</li>
+<li class="listitem">
+<a class="xref" href="features-apis.html" title="Features APIs">Features APIs</a>
 </li>
 <li class="listitem">
 <a class="xref" href="ccr-apis.html" title="Cross-cluster replication APIs">Cross-cluster replication APIs</a>
@@ -69,7 +85,16 @@ not be included yet.</p>
 <a class="xref" href="enrich-apis.html" title="Enrich APIs">Enrich APIs</a>
 </li>
 <li class="listitem">
-<a class="xref" href="graph-explore-api.html" title="Graph explore API">Graph Explore API</a>
+<a class="xref" href="eql-apis.html" title="EQL APIs">EQL search APIs</a>
+</li>
+<li class="listitem">
+<a class="xref" href="find-structure.html" title="Find structure API">Find structure API</a>
+</li>
+<li class="listitem">
+<a class="xref" href="fleet-apis.html" title="Fleet APIs">Fleet APIs</a>
+</li>
+<li class="listitem">
+<a class="xref" href="graph-explore-api.html" title="Graph explore API">Graph explore API</a>
 </li>
 <li class="listitem">
 <a class="xref" href="indices.html" title="Index APIs">Index APIs</a>
@@ -87,25 +112,43 @@ not be included yet.</p>
 <a class="xref" href="licensing-apis.html" title="Licensing APIs">Licensing APIs</a>
 </li>
 <li class="listitem">
-<a class="xref" href="ml-apis.html" title="Machine learning anomaly detection APIs">Machine learning anomaly detection APIs</a>
+<a class="xref" href="logstash-apis.html" title="Logstash APIs">Logstash APIs</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ml-apis.html" title="Machine learning APIs">Machine learning APIs</a>
+</li>
+<li class="listitem">
+<a class="xref" href="ml-ad-apis.html" title="Machine learning anomaly detection APIs">Machine learning anomaly detection APIs</a>
 </li>
 <li class="listitem">
 <a class="xref" href="ml-df-analytics-apis.html" title="Machine learning data frame analytics APIs">Machine learning data frame analytics APIs</a>
 </li>
 <li class="listitem">
+<a class="xref" href="ml-df-trained-models-apis.html" title="Machine learning trained model APIs">Machine learning trained model APIs</a>
+</li>
+<li class="listitem">
 <a class="xref" href="migration-api.html" title="Migration APIs">Migration APIs</a>
 </li>
 <li class="listitem">
-<a class="xref" href="indices-reload-analyzers.html" title="Reload search analyzers API">Reload Search Analyzers API</a>
+<a class="xref" href="node-lifecycle-api.html" title="Node lifecycle APIs">Node lifecycle API</a>
 </li>
 <li class="listitem">
-<a class="xref" href="repositories-metering-apis.html" title="Repositories metering APIs">Repositories Metering APIs</a>
+<a class="xref" href="indices-reload-analyzers.html" title="Reload search analyzers API">Reload search analyzers API</a>
+</li>
+<li class="listitem">
+<a class="xref" href="repositories-metering-apis.html" title="Repositories metering APIs">Repositories metering APIs</a>
 </li>
 <li class="listitem">
 <a class="xref" href="rollup-apis.html" title="Rollup APIs">Rollup APIs</a>
 </li>
 <li class="listitem">
+<a class="xref" href="script-apis.html" title="Script APIs">Script APIs</a>
+</li>
+<li class="listitem">
 <a class="xref" href="search.html" title="Search APIs">Search APIs</a>
+</li>
+<li class="listitem">
+<a class="xref" href="search-application-apis.html" title="Search Application APIs">Search Application APIs</a>
 </li>
 <li class="listitem">
 <a class="xref" href="searchable-snapshots-apis.html" title="Searchable snapshots APIs">Searchable snapshots APIs</a>
@@ -118,6 +161,9 @@ not be included yet.</p>
 </li>
 <li class="listitem">
 <a class="xref" href="snapshot-lifecycle-management-api.html" title="Snapshot lifecycle management APIs">Snapshot lifecycle management APIs</a>
+</li>
+<li class="listitem">
+<a class="xref" href="sql-apis.html" title="SQL APIs">SQL APIs</a>
 </li>
 <li class="listitem">
 <a class="xref" href="transform-apis.html" title="Transform APIs">Transform APIs</a>
@@ -160,10 +206,25 @@ not be included yet.</p>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 <div class="navfooter">
 <span class="prev">
-<a href="glossary.html">« Glossary of terms</a>
+<a href="troubleshooting-shards-capacity-issues.html">« Troubleshooting shards capacity health issues</a>
 </span>
 <span class="next">
 <a href="api-conventions.html">API conventions »</a>

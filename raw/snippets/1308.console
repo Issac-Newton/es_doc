@@ -1,6 +1,10 @@
-POST timeseries/_doc
+GET /_search
 {
-  "message": "logged the request",
-  "@timestamp": "1591890611"
+  "aggs": {
+    "genres": {
+      "rare_terms": {
+        "field": "genre"
+      }
+    }
+  }
 }
-

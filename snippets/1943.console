@@ -1,11 +1,6 @@
-PUT /my-index-000001
+PUT _cluster/settings
 {
-  "mappings": {
-    "properties": {
-      "user_id": {
-        "type": "keyword",
-        "ignore_above": 20
-      }
-    }
+  "persistent": {
+    "cluster.routing.allocation.disk.watermark.low": "30gb"
   }
 }

@@ -1,14 +1,11 @@
-PUT /my-index-000001
+PUT /apostrophe_example
 {
   "settings": {
     "analysis": {
       "analyzer": {
-        "my_analyzer": {
-          "tokenizer": "whitespace",
-          "filter": [
-            "lowercase",
-            "kstem"
-          ]
+        "standard_apostrophe": {
+          "tokenizer": "standard",
+          "filter": [ "apostrophe" ]
         }
       }
     }

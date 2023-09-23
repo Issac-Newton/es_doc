@@ -1,15 +1,6 @@
-PUT _watcher/watch/cluster_health_watch
+GET /my-data-stream/_eql/search?filter_path=hits.events._source.@timestamp,hits.events._source.process.pid
 {
-  "trigger" : {
-    "schedule" : { "interval" : "10s" }
-  },
-  "input" : {
-    "http" : {
-      "request" : {
-        "host" : "localhost",
-        "port" : 9200,
-        "path" : "/_cluster/health"
-      }
-    }
-  }
+  "query": """
+    process where process.name == "regsvr32.exe"
+  """
 }

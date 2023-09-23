@@ -1,8 +1,11 @@
-PUT test-000001
+GET /_search
 {
-  "aliases": {
-    "test-alias":{
-      "is_write_index": true
+  "aggs": {
+    "genres": {
+      "terms": {
+        "field": "genre",
+        "order": { "_count": "asc" }
+      }
     }
   }
 }

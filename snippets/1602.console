@@ -1,6 +1,6 @@
-GET /_cluster/allocation/explain
+POST timeseries/_doc
 {
-  "index": "my-index-000001",
-  "shard": 0,
-  "primary": true
+  "message": "logged the request",
+  "@timestamp": "1591890611"
 }
+

@@ -1,13 +1,1 @@
-GET /my-index-000001/_search
-{
-  "aggs": {
-    "my-agg-name": {
-      "terms": {
-        "field": "my-field"
-      },
-      "meta": {
-        "my-metadata-field": "foo"
-      }
-    }
-  }
-}
+GET _tasks/<task_id>

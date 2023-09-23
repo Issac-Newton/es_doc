@@ -1,11 +1,6 @@
 GET /_search
 {
-  "aggs": {
-    "tags": {
-      "terms": {
-        "field": "tags",
-        "missing": "N/A"
-      }
+    "query": {
+        "match_all": {}
     }
-  }
 }

@@ -1,1 +1,27 @@
-DELETE _scripts/calculate-score
+GET /products/_search
+{
+  "aggs": {
+    "genres_and_products": {
+      "multi_terms": {
+        "terms": [
+          {
+            "field": "genre"
+          },
+          {
+            "field": "product"
+          }
+        ],
+        "order": {
+          "total_quantity": "desc"
+        }
+      },
+      "aggs": {
+        "total_quantity": {
+          "sum": {
+            "field": "quantity"
+          }
+        }
+      }
+    }
+  }
+}

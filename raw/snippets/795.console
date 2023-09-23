@@ -1,9 +1,16 @@
-GET /_search
+GET /shirts/_search
 {
   "query": {
-    "query_string": {
-      "query": "(new york city) OR (big apple)",
-      "default_field": "content"
+    "bool": {
+      "filter": [
+        { "term": { "color": "red"   }},
+        { "term": { "brand": "gucci" }}
+      ]
+    }
+  },
+  "aggs": {
+    "models": {
+      "terms": { "field": "model" }
     }
   }
 }

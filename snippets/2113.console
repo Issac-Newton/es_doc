@@ -1,1 +1,1 @@
-GET _ml/data_frame/analytics/loganalytics
+GET _cat/component_templates/my-template-*?v=true&s=name

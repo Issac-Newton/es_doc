@@ -1,4 +1,7 @@
-DELETE /_security/api_key
+POST test/_update/1
 {
-  "name" : "my-api-key"
+  "doc": {
+    "name": "new_name"
+  },
+  "detect_noop": false
 }

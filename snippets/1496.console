@@ -1,4 +1,8 @@
-PUT .watches/_settings
+GET /my-data-stream/_eql/search
 {
-  "index.routing.allocation.include.role": "watcher"
+  "query": """
+    sequence with maxspan=1h
+      [ process where process.name == "regsvr32.exe" ]
+      [ file where stringContains(file.name, "scrobj.dll") ]
+  """
 }

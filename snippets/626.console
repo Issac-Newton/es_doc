@@ -1,17 +1,15 @@
-PUT _ingest/pipeline/pipelineB
+PUT /_index_template/my-data-stream-template
 {
-  "description" : "outer pipeline",
-  "processors" : [
-    {
-      "pipeline" : {
-        "name": "pipelineA"
-      }
-    },
-    {
-      "set" : {
-        "field": "outer_pipeline_set",
-        "value": "outer"
+  "index_patterns": [ "my-data-stream*" ],
+  "data_stream": { },
+  "priority": 500,
+  "template": {
+    "mappings": {
+      "properties": {
+        "message": {                             
+          "type": "text"
+        }
       }
     }
-  ]
+  }
 }

@@ -1,5 +1,24 @@
-PUT /my-index-000001/_doc/1?refresh
+PUT _cluster/settings
 {
-  "text": "This is a parent document.",
-  "my-join-field": "my-parent"
+  "persistent": {
+    "cluster": {
+      "remote": {
+        "cluster_one": {
+          "seeds": [
+            "127.0.0.1:9300"
+          ]
+        },
+        "cluster_two": {
+          "seeds": [
+            "127.0.0.1:9301"
+          ]
+        },
+        "cluster_three": {
+          "seeds": [
+            "127.0.0.1:9302"
+          ]
+        }
+      }
+    }
+  }
 }

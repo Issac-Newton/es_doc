@@ -1,7 +1,14 @@
-POST _scripts/calculate-score/score
+GET /products/_search
 {
-  "script": {
-    "lang": "painless",
-    "source": "Math.log(_score * 2) + params.my_modifier"
+  "aggs": {
+    "genres_and_products": {
+      "multi_terms": {
+        "terms": [{
+          "field": "genre"
+        }, {
+          "field": "product"
+        }]
+      }
+    }
   }
 }

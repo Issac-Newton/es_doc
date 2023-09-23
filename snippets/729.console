@@ -1,15 +1,12 @@
-GET /_search
+PUT _ingest/pipeline/cbor-attachment
 {
-  "sort": [
+  "description" : "Extract attachment information",
+  "processors" : [
     {
-      "_geo_distance": {
-        "pin.location": "40,-70",
-        "order": "asc",
-        "unit": "km"
+      "attachment" : {
+        "field" : "data",
+        "remove_binary": false
       }
     }
-  ],
-  "query": {
-    "term": { "user": "kimchy" }
-  }
+  ]
 }

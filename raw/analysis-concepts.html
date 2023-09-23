@@ -33,7 +33,7 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-concepts"></a>Text analysis concepts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/concepts.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-concepts"></a>Text analysis concepts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/concepts.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>This section explains the fundamental concepts of text analysis in Elasticsearch.</p>
@@ -55,7 +55,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analyzer-anatomy"></a>Anatomy of an analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/anatomy.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analyzer-anatomy"></a>Anatomy of an analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/anatomy.asciidoc">edit</a></h2>
 </div></div></div>
 <p>An <em>analyzer</em> &#8201;&#8212;&#8201;whether built-in or custom&#8201;&#8212;&#8201;is just a package which
 contains three lower-level building blocks: <em>character filters</em>,
@@ -66,10 +66,10 @@ Elasticsearch also exposes the individual building blocks so that they can be
 combined to define new <a class="xref" href="configure-text-analysis.html#analysis-custom-analyzer" title="Create a custom analyzer"><code class="literal">custom</code></a> analyzers.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analyzer-anatomy-character-filters"></a>Character filters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/anatomy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analyzer-anatomy-character-filters"></a>Character filters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/anatomy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>A <em>character filter</em> receives the original text as a stream of characters and
-can transform the stream by adding, removing, or changing characters.  For
+can transform the stream by adding, removing, or changing characters. For
 instance, a character filter could be used to convert Hindu-Arabic numerals
 (٠‎١٢٣٤٥٦٧٨‎٩‎) into their Arabic-Latin equivalents (0123456789), or to strip HTML
 elements like <code class="literal">&lt;b&gt;</code> from the stream.</p>
@@ -79,12 +79,12 @@ which are applied in order.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analyzer-anatomy-tokenizer"></a>Tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/anatomy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analyzer-anatomy-tokenizer"></a>Tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/anatomy.asciidoc">edit</a></h3>
 </div></div></div>
-<p>A <em>tokenizer</em>  receives a stream of characters, breaks it up into individual
+<p>A <em>tokenizer</em> receives a stream of characters, breaks it up into individual
 <em>tokens</em> (usually individual words), and outputs a stream of <em>tokens</em>. For
 instance, a <a class="xref" href="analysis-tokenizers.html#analysis-whitespace-tokenizer" title="Whitespace tokenizer"><code class="literal">whitespace</code></a> tokenizer breaks
-text into tokens whenever it sees any whitespace.  It would convert the text
+text into tokens whenever it sees any whitespace. It would convert the text
 <code class="literal">"Quick brown fox!"</code> into the terms <code class="literal">[Quick, brown, fox!]</code>.</p>
 <p>The tokenizer is also responsible for recording the order or <em>position</em> of
 each term and the start and end <em>character offsets</em> of the original word which
@@ -94,10 +94,10 @@ the term represents.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analyzer-anatomy-token-filters"></a>Token filters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/anatomy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analyzer-anatomy-token-filters"></a>Token filters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/anatomy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>A <em>token filter</em> receives the token stream and may add, remove, or change
-tokens.  For example, a <a class="xref" href="analysis-tokenfilters.html#analysis-lowercase-tokenfilter" title="Lowercase token filter"><code class="literal">lowercase</code></a> token
+tokens. For example, a <a class="xref" href="analysis-tokenfilters.html#analysis-lowercase-tokenfilter" title="Lowercase token filter"><code class="literal">lowercase</code></a> token
 filter converts all tokens to lowercase, a
 <a class="xref" href="analysis-tokenfilters.html#analysis-stop-tokenfilter" title="Stop token filter"><code class="literal">stop</code></a> token filter removes common words
 (<em>stop words</em>) like <code class="literal">the</code> from the token stream, and a
@@ -113,7 +113,7 @@ which are applied in order.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-index-search-time"></a>Index and search analysis<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/index-search-time.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-index-search-time"></a>Index and search analysis<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/index-search-time.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Text analysis occurs at two times:</p>
 <div class="variablelist">
@@ -124,7 +124,7 @@ Index time
 </span>
 </dt>
 <dd>
-When a document is indexed, any <a class="xref" href="mapping-types.html#text" title="Text field type"><code class="literal">text</code></a> field values are analyzed.
+When a document is indexed, any <a class="xref" href="mapping-types.html#text" title="Text type family"><code class="literal">text</code></a> field values are analyzed.
 </dd>
 <dt>
 <span class="term">
@@ -144,7 +144,7 @@ the query string (the text the user is searching for) is analyzed.
 analyzer</em> or <em>search analyzer</em> respectively.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-same-index-search-analyzer"></a>How the index and search analyzer work together<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/index-search-time.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-same-index-search-analyzer"></a>How the index and search analyzer work together<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/index-search-time.asciidoc">edit</a></h3>
 </div></div></div>
 <p>In most cases, the same analyzer should be used at index and search time. This
 ensures the values and query strings for a field are changed into the same form
@@ -173,7 +173,7 @@ document&#8217;s original text:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<code class="literal">quick</code> vs <code class="literal">QUICK</code>
+<code class="literal">Quick</code> vs <code class="literal">QUICK</code>
 </li>
 <li class="listitem">
 <code class="literal">fox</code> vs <code class="literal">foxes</code>
@@ -245,7 +245,7 @@ over the dog!"</code>, just as the user expects.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="different-analyzers"></a>When to use a different search analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/index-search-time.asciidoc">edit</a></h3>
+<h3 class="title"><a id="different-analyzers"></a>When to use a different search analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/index-search-time.asciidoc">edit</a></h3>
 </div></div></div>
 <p>While less common, it sometimes makes sense to use different analyzers at index
 and search time. To enable this, Elasticsearch allows you to
@@ -346,7 +346,7 @@ rather than a set of prefixes:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="stemming"></a>Stemming<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/stemming.asciidoc">edit</a></h2>
+<h2 class="title"><a id="stemming"></a>Stemming<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/stemming.asciidoc">edit</a></h2>
 </div></div></div>
 <p><em>Stemming</em> is the process of reducing a word to its root form. This ensures
 variants of a word match during a search.</p>
@@ -361,7 +361,7 @@ isn&#8217;t a real English word, it doesn&#8217;t matter for search; if all vari
 word are reduced to the same root form, they will match correctly.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="stemmer-token-filters"></a>Stemmer token filters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/stemming.asciidoc">edit</a></h3>
+<h3 class="title"><a id="stemmer-token-filters"></a>Stemmer token filters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/stemming.asciidoc">edit</a></h3>
 </div></div></div>
 <p>In Elasticsearch, stemming is handled by stemmer <a class="xref" href="analysis-concepts.html#analyzer-anatomy-token-filters" title="Token filters">token
 filters</a>. These token filters can be categorized based on how they stem words:</p>
@@ -383,7 +383,7 @@ filters during <a class="xref" href="analysis-concepts.html#analysis-index-searc
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="algorithmic-stemmers"></a>Algorithmic stemmers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/stemming.asciidoc">edit</a></h3>
+<h3 class="title"><a id="algorithmic-stemmers"></a>Algorithmic stemmers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/stemming.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Algorithmic stemmers apply a series of rules to each word to reduce it to its
 root form. For example, an algorithmic stemmer for English may remove the <code class="literal">-s</code>
@@ -444,7 +444,7 @@ languages.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="dictionary-stemmers"></a>Dictionary stemmers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/stemming.asciidoc">edit</a></h3>
+<h3 class="title"><a id="dictionary-stemmers"></a>Dictionary stemmers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/stemming.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Dictionary stemmers look up words in a provided dictionary, replacing unstemmed
 word variants with stemmed words from the dictionary.</p>
@@ -503,7 +503,7 @@ before using the <a class="xref" href="analysis-tokenfilters.html#analysis-hunsp
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="control-stemming"></a>Control stemming<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/stemming.asciidoc">edit</a></h3>
+<h3 class="title"><a id="control-stemming"></a>Control stemming<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/stemming.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Sometimes stemming can produce shared root words that are spelled similarly but
 not related conceptually. For example, a stemmer may reduce both <code class="literal">skies</code> and
@@ -536,7 +536,7 @@ of words that won&#8217;t be stemmed.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="token-graphs"></a>Token graphs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/token-graphs.asciidoc">edit</a></h2>
+<h2 class="title"><a id="token-graphs"></a>Token graphs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/token-graphs.asciidoc">edit</a></h2>
 </div></div></div>
 <p>When a <a class="xref" href="analysis-concepts.html#analyzer-anatomy-tokenizer" title="Tokenizer">tokenizer</a> converts a text into a stream of
 tokens, it also records the following:</p>
@@ -561,7 +561,7 @@ a node. Each token represents an edge or arc, pointing to the next position.</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="token-graphs-synonyms"></a>Synonyms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/token-graphs.asciidoc">edit</a></h3>
+<h3 class="title"><a id="token-graphs-synonyms"></a>Synonyms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/token-graphs.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Some <a class="xref" href="analysis-concepts.html#analyzer-anatomy-token-filters" title="Token filters">token filters</a> can add new tokens, like
 synonyms, to an existing token stream. These synonyms often span the same
@@ -577,13 +577,13 @@ positions as existing tokens.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="token-graphs-multi-position-tokens"></a>Multi-position tokens<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/token-graphs.asciidoc">edit</a></h3>
+<h3 class="title"><a id="token-graphs-multi-position-tokens"></a>Multi-position tokens<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/token-graphs.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Some token filters can add tokens that span multiple positions. These can
 include tokens for multi-word synonyms, such as using "atm" as a synonym for
 "automatic teller machine."</p>
 <p>However, only some token filters, known as <em>graph token filters</em>, accurately
-record the <code class="literal">positionLength</code> for multi-position tokens. This filters include:</p>
+record the <code class="literal">positionLength</code> for multi-position tokens. These filters include:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -595,7 +595,7 @@ record the <code class="literal">positionLength</code> for multi-position tokens
 </ul>
 </div>
 <p>Some tokenizers, such as the
-{plugin}/analysis-nori-tokenizer.html[<code class="literal">nori_tokenizer</code>], also accurately
+<a href="https://www.elastic.co/guide/en/elasticsearch/plugins/8.9/analysis-nori-tokenizer.html" class="ulink" target="_top"><code class="literal">nori_tokenizer</code></a>, also accurately
 decompose compound tokens into multi-position tokens.</p>
 <p>In the following graph, <code class="literal">domain name system</code> and its synonym, <code class="literal">dns</code>, both have a
 position of <code class="literal">0</code>. However, <code class="literal">dns</code> has a <code class="literal">positionLength</code> of <code class="literal">3</code>. Other tokens in
@@ -607,7 +607,7 @@ the graph have a default <code class="literal">positionLength</code> of <code cl
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="token-graphs-token-graphs-search"></a>Using token graphs for search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/token-graphs.asciidoc">edit</a></h4>
+<h4 class="title"><a id="token-graphs-token-graphs-search"></a>Using token graphs for search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/token-graphs.asciidoc">edit</a></h4>
 </div></div></div>
 <p><a class="xref" href="analysis-concepts.html#analysis-index-search-time" title="Index and search analysis">Indexing</a> ignores the <code class="literal">positionLength</code> attribute
 and does not support token graphs containing multi-position tokens.</p>
@@ -641,7 +641,7 @@ domain name system is fragile</pre>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="token-graphs-invalid-token-graphs"></a>Invalid token graphs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/token-graphs.asciidoc">edit</a></h4>
+<h4 class="title"><a id="token-graphs-invalid-token-graphs"></a>Invalid token graphs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/token-graphs.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The following token filters can add tokens that span multiple positions but
 only record a default <code class="literal">positionLength</code> of <code class="literal">1</code>:</p>

@@ -8,7 +8,7 @@
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="index.html" title="Elasticsearch Guide"/>
 <link rel="prev" href="modules-scripting-engine.html" title="Advanced scripts using script engines"/>
-<link rel="next" href="data-tiers.html" title="Data tiers"/>
+<link rel="next" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
 <meta class="elastic" name="website_area" content="documentation"/>
@@ -27,12 +27,12 @@
 <a href="modules-scripting-engine.html">« Advanced scripts using script engines</a>
 </span>
 <span class="next">
-<a href="data-tiers.html">Data tiers »</a>
+<a href="index-lifecycle-management.html">ILM: Manage the index lifecycle »</a>
 </span>
 </div>
 <div class="part xpack">
 <div class="titlepage"><div><div>
-<h1 class="title"><a id="data-management"></a>Data management<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/data-management.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h1>
+<h1 class="title"><a id="data-management"></a>Data management<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/data-management.asciidoc">edit</a></h1>
 </div></div></div>
 <div class="openblock partintro">
 <div class="content">
@@ -56,15 +56,20 @@ As it ages, it tends to become less important and less-frequently accessed,
 so you can move it to less expensive, less performant hardware.
 For your oldest data, what matters is that you have access to the data.
 It&#8217;s ok if queries take longer to complete.</p>
-<p>To help you manage your data, Elasticsearch enables you to:</p>
+<p>To help you manage your data, Elasticsearch offers you <a class="xref" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle">Index lifecycle management</a> (ILM) to manage both indices and data
+streams and it is fully customisable.</p>
+<p><span class="strong strong"><strong>ILM</strong></span> can be used to manage both indices and data streams and it allows you to:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
+<li class="listitem">
+Define the retention period of your data. The retention period is the minimum time your data will be stored in Elasticsearch.
+Data older than this period can be deleted by Elasticsearch.
+</li>
 <li class="listitem">
 Define <a class="xref" href="data-tiers.html" title="Data tiers">multiple tiers</a> of data nodes with different performance characteristics.
 </li>
 <li class="listitem">
-Automatically transition indices through the data tiers according to your performance needs and retention policies
-with <a class="xref" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle">index lifecycle management</a> (ILM).
+Automatically transition indices through the data tiers according to your performance needs and retention policies.
 </li>
 <li class="listitem">
 Leverage <a class="xref" href="searchable-snapshots.html" title="Searchable snapshots">searchable snapshots</a> stored in a remote repository to provide resiliency
@@ -79,13 +84,26 @@ Perform <a class="xref" href="async-search-intro.html" title="Long-running searc
 </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 <div class="navfooter">
 <span class="prev">
 <a href="modules-scripting-engine.html">« Advanced scripts using script engines</a>
 </span>
 <span class="next">
-<a href="data-tiers.html">Data tiers »</a>
+<a href="index-lifecycle-management.html">ILM: Manage the index lifecycle »</a>
 </span>
 </div>
 </div>

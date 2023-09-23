@@ -1,4 +1,15 @@
-POST test/_doc/2?pipeline=drop_guests_network
+PUT /my-index-000001
 {
-  "foo" : "bar"
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "keyword",
+          "char_filter": [
+            "html_strip"
+          ]
+        }
+      }
+    }
+  }
 }

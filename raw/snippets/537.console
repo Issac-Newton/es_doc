@@ -1,18 +1,15 @@
-PUT my-index-00001/_doc/1?refresh
+GET /_analyze
 {
-  "text": "The fooBarBaz method"
-}
-
-GET my-index-00001/_search
-{
-  "query": {
-    "match": {
-      "text": "bar"
+  "tokenizer": "whitespace",
+  "filter": [
+    {
+      "type": "predicate_token_filter",
+      "script": {
+        "source": """
+          token.term.length() > 3
+        """
+      }
     }
-  },
-  "highlight": {
-    "fields": {
-      "text": {}
-    }
-  }
+  ],
+  "text": "the fox jumps the lazy dog"
 }

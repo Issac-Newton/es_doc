@@ -1,13 +1,7 @@
-POST test/_update/1
+PUT _snapshot/my_fs_backup
 {
-  "script": {
-    "source": "ctx._source.counter += params.count",
-    "lang": "painless",
-    "params": {
-      "count": 4
-    }
-  },
-  "upsert": {
-    "counter": 1
+  "type": "fs",
+  "settings": {
+    "location": "/mount/backups/my_fs_backup_location"
   }
 }

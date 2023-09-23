@@ -1,16 +1,8 @@
-POST /example/_doc
+PUT my-index-000001/_doc/3?routing=1&refresh
 {
-  "location" : {
-    "type": "geometrycollection",
-    "geometries": [
-      {
-        "type": "point",
-        "coordinates": [1000.0, 100.0]
-      },
-      {
-        "type": "linestring",
-        "coordinates": [ [1001.0, 100.0], [1002.0, 100.0] ]
-      }
-    ]
+  "text": "This is a vote",
+  "my_join_field": {
+    "name": "vote",
+    "parent": "2"
   }
 }

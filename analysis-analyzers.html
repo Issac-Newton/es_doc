@@ -117,7 +117,7 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-analyzers"></a>Built-in analyzer reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-analyzers"></a>Built-in analyzer reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Elasticsearch ships with a wide range of built-in analyzers, which can be used
 in any index without further configuration:</p>
@@ -140,7 +140,7 @@ lowercases terms, and supports removing stop words.
 </dt>
 <dd>
 The <code class="literal">simple</code> analyzer divides text into terms whenever it encounters a
-character which is not a letter.  It lowercases all terms.
+character which is not a letter. It lowercases all terms.
 </dd>
 <dt>
 <span class="term">
@@ -149,7 +149,7 @@ character which is not a letter.  It lowercases all terms.
 </dt>
 <dd>
 The <code class="literal">whitespace</code> analyzer divides text into terms whenever it encounters any
-whitespace character.  It does not lowercase terms.
+whitespace character. It does not lowercase terms.
 </dd>
 <dt>
 <span class="term">
@@ -198,23 +198,23 @@ fingerprint which can be used for duplicate detection.
 </dd>
 </dl>
 </div>
-<h3><a id="_custom_analyzers"></a>Custom analyzers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers.asciidoc">edit</a></h3>
+<h3><a id="_custom_analyzers"></a>Custom analyzers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers.asciidoc">edit</a></h3>
 <p>If you do not find an analyzer suitable for your needs, you can create a
 <a class="xref" href="configure-text-analysis.html#analysis-custom-analyzer" title="Create a custom analyzer"><code class="literal">custom</code></a> analyzer which combines the appropriate
 <a class="xref" href="analysis-charfilters.html" title="Character filters reference">character filters</a>,
 <a class="xref" href="analysis-tokenizers.html" title="Tokenizer reference">tokenizer</a>, and <a class="xref" href="analysis-tokenfilters.html" title="Token filter reference">token filters</a>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-fingerprint-analyzer"></a>Fingerprint analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-fingerprint-analyzer"></a>Fingerprint analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">fingerprint</code> analyzer implements a
 <a href="https://github.com/OpenRefine/OpenRefine/wiki/Clustering-In-Depth#fingerprint" class="ulink" target="_top">fingerprinting algorithm</a>
 which is used by the OpenRefine project to assist in clustering.</p>
 <p>Input text is lowercased, normalized to remove extended characters, sorted,
-deduplicated and concatenated into a single token.  If a stopword list is
+deduplicated and concatenated into a single token. If a stopword list is
 configured, stop words will also be removed.</p>
-<h3><a id="_example_output"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_output"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -222,12 +222,12 @@ configured, stop words will also be removed.</p>
   "text": "Yes yes, Gödel said this sentence is consistent and."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/317.console"></div>
+<div class="console_widget" data-snippet="snippets/373.console"></div>
 <p>The above sentence would produce the following single term:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ and consistent godel is said sentence this yes ]</pre>
 </div>
-<h3><a id="_configuration_2"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_2"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h3>
 <p>The <code class="literal">fingerprint</code> analyzer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -244,7 +244,7 @@ configured, stop words will also be removed.</p>
 </td>
 <td valign="top">
 <p>
-The character to use to concatenate the terms.  Defaults to a space.
+The character to use to concatenate the terms. Defaults to a space.
 </p>
 </td>
 </tr>
@@ -256,7 +256,7 @@ The character to use to concatenate the terms.  Defaults to a space.
 </td>
 <td valign="top">
 <p>
-The maximum token size to emit.  Defaults to <code class="literal">255</code>. Tokens larger than
+The maximum token size to emit. Defaults to <code class="literal">255</code>. Tokens larger than
 this size will be discarded.
 </p>
 </td>
@@ -269,8 +269,8 @@ this size will be discarded.
 </td>
 <td valign="top">
 <p>
-A pre-defined stop words list like <code class="literal">_english_</code> or an array  containing a
-list of stop words.  Defaults to <code class="literal">_none_</code>.
+A pre-defined stop words list like <code class="literal">_english_</code> or an array containing a
+list of stop words. Defaults to <code class="literal">_none_</code>.
 </p>
 </td>
 </tr>
@@ -291,7 +291,7 @@ The path to a file containing stop words.
 </div>
 <p>See the <a class="xref" href="analysis-tokenfilters.html#analysis-stop-tokenfilter" title="Stop token filter">Stop Token Filter</a> for more information
 about stop word configuration.</p>
-<h3><a id="_example_configuration_2"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_2"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">fingerprint</code> analyzer to use the
 pre-defined list of English stop words:</p>
 <div class="pre_wrapper lang-console">
@@ -315,12 +315,12 @@ POST my-index-000001/_analyze
   "text": "Yes yes, Gödel said this sentence is consistent and."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/318.console"></div>
+<div class="console_widget" data-snippet="snippets/374.console"></div>
 <p>The above example produces the following term:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ consistent godel said sentence yes ]</pre>
 </div>
-<h3><a id="_definition"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_definition"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/fingerprint-analyzer.asciidoc">edit</a></h3>
 <p>The <code class="literal">fingerprint</code> tokenizer consists of:</p>
 <div class="variablelist">
 <dl class="variablelist">
@@ -387,17 +387,17 @@ customization:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/319.console"></div>
+<div class="console_widget" data-snippet="snippets/375.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-keyword-analyzer"></a>Keyword analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/keyword-analyzer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-keyword-analyzer"></a>Keyword analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/keyword-analyzer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">keyword</code> analyzer is a &#8220;noop&#8221; analyzer which returns the entire input
 string as a single token.</p>
-<h3><a id="_example_output_2"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/keyword-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_2"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/keyword-analyzer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -405,14 +405,14 @@ string as a single token.</p>
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/320.console"></div>
+<div class="console_widget" data-snippet="snippets/376.console"></div>
 <p>The above sentence would produce the following single term:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ The 2 QUICK Brown-Foxes jumped over the lazy dog's bone. ]</pre>
 </div>
-<h3><a id="_configuration_3"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/keyword-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_3"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/keyword-analyzer.asciidoc">edit</a></h3>
 <p>The <code class="literal">keyword</code> analyzer is not configurable.</p>
-<h3><a id="_definition_2"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/keyword-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_definition_2"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/keyword-analyzer.asciidoc">edit</a></h3>
 <p>The <code class="literal">keyword</code> analyzer consists of:</p>
 <div class="variablelist">
 <dl class="variablelist">
@@ -447,7 +447,7 @@ for further customization:</p>
       "analyzer": {
         "rebuilt_keyword": {
           "tokenizer": "keyword",
-          "filter": [         <a id="CO119-1"></a><i class="conum" data-value="1"></i>
+          "filter": [         <a id="CO125-1"></a><i class="conum" data-value="1"></i>
           ]
         }
       }
@@ -455,12 +455,12 @@ for further customization:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/321.console"></div>
+<div class="console_widget" data-snippet="snippets/377.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO119-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO125-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>You&#8217;d add any token filters here.</p>
@@ -472,7 +472,7 @@ for further customization:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-lang-analyzer"></a>Language analyzers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-lang-analyzer"></a>Language analyzers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>A set of analyzers aimed at analyzing specific language text. The
@@ -514,11 +514,11 @@ following types are supported:
 <a class="xref" href="analysis-analyzers.html#thai-analyzer" title="thai analyzer"><code class="literal">thai</code></a>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_configuring_language_analyzers"></a>Configuring language analyzers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_configuring_language_analyzers"></a>Configuring language analyzers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_stopwords"></a>Stopwords<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_stopwords"></a>Stopwords<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
 <p>All analyzers support setting custom <code class="literal">stopwords</code> either internally in
 the config, or by using an external stopwords file by setting
@@ -528,10 +528,10 @@ more details.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_excluding_words_from_stemming"></a>Excluding words from stemming<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_excluding_words_from_stemming"></a>Excluding words from stemming<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">stem_exclusion</code> parameter allows you to specify an array
-of lowercase words that should not be stemmed.  Internally, this
+of lowercase words that should not be stemmed. Internally, this
 functionality is implemented by adding the
 <a class="xref" href="analysis-tokenfilters.html#analysis-keyword-marker-tokenfilter" title="Keyword marker token filter"><code class="literal">keyword_marker</code> token filter</a>
 with the <code class="literal">keywords</code> set to the value of the <code class="literal">stem_exclusion</code> parameter.</p>
@@ -547,7 +547,7 @@ with the <code class="literal">keywords</code> set to the value of the <code cla
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_reimplementing_language_analyzers"></a>Reimplementing language analyzers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_reimplementing_language_analyzers"></a>Reimplementing language analyzers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The built-in language analyzers can be reimplemented as <code class="literal">custom</code> analyzers
 (as described below) in order to customize their behaviour.</p>
@@ -561,7 +561,7 @@ the <code class="literal">keyword_marker</code> token filter from the custom ana
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="arabic-analyzer"></a><code class="literal">arabic</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="arabic-analyzer"></a><code class="literal">arabic</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">arabic</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
@@ -572,11 +572,11 @@ the <code class="literal">keyword_marker</code> token filter from the custom ana
       "filter": {
         "arabic_stop": {
           "type":       "stop",
-          "stopwords":  "_arabic_" <a id="CO120-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_arabic_" <a id="CO126-1"></a><i class="conum" data-value="1"></i>
         },
         "arabic_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["مثال"] <a id="CO120-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["مثال"] <a id="CO126-2"></a><i class="conum" data-value="2"></i>
         },
         "arabic_stemmer": {
           "type":       "stemmer",
@@ -600,400 +600,7 @@ the <code class="literal">keyword_marker</code> token filter from the custom ana
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/322.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO120-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO120-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="armenian-analyzer"></a><code class="literal">armenian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">armenian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /armenian_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "armenian_stop": {
-          "type":       "stop",
-          "stopwords":  "_armenian_" <a id="CO121-1"></a><i class="conum" data-value="1"></i>
-        },
-        "armenian_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["օրինակ"] <a id="CO121-2"></a><i class="conum" data-value="2"></i>
-        },
-        "armenian_stemmer": {
-          "type":       "stemmer",
-          "language":   "armenian"
-        }
-      },
-      "analyzer": {
-        "rebuilt_armenian": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "armenian_stop",
-            "armenian_keywords",
-            "armenian_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/323.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO121-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO121-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="basque-analyzer"></a><code class="literal">basque</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">basque</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /basque_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "basque_stop": {
-          "type":       "stop",
-          "stopwords":  "_basque_" <a id="CO122-1"></a><i class="conum" data-value="1"></i>
-        },
-        "basque_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["Adibidez"] <a id="CO122-2"></a><i class="conum" data-value="2"></i>
-        },
-        "basque_stemmer": {
-          "type":       "stemmer",
-          "language":   "basque"
-        }
-      },
-      "analyzer": {
-        "rebuilt_basque": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "basque_stop",
-            "basque_keywords",
-            "basque_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/324.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO122-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO122-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="bengali-analyzer"></a><code class="literal">bengali</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">bengali</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /bengali_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "bengali_stop": {
-          "type":       "stop",
-          "stopwords":  "_bengali_" <a id="CO123-1"></a><i class="conum" data-value="1"></i>
-        },
-        "bengali_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["উদাহরণ"] <a id="CO123-2"></a><i class="conum" data-value="2"></i>
-        },
-        "bengali_stemmer": {
-          "type":       "stemmer",
-          "language":   "bengali"
-        }
-      },
-      "analyzer": {
-        "rebuilt_bengali": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "decimal_digit",
-            "bengali_keywords",
-            "indic_normalization",
-            "bengali_normalization",
-            "bengali_stop",
-            "bengali_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/325.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO123-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO123-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="brazilian-analyzer"></a><code class="literal">brazilian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">brazilian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /brazilian_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "brazilian_stop": {
-          "type":       "stop",
-          "stopwords":  "_brazilian_" <a id="CO124-1"></a><i class="conum" data-value="1"></i>
-        },
-        "brazilian_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["exemplo"] <a id="CO124-2"></a><i class="conum" data-value="2"></i>
-        },
-        "brazilian_stemmer": {
-          "type":       "stemmer",
-          "language":   "brazilian"
-        }
-      },
-      "analyzer": {
-        "rebuilt_brazilian": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "brazilian_stop",
-            "brazilian_keywords",
-            "brazilian_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/326.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO124-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO124-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="bulgarian-analyzer"></a><code class="literal">bulgarian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">bulgarian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /bulgarian_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "bulgarian_stop": {
-          "type":       "stop",
-          "stopwords":  "_bulgarian_" <a id="CO125-1"></a><i class="conum" data-value="1"></i>
-        },
-        "bulgarian_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["пример"] <a id="CO125-2"></a><i class="conum" data-value="2"></i>
-        },
-        "bulgarian_stemmer": {
-          "type":       "stemmer",
-          "language":   "bulgarian"
-        }
-      },
-      "analyzer": {
-        "rebuilt_bulgarian": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "bulgarian_stop",
-            "bulgarian_keywords",
-            "bulgarian_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/327.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO125-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO125-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="catalan-analyzer"></a><code class="literal">catalan</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">catalan</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /catalan_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "catalan_elision": {
-          "type":       "elision",
-          "articles":   [ "d", "l", "m", "n", "s", "t"],
-          "articles_case": true
-        },
-        "catalan_stop": {
-          "type":       "stop",
-          "stopwords":  "_catalan_" <a id="CO126-1"></a><i class="conum" data-value="1"></i>
-        },
-        "catalan_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["example"] <a id="CO126-2"></a><i class="conum" data-value="2"></i>
-        },
-        "catalan_stemmer": {
-          "type":       "stemmer",
-          "language":   "catalan"
-        }
-      },
-      "analyzer": {
-        "rebuilt_catalan": {
-          "tokenizer":  "standard",
-          "filter": [
-            "catalan_elision",
-            "lowercase",
-            "catalan_stop",
-            "catalan_keywords",
-            "catalan_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/328.console"></div>
+<div class="console_widget" data-snippet="snippets/378.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -1020,41 +627,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="cjk-analyzer"></a><code class="literal">cjk</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="armenian-analyzer"></a><code class="literal">armenian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<div class="note admon">
-<div class="icon"></div>
-<div class="admon_content">
-<p>You may find that <code class="literal">icu_analyzer</code> in the ICU analysis plugin works better
-for CJK text than the <code class="literal">cjk</code> analyzer.  Experiment with your text and queries.</p>
-</div>
-</div>
-<p>The <code class="literal">cjk</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">armenian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /cjk_example
+<pre class="programlisting prettyprint lang-console">PUT /armenian_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "english_stop": {
+        "armenian_stop": {
           "type":       "stop",
-          "stopwords":  [ <a id="CO127-1"></a><i class="conum" data-value="1"></i>
-            "a", "and", "are", "as", "at", "be", "but", "by", "for",
-            "if", "in", "into", "is", "it", "no", "not", "of", "on",
-            "or", "s", "such", "t", "that", "the", "their", "then",
-            "there", "these", "they", "this", "to", "was", "will",
-            "with", "www"
-          ]
+          "stopwords":  "_armenian_" <a id="CO127-1"></a><i class="conum" data-value="1"></i>
+        },
+        "armenian_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["օրինակ"] <a id="CO127-2"></a><i class="conum" data-value="2"></i>
+        },
+        "armenian_stemmer": {
+          "type":       "stemmer",
+          "language":   "armenian"
         }
       },
       "analyzer": {
-        "rebuilt_cjk": {
+        "rebuilt_armenian": {
           "tokenizer":  "standard",
           "filter": [
-            "cjk_width",
             "lowercase",
-            "cjk_bigram",
-            "english_stop"
+            "armenian_stop",
+            "armenian_keywords",
+            "armenian_stemmer"
           ]
         }
       }
@@ -1062,7 +664,7 @@ for CJK text than the <code class="literal">cjk</code> analyzer.  Experiment wit
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/329.console"></div>
+<div class="console_widget" data-snippet="snippets/379.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -1071,9 +673,16 @@ for CJK text than the <code class="literal">cjk</code> analyzer.  Experiment wit
 </td>
 <td align="left" valign="top">
 <p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters. The default stop words are
-<span class="strong strong"><strong>almost</strong></span> the same as the <code class="literal">_english_</code> set, but not exactly
-the same.</p>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO127-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
 </td>
 </tr>
 </table>
@@ -1082,36 +691,36 @@ the same.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="czech-analyzer"></a><code class="literal">czech</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="basque-analyzer"></a><code class="literal">basque</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">czech</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">basque</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /czech_example
+<pre class="programlisting prettyprint lang-console">PUT /basque_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "czech_stop": {
+        "basque_stop": {
           "type":       "stop",
-          "stopwords":  "_czech_" <a id="CO128-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_basque_" <a id="CO128-1"></a><i class="conum" data-value="1"></i>
         },
-        "czech_keywords": {
+        "basque_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["příklad"] <a id="CO128-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["Adibidez"] <a id="CO128-2"></a><i class="conum" data-value="2"></i>
         },
-        "czech_stemmer": {
+        "basque_stemmer": {
           "type":       "stemmer",
-          "language":   "czech"
+          "language":   "basque"
         }
       },
       "analyzer": {
-        "rebuilt_czech": {
+        "rebuilt_basque": {
           "tokenizer":  "standard",
           "filter": [
             "lowercase",
-            "czech_stop",
-            "czech_keywords",
-            "czech_stemmer"
+            "basque_stop",
+            "basque_keywords",
+            "basque_stemmer"
           ]
         }
       }
@@ -1119,7 +728,7 @@ the same.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/330.console"></div>
+<div class="console_widget" data-snippet="snippets/380.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -1146,36 +755,39 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="danish-analyzer"></a><code class="literal">danish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="bengali-analyzer"></a><code class="literal">bengali</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">danish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">bengali</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /danish_example
+<pre class="programlisting prettyprint lang-console">PUT /bengali_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "danish_stop": {
+        "bengali_stop": {
           "type":       "stop",
-          "stopwords":  "_danish_" <a id="CO129-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_bengali_" <a id="CO129-1"></a><i class="conum" data-value="1"></i>
         },
-        "danish_keywords": {
+        "bengali_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["eksempel"] <a id="CO129-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["উদাহরণ"] <a id="CO129-2"></a><i class="conum" data-value="2"></i>
         },
-        "danish_stemmer": {
+        "bengali_stemmer": {
           "type":       "stemmer",
-          "language":   "danish"
+          "language":   "bengali"
         }
       },
       "analyzer": {
-        "rebuilt_danish": {
+        "rebuilt_bengali": {
           "tokenizer":  "standard",
           "filter": [
             "lowercase",
-            "danish_stop",
-            "danish_keywords",
-            "danish_stemmer"
+            "decimal_digit",
+            "bengali_keywords",
+            "indic_normalization",
+            "bengali_normalization",
+            "bengali_stop",
+            "bengali_stemmer"
           ]
         }
       }
@@ -1183,7 +795,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/331.console"></div>
+<div class="console_widget" data-snippet="snippets/381.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -1210,7 +822,395 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="dutch-analyzer"></a><code class="literal">dutch</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="brazilian-analyzer"></a><code class="literal">brazilian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">brazilian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /brazilian_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "brazilian_stop": {
+          "type":       "stop",
+          "stopwords":  "_brazilian_" <a id="CO130-1"></a><i class="conum" data-value="1"></i>
+        },
+        "brazilian_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["exemplo"] <a id="CO130-2"></a><i class="conum" data-value="2"></i>
+        },
+        "brazilian_stemmer": {
+          "type":       "stemmer",
+          "language":   "brazilian"
+        }
+      },
+      "analyzer": {
+        "rebuilt_brazilian": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "brazilian_stop",
+            "brazilian_keywords",
+            "brazilian_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/382.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO130-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO130-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="bulgarian-analyzer"></a><code class="literal">bulgarian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">bulgarian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /bulgarian_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "bulgarian_stop": {
+          "type":       "stop",
+          "stopwords":  "_bulgarian_" <a id="CO131-1"></a><i class="conum" data-value="1"></i>
+        },
+        "bulgarian_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["пример"] <a id="CO131-2"></a><i class="conum" data-value="2"></i>
+        },
+        "bulgarian_stemmer": {
+          "type":       "stemmer",
+          "language":   "bulgarian"
+        }
+      },
+      "analyzer": {
+        "rebuilt_bulgarian": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "bulgarian_stop",
+            "bulgarian_keywords",
+            "bulgarian_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/383.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO131-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO131-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="catalan-analyzer"></a><code class="literal">catalan</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">catalan</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /catalan_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "catalan_elision": {
+          "type":       "elision",
+          "articles":   [ "d", "l", "m", "n", "s", "t"],
+          "articles_case": true
+        },
+        "catalan_stop": {
+          "type":       "stop",
+          "stopwords":  "_catalan_" <a id="CO132-1"></a><i class="conum" data-value="1"></i>
+        },
+        "catalan_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["example"] <a id="CO132-2"></a><i class="conum" data-value="2"></i>
+        },
+        "catalan_stemmer": {
+          "type":       "stemmer",
+          "language":   "catalan"
+        }
+      },
+      "analyzer": {
+        "rebuilt_catalan": {
+          "tokenizer":  "standard",
+          "filter": [
+            "catalan_elision",
+            "lowercase",
+            "catalan_stop",
+            "catalan_keywords",
+            "catalan_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/384.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO132-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO132-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="cjk-analyzer"></a><code class="literal">cjk</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>You may find that <code class="literal">icu_analyzer</code> in the ICU analysis plugin works better
+for CJK text than the <code class="literal">cjk</code> analyzer. Experiment with your text and queries.</p>
+</div>
+</div>
+<p>The <code class="literal">cjk</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /cjk_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "english_stop": {
+          "type":       "stop",
+          "stopwords":  [ <a id="CO133-1"></a><i class="conum" data-value="1"></i>
+            "a", "and", "are", "as", "at", "be", "but", "by", "for",
+            "if", "in", "into", "is", "it", "no", "not", "of", "on",
+            "or", "s", "such", "t", "that", "the", "their", "then",
+            "there", "these", "they", "this", "to", "was", "will",
+            "with", "www"
+          ]
+        }
+      },
+      "analyzer": {
+        "rebuilt_cjk": {
+          "tokenizer":  "standard",
+          "filter": [
+            "cjk_width",
+            "lowercase",
+            "cjk_bigram",
+            "english_stop"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/385.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO133-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters. The default stop words are
+<span class="strong strong"><strong>almost</strong></span> the same as the <code class="literal">_english_</code> set, but not exactly
+the same.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="czech-analyzer"></a><code class="literal">czech</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">czech</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /czech_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "czech_stop": {
+          "type":       "stop",
+          "stopwords":  "_czech_" <a id="CO134-1"></a><i class="conum" data-value="1"></i>
+        },
+        "czech_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["příklad"] <a id="CO134-2"></a><i class="conum" data-value="2"></i>
+        },
+        "czech_stemmer": {
+          "type":       "stemmer",
+          "language":   "czech"
+        }
+      },
+      "analyzer": {
+        "rebuilt_czech": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "czech_stop",
+            "czech_keywords",
+            "czech_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/386.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO134-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO134-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="danish-analyzer"></a><code class="literal">danish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">danish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /danish_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "danish_stop": {
+          "type":       "stop",
+          "stopwords":  "_danish_" <a id="CO135-1"></a><i class="conum" data-value="1"></i>
+        },
+        "danish_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["eksempel"] <a id="CO135-2"></a><i class="conum" data-value="2"></i>
+        },
+        "danish_stemmer": {
+          "type":       "stemmer",
+          "language":   "danish"
+        }
+      },
+      "analyzer": {
+        "rebuilt_danish": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "danish_stop",
+            "danish_keywords",
+            "danish_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/387.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO135-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO135-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="dutch-analyzer"></a><code class="literal">dutch</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">dutch</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
@@ -1221,11 +1221,11 @@ be excluded from stemming.</p>
       "filter": {
         "dutch_stop": {
           "type":       "stop",
-          "stopwords":  "_dutch_" <a id="CO130-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_dutch_" <a id="CO136-1"></a><i class="conum" data-value="1"></i>
         },
         "dutch_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["voorbeeld"] <a id="CO130-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["voorbeeld"] <a id="CO136-2"></a><i class="conum" data-value="2"></i>
         },
         "dutch_stemmer": {
           "type":       "stemmer",
@@ -1257,407 +1257,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/332.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO130-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO130-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="english-analyzer"></a><code class="literal">english</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">english</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /english_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "english_stop": {
-          "type":       "stop",
-          "stopwords":  "_english_" <a id="CO131-1"></a><i class="conum" data-value="1"></i>
-        },
-        "english_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["example"] <a id="CO131-2"></a><i class="conum" data-value="2"></i>
-        },
-        "english_stemmer": {
-          "type":       "stemmer",
-          "language":   "english"
-        },
-        "english_possessive_stemmer": {
-          "type":       "stemmer",
-          "language":   "possessive_english"
-        }
-      },
-      "analyzer": {
-        "rebuilt_english": {
-          "tokenizer":  "standard",
-          "filter": [
-            "english_possessive_stemmer",
-            "lowercase",
-            "english_stop",
-            "english_keywords",
-            "english_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/333.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO131-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO131-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="estonian-analyzer"></a><code class="literal">estonian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">estonian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /estonian_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "estonian_stop": {
-          "type":       "stop",
-          "stopwords":  "_estonian_" <a id="CO132-1"></a><i class="conum" data-value="1"></i>
-        },
-        "estonian_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["näide"] <a id="CO132-2"></a><i class="conum" data-value="2"></i>
-        },
-        "estonian_stemmer": {
-          "type":       "stemmer",
-          "language":   "estonian"
-        }
-      },
-      "analyzer": {
-        "rebuilt_estonian": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "estonian_stop",
-            "estonian_keywords",
-            "estonian_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/334.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO132-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO132-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="finnish-analyzer"></a><code class="literal">finnish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">finnish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /finnish_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "finnish_stop": {
-          "type":       "stop",
-          "stopwords":  "_finnish_" <a id="CO133-1"></a><i class="conum" data-value="1"></i>
-        },
-        "finnish_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["esimerkki"] <a id="CO133-2"></a><i class="conum" data-value="2"></i>
-        },
-        "finnish_stemmer": {
-          "type":       "stemmer",
-          "language":   "finnish"
-        }
-      },
-      "analyzer": {
-        "rebuilt_finnish": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "finnish_stop",
-            "finnish_keywords",
-            "finnish_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/335.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO133-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO133-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="french-analyzer"></a><code class="literal">french</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">french</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /french_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "french_elision": {
-          "type":         "elision",
-          "articles_case": true,
-          "articles": [
-              "l", "m", "t", "qu", "n", "s",
-              "j", "d", "c", "jusqu", "quoiqu",
-              "lorsqu", "puisqu"
-            ]
-        },
-        "french_stop": {
-          "type":       "stop",
-          "stopwords":  "_french_" <a id="CO134-1"></a><i class="conum" data-value="1"></i>
-        },
-        "french_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["Example"] <a id="CO134-2"></a><i class="conum" data-value="2"></i>
-        },
-        "french_stemmer": {
-          "type":       "stemmer",
-          "language":   "light_french"
-        }
-      },
-      "analyzer": {
-        "rebuilt_french": {
-          "tokenizer":  "standard",
-          "filter": [
-            "french_elision",
-            "lowercase",
-            "french_stop",
-            "french_keywords",
-            "french_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/336.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO134-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO134-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="galician-analyzer"></a><code class="literal">galician</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">galician</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /galician_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "galician_stop": {
-          "type":       "stop",
-          "stopwords":  "_galician_" <a id="CO135-1"></a><i class="conum" data-value="1"></i>
-        },
-        "galician_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["exemplo"] <a id="CO135-2"></a><i class="conum" data-value="2"></i>
-        },
-        "galician_stemmer": {
-          "type":       "stemmer",
-          "language":   "galician"
-        }
-      },
-      "analyzer": {
-        "rebuilt_galician": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "galician_stop",
-            "galician_keywords",
-            "galician_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/337.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO135-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO135-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
-</td>
-</tr>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h4 class="title"><a id="german-analyzer"></a><code class="literal">german</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
-</div></div></div>
-<p>The <code class="literal">german</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /german_example
-{
-  "settings": {
-    "analysis": {
-      "filter": {
-        "german_stop": {
-          "type":       "stop",
-          "stopwords":  "_german_" <a id="CO136-1"></a><i class="conum" data-value="1"></i>
-        },
-        "german_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["Beispiel"] <a id="CO136-2"></a><i class="conum" data-value="2"></i>
-        },
-        "german_stemmer": {
-          "type":       "stemmer",
-          "language":   "light_german"
-        }
-      },
-      "analyzer": {
-        "rebuilt_german": {
-          "tokenizer":  "standard",
-          "filter": [
-            "lowercase",
-            "german_stop",
-            "german_keywords",
-            "german_normalization",
-            "german_stemmer"
-          ]
-        }
-      }
-    }
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/338.console"></div>
+<div class="console_widget" data-snippet="snippets/388.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -1684,40 +1284,41 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="greek-analyzer"></a><code class="literal">greek</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="english-analyzer"></a><code class="literal">english</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">greek</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">english</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /greek_example
+<pre class="programlisting prettyprint lang-console">PUT /english_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "greek_stop": {
+        "english_stop": {
           "type":       "stop",
-          "stopwords":  "_greek_" <a id="CO137-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_english_" <a id="CO137-1"></a><i class="conum" data-value="1"></i>
         },
-        "greek_lowercase": {
-          "type":       "lowercase",
-          "language":   "greek"
-        },
-        "greek_keywords": {
+        "english_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["παράδειγμα"] <a id="CO137-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["example"] <a id="CO137-2"></a><i class="conum" data-value="2"></i>
         },
-        "greek_stemmer": {
+        "english_stemmer": {
           "type":       "stemmer",
-          "language":   "greek"
+          "language":   "english"
+        },
+        "english_possessive_stemmer": {
+          "type":       "stemmer",
+          "language":   "possessive_english"
         }
       },
       "analyzer": {
-        "rebuilt_greek": {
+        "rebuilt_english": {
           "tokenizer":  "standard",
           "filter": [
-            "greek_lowercase",
-            "greek_stop",
-            "greek_keywords",
-            "greek_stemmer"
+            "english_possessive_stemmer",
+            "lowercase",
+            "english_stop",
+            "english_keywords",
+            "english_stemmer"
           ]
         }
       }
@@ -1725,7 +1326,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/339.console"></div>
+<div class="console_widget" data-snippet="snippets/389.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -1752,39 +1353,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="hindi-analyzer"></a><code class="literal">hindi</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="estonian-analyzer"></a><code class="literal">estonian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">hindi</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">estonian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /hindi_example
+<pre class="programlisting prettyprint lang-console">PUT /estonian_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "hindi_stop": {
+        "estonian_stop": {
           "type":       "stop",
-          "stopwords":  "_hindi_" <a id="CO138-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_estonian_" <a id="CO138-1"></a><i class="conum" data-value="1"></i>
         },
-        "hindi_keywords": {
+        "estonian_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["उदाहरण"] <a id="CO138-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["näide"] <a id="CO138-2"></a><i class="conum" data-value="2"></i>
         },
-        "hindi_stemmer": {
+        "estonian_stemmer": {
           "type":       "stemmer",
-          "language":   "hindi"
+          "language":   "estonian"
         }
       },
       "analyzer": {
-        "rebuilt_hindi": {
+        "rebuilt_estonian": {
           "tokenizer":  "standard",
           "filter": [
             "lowercase",
-            "decimal_digit",
-            "hindi_keywords",
-            "indic_normalization",
-            "hindi_normalization",
-            "hindi_stop",
-            "hindi_stemmer"
+            "estonian_stop",
+            "estonian_keywords",
+            "estonian_stemmer"
           ]
         }
       }
@@ -1792,7 +1390,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/340.console"></div>
+<div class="console_widget" data-snippet="snippets/390.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -1819,36 +1417,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="hungarian-analyzer"></a><code class="literal">hungarian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="finnish-analyzer"></a><code class="literal">finnish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">hungarian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">finnish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /hungarian_example
+<pre class="programlisting prettyprint lang-console">PUT /finnish_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "hungarian_stop": {
+        "finnish_stop": {
           "type":       "stop",
-          "stopwords":  "_hungarian_" <a id="CO139-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_finnish_" <a id="CO139-1"></a><i class="conum" data-value="1"></i>
         },
-        "hungarian_keywords": {
+        "finnish_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["példa"] <a id="CO139-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["esimerkki"] <a id="CO139-2"></a><i class="conum" data-value="2"></i>
         },
-        "hungarian_stemmer": {
+        "finnish_stemmer": {
           "type":       "stemmer",
-          "language":   "hungarian"
+          "language":   "finnish"
         }
       },
       "analyzer": {
-        "rebuilt_hungarian": {
+        "rebuilt_finnish": {
           "tokenizer":  "standard",
           "filter": [
             "lowercase",
-            "hungarian_stop",
-            "hungarian_keywords",
-            "hungarian_stemmer"
+            "finnish_stop",
+            "finnish_keywords",
+            "finnish_stemmer"
           ]
         }
       }
@@ -1856,7 +1454,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/341.console"></div>
+<div class="console_widget" data-snippet="snippets/391.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -1883,36 +1481,46 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="indonesian-analyzer"></a><code class="literal">indonesian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="french-analyzer"></a><code class="literal">french</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">indonesian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">french</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /indonesian_example
+<pre class="programlisting prettyprint lang-console">PUT /french_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "indonesian_stop": {
+        "french_elision": {
+          "type":         "elision",
+          "articles_case": true,
+          "articles": [
+              "l", "m", "t", "qu", "n", "s",
+              "j", "d", "c", "jusqu", "quoiqu",
+              "lorsqu", "puisqu"
+            ]
+        },
+        "french_stop": {
           "type":       "stop",
-          "stopwords":  "_indonesian_" <a id="CO140-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_french_" <a id="CO140-1"></a><i class="conum" data-value="1"></i>
         },
-        "indonesian_keywords": {
+        "french_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["contoh"] <a id="CO140-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["Example"] <a id="CO140-2"></a><i class="conum" data-value="2"></i>
         },
-        "indonesian_stemmer": {
+        "french_stemmer": {
           "type":       "stemmer",
-          "language":   "indonesian"
+          "language":   "light_french"
         }
       },
       "analyzer": {
-        "rebuilt_indonesian": {
+        "rebuilt_french": {
           "tokenizer":  "standard",
           "filter": [
+            "french_elision",
             "lowercase",
-            "indonesian_stop",
-            "indonesian_keywords",
-            "indonesian_stemmer"
+            "french_stop",
+            "french_keywords",
+            "french_stemmer"
           ]
         }
       }
@@ -1920,7 +1528,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/342.console"></div>
+<div class="console_widget" data-snippet="snippets/392.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -1947,52 +1555,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="irish-analyzer"></a><code class="literal">irish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="galician-analyzer"></a><code class="literal">galician</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">irish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">galician</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /irish_example
+<pre class="programlisting prettyprint lang-console">PUT /galician_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "irish_hyphenation": {
+        "galician_stop": {
           "type":       "stop",
-          "stopwords":  [ "h", "n", "t" ],
-          "ignore_case": true
+          "stopwords":  "_galician_" <a id="CO141-1"></a><i class="conum" data-value="1"></i>
         },
-        "irish_elision": {
-          "type":       "elision",
-          "articles":   [ "d", "m", "b" ],
-          "articles_case": true
-        },
-        "irish_stop": {
-          "type":       "stop",
-          "stopwords":  "_irish_" <a id="CO141-1"></a><i class="conum" data-value="1"></i>
-        },
-        "irish_lowercase": {
-          "type":       "lowercase",
-          "language":   "irish"
-        },
-        "irish_keywords": {
+        "galician_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["sampla"] <a id="CO141-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["exemplo"] <a id="CO141-2"></a><i class="conum" data-value="2"></i>
         },
-        "irish_stemmer": {
+        "galician_stemmer": {
           "type":       "stemmer",
-          "language":   "irish"
+          "language":   "galician"
         }
       },
       "analyzer": {
-        "rebuilt_irish": {
+        "rebuilt_galician": {
           "tokenizer":  "standard",
           "filter": [
-            "irish_hyphenation",
-            "irish_elision",
-            "irish_lowercase",
-            "irish_stop",
-            "irish_keywords",
-            "irish_stemmer"
+            "lowercase",
+            "galician_stop",
+            "galician_keywords",
+            "galician_stemmer"
           ]
         }
       }
@@ -2000,7 +1592,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/343.console"></div>
+<div class="console_widget" data-snippet="snippets/393.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2027,47 +1619,37 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="italian-analyzer"></a><code class="literal">italian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="german-analyzer"></a><code class="literal">german</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">italian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">german</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /italian_example
+<pre class="programlisting prettyprint lang-console">PUT /german_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "italian_elision": {
-          "type": "elision",
-          "articles": [
-                "c", "l", "all", "dall", "dell",
-                "nell", "sull", "coll", "pell",
-                "gl", "agl", "dagl", "degl", "negl",
-                "sugl", "un", "m", "t", "s", "v", "d"
-          ],
-          "articles_case": true
-        },
-        "italian_stop": {
+        "german_stop": {
           "type":       "stop",
-          "stopwords":  "_italian_" <a id="CO142-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_german_" <a id="CO142-1"></a><i class="conum" data-value="1"></i>
         },
-        "italian_keywords": {
+        "german_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["esempio"] <a id="CO142-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["Beispiel"] <a id="CO142-2"></a><i class="conum" data-value="2"></i>
         },
-        "italian_stemmer": {
+        "german_stemmer": {
           "type":       "stemmer",
-          "language":   "light_italian"
+          "language":   "light_german"
         }
       },
       "analyzer": {
-        "rebuilt_italian": {
+        "rebuilt_german": {
           "tokenizer":  "standard",
           "filter": [
-            "italian_elision",
             "lowercase",
-            "italian_stop",
-            "italian_keywords",
-            "italian_stemmer"
+            "german_stop",
+            "german_keywords",
+            "german_normalization",
+            "german_stemmer"
           ]
         }
       }
@@ -2075,7 +1657,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/344.console"></div>
+<div class="console_widget" data-snippet="snippets/394.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2102,36 +1684,40 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="latvian-analyzer"></a><code class="literal">latvian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="greek-analyzer"></a><code class="literal">greek</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">latvian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">greek</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /latvian_example
+<pre class="programlisting prettyprint lang-console">PUT /greek_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "latvian_stop": {
+        "greek_stop": {
           "type":       "stop",
-          "stopwords":  "_latvian_" <a id="CO143-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_greek_" <a id="CO143-1"></a><i class="conum" data-value="1"></i>
         },
-        "latvian_keywords": {
+        "greek_lowercase": {
+          "type":       "lowercase",
+          "language":   "greek"
+        },
+        "greek_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["piemērs"] <a id="CO143-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["παράδειγμα"] <a id="CO143-2"></a><i class="conum" data-value="2"></i>
         },
-        "latvian_stemmer": {
+        "greek_stemmer": {
           "type":       "stemmer",
-          "language":   "latvian"
+          "language":   "greek"
         }
       },
       "analyzer": {
-        "rebuilt_latvian": {
+        "rebuilt_greek": {
           "tokenizer":  "standard",
           "filter": [
-            "lowercase",
-            "latvian_stop",
-            "latvian_keywords",
-            "latvian_stemmer"
+            "greek_lowercase",
+            "greek_stop",
+            "greek_keywords",
+            "greek_stemmer"
           ]
         }
       }
@@ -2139,7 +1725,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/345.console"></div>
+<div class="console_widget" data-snippet="snippets/395.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2166,36 +1752,39 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="lithuanian-analyzer"></a><code class="literal">lithuanian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="hindi-analyzer"></a><code class="literal">hindi</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">lithuanian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">hindi</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /lithuanian_example
+<pre class="programlisting prettyprint lang-console">PUT /hindi_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "lithuanian_stop": {
+        "hindi_stop": {
           "type":       "stop",
-          "stopwords":  "_lithuanian_" <a id="CO144-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_hindi_" <a id="CO144-1"></a><i class="conum" data-value="1"></i>
         },
-        "lithuanian_keywords": {
+        "hindi_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["pavyzdys"] <a id="CO144-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["उदाहरण"] <a id="CO144-2"></a><i class="conum" data-value="2"></i>
         },
-        "lithuanian_stemmer": {
+        "hindi_stemmer": {
           "type":       "stemmer",
-          "language":   "lithuanian"
+          "language":   "hindi"
         }
       },
       "analyzer": {
-        "rebuilt_lithuanian": {
+        "rebuilt_hindi": {
           "tokenizer":  "standard",
           "filter": [
             "lowercase",
-            "lithuanian_stop",
-            "lithuanian_keywords",
-            "lithuanian_stemmer"
+            "decimal_digit",
+            "hindi_keywords",
+            "indic_normalization",
+            "hindi_normalization",
+            "hindi_stop",
+            "hindi_stemmer"
           ]
         }
       }
@@ -2203,7 +1792,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/346.console"></div>
+<div class="console_widget" data-snippet="snippets/396.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2230,36 +1819,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="norwegian-analyzer"></a><code class="literal">norwegian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="hungarian-analyzer"></a><code class="literal">hungarian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">norwegian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">hungarian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /norwegian_example
+<pre class="programlisting prettyprint lang-console">PUT /hungarian_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "norwegian_stop": {
+        "hungarian_stop": {
           "type":       "stop",
-          "stopwords":  "_norwegian_" <a id="CO145-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_hungarian_" <a id="CO145-1"></a><i class="conum" data-value="1"></i>
         },
-        "norwegian_keywords": {
+        "hungarian_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["eksempel"] <a id="CO145-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["példa"] <a id="CO145-2"></a><i class="conum" data-value="2"></i>
         },
-        "norwegian_stemmer": {
+        "hungarian_stemmer": {
           "type":       "stemmer",
-          "language":   "norwegian"
+          "language":   "hungarian"
         }
       },
       "analyzer": {
-        "rebuilt_norwegian": {
+        "rebuilt_hungarian": {
           "tokenizer":  "standard",
           "filter": [
             "lowercase",
-            "norwegian_stop",
-            "norwegian_keywords",
-            "norwegian_stemmer"
+            "hungarian_stop",
+            "hungarian_keywords",
+            "hungarian_stemmer"
           ]
         }
       }
@@ -2267,7 +1856,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/347.console"></div>
+<div class="console_widget" data-snippet="snippets/397.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2294,36 +1883,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="persian-analyzer"></a><code class="literal">persian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="indonesian-analyzer"></a><code class="literal">indonesian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">persian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">indonesian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /persian_example
+<pre class="programlisting prettyprint lang-console">PUT /indonesian_example
 {
   "settings": {
     "analysis": {
-      "char_filter": {
-        "zero_width_spaces": {
-            "type":       "mapping",
-            "mappings": [ "\\u200C=&gt;\\u0020"] <a id="CO146-1"></a><i class="conum" data-value="1"></i>
-        }
-      },
       "filter": {
-        "persian_stop": {
+        "indonesian_stop": {
           "type":       "stop",
-          "stopwords":  "_persian_" <a id="CO146-2"></a><i class="conum" data-value="2"></i>
+          "stopwords":  "_indonesian_" <a id="CO146-1"></a><i class="conum" data-value="1"></i>
+        },
+        "indonesian_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["contoh"] <a id="CO146-2"></a><i class="conum" data-value="2"></i>
+        },
+        "indonesian_stemmer": {
+          "type":       "stemmer",
+          "language":   "indonesian"
         }
       },
       "analyzer": {
-        "rebuilt_persian": {
-          "tokenizer":     "standard",
-          "char_filter": [ "zero_width_spaces" ],
+        "rebuilt_indonesian": {
+          "tokenizer":  "standard",
           "filter": [
             "lowercase",
-            "decimal_digit",
-            "arabic_normalization",
-            "persian_normalization",
-            "persian_stop"
+            "indonesian_stop",
+            "indonesian_keywords",
+            "indonesian_stemmer"
           ]
         }
       }
@@ -2331,7 +1920,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/348.console"></div>
+<div class="console_widget" data-snippet="snippets/398.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2339,7 +1928,8 @@ be excluded from stemming.</p>
 <p><a href="#CO146-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>Replaces zero-width non-joiners with an ASCII space.</p>
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
 </td>
 </tr>
 <tr>
@@ -2347,8 +1937,8 @@ be excluded from stemming.</p>
 <p><a href="#CO146-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
 </td>
 </tr>
 </table>
@@ -2357,36 +1947,52 @@ or <code class="literal">stopwords_path</code> parameters.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="portuguese-analyzer"></a><code class="literal">portuguese</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="irish-analyzer"></a><code class="literal">irish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">portuguese</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">irish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /portuguese_example
+<pre class="programlisting prettyprint lang-console">PUT /irish_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "portuguese_stop": {
+        "irish_hyphenation": {
           "type":       "stop",
-          "stopwords":  "_portuguese_" <a id="CO147-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  [ "h", "n", "t" ],
+          "ignore_case": true
         },
-        "portuguese_keywords": {
+        "irish_elision": {
+          "type":       "elision",
+          "articles":   [ "d", "m", "b" ],
+          "articles_case": true
+        },
+        "irish_stop": {
+          "type":       "stop",
+          "stopwords":  "_irish_" <a id="CO147-1"></a><i class="conum" data-value="1"></i>
+        },
+        "irish_lowercase": {
+          "type":       "lowercase",
+          "language":   "irish"
+        },
+        "irish_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["exemplo"] <a id="CO147-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["sampla"] <a id="CO147-2"></a><i class="conum" data-value="2"></i>
         },
-        "portuguese_stemmer": {
+        "irish_stemmer": {
           "type":       "stemmer",
-          "language":   "light_portuguese"
+          "language":   "irish"
         }
       },
       "analyzer": {
-        "rebuilt_portuguese": {
+        "rebuilt_irish": {
           "tokenizer":  "standard",
           "filter": [
-            "lowercase",
-            "portuguese_stop",
-            "portuguese_keywords",
-            "portuguese_stemmer"
+            "irish_hyphenation",
+            "irish_elision",
+            "irish_lowercase",
+            "irish_stop",
+            "irish_keywords",
+            "irish_stemmer"
           ]
         }
       }
@@ -2394,7 +2000,7 @@ or <code class="literal">stopwords_path</code> parameters.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/349.console"></div>
+<div class="console_widget" data-snippet="snippets/399.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2421,36 +2027,47 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="romanian-analyzer"></a><code class="literal">romanian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="italian-analyzer"></a><code class="literal">italian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">romanian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">italian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /romanian_example
+<pre class="programlisting prettyprint lang-console">PUT /italian_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "romanian_stop": {
+        "italian_elision": {
+          "type": "elision",
+          "articles": [
+                "c", "l", "all", "dall", "dell",
+                "nell", "sull", "coll", "pell",
+                "gl", "agl", "dagl", "degl", "negl",
+                "sugl", "un", "m", "t", "s", "v", "d"
+          ],
+          "articles_case": true
+        },
+        "italian_stop": {
           "type":       "stop",
-          "stopwords":  "_romanian_" <a id="CO148-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_italian_" <a id="CO148-1"></a><i class="conum" data-value="1"></i>
         },
-        "romanian_keywords": {
+        "italian_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["exemplu"] <a id="CO148-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["esempio"] <a id="CO148-2"></a><i class="conum" data-value="2"></i>
         },
-        "romanian_stemmer": {
+        "italian_stemmer": {
           "type":       "stemmer",
-          "language":   "romanian"
+          "language":   "light_italian"
         }
       },
       "analyzer": {
-        "rebuilt_romanian": {
+        "rebuilt_italian": {
           "tokenizer":  "standard",
           "filter": [
+            "italian_elision",
             "lowercase",
-            "romanian_stop",
-            "romanian_keywords",
-            "romanian_stemmer"
+            "italian_stop",
+            "italian_keywords",
+            "italian_stemmer"
           ]
         }
       }
@@ -2458,7 +2075,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/350.console"></div>
+<div class="console_widget" data-snippet="snippets/400.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2485,36 +2102,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="russian-analyzer"></a><code class="literal">russian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="latvian-analyzer"></a><code class="literal">latvian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">russian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">latvian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /russian_example
+<pre class="programlisting prettyprint lang-console">PUT /latvian_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "russian_stop": {
+        "latvian_stop": {
           "type":       "stop",
-          "stopwords":  "_russian_" <a id="CO149-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_latvian_" <a id="CO149-1"></a><i class="conum" data-value="1"></i>
         },
-        "russian_keywords": {
+        "latvian_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["пример"] <a id="CO149-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["piemērs"] <a id="CO149-2"></a><i class="conum" data-value="2"></i>
         },
-        "russian_stemmer": {
+        "latvian_stemmer": {
           "type":       "stemmer",
-          "language":   "russian"
+          "language":   "latvian"
         }
       },
       "analyzer": {
-        "rebuilt_russian": {
+        "rebuilt_latvian": {
           "tokenizer":  "standard",
           "filter": [
             "lowercase",
-            "russian_stop",
-            "russian_keywords",
-            "russian_stemmer"
+            "latvian_stop",
+            "latvian_keywords",
+            "latvian_stemmer"
           ]
         }
       }
@@ -2522,7 +2139,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/351.console"></div>
+<div class="console_widget" data-snippet="snippets/401.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2549,38 +2166,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="sorani-analyzer"></a><code class="literal">sorani</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="lithuanian-analyzer"></a><code class="literal">lithuanian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">sorani</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">lithuanian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /sorani_example
+<pre class="programlisting prettyprint lang-console">PUT /lithuanian_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "sorani_stop": {
+        "lithuanian_stop": {
           "type":       "stop",
-          "stopwords":  "_sorani_" <a id="CO150-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_lithuanian_" <a id="CO150-1"></a><i class="conum" data-value="1"></i>
         },
-        "sorani_keywords": {
+        "lithuanian_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["mînak"] <a id="CO150-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["pavyzdys"] <a id="CO150-2"></a><i class="conum" data-value="2"></i>
         },
-        "sorani_stemmer": {
+        "lithuanian_stemmer": {
           "type":       "stemmer",
-          "language":   "sorani"
+          "language":   "lithuanian"
         }
       },
       "analyzer": {
-        "rebuilt_sorani": {
+        "rebuilt_lithuanian": {
           "tokenizer":  "standard",
           "filter": [
-            "sorani_normalization",
             "lowercase",
-            "decimal_digit",
-            "sorani_stop",
-            "sorani_keywords",
-            "sorani_stemmer"
+            "lithuanian_stop",
+            "lithuanian_keywords",
+            "lithuanian_stemmer"
           ]
         }
       }
@@ -2588,7 +2203,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/352.console"></div>
+<div class="console_widget" data-snippet="snippets/402.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2615,36 +2230,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="spanish-analyzer"></a><code class="literal">spanish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="norwegian-analyzer"></a><code class="literal">norwegian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">spanish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">norwegian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /spanish_example
+<pre class="programlisting prettyprint lang-console">PUT /norwegian_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "spanish_stop": {
+        "norwegian_stop": {
           "type":       "stop",
-          "stopwords":  "_spanish_" <a id="CO151-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_norwegian_" <a id="CO151-1"></a><i class="conum" data-value="1"></i>
         },
-        "spanish_keywords": {
+        "norwegian_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["ejemplo"] <a id="CO151-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["eksempel"] <a id="CO151-2"></a><i class="conum" data-value="2"></i>
         },
-        "spanish_stemmer": {
+        "norwegian_stemmer": {
           "type":       "stemmer",
-          "language":   "light_spanish"
+          "language":   "norwegian"
         }
       },
       "analyzer": {
-        "rebuilt_spanish": {
+        "rebuilt_norwegian": {
           "tokenizer":  "standard",
           "filter": [
             "lowercase",
-            "spanish_stop",
-            "spanish_keywords",
-            "spanish_stemmer"
+            "norwegian_stop",
+            "norwegian_keywords",
+            "norwegian_stemmer"
           ]
         }
       }
@@ -2652,7 +2267,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/353.console"></div>
+<div class="console_widget" data-snippet="snippets/403.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2679,36 +2294,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="swedish-analyzer"></a><code class="literal">swedish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="persian-analyzer"></a><code class="literal">persian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">swedish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">persian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /swedish_example
+<pre class="programlisting prettyprint lang-console">PUT /persian_example
 {
   "settings": {
     "analysis": {
+      "char_filter": {
+        "zero_width_spaces": {
+            "type":       "mapping",
+            "mappings": [ "\\u200C=&gt;\\u0020"] <a id="CO152-1"></a><i class="conum" data-value="1"></i>
+        }
+      },
       "filter": {
-        "swedish_stop": {
+        "persian_stop": {
           "type":       "stop",
-          "stopwords":  "_swedish_" <a id="CO152-1"></a><i class="conum" data-value="1"></i>
-        },
-        "swedish_keywords": {
-          "type":       "keyword_marker",
-          "keywords":   ["exempel"] <a id="CO152-2"></a><i class="conum" data-value="2"></i>
-        },
-        "swedish_stemmer": {
-          "type":       "stemmer",
-          "language":   "swedish"
+          "stopwords":  "_persian_" <a id="CO152-2"></a><i class="conum" data-value="2"></i>
         }
       },
       "analyzer": {
-        "rebuilt_swedish": {
-          "tokenizer":  "standard",
+        "rebuilt_persian": {
+          "tokenizer":     "standard",
+          "char_filter": [ "zero_width_spaces" ],
           "filter": [
             "lowercase",
-            "swedish_stop",
-            "swedish_keywords",
-            "swedish_stemmer"
+            "decimal_digit",
+            "arabic_normalization",
+            "persian_normalization",
+            "persian_stop"
           ]
         }
       }
@@ -2716,7 +2331,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/354.console"></div>
+<div class="console_widget" data-snippet="snippets/404.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2724,8 +2339,7 @@ be excluded from stemming.</p>
 <p><a href="#CO152-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
-or <code class="literal">stopwords_path</code> parameters.</p>
+<p>Replaces zero-width non-joiners with an ASCII space.</p>
 </td>
 </tr>
 <tr>
@@ -2733,8 +2347,8 @@ or <code class="literal">stopwords_path</code> parameters.</p>
 <p><a href="#CO152-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>This filter should be removed unless there are words which should
-be excluded from stemming.</p>
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
 </td>
 </tr>
 </table>
@@ -2743,41 +2357,36 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="turkish-analyzer"></a><code class="literal">turkish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="portuguese-analyzer"></a><code class="literal">portuguese</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
-<p>The <code class="literal">turkish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<p>The <code class="literal">portuguese</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">PUT /turkish_example
+<pre class="programlisting prettyprint lang-console">PUT /portuguese_example
 {
   "settings": {
     "analysis": {
       "filter": {
-        "turkish_stop": {
+        "portuguese_stop": {
           "type":       "stop",
-          "stopwords":  "_turkish_" <a id="CO153-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_portuguese_" <a id="CO153-1"></a><i class="conum" data-value="1"></i>
         },
-        "turkish_lowercase": {
-          "type":       "lowercase",
-          "language":   "turkish"
-        },
-        "turkish_keywords": {
+        "portuguese_keywords": {
           "type":       "keyword_marker",
-          "keywords":   ["örnek"] <a id="CO153-2"></a><i class="conum" data-value="2"></i>
+          "keywords":   ["exemplo"] <a id="CO153-2"></a><i class="conum" data-value="2"></i>
         },
-        "turkish_stemmer": {
+        "portuguese_stemmer": {
           "type":       "stemmer",
-          "language":   "turkish"
+          "language":   "light_portuguese"
         }
       },
       "analyzer": {
-        "rebuilt_turkish": {
+        "rebuilt_portuguese": {
           "tokenizer":  "standard",
           "filter": [
-            "apostrophe",
-            "turkish_lowercase",
-            "turkish_stop",
-            "turkish_keywords",
-            "turkish_stemmer"
+            "lowercase",
+            "portuguese_stop",
+            "portuguese_keywords",
+            "portuguese_stemmer"
           ]
         }
       }
@@ -2785,7 +2394,7 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/355.console"></div>
+<div class="console_widget" data-snippet="snippets/405.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
@@ -2812,7 +2421,398 @@ be excluded from stemming.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="thai-analyzer"></a><code class="literal">thai</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+<h4 class="title"><a id="romanian-analyzer"></a><code class="literal">romanian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">romanian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /romanian_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "romanian_stop": {
+          "type":       "stop",
+          "stopwords":  "_romanian_" <a id="CO154-1"></a><i class="conum" data-value="1"></i>
+        },
+        "romanian_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["exemplu"] <a id="CO154-2"></a><i class="conum" data-value="2"></i>
+        },
+        "romanian_stemmer": {
+          "type":       "stemmer",
+          "language":   "romanian"
+        }
+      },
+      "analyzer": {
+        "rebuilt_romanian": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "romanian_stop",
+            "romanian_keywords",
+            "romanian_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/406.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO154-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO154-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="russian-analyzer"></a><code class="literal">russian</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">russian</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /russian_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "russian_stop": {
+          "type":       "stop",
+          "stopwords":  "_russian_" <a id="CO155-1"></a><i class="conum" data-value="1"></i>
+        },
+        "russian_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["пример"] <a id="CO155-2"></a><i class="conum" data-value="2"></i>
+        },
+        "russian_stemmer": {
+          "type":       "stemmer",
+          "language":   "russian"
+        }
+      },
+      "analyzer": {
+        "rebuilt_russian": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "russian_stop",
+            "russian_keywords",
+            "russian_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/407.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO155-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO155-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="sorani-analyzer"></a><code class="literal">sorani</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">sorani</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /sorani_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "sorani_stop": {
+          "type":       "stop",
+          "stopwords":  "_sorani_" <a id="CO156-1"></a><i class="conum" data-value="1"></i>
+        },
+        "sorani_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["mînak"] <a id="CO156-2"></a><i class="conum" data-value="2"></i>
+        },
+        "sorani_stemmer": {
+          "type":       "stemmer",
+          "language":   "sorani"
+        }
+      },
+      "analyzer": {
+        "rebuilt_sorani": {
+          "tokenizer":  "standard",
+          "filter": [
+            "sorani_normalization",
+            "lowercase",
+            "decimal_digit",
+            "sorani_stop",
+            "sorani_keywords",
+            "sorani_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/408.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO156-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO156-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="spanish-analyzer"></a><code class="literal">spanish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">spanish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /spanish_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "spanish_stop": {
+          "type":       "stop",
+          "stopwords":  "_spanish_" <a id="CO157-1"></a><i class="conum" data-value="1"></i>
+        },
+        "spanish_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["ejemplo"] <a id="CO157-2"></a><i class="conum" data-value="2"></i>
+        },
+        "spanish_stemmer": {
+          "type":       "stemmer",
+          "language":   "light_spanish"
+        }
+      },
+      "analyzer": {
+        "rebuilt_spanish": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "spanish_stop",
+            "spanish_keywords",
+            "spanish_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/409.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO157-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO157-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="swedish-analyzer"></a><code class="literal">swedish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">swedish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /swedish_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "swedish_stop": {
+          "type":       "stop",
+          "stopwords":  "_swedish_" <a id="CO158-1"></a><i class="conum" data-value="1"></i>
+        },
+        "swedish_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["exempel"] <a id="CO158-2"></a><i class="conum" data-value="2"></i>
+        },
+        "swedish_stemmer": {
+          "type":       "stemmer",
+          "language":   "swedish"
+        }
+      },
+      "analyzer": {
+        "rebuilt_swedish": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "swedish_stop",
+            "swedish_keywords",
+            "swedish_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/410.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO158-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO158-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="turkish-analyzer"></a><code class="literal">turkish</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
+</div></div></div>
+<p>The <code class="literal">turkish</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /turkish_example
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "turkish_stop": {
+          "type":       "stop",
+          "stopwords":  "_turkish_" <a id="CO159-1"></a><i class="conum" data-value="1"></i>
+        },
+        "turkish_lowercase": {
+          "type":       "lowercase",
+          "language":   "turkish"
+        },
+        "turkish_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["örnek"] <a id="CO159-2"></a><i class="conum" data-value="2"></i>
+        },
+        "turkish_stemmer": {
+          "type":       "stemmer",
+          "language":   "turkish"
+        }
+      },
+      "analyzer": {
+        "rebuilt_turkish": {
+          "tokenizer":  "standard",
+          "filter": [
+            "apostrophe",
+            "turkish_lowercase",
+            "turkish_stop",
+            "turkish_keywords",
+            "turkish_stemmer"
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/411.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO159-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
+or <code class="literal">stopwords_path</code> parameters.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO159-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>This filter should be removed unless there are words which should
+be excluded from stemming.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="thai-analyzer"></a><code class="literal">thai</code> analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/lang-analyzer.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">thai</code> analyzer could be reimplemented as a <code class="literal">custom</code> analyzer as follows:</p>
 <div class="pre_wrapper lang-console">
@@ -2823,7 +2823,7 @@ be excluded from stemming.</p>
       "filter": {
         "thai_stop": {
           "type":       "stop",
-          "stopwords":  "_thai_" <a id="CO154-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_thai_" <a id="CO160-1"></a><i class="conum" data-value="1"></i>
         }
       },
       "analyzer": {
@@ -2840,12 +2840,12 @@ be excluded from stemming.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/356.console"></div>
+<div class="console_widget" data-snippet="snippets/412.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO154-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO160-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
@@ -2862,7 +2862,7 @@ or <code class="literal">stopwords_path</code> parameters.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-pattern-analyzer"></a>Pattern analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-pattern-analyzer"></a>Pattern analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">pattern</code> analyzer uses a regular expression to split the text into terms.
@@ -2879,7 +2879,7 @@ StackOverflowError and cause the node it is running on to exit suddenly.</p>
 <p>Read more about <a href="https://www.regular-expressions.info/catastrophic.html" class="ulink" target="_top">pathological regular expressions and how to avoid them</a>.</p>
 </div>
 </div>
-<h3><a id="_example_output_3"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_3"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -2887,12 +2887,12 @@ StackOverflowError and cause the node it is running on to exit suddenly.</p>
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/357.console"></div>
+<div class="console_widget" data-snippet="snippets/413.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ the, 2, quick, brown, foxes, jumped, over, the, lazy, dog, s, bone ]</pre>
 </div>
-<h3><a id="_configuration_4"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_4"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h3>
 <p>The <code class="literal">pattern</code> analyzer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -2946,8 +2946,8 @@ Should terms be lowercased or not. Defaults to <code class="literal">true</code>
 </td>
 <td valign="top">
 <p>
-A pre-defined stop words list like <code class="literal">_english_</code> or an array  containing a
-list of stop words.  Defaults to <code class="literal">_none_</code>.
+A pre-defined stop words list like <code class="literal">_english_</code> or an array containing a
+list of stop words. Defaults to <code class="literal">_none_</code>.
 </p>
 </td>
 </tr>
@@ -2968,7 +2968,7 @@ The path to a file containing stop words.
 </div>
 <p>See the <a class="xref" href="analysis-tokenfilters.html#analysis-stop-tokenfilter" title="Stop token filter">Stop Token Filter</a> for more information
 about stop word configuration.</p>
-<h3><a id="_example_configuration_3"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_3"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">pattern</code> analyzer to split email addresses
 on non-word characters or on underscores (<code class="literal">\W|_</code>), and to lower-case the result:</p>
 <div class="pre_wrapper lang-console">
@@ -2979,7 +2979,7 @@ on non-word characters or on underscores (<code class="literal">\W|_</code>), an
       "analyzer": {
         "my_email_analyzer": {
           "type":      "pattern",
-          "pattern":   "\\W|_", <a id="CO155-1"></a><i class="conum" data-value="1"></i>
+          "pattern":   "\\W|_", <a id="CO161-1"></a><i class="conum" data-value="1"></i>
           "lowercase": true
         }
       }
@@ -2993,12 +2993,12 @@ POST my-index-000001/_analyze
   "text": "John_Smith@foo-bar.com"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/358.console"></div>
+<div class="console_widget" data-snippet="snippets/414.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO155-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO161-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The backslashes in the pattern need to be escaped when specifying the
@@ -3011,7 +3011,7 @@ pattern as a JSON string.</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ john, smith, foo, bar, com ]</pre>
 </div>
-<h4><a id="_camelcase_tokenizer"></a>CamelCase tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h4>
+<h4><a id="_camelcase_tokenizer"></a>CamelCase tokenizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h4>
 <p>The following more complicated example splits CamelCase text into tokens:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT my-index-000001
@@ -3034,7 +3034,7 @@ GET my-index-000001/_analyze
   "text": "MooseX::FTPClass2_beta"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/359.console"></div>
+<div class="console_widget" data-snippet="snippets/415.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ moose, x, ftp, class, 2, beta ]</pre>
@@ -3051,8 +3051,8 @@ GET my-index-000001/_analyze
     [\p{L}&amp;&amp;[^\p{Lu}]]          #   then lower case
   )</pre>
 </div>
-<h3><a id="_definition_3"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h3>
-<p>The <code class="literal">pattern</code> anlayzer consists of:</p>
+<h3><a id="_definition_3"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/pattern-analyzer.asciidoc">edit</a></h3>
+<p>The <code class="literal">pattern</code> analyzer consists of:</p>
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
@@ -3101,14 +3101,14 @@ customization:</p>
       "tokenizer": {
         "split_on_non_word": {
           "type":       "pattern",
-          "pattern":    "\\W+" <a id="CO156-1"></a><i class="conum" data-value="1"></i>
+          "pattern":    "\\W+" <a id="CO162-1"></a><i class="conum" data-value="1"></i>
         }
       },
       "analyzer": {
         "rebuilt_pattern": {
           "tokenizer": "split_on_non_word",
           "filter": [
-            "lowercase"       <a id="CO156-2"></a><i class="conum" data-value="2"></i>
+            "lowercase"       <a id="CO162-2"></a><i class="conum" data-value="2"></i>
           ]
         }
       }
@@ -3116,12 +3116,12 @@ customization:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/360.console"></div>
+<div class="console_widget" data-snippet="snippets/416.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO156-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO162-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The default pattern is <code class="literal">\W+</code> which splits on non-word characters
@@ -3130,7 +3130,7 @@ and this is where you&#8217;d change it.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO156-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO162-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>You&#8217;d add other token filters after <code class="literal">lowercase</code>.</p>
@@ -3142,7 +3142,7 @@ and this is where you&#8217;d change it.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-simple-analyzer"></a>Simple analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/simple-analyzer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-simple-analyzer"></a>Simple analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/simple-analyzer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">simple</code> analyzer breaks text into tokens at any non-letter character, such
@@ -3150,7 +3150,7 @@ as numbers, spaces, hyphens and apostrophes, discards non-letter characters,
 and changes uppercase to lowercase.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-simple-analyzer-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/simple-analyzer.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-simple-analyzer-ex"></a>Example<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/simple-analyzer.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
@@ -3159,7 +3159,7 @@ and changes uppercase to lowercase.</p>
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/361.console"></div>
+<div class="console_widget" data-snippet="snippets/417.console"></div>
 <p>The <code class="literal">simple</code> analyzer parses the sentence and produces the following
 tokens:</p>
 <div class="pre_wrapper lang-text">
@@ -3169,7 +3169,7 @@ tokens:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-simple-analyzer-definition"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/simple-analyzer.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-simple-analyzer-definition"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/simple-analyzer.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The <code class="literal">simple</code> analyzer is defined by one tokenizer:</p>
 <div class="variablelist">
@@ -3194,7 +3194,7 @@ Tokenizer
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="analysis-simple-analyzer-customize"></a>Customize<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/simple-analyzer.asciidoc">edit</a></h3>
+<h3 class="title"><a id="analysis-simple-analyzer-customize"></a>Customize<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/simple-analyzer.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To customize the <code class="literal">simple</code> analyzer, duplicate it to create the basis for
 a custom analyzer. This custom analyzer can be modified as required, usually by
@@ -3207,7 +3207,7 @@ adding token filters.</p>
       "analyzer": {
         "my_custom_simple_analyzer": {
           "tokenizer": "lowercase",
-          "filter": [                          <a id="CO157-1"></a><i class="conum" data-value="1"></i>
+          "filter": [                          <a id="CO163-1"></a><i class="conum" data-value="1"></i>
           ]
         }
       }
@@ -3215,12 +3215,12 @@ adding token filters.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/362.console"></div>
+<div class="console_widget" data-snippet="snippets/418.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO157-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO163-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Add token filters here.</p>
@@ -3234,7 +3234,7 @@ adding token filters.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-standard-analyzer"></a>Standard analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-standard-analyzer"></a>Standard analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">standard</code> analyzer is the default analyzer which is used if none is
@@ -3242,7 +3242,7 @@ specified. It provides grammar based tokenization (based on the Unicode Text
 Segmentation algorithm, as specified in
 <a href="https://unicode.org/reports/tr29/" class="ulink" target="_top">Unicode Standard Annex #29</a>) and works well
 for most languages.</p>
-<h3><a id="_example_output_4"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_4"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -3250,12 +3250,12 @@ for most languages.</p>
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/363.console"></div>
+<div class="console_widget" data-snippet="snippets/419.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ the, 2, quick, brown, foxes, jumped, over, the, lazy, dog's, bone ]</pre>
 </div>
-<h3><a id="_configuration_5"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_5"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h3>
 <p>The <code class="literal">standard</code> analyzer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -3285,8 +3285,8 @@ it is split at <code class="literal">max_token_length</code> intervals. Defaults
 </td>
 <td valign="top">
 <p>
-A pre-defined stop words list like <code class="literal">_english_</code> or an array  containing a
-list of stop words.  Defaults to <code class="literal">_none_</code>.
+A pre-defined stop words list like <code class="literal">_english_</code> or an array containing a
+list of stop words. Defaults to <code class="literal">_none_</code>.
 </p>
 </td>
 </tr>
@@ -3307,7 +3307,7 @@ The path to a file containing stop words.
 </div>
 <p>See the <a class="xref" href="analysis-tokenfilters.html#analysis-stop-tokenfilter" title="Stop token filter">Stop Token Filter</a> for more information
 about stop word configuration.</p>
-<h3><a id="_example_configuration_4"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_4"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">standard</code> analyzer to have a
 <code class="literal">max_token_length</code> of 5 (for demonstration purposes), and to use the
 pre-defined list of English stop words:</p>
@@ -3333,12 +3333,12 @@ POST my-index-000001/_analyze
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/364.console"></div>
+<div class="console_widget" data-snippet="snippets/420.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ 2, quick, brown, foxes, jumpe, d, over, lazy, dog's, bone ]</pre>
 </div>
-<h3><a id="_definition_4"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_definition_4"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/standard-analyzer.asciidoc">edit</a></h3>
 <p>The <code class="literal">standard</code> analyzer consists of:</p>
 <div class="variablelist">
 <dl class="variablelist">
@@ -3388,7 +3388,7 @@ it, usually by adding token filters. This would recreate the built-in
         "rebuilt_standard": {
           "tokenizer": "standard",
           "filter": [
-            "lowercase"       <a id="CO158-1"></a><i class="conum" data-value="1"></i>
+            "lowercase"       <a id="CO164-1"></a><i class="conum" data-value="1"></i>
           ]
         }
       }
@@ -3396,12 +3396,12 @@ it, usually by adding token filters. This would recreate the built-in
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/365.console"></div>
+<div class="console_widget" data-snippet="snippets/421.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO158-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO164-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>You&#8217;d add any token filters after <code class="literal">lowercase</code>.</p>
@@ -3413,13 +3413,13 @@ it, usually by adding token filters. This would recreate the built-in
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-stop-analyzer"></a>Stop analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-stop-analyzer"></a>Stop analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">stop</code> analyzer is the same as the <a class="xref" href="analysis-analyzers.html#analysis-simple-analyzer" title="Simple analyzer"><code class="literal">simple</code> analyzer</a>
-but adds support for removing stop words.  It defaults to using the
+but adds support for removing stop words. It defaults to using the
 <code class="literal">_english_</code> stop words.</p>
-<h3><a id="_example_output_5"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_5"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -3427,12 +3427,12 @@ but adds support for removing stop words.  It defaults to using the
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/366.console"></div>
+<div class="console_widget" data-snippet="snippets/422.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ quick, brown, foxes, jumped, over, lazy, dog, s, bone ]</pre>
 </div>
-<h3><a id="_configuration_6"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_6"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h3>
 <p>The <code class="literal">stop</code> analyzer accepts the following parameters:</p>
 <div class="informaltable">
 <table border="0" cellpadding="4px">
@@ -3449,8 +3449,8 @@ but adds support for removing stop words.  It defaults to using the
 </td>
 <td valign="top">
 <p>
-A pre-defined stop words list like <code class="literal">_english_</code> or an array  containing a
-list of stop words.  Defaults to <code class="literal">_english_</code>.
+A pre-defined stop words list like <code class="literal">_english_</code> or an array containing a
+list of stop words. Defaults to <code class="literal">_english_</code>.
 </p>
 </td>
 </tr>
@@ -3472,7 +3472,7 @@ Elasticsearch <code class="literal">config</code> directory.
 </div>
 <p>See the <a class="xref" href="analysis-tokenfilters.html#analysis-stop-tokenfilter" title="Stop token filter">Stop Token Filter</a> for more information
 about stop word configuration.</p>
-<h3><a id="_example_configuration_5"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_configuration_5"></a>Example configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h3>
 <p>In this example, we configure the <code class="literal">stop</code> analyzer to use a specified list of
 words as stop words:</p>
 <div class="pre_wrapper lang-console">
@@ -3496,12 +3496,12 @@ POST my-index-000001/_analyze
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/367.console"></div>
+<div class="console_widget" data-snippet="snippets/423.console"></div>
 <p>The above example produces the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ quick, brown, foxes, jumped, lazy, dog, s, bone ]</pre>
 </div>
-<h3><a id="_definition_5"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_definition_5"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/stop-analyzer.asciidoc">edit</a></h3>
 <p>It consists of:</p>
 <div class="variablelist">
 <dl class="variablelist">
@@ -3548,14 +3548,14 @@ customization:</p>
       "filter": {
         "english_stop": {
           "type":       "stop",
-          "stopwords":  "_english_" <a id="CO159-1"></a><i class="conum" data-value="1"></i>
+          "stopwords":  "_english_" <a id="CO165-1"></a><i class="conum" data-value="1"></i>
         }
       },
       "analyzer": {
         "rebuilt_stop": {
           "tokenizer": "lowercase",
           "filter": [
-            "english_stop"          <a id="CO159-2"></a><i class="conum" data-value="2"></i>
+            "english_stop"          <a id="CO165-2"></a><i class="conum" data-value="2"></i>
           ]
         }
       }
@@ -3563,12 +3563,12 @@ customization:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/368.console"></div>
+<div class="console_widget" data-snippet="snippets/424.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO159-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO165-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The default stopwords can be overridden with the <code class="literal">stopwords</code>
@@ -3577,7 +3577,7 @@ or <code class="literal">stopwords_path</code> parameters.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO159-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO165-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>You&#8217;d add any token filters after <code class="literal">english_stop</code>.</p>
@@ -3589,12 +3589,12 @@ or <code class="literal">stopwords_path</code> parameters.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="analysis-whitespace-analyzer"></a>Whitespace analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/whitespace-analyzer.asciidoc">edit</a></h2>
+<h2 class="title"><a id="analysis-whitespace-analyzer"></a>Whitespace analyzer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/whitespace-analyzer.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>The <code class="literal">whitespace</code> analyzer breaks text into terms whenever it encounters a
 whitespace character.</p>
-<h3><a id="_example_output_6"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/whitespace-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_example_output_6"></a>Example output<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/whitespace-analyzer.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _analyze
 {
@@ -3602,14 +3602,14 @@ whitespace character.</p>
   "text": "The 2 QUICK Brown-Foxes jumped over the lazy dog's bone."
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/369.console"></div>
+<div class="console_widget" data-snippet="snippets/425.console"></div>
 <p>The above sentence would produce the following terms:</p>
 <div class="pre_wrapper lang-text">
 <pre class="programlisting prettyprint lang-text">[ The, 2, QUICK, Brown-Foxes, jumped, over, the, lazy, dog's, bone. ]</pre>
 </div>
-<h3><a id="_configuration_7"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/whitespace-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_configuration_7"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/whitespace-analyzer.asciidoc">edit</a></h3>
 <p>The <code class="literal">whitespace</code> analyzer is not configurable.</p>
-<h3><a id="_definition_6"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/analysis/analyzers/whitespace-analyzer.asciidoc">edit</a></h3>
+<h3><a id="_definition_6"></a>Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/analysis/analyzers/whitespace-analyzer.asciidoc">edit</a></h3>
 <p>It consists of:</p>
 <div class="variablelist">
 <dl class="variablelist">
@@ -3641,7 +3641,7 @@ and you can use it as a starting point for further customization:</p>
       "analyzer": {
         "rebuilt_whitespace": {
           "tokenizer": "whitespace",
-          "filter": [         <a id="CO160-1"></a><i class="conum" data-value="1"></i>
+          "filter": [         <a id="CO166-1"></a><i class="conum" data-value="1"></i>
           ]
         }
       }
@@ -3649,12 +3649,12 @@ and you can use it as a starting point for further customization:</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/370.console"></div>
+<div class="console_widget" data-snippet="snippets/426.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO160-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO166-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>You&#8217;d add any token filters here.</p>

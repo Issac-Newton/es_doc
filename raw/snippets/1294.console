@@ -1,8 +1,14 @@
-PUT /my_test_scores/_mapping
+PUT /products/_doc/0?refresh
 {
-  "properties": {
-    "total_score": {
-      "type": "long"
+  "name": "LED TV",
+  "resellers": [
+    {
+      "reseller": "companyA",
+      "price": 350
+    },
+    {
+      "reseller": "companyB",
+      "price": 500
     }
-  }
+  ]
 }

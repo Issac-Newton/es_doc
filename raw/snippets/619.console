@@ -1,18 +1,10 @@
-PUT _ingest/pipeline/geoip
+POST /_reindex
 {
-  "description" : "Add geoip info",
-  "processors" : [
-    {
-      "geoip" : {
-        "field" : "ip"
-      }
-    }
-  ]
+  "source": {
+    "index": "archive"
+  },
+  "dest": {
+    "index": "my-data-stream",
+    "op_type": "create"
+  }
 }
-
-PUT my-index-00001/_doc/my_id?pipeline=geoip
-{
-  "ip": "80.231.5.0"
-}
-
-GET my-index-00001/_doc/my_id

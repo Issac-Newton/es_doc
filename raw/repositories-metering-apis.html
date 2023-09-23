@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>Repositories metering APIs | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="Repositories metering APIs | Elasticsearch Guide">
 
@@ -33,7 +34,7 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="repositories-metering-apis"></a>Repositories metering APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/repositories-metering-apis.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="repositories-metering-apis"></a>Repositories metering APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/repositories-metering-apis.asciidoc">edit</a></h2>
 </div></div></div>
 <div class="warning admon">
 <div class="icon"></div>
@@ -55,20 +56,20 @@
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="get-repositories-metering-api"></a>Get repositories metering information<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="get-repositories-metering-api"></a>Get repositories metering information<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Returns cluster repositories metering information.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-repositories-metering-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-repositories-metering-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET /_nodes/&lt;node_id&gt;/_repositories_metering</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-repositories-metering-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-repositories-metering-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -82,7 +83,7 @@ If the Elasticsearch security features are enabled, you must have the <code clas
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-repositories-metering-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-repositories-metering-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a></h3>
 </div></div></div>
 <p>You can use the cluster repositories metering API to retrieve repositories metering information in a cluster.</p>
 <p>This API exposes monotonically non-decreasing counters and it&#8217;s expected that clients would durably store
@@ -92,7 +93,7 @@ exposed by this API is volatile, meaning that it won&#8217;t be present after no
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-repositories-metering-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-repositories-metering-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/get-repositories-metering.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -112,7 +113,7 @@ returned information.
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="get-repositories-metering-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/repositories-meterings-body.asciidoc">edit</a></h3>
+<h3 class="title"><a id="get-repositories-metering-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/repositories-meterings-body.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -171,7 +172,7 @@ is not <code class="literal">0</code>, a reason for the rejection or failure is 
 </dt>
 <dd>
 (string)
-Name of the cluster. Based on the <a class="xref" href="important-settings.html#cluster-name" title="Cluster name setting">Cluster name setting</a> setting.
+Name of the cluster. Based on the <a class="xref" href="settings.html#cluster-name" title="Cluster name setting">Cluster name setting</a> setting.
 </dd>
 <dt>
 <span class="term">
@@ -356,7 +357,7 @@ the repository metering information of previous repository instantiations.
 </dd>
 <dt>
 <span class="term">
-<code class="literal">archive_version</code>
+<code class="literal">cluster_version</code>
 </span>
 </dt>
 <dd>
@@ -539,20 +540,20 @@ requests.
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="clear-repositories-metering-archive-api"></a>Clear repositories metering archive<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="clear-repositories-metering-archive-api"></a>Clear repositories metering archive<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Removes the archived repositories metering information present in the cluster.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="clear-repositories-metering-archive-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
+<h3 class="title"><a id="clear-repositories-metering-archive-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">DELETE /_nodes/&lt;node_id&gt;/_repositories_metering/&lt;max_version_to_clear&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="clear-repositories-metering-archive-ap-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
+<h3 class="title"><a id="clear-repositories-metering-archive-ap-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -566,14 +567,14 @@ If the Elasticsearch security features are enabled, you must have the <code clas
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="clear-repositories-metering-archive-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
+<h3 class="title"><a id="clear-repositories-metering-archive-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
 </div></div></div>
 <p>You can use this API to clear the archived repositories metering information in the cluster.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="clear-repositories-metering-archive-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
+<h3 class="title"><a id="clear-repositories-metering-archive-api-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -601,7 +602,7 @@ returned information.
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="clear-repositories-metering-archive-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
+<h3 class="title"><a id="clear-repositories-metering-archive-api-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/repositories-metering-api/apis/clear-repositories-metering-archive.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Returns the deleted archived repositories metering information.</p>
 <div class="variablelist">
@@ -661,7 +662,7 @@ is not <code class="literal">0</code>, a reason for the rejection or failure is 
 </dt>
 <dd>
 (string)
-Name of the cluster. Based on the <a class="xref" href="important-settings.html#cluster-name" title="Cluster name setting">Cluster name setting</a> setting.
+Name of the cluster. Based on the <a class="xref" href="settings.html#cluster-name" title="Cluster name setting">Cluster name setting</a> setting.
 </dd>
 <dt>
 <span class="term">
@@ -846,7 +847,7 @@ the repository metering information of previous repository instantiations.
 </dd>
 <dt>
 <span class="term">
-<code class="literal">archive_version</code>
+<code class="literal">cluster_version</code>
 </span>
 </dt>
 <dd>

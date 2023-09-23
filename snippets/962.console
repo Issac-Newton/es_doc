@@ -1,11 +1,16 @@
-POST /sales/_search?size=0
+GET /_search?include_named_queries_score
 {
-  "aggs": {
-    "sale_date": {
-      "auto_date_histogram": {
-        "field": "date",
-        "buckets": 10,
-        "minimum_interval": "minute"
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "name.first": { "query": "shay", "_name": "first" } } },
+        { "match": { "name.last": { "query": "banon", "_name": "last" } } }
+      ],
+      "filter": {
+        "terms": {
+          "name.last": [ "banon", "kimchy" ],
+          "_name": "test"
+        }
       }
     }
   }

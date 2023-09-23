@@ -1,16 +1,15 @@
 GET /_search
 {
-  "aggs": {
-    "JapaneseCars": {
-      "terms": {
-        "field": "make",
-        "include": [ "mazda", "honda" ]
-      }
-    },
-    "ActiveCarManufacturers": {
-      "terms": {
-        "field": "make",
-        "exclude": [ "rover", "jensen" ]
+  "query": {
+    "has_parent": {
+      "parent_type": "parent",
+      "score": true,
+      "query": {
+        "function_score": {
+          "script_score": {
+            "script": "_score * doc['view_count'].value"
+          }
+        }
       }
     }
   }

@@ -1,19 +1,9 @@
-GET /items/_search
+POST _render/template
 {
-  "query": {
-    "bool": {
-      "must": {
-        "match": {
-          "name": "chocolate"
-        }
-      },
-      "should": {
-        "distance_feature": {
-          "field": "production_date",
-          "pivot": "7d",
-          "origin": "now"
-        }
-      }
-    }
+  "id": "my-search-template",
+  "params": {
+    "query_string": "hello world",
+    "from": 20,
+    "size": 10
   }
 }

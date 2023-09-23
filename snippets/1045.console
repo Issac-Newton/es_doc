@@ -1,17 +1,15 @@
-GET /_search
+GET /my_locations/_search
 {
-  "aggs": {
-    "price_ranges": {
-      "range": {
-        "script": {
-          "lang": "painless",
-          "source": "doc['price'].value"
-        },
-        "ranges": [
-          { "to": 100 },
-          { "from": 100, "to": 200 },
-          { "from": 200 }
-        ]
+  "query": {
+    "bool": {
+      "must": {
+        "match_all": {}
+      },
+      "filter": {
+        "geo_distance": {
+          "distance": "12km",
+          "pin.location": [ -70, 40 ]
+        }
       }
     }
   }

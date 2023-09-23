@@ -1,10 +1,19 @@
-POST /_reindex
+PUT letter_unique_pos_example
 {
-  "source": {
-    "index": ".ds-my-data-stream-000001"
-  },
-  "dest": {
-    "index": "new-data-stream",
-    "op_type": "create"
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "letter_unique_pos": {
+          "tokenizer": "letter",
+          "filter": [ "unique_pos" ]
+        }
+      },
+      "filter": {
+        "unique_pos": {
+          "type": "unique",
+          "only_on_same_position": true
+        }
+      }
+    }
   }
 }

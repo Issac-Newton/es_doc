@@ -1,4 +1,10 @@
-POST /_security/api_key
+POST test/_update/1
 {
-  "name": "my-api-key"
+  "script": {
+    "source": "if (ctx._source.tags.contains(params.tag)) { ctx.op = 'delete' } else { ctx.op = 'noop' }",
+    "lang": "painless",
+    "params": {
+      "tag": "green"
+    }
+  }
 }

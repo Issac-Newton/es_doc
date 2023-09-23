@@ -8,7 +8,7 @@
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="index.html" title="Elasticsearch Guide"/>
-<link rel="prev" href="sort-search-results.html" title="Sort search results"/>
+<link rel="prev" href="semantic-search.html" title="Semantic search"/>
 <link rel="next" href="query-filter-context.html" title="Query and filter context"/>
 <meta class="elastic" name="product_version" content=""/>
 <meta class="elastic" name="product_name" content=""/>
@@ -108,7 +108,7 @@
 </div>
 <div class="navheader">
 <span class="prev">
-<a href="sort-search-results.html">« Sort search results</a>
+<a href="semantic-search.html">« Semantic search</a>
 </span>
 <span class="next">
 <a href="query-filter-context.html">Query and filter context »</a>
@@ -116,7 +116,7 @@
 </div>
 <div class="part">
 <div class="titlepage"><div><div>
-<h1 class="title"><a id="query-dsl"></a>Query DSL<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl.asciidoc">edit</a></h1>
+<h1 class="title"><a id="query-dsl"></a>Query DSL<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl.asciidoc">edit</a></h1>
 </div></div></div>
 <div class="openblock partintro">
 <div class="content">
@@ -133,7 +133,7 @@ Leaf query clauses
 <dd>
 Leaf query clauses look for a particular value in a particular field, such as the
 <a class="xref" href="full-text-queries.html#query-dsl-match-query" title="Match query"><code class="literal">match</code></a>, <a class="xref" href="term-level-queries.html#query-dsl-term-query" title="Term query"><code class="literal">term</code></a> or
-<a class="xref" href="term-level-queries.html#query-dsl-range-query" title="Range query"><code class="literal">range</code></a> queries.  These queries can be used
+<a class="xref" href="term-level-queries.html#query-dsl-range-query" title="Range query"><code class="literal">range</code></a> queries. These queries can be used
 by themselves.
 </dd>
 <dt>
@@ -172,48 +172,56 @@ the stability of the cluster. Those queries can be categorised as follows:
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="specialized-queries.html#query-dsl-script-query" title="Script query"><code class="literal">script queries</code></a>
+<a class="xref" href="specialized-queries.html#query-dsl-script-query" title="Script query"><code class="literal">script</code> queries</a>
+</li>
+<li class="listitem">
+queries on <a class="xref" href="mapping-types.html#number" title="Numeric field types">numeric</a>, <a class="xref" href="mapping-types.html#date" title="Date field type">date</a>, <a class="xref" href="mapping-types.html#boolean" title="Boolean field type">boolean</a>, <a class="xref" href="mapping-types.html#ip" title="IP field type">ip</a>,
+<a class="xref" href="mapping-types.html#geo-point" title="Geopoint field type">geo_point</a> or <a class="xref" href="mapping-types.html#keyword" title="Keyword type family">keyword</a> fields
+that are not indexed but have <a class="xref" href="mapping-params.html#doc-values" title="doc_values">doc values</a> enabled
 </li>
 </ul>
 </div>
 </li>
 <li class="listitem">
-<p>Queries that have a high up-front cost :</p>
+<p>Queries that have a high up-front cost:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="term-level-queries.html#query-dsl-fuzzy-query" title="Fuzzy query"><code class="literal">fuzzy queries</code></a> (except on <a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields)
+<a class="xref" href="term-level-queries.html#query-dsl-fuzzy-query" title="Fuzzy query"><code class="literal">fuzzy</code> queries</a> (except on
+<a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields)
 </li>
 <li class="listitem">
-<a class="xref" href="term-level-queries.html#query-dsl-regexp-query" title="Regexp query"><code class="literal">regexp queries</code></a> (except on <a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields)
+<a class="xref" href="term-level-queries.html#query-dsl-regexp-query" title="Regexp query"><code class="literal">regexp</code> queries</a> (except on
+<a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields)
 </li>
 <li class="listitem">
-<a class="xref" href="term-level-queries.html#query-dsl-prefix-query" title="Prefix query"><code class="literal">prefix queries</code></a>  (except on <a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields or those without <a class="xref" href="mapping-params.html#index-prefixes" title="index_prefixes"><code class="literal">index_prefixes</code></a>)
+<a class="xref" href="term-level-queries.html#query-dsl-prefix-query" title="Prefix query"><code class="literal">prefix</code> queries</a>  (except on
+<a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields or those without
+<a class="xref" href="mapping-params.html#index-prefixes" title="index_prefixes"><code class="literal">index_prefixes</code></a>)
 </li>
 <li class="listitem">
-<a class="xref" href="term-level-queries.html#query-dsl-wildcard-query" title="Wildcard query"><code class="literal">wildcard queries</code></a> (except on <a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields)
+<a class="xref" href="term-level-queries.html#query-dsl-wildcard-query" title="Wildcard query"><code class="literal">wildcard</code> queries</a> (except on
+<a class="xref" href="mapping-types.html#wildcard-field-type" title="Wildcard field type"><code class="literal">wildcard</code></a> fields)
 </li>
 <li class="listitem">
-<a class="xref" href="term-level-queries.html#query-dsl-range-query" title="Range query"><code class="literal">range queries&gt;&gt; on &lt;&lt;text, `text</code></a> and <a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> fields
+<a class="xref" href="term-level-queries.html#query-dsl-range-query" title="Range query"><code class="literal">range</code> queries</a> on <a class="xref" href="mapping-types.html#text" title="Text type family"><code class="literal">text</code></a> and
+<a class="xref" href="mapping-types.html#keyword" title="Keyword type family"><code class="literal">keyword</code></a> fields
 </li>
 </ul>
 </div>
 </li>
 <li class="listitem">
-<a class="xref" href="joining-queries.html" title="Joining queries"><code class="literal">Joining queries</code></a>
-</li>
-<li class="listitem">
-Queries on <a class="xref" href="mapping-types.html#prefix-trees" title="Prefix trees">deprecated geo shapes</a>
+<a class="xref" href="joining-queries.html" title="Joining queries">Joining queries</a>
 </li>
 <li class="listitem">
 <p>Queries that may have a high per-document cost:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="specialized-queries.html#query-dsl-script-score-query" title="Script score query"><code class="literal">script score queries</code></a>
+<a class="xref" href="specialized-queries.html#query-dsl-script-score-query" title="Script score query"><code class="literal">script_score</code> queries</a>
 </li>
 <li class="listitem">
-<a class="xref" href="specialized-queries.html#query-dsl-percolate-query" title="Percolate query"><code class="literal">percolate queries</code></a>
+<a class="xref" href="specialized-queries.html#query-dsl-percolate-query" title="Percolate query"><code class="literal">percolate</code> queries</a>
 </li>
 </ul>
 </div>
@@ -240,10 +248,11 @@ setting to <code class="literal">false</code> (defaults to <code class="literal"
 
 
 
+
 </div>
 <div class="navfooter">
 <span class="prev">
-<a href="sort-search-results.html">« Sort search results</a>
+<a href="semantic-search.html">« Semantic search</a>
 </span>
 <span class="next">
 <a href="query-filter-context.html">Query and filter context »</a>

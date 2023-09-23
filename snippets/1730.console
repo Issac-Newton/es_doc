@@ -1,1 +1,8 @@
-POST my-index-000001/_update_by_query?scroll_size=100
+PUT _snapshot/my_src_only_repository
+{
+  "type": "source",
+  "settings": {
+    "delegate_type": "fs",
+    "location": "my_backup_repository"
+  }
+}

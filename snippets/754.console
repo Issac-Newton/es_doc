@@ -1,17 +1,24 @@
-POST _search
+POST _ingest/pipeline/_simulate
 {
-  "query": {
-    "intervals" : {
-      "my_text" : {
-        "match" : {
-          "query" : "hot porridge",
-          "filter" : {
-            "script" : {
-              "source" : "interval.start > 10 && interval.end < 20 && interval.gaps == 0"
-            }
-          }
+  "pipeline": {
+    "processors": [
+      {
+        "network_direction": {
+          "internal_networks": ["private"]
+        }
+      }
+    ]
+  },
+  "docs": [
+    {
+      "_source": {
+        "source": {
+          "ip": "128.232.110.120"
+        },
+        "destination": {
+          "ip": "192.168.1.1"
         }
       }
     }
-  }
+  ]
 }

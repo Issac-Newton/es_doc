@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
+<title>Fix common cluster issues | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Fix common cluster issues | Elasticsearch Guide">
+
+<link rel="home" href="index.html" title="Elasticsearch Guide"/>
+<link rel="up" href="troubleshooting.html" title="Troubleshooting"/>
+<link rel="prev" href="troubleshooting.html" title="Troubleshooting"/>
+<link rel="next" href="diagnose-unassigned-shards.html" title="Diagnose unassigned shards"/>
+<meta class="elastic" name="product_version" content=""/>
+<meta class="elastic" name="product_name" content=""/>
+<meta class="elastic" name="website_area" content="documentation"/>
+<meta name="DC.type" content="Learn/Docs/"/>
+<meta name="DC.subject" content=""/>
+<meta name="DC.identifier" content=""/>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="troubleshooting.html">Troubleshooting</a></span>
+</div>
+<div class="navheader">
+<span class="prev">
+<a href="troubleshooting.html">« Troubleshooting</a>
+</span>
+<span class="next">
+<a href="diagnose-unassigned-shards.html">Diagnose unassigned shards »</a>
+</span>
+</div>
+<div class="chapter">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="fix-common-cluster-issues"></a>Fix common cluster issues<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/fix-common-cluster-issues.asciidoc">edit</a></h2>
+</div></div></div>
+<p>This guide describes how to fix common errors and problems with Elasticsearch clusters.</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<a class="xref" href="fix-common-cluster-issues.html#fix-watermark-errors" title="Fix watermark errors">Watermark errors</a>
+</span>
+</dt>
+<dd>
+Fix watermark errors that occur when a data node is critically low on disk space
+and has reached the flood-stage disk usage watermark.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="fix-common-cluster-issues.html#circuit-breaker-errors" title="Circuit breaker errors">Circuit breaker errors</a>
+</span>
+</dt>
+<dd>
+Elasticsearch uses circuit breakers to prevent nodes from running out of JVM heap memory.
+If Elasticsearch estimates an operation would exceed a circuit breaker, it stops
+the operation and returns an error.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="fix-common-cluster-issues.html#high-cpu-usage" title="High CPU usage">High CPU usage</a>
+</span>
+</dt>
+<dd>
+The most common causes of high CPU usage and their solutions.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="fix-common-cluster-issues.html#high-jvm-memory-pressure" title="High JVM memory pressure">High JVM memory pressure</a>
+</span>
+</dt>
+<dd>
+High JVM memory usage can degrade cluster performance and trigger circuit
+breaker errors.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="fix-common-cluster-issues.html#red-yellow-cluster-status" title="Red or yellow cluster status">Red or yellow cluster status</a>
+</span>
+</dt>
+<dd>
+A red or yellow cluster status indicates one or more shards are missing or
+unallocated. These unassigned shards increase your risk of data loss and can
+degrade cluster performance.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="fix-common-cluster-issues.html#rejected-requests" title="Rejected requests">Rejected requests</a>
+</span>
+</dt>
+<dd>
+When Elasticsearch rejects a request, it stops the operation and returns an error with a
+<code class="literal">429</code> response code.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="fix-common-cluster-issues.html#task-queue-backlog" title="Task queue backlog">Task queue backlog</a>
+</span>
+</dt>
+<dd>
+A backlogged task queue can prevent tasks from completing and put the cluster
+into an unhealthy state.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="diagnose-unassigned-shards.html" title="Diagnose unassigned shards">Diagnose unassigned shards</a>
+</span>
+</dt>
+<dd>
+There are multiple reasons why shards might get unassigned, ranging from
+misconfigured allocation settings to lack of disk space.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="modules-discovery.html#cluster-fault-detection-troubleshooting" title="Troubleshooting an unstable cluster">Troubleshooting an unstable cluster</a>
+</span>
+</dt>
+<dd>
+A cluster in which nodes leave unexpectedly is unstable and can create several
+issues.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="fix-common-cluster-issues.html#mapping-explosion" title="Mapping explosion">Mapping explosion</a>
+</span>
+</dt>
+<dd>
+A cluster in which an index or index pattern as exploded with a high count of
+mapping fields which causes performance look-up issues for Elasticsearch and
+Kibana.
+</dd>
+<dt>
+<span class="term">
+<a class="xref" href="fix-common-cluster-issues.html#hotspotting" title="Hot spotting">Hot spotting</a>
+</span>
+</dt>
+<dd>
+Hot spotting may occur in Elasticsearch when resource utilizations are unevenly
+distributed across nodes.
+</dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="fix-watermark-errors"></a>Fix watermark errors<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/disk-usage-exceeded.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>When a data node is critically low on disk space and has reached the
+<a class="xref" href="settings.html#cluster-routing-flood-stage">flood-stage disk usage watermark</a>, the following
+error is logged: <code class="literal">Error: disk usage exceeded flood-stage watermark, index has read-only-allow-delete block</code>.</p>
+<p>To prevent a full disk, when a node reaches this watermark, Elasticsearch blocks writes
+to any index with a shard on the node. If the block affects related system
+indices, Kibana and other Elastic Stack features may become unavailable.</p>
+<p>Elasticsearch will automatically remove the write block when the affected node&#8217;s disk
+usage goes below the <a class="xref" href="settings.html#cluster-routing-watermark-high">high disk watermark</a>. To
+achieve this, Elasticsearch automatically moves some of the affected node&#8217;s shards to
+other nodes in the same data tier.</p>
+<p>To verify that shards are moving off the affected node, use the <a class="xref" href="cat.html#cat-shards" title="cat shards API">cat
+shards API</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/shards?v=true</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1917.console"></div>
+<p>If shards remain on the node, use the <a class="xref" href="cluster.html#cluster-allocation-explain" title="Cluster allocation explain API">cluster
+allocation explanation API</a> to get an explanation for their allocation status.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cluster/allocation/explain
+{
+  "index": "my-index",
+  "shard": 0,
+  "primary": false,
+  "current_node": "my-node"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1918.console"></div>
+<p>To immediately restore write operations, you can temporarily increase the disk
+watermarks and remove the write block.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.disk.watermark.low": "90%",
+    "cluster.routing.allocation.disk.watermark.low.max_headroom": "100GB",
+    "cluster.routing.allocation.disk.watermark.high": "95%",
+    "cluster.routing.allocation.disk.watermark.high.max_headroom": "20GB",
+    "cluster.routing.allocation.disk.watermark.flood_stage": "97%",
+    "cluster.routing.allocation.disk.watermark.flood_stage.max_headroom": "5GB",
+    "cluster.routing.allocation.disk.watermark.flood_stage.frozen": "97%",
+    "cluster.routing.allocation.disk.watermark.flood_stage.frozen.max_headroom": "5GB"
+  }
+}
+
+PUT */_settings?expand_wildcards=all
+{
+  "index.blocks.read_only_allow_delete": null
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1919.console"></div>
+<p>As a long-term solution, we recommend you add nodes to the affected data tiers
+or upgrade existing nodes to increase disk space. To free up additional disk
+space, you can delete unneeded indices using the <a class="xref" href="indices.html#indices-delete-index" title="Delete index API">delete
+index API</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">DELETE my-index</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1920.console"></div>
+<p>When a long-term solution is in place, reset or reconfigure the disk watermarks.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.disk.watermark.low": null,
+    "cluster.routing.allocation.disk.watermark.low.max_headroom": null,
+    "cluster.routing.allocation.disk.watermark.high": null,
+    "cluster.routing.allocation.disk.watermark.high.max_headroom": null,
+    "cluster.routing.allocation.disk.watermark.flood_stage": null,
+    "cluster.routing.allocation.disk.watermark.flood_stage.max_headroom": null,
+    "cluster.routing.allocation.disk.watermark.flood_stage.frozen": null,
+    "cluster.routing.allocation.disk.watermark.flood_stage.frozen.max_headroom": null
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1921.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="circuit-breaker-errors"></a>Circuit breaker errors<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/circuit-breaker-errors.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Elasticsearch uses <a class="xref" href="settings.html#circuit-breaker" title="Circuit breaker settings">circuit breakers</a> to prevent nodes from running out
+of JVM heap memory. If Elasticsearch estimates an operation would exceed a
+circuit breaker, it stops the operation and returns an error.</p>
+<p>By default, the <a class="xref" href="settings.html#parent-circuit-breaker" title="Parent circuit breaker">parent circuit breaker</a> triggers at
+95% JVM memory usage. To prevent errors, we recommend taking steps to reduce
+memory pressure if usage consistently exceeds 85%.</p>
+<h4><a id="diagnose-circuit-breaker-errors"></a>Diagnose circuit breaker errors<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/circuit-breaker-errors.asciidoc">edit</a></h4>
+<p><span class="strong strong"><strong>Error messages</strong></span></p>
+<p>If a request triggers a circuit breaker, Elasticsearch returns an error with a <code class="literal">429</code> HTTP
+status code.</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">{
+  'error': {
+    'type': 'circuit_breaking_exception',
+    'reason': '[parent] Data too large, data for [&lt;http_request&gt;] would be [123848638/118.1mb], which is larger than the limit of [123273216/117.5mb], real usage: [120182112/114.6mb], new bytes reserved: [3666526/3.4mb]',
+    'bytes_wanted': 123848638,
+    'bytes_limit': 123273216,
+    'durability': 'TRANSIENT'
+  },
+  'status': 429
+}</pre>
+</div>
+<p>Elasticsearch also writes circuit breaker errors to <a class="xref" href="settings.html#logging" title="Logging"><code class="literal">elasticsearch.log</code></a>. This
+is helpful when automated processes, such as allocation, trigger a circuit
+breaker.</p>
+<div class="pre_wrapper lang-txt">
+<pre class="programlisting prettyprint lang-txt">Caused by: org.elasticsearch.common.breaker.CircuitBreakingException: [parent] Data too large, data for [&lt;transport_request&gt;] would be [num/numGB], which is larger than the limit of [num/numGB], usages [request=0/0b, fielddata=num/numKB, in_flight_requests=num/numGB, accounting=num/numGB]</pre>
+</div>
+<p><span class="strong strong"><strong>Check JVM memory usage</strong></span></p>
+<p>If you&#8217;ve enabled Stack Monitoring, you can view JVM memory usage in Kibana. In
+the main menu, click <span class="strong strong"><strong>Stack Monitoring</strong></span>. On the Stack Monitoring <span class="strong strong"><strong>Overview</strong></span>
+page, click <span class="strong strong"><strong>Nodes</strong></span>. The <span class="strong strong"><strong>JVM Heap</strong></span> column lists the current memory usage
+for each node.</p>
+<p>You can also use the <a class="xref" href="cat.html#cat-nodes" title="cat nodes API">cat nodes API</a> to get the current
+<code class="literal">heap.percent</code> for each node.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/nodes?v=true&amp;h=name,node*,heap*</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1922.console"></div>
+<p>To get the JVM memory usage for each circuit breaker, use the
+<a class="xref" href="cluster.html#cluster-nodes-stats" title="Nodes stats API">node stats API</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _nodes/stats/breaker</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1923.console"></div>
+<h4><a id="prevent-circuit-breaker-errors"></a>Prevent circuit breaker errors<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/circuit-breaker-errors.asciidoc">edit</a></h4>
+<p><span class="strong strong"><strong>Reduce JVM memory pressure</strong></span></p>
+<p>High JVM memory pressure often causes circuit breaker errors. See
+<a class="xref" href="fix-common-cluster-issues.html#high-jvm-memory-pressure" title="High JVM memory pressure">High JVM memory pressure</a>.</p>
+<p><span class="strong strong"><strong>Avoid using fielddata on <code class="literal">text</code> fields</strong></span></p>
+<p>For high-cardinality <code class="literal">text</code> fields, fielddata can use a large amount of JVM
+memory. To avoid this, Elasticsearch disables fielddata on <code class="literal">text</code> fields by default. If
+you&#8217;ve enabled fielddata and triggered the <a class="xref" href="settings.html#fielddata-circuit-breaker" title="Field data circuit breaker">fielddata
+circuit breaker</a>, consider disabling it and using a <code class="literal">keyword</code> field instead.
+See <a class="xref" href="mapping-types.html#fielddata-mapping-param" title="fielddata mapping parameter"><code class="literal">fielddata</code> mapping parameter</a>.</p>
+<p><span class="strong strong"><strong>Clear the fielddata cache</strong></span></p>
+<p>If you&#8217;ve triggered the fielddata circuit breaker and can&#8217;t disable fielddata,
+use the <a class="xref" href="indices.html#indices-clearcache" title="Clear cache API">clear cache API</a> to clear the fielddata cache.
+This may disrupt any in-flight searches that use fielddata.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _cache/clear?fielddata=true</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1924.console"></div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="high-cpu-usage"></a>High CPU usage<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/high-cpu-usage.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Elasticsearch uses <a class="xref" href="settings.html#modules-threadpool" title="Thread pools">thread pools</a> to manage CPU resources for
+concurrent operations. High CPU usage typically means one or more thread pools
+are running low.</p>
+<p>If a thread pool is depleted, Elasticsearch will <a class="xref" href="fix-common-cluster-issues.html#rejected-requests" title="Rejected requests">reject requests</a>
+related to the thread pool. For example, if the <code class="literal">search</code> thread pool is
+depleted, Elasticsearch will reject search requests until more threads are available.</p>
+<h4><a id="diagnose-high-cpu-usage"></a>Diagnose high CPU usage<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/high-cpu-usage.asciidoc">edit</a></h4>
+<p><span class="strong strong"><strong>Check CPU usage</strong></span></p>
+<div class="tabs" data-tab-group="host">
+  <div role="tablist" aria-label="Check CPU usage">
+    <button role="tab"
+            aria-selected="true"
+            aria-controls="cloud-tab-cpu"
+            id="cloud-cpu">
+      Elasticsearch Service
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="self-managed-tab-cpu"
+            id="self-managed-cpu"
+            tabindex="-1">
+      Self-managed
+    </button>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="cloud-tab-cpu"
+       aria-labelledby="cloud-cpu">
+<p>From your deployment menu, click <span class="strong strong"><strong>Performance</strong></span>. The page&#8217;s <span class="strong strong"><strong>CPU Usage</strong></span> chart
+shows your deployment&#8217;s CPU usage as a percentage.</p>
+<p>High CPU usage can also deplete your CPU credits. CPU credits let Elasticsearch Service provide
+smaller clusters with a performance boost when needed. The <span class="strong strong"><strong>CPU credits</strong></span>
+chart shows your remaining CPU credits, measured in seconds of CPU time.</p>
+<p>You can also use the <a class="xref" href="cat.html#cat-nodes" title="cat nodes API">cat nodes API</a> to get the current CPU usage
+for each node.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/nodes?v=true&amp;s=cpu:desc</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1925.console"></div>
+<p>The response&#8217;s <code class="literal">cpu</code> column contains the current CPU usage as a percentage. The
+<code class="literal">name</code> column contains the node&#8217;s name.</p>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="self-managed-tab-cpu"
+       aria-labelledby="self-managed-cpu"
+       hidden="">
+<p>Use the <a class="xref" href="cat.html#cat-nodes" title="cat nodes API">cat nodes API</a> to get the current CPU usage for each node.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/nodes?v=true&amp;s=cpu:desc</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1926.console"></div>
+<p>The response&#8217;s <code class="literal">cpu</code> column contains the current CPU usage as a percentage. The
+<code class="literal">name</code> column contains the node&#8217;s name.</p>
+  </div>
+</div>
+<p><span class="strong strong"><strong>Check hot threads</strong></span></p>
+<p>If a node has high CPU usage, use the <a class="xref" href="cluster.html#cluster-nodes-hot-threads" title="Nodes hot threads API">nodes hot
+threads API</a> to check for resource-intensive threads running on the node.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _nodes/my-node,my-other-node/hot_threads</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1927.console"></div>
+<p>This API returns a breakdown of any hot threads in plain text.</p>
+<h4><a id="reduce-cpu-usage"></a>Reduce CPU usage<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/high-cpu-usage.asciidoc">edit</a></h4>
+<p>The following tips outline the most common causes of high CPU usage and their
+solutions.</p>
+<p><span class="strong strong"><strong>Scale your cluster</strong></span></p>
+<p>Heavy indexing and search loads can deplete smaller thread pools. To better
+handle heavy workloads, add more nodes to your cluster or upgrade your existing
+nodes to increase capacity.</p>
+<p><span class="strong strong"><strong>Spread out bulk requests</strong></span></p>
+<p>While more efficient than individual requests, large <a class="xref" href="docs.html#docs-bulk" title="Bulk API">bulk indexing</a>
+or <a class="xref" href="search.html#search-multi-search" title="Multi search API">multi-search</a> requests still require CPU resources. If
+possible, submit smaller requests and allow more time between them.</p>
+<p><span class="strong strong"><strong>Cancel long-running searches</strong></span></p>
+<p>Long-running searches can block threads in the <code class="literal">search</code> thread pool. To check
+for these searches, use the <a class="xref" href="cluster.html#tasks" title="Task management API">task management API</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _tasks?actions=*search&amp;detailed</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1928.console"></div>
+<p>The response&#8217;s <code class="literal">description</code> contains the search request and its queries.
+<code class="literal">running_time_in_nanos</code> shows how long the search has been running.</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "nodes" : {
+    "oTUltX4IQMOUUVeiohTt8A" : {
+      "name" : "my-node",
+      "transport_address" : "127.0.0.1:9300",
+      "host" : "127.0.0.1",
+      "ip" : "127.0.0.1:9300",
+      "tasks" : {
+        "oTUltX4IQMOUUVeiohTt8A:464" : {
+          "node" : "oTUltX4IQMOUUVeiohTt8A",
+          "id" : 464,
+          "type" : "transport",
+          "action" : "indices:data/read/search",
+          "description" : "indices[my-index], search_type[QUERY_THEN_FETCH], source[{\"query\":...}]",
+          "start_time_in_millis" : 4081771730000,
+          "running_time_in_nanos" : 13991383,
+          "cancellable" : true
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<p>To cancel a search and free up resources, use the API&#8217;s <code class="literal">_cancel</code> endpoint.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _tasks/oTUltX4IQMOUUVeiohTt8A:464/_cancel</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1929.console"></div>
+<p>For additional tips on how to track and avoid resource-intensive searches, see
+<a class="xref" href="fix-common-cluster-issues.html#avoid-expensive-searches">Avoid expensive searches</a>.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="high-jvm-memory-pressure"></a>High JVM memory pressure<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/high-jvm-memory-pressure.asciidoc">edit</a></h2>
+</div></div></div>
+<p>High JVM memory usage can degrade cluster performance and trigger
+<a class="xref" href="fix-common-cluster-issues.html#circuit-breaker-errors" title="Circuit breaker errors">circuit breaker errors</a>. To prevent this, we recommend
+taking steps to reduce memory pressure if a node&#8217;s JVM memory usage consistently
+exceeds 85%.</p>
+<h4><a id="diagnose-high-jvm-memory-pressure"></a>Diagnose high JVM memory pressure<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/high-jvm-memory-pressure.asciidoc">edit</a></h4>
+<p><span class="strong strong"><strong>Check JVM memory pressure</strong></span></p>
+<div class="tabs" data-tab-group="host">
+  <div role="tablist" aria-label="Check JVM memory pressure">
+    <button role="tab"
+            aria-selected="true"
+            aria-controls="cloud-tab"
+            id="cloud-jvm">
+      Elasticsearch Service
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="self-managed-tab"
+            id="self-managed-jvm"
+            tabindex="-1">
+      Self-managed
+    </button>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="cloud-tab"
+       aria-labelledby="cloud-jvm">
+<p>From your deployment menu, click <span class="strong strong"><strong>Elasticsearch</strong></span>. Under <span class="strong strong"><strong>Instances</strong></span>, each
+instance displays a <span class="strong strong"><strong>JVM memory pressure</strong></span> indicator. When the JVM memory
+pressure reaches 75%, the indicator turns red.</p>
+<p>You can also use the <a class="xref" href="cluster.html#cluster-nodes-stats" title="Nodes stats API">nodes stats API</a> to calculate the
+current JVM memory pressure for each node.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _nodes/stats?filter_path=nodes.*.jvm.mem.pools.old</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1930.console"></div>
+<p>Use the response to calculate memory pressure as follows:</p>
+<p>JVM Memory Pressure = <code class="literal">used_in_bytes</code> / <code class="literal">max_in_bytes</code></p>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="self-managed-tab"
+       aria-labelledby="self-managed-jvm"
+       hidden="">
+<p>To calculate the current JVM memory pressure for each node, use the
+<a class="xref" href="cluster.html#cluster-nodes-stats" title="Nodes stats API">nodes stats API</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _nodes/stats?filter_path=nodes.*.jvm.mem.pools.old</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1931.console"></div>
+<p>Use the response to calculate memory pressure as follows:</p>
+<p>JVM Memory Pressure = <code class="literal">used_in_bytes</code> / <code class="literal">max_in_bytes</code></p>
+  </div>
+</div>
+<p><span class="strong strong"><strong>Check garbage collection logs</strong></span></p>
+<p>As memory usage increases, garbage collection becomes more frequent and takes
+longer. You can track the frequency and length of garbage collection events in
+<a class="xref" href="settings.html#logging" title="Logging"><code class="literal">elasticsearch.log</code></a>. For example, the following event states Elasticsearch
+spent more than 50% (21 seconds) of the last 40 seconds performing garbage
+collection.</p>
+<div class="pre_wrapper lang-log">
+<pre class="programlisting prettyprint lang-log">[timestamp_short_interval_from_last][INFO ][o.e.m.j.JvmGcMonitorService] [node_id] [gc][number] overhead, spent [21s] collecting in the last [40s]</pre>
+</div>
+<p><span class="strong strong"><strong>Capture a JVM heap dump</strong></span></p>
+<p>To determine the exact reason for the high JVM memory pressure, capture a heap
+dump of the JVM while its memory usage is high.</p>
+<h4><a id="reduce-jvm-memory-pressure"></a>Reduce JVM memory pressure<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/high-jvm-memory-pressure.asciidoc">edit</a></h4>
+<p>This section contains some common suggestions for reducing JVM memory pressure.</p>
+<p><span class="strong strong"><strong>Reduce your shard count</strong></span></p>
+<p>Every shard uses memory. In most cases, a small set of large shards uses fewer
+resources than many small shards. For tips on reducing your shard count, see
+<a class="xref" href="size-your-shards.html" title="Size your shards"><em>Size your shards</em></a>.</p>
+<p><a id="avoid-expensive-searches"></a><span class="strong strong"><strong>Avoid expensive searches</strong></span></p>
+<p>Expensive searches can use large amounts of memory. To better track expensive
+searches on your cluster, enable <a class="xref" href="index-modules-slowlog.html" title="Slow Log">slow logs</a>.</p>
+<p>Expensive searches may have a large <a class="xref" href="paginate-search-results.html" title="Paginate search results"><code class="literal">size</code> argument</a>,
+use aggregations with a large number of buckets, or include
+<a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries">expensive queries</a>. To prevent expensive
+searches, consider the following setting changes:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Lower the <code class="literal">size</code> limit using the
+<a class="xref" href="index-modules.html#index-max-result-window"><code class="literal">index.max_result_window</code></a> index setting.
+</li>
+<li class="listitem">
+Decrease the maximum number of allowed aggregation buckets using the
+<a class="xref" href="settings.html#search-settings-max-buckets">search.max_buckets</a> cluster setting.
+</li>
+<li class="listitem">
+Disable expensive queries using the
+<a class="xref" href="query-dsl.html#query-dsl-allow-expensive-queries"><code class="literal">search.allow_expensive_queries</code></a> cluster
+setting.
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _settings
+{
+  "index.max_result_window": 5000
+}
+
+PUT _cluster/settings
+{
+  "persistent": {
+    "search.max_buckets": 20000,
+    "search.allow_expensive_queries": false
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1932.console"></div>
+<p><span class="strong strong"><strong>Prevent mapping explosions</strong></span></p>
+<p>Defining too many fields or nesting fields too deeply can lead to
+<a class="xref" href="mapping.html#mapping-limit-settings" title="Settings to prevent mapping explosion">mapping explosions</a> that use large amounts of memory.
+To prevent mapping explosions, use the <a class="xref" href="mapping-settings-limit.html" title="Mapping limit settings">mapping limit
+settings</a> to limit the number of field mappings.</p>
+<p><span class="strong strong"><strong>Spread out bulk requests</strong></span></p>
+<p>While more efficient than individual requests, large <a class="xref" href="docs.html#docs-bulk" title="Bulk API">bulk indexing</a>
+or <a class="xref" href="search.html#search-multi-search" title="Multi search API">multi-search</a> requests can still create high JVM
+memory pressure. If possible, submit smaller requests and allow more time
+between them.</p>
+<p><span class="strong strong"><strong>Upgrade node memory</strong></span></p>
+<p>Heavy indexing and search loads can cause high JVM memory pressure. To better
+handle heavy workloads, upgrade your nodes to increase their memory capacity.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="red-yellow-cluster-status"></a>Red or yellow cluster status<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h2>
+</div></div></div>
+<p>A red or yellow cluster status indicates one or more shards are missing or
+unallocated. These unassigned shards increase your risk of data loss and can
+degrade cluster performance.</p>
+<h4><a id="diagnose-cluster-status"></a>Diagnose your cluster status<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h4>
+<p><span class="strong strong"><strong>Check your cluster status</strong></span></p>
+<p>Use the <a class="xref" href="cluster.html#cluster-health" title="Cluster health API">cluster health API</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cluster/health?filter_path=status,*_shards</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1933.console"></div>
+<p>A healthy cluster has a green <code class="literal">status</code> and zero <code class="literal">unassigned_shards</code>. A yellow
+status means only replicas are unassigned. A red status means one or
+more primary shards are unassigned.</p>
+<p><span class="strong strong"><strong>View unassigned shards</strong></span></p>
+<p>To view unassigned shards, use the <a class="xref" href="cat.html#cat-shards" title="cat shards API">cat shards API</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/shards?v=true&amp;h=index,shard,prirep,state,node,unassigned.reason&amp;s=state</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1934.console"></div>
+<p>Unassigned shards have a <code class="literal">state</code> of <code class="literal">UNASSIGNED</code>. The <code class="literal">prirep</code> value is <code class="literal">p</code> for
+primary shards and <code class="literal">r</code> for replicas.</p>
+<p>To understand why an unassigned shard is not being assigned and what action
+you must take to allow Elasticsearch to assign it, use the
+<a class="xref" href="cluster.html#cluster-allocation-explain" title="Cluster allocation explain API">cluster allocation explanation API</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cluster/allocation/explain?filter_path=index,node_allocation_decisions.node_name,node_allocation_decisions.deciders.*
+{
+  "index": "my-index",
+  "shard": 0,
+  "primary": false
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1935.console"></div>
+<h4><a id="fix-red-yellow-cluster-status"></a>Fix a red or yellow cluster status<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h4>
+<p>A shard can become unassigned for several reasons. The following tips outline the
+most common causes and their solutions.</p>
+<h5><a id="fix-cluster-status-reenable-allocation"></a>Re-enable shard allocation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h5>
+<p>You typically disable allocation during a <a class="xref" href="restart-cluster.html" title="Full-cluster restart and rolling restart">restart</a> or other
+cluster maintenance. If you forgot to re-enable allocation afterward, Elasticsearch will
+be unable to assign shards. To re-enable allocation, reset the
+<code class="literal">cluster.routing.allocation.enable</code> cluster setting.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _cluster/settings
+{
+  "persistent" : {
+    "cluster.routing.allocation.enable" : null
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1936.console"></div>
+<h5><a id="fix-cluster-status-recover-nodes"></a>Recover lost nodes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h5>
+<p>Shards often become unassigned when a data node leaves the cluster. This can
+occur for several reasons, ranging from connectivity issues to hardware failure.
+After you resolve the issue and recover the node, it will rejoin the cluster.
+Elasticsearch will then automatically allocate any unassigned shards.</p>
+<p>To avoid wasting resources on temporary issues, Elasticsearch <a class="xref" href="index-modules-allocation.html#delayed-allocation" title="Delaying allocation when a node leaves">delays
+allocation</a> by one minute by default. If you&#8217;ve recovered a node and don’t want
+to wait for the delay period, you can call the <a class="xref" href="cluster.html#cluster-reroute" title="Cluster reroute API">cluster reroute
+API</a> with no arguments to start the allocation process. The process runs
+asynchronously in the background.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _cluster/reroute?metric=none</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1937.console"></div>
+<h5><a id="fix-cluster-status-allocation-settings"></a>Fix allocation settings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h5>
+<p>Misconfigured allocation settings can result in an unassigned primary shard.
+These settings include:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="index-modules-allocation.html#shard-allocation-filtering" title="Index-level shard allocation filtering">Shard allocation</a> index settings
+</li>
+<li class="listitem">
+<a class="xref" href="settings.html#cluster-shard-allocation-filtering" title="Cluster-level shard allocation filtering">Allocation filtering</a> cluster settings
+</li>
+<li class="listitem">
+<a class="xref" href="settings.html#shard-allocation-awareness" title="Shard allocation awareness">Allocation awareness</a> cluster settings
+</li>
+</ul>
+</div>
+<p>To review your allocation settings, use the <a class="xref" href="indices.html#indices-get-settings" title="Get index settings API">get index
+settings</a> and <a class="xref" href="cluster.html#cluster-get-settings" title="Cluster get settings API">cluster get settings</a> APIs.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET my-index/_settings?flat_settings=true&amp;include_defaults=true
+
+GET _cluster/settings?flat_settings=true&amp;include_defaults=true</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1938.console"></div>
+<p>You can change the settings using the <a class="xref" href="indices.html#indices-update-settings" title="Update index settings API">update index
+settings</a> and <a class="xref" href="cluster.html#cluster-update-settings" title="Cluster update settings API">cluster update settings</a> APIs.</p>
+<h5><a id="fix-cluster-status-allocation-replicas"></a>Allocate or reduce replicas<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h5>
+<p>To protect against hardware failure, Elasticsearch will not assign a replica to the same
+node as its primary shard. If no other data nodes are available to host the
+replica, it remains unassigned. To fix this, you can:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Add a data node to the same tier to host the replica.
+</li>
+<li class="listitem">
+Change the <code class="literal">index.number_of_replicas</code> index setting to reduce the number of
+replicas for each primary shard. We recommend keeping at least one replica per
+primary.
+</li>
+</ul>
+</div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _settings
+{
+  "index.number_of_replicas": 1
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1939.console"></div>
+<h5><a id="fix-cluster-status-disk-space"></a>Free up or increase disk space<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h5>
+<p>Elasticsearch uses a <a class="xref" href="settings.html#disk-based-shard-allocation" title="Disk-based shard allocation settings">low disk watermark</a> to ensure data
+nodes have enough disk space for incoming shards. By default, Elasticsearch does not
+allocate shards to nodes using more than 85% of disk space.</p>
+<p>To check the current disk space of your nodes, use the <a class="xref" href="cat.html#cat-allocation" title="cat allocation API">cat
+allocation API</a>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/allocation?v=true&amp;h=node,shards,disk.*</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1940.console"></div>
+<p>If your nodes are running low on disk space, you have a few options:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Upgrade your nodes to increase disk space.
+</li>
+<li class="listitem">
+Delete unneeded indices to free up space. If you use ILM, you can
+update your lifecycle policy to use <a class="xref" href="ilm-actions.html#ilm-searchable-snapshot" title="Searchable snapshot">searchable
+snapshots</a> or add a delete phase. If you no longer need to search the data, you
+can use a <a class="xref" href="snapshot-restore.html" title="Snapshot and restore">snapshot</a> to store it off-cluster.
+</li>
+<li class="listitem">
+<p>If you no longer write to an index, use the <a class="xref" href="indices.html#indices-forcemerge" title="Force merge API">force merge
+API</a> or ILM&#8217;s <a class="xref" href="ilm-actions.html#ilm-forcemerge" title="Force merge">force merge action</a> to merge its
+segments into larger ones.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST my-index/_forcemerge</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1941.console"></div>
+</li>
+<li class="listitem">
+<p>If an index is read-only, use the <a class="xref" href="indices.html#indices-shrink-index" title="Shrink index API">shrink index API</a> or
+ILM&#8217;s <a class="xref" href="ilm-actions.html#ilm-shrink" title="Shrink">shrink action</a> to reduce its primary shard count.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST my-index/_shrink/my-shrunken-index</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1942.console"></div>
+</li>
+<li class="listitem">
+<p>If your node has a large disk capacity, you can increase the low disk
+watermark or set it to an explicit byte value.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.disk.watermark.low": "30gb"
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1943.console"></div>
+</li>
+</ul>
+</div>
+<h5><a id="fix-cluster-status-jvm"></a>Reduce JVM memory pressure<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h5>
+<p>Shard allocation requires JVM heap memory. High JVM memory pressure can trigger
+<a class="xref" href="settings.html#circuit-breaker" title="Circuit breaker settings">circuit breakers</a> that stop allocation and leave shards
+unassigned. See <a class="xref" href="fix-common-cluster-issues.html#high-jvm-memory-pressure" title="High JVM memory pressure">High JVM memory pressure</a>.</p>
+<h5><a id="fix-cluster-status-restore"></a>Recover data for a lost primary shard<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/red-yellow-cluster-status.asciidoc">edit</a></h5>
+<p>If a node containing a primary shard is lost, Elasticsearch can typically replace it
+using a replica on another node. If you can&#8217;t recover the node and replicas
+don&#8217;t exist or are irrecoverable, you&#8217;ll need to re-add the missing data from a
+<a class="xref" href="snapshot-restore.html" title="Snapshot and restore">snapshot</a> or the original data source.</p>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Only use this option if node recovery is no longer possible. This
+process allocates an empty primary shard. If the node later rejoins the cluster,
+Elasticsearch will overwrite its primary shard with data from this newer empty shard,
+resulting in data loss.</p>
+</div>
+</div>
+<p>Use the <a class="xref" href="cluster.html#cluster-reroute" title="Cluster reroute API">cluster reroute API</a> to manually allocate the
+unassigned primary shard to another data node in the same tier. Set
+<code class="literal">accept_data_loss</code> to <code class="literal">true</code>.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _cluster/reroute?metric=none
+{
+  "commands": [
+    {
+      "allocate_empty_primary": {
+        "index": "my-index",
+        "shard": 0,
+        "node": "my-node",
+        "accept_data_loss": "true"
+      }
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1944.console"></div>
+<p>If you backed up the missing index data to a snapshot, use the
+<a class="xref" href="snapshot-restore-apis.html#restore-snapshot-api" title="Restore snapshot API">restore snapshot API</a> to restore the individual index.
+Alternatively, you can index the missing data from the original data source.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="rejected-requests"></a>Rejected requests<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/rejected-requests.asciidoc">edit</a></h2>
+</div></div></div>
+<p>When Elasticsearch rejects a request, it stops the operation and returns an error with a
+<code class="literal">429</code> response code. Rejected requests are commonly caused by:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+A <a class="xref" href="fix-common-cluster-issues.html#high-cpu-usage" title="High CPU usage">depleted thread pool</a>. A depleted <code class="literal">search</code> or <code class="literal">write</code>
+thread pool returns a <code class="literal">TOO_MANY_REQUESTS</code> error message.
+</li>
+<li class="listitem">
+A <a class="xref" href="fix-common-cluster-issues.html#circuit-breaker-errors" title="Circuit breaker errors">circuit breaker error</a>.
+</li>
+<li class="listitem">
+High <a class="xref" href="index-modules-indexing-pressure.html" title="Indexing pressure">indexing pressure</a> that exceeds the
+<a class="xref" href="index-modules-indexing-pressure.html#memory-limits" title="Memory limits"><code class="literal">indexing_pressure.memory.limit</code></a>.
+</li>
+</ul>
+</div>
+<h4><a id="check-rejected-tasks"></a>Check rejected tasks<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/rejected-requests.asciidoc">edit</a></h4>
+<p>To check the number of rejected tasks for each thread pool, use the
+<a class="xref" href="cat.html#cat-thread-pool" title="cat thread pool API">cat thread pool API</a>. A high ratio of <code class="literal">rejected</code> to
+<code class="literal">completed</code> tasks, particularly in the <code class="literal">search</code> and <code class="literal">write</code> thread pools, means
+Elasticsearch regularly rejects requests.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_cat/thread_pool?v=true&amp;h=id,name,active,rejected,completed</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1945.console"></div>
+<h4><a id="prevent-rejected-requests"></a>Prevent rejected requests<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/rejected-requests.asciidoc">edit</a></h4>
+<p><span class="strong strong"><strong>Fix high CPU and memory usage</strong></span></p>
+<p>If Elasticsearch regularly rejects requests and other tasks, your cluster likely has high
+CPU usage or high JVM memory pressure. For tips, see <a class="xref" href="fix-common-cluster-issues.html#high-cpu-usage" title="High CPU usage">High CPU usage</a> and
+<a class="xref" href="fix-common-cluster-issues.html#high-jvm-memory-pressure" title="High JVM memory pressure">High JVM memory pressure</a>.</p>
+<p><span class="strong strong"><strong>Prevent circuit breaker errors</strong></span></p>
+<p>If you regularly trigger circuit breaker errors, see <a class="xref" href="fix-common-cluster-issues.html#circuit-breaker-errors" title="Circuit breaker errors">Circuit breaker errors</a>
+for tips on diagnosing and preventing them.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="task-queue-backlog"></a>Task queue backlog<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/task-queue-backlog.asciidoc">edit</a></h2>
+</div></div></div>
+<p>A backlogged task queue can prevent tasks from completing and
+put the cluster into an unhealthy state.
+Resource constraints, a large number of tasks being triggered at once,
+and long running tasks can all contribute to a backlogged task queue.</p>
+<h4><a id="diagnose-task-queue-backlog"></a>Diagnose a task queue backlog<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/task-queue-backlog.asciidoc">edit</a></h4>
+<p><span class="strong strong"><strong>Check the thread pool status</strong></span></p>
+<p>A <a class="xref" href="fix-common-cluster-issues.html#high-cpu-usage" title="High CPU usage">depleted thread pool</a> can result in <a class="xref" href="fix-common-cluster-issues.html#rejected-requests" title="Rejected requests">rejected requests</a>.</p>
+<p>You can use the <a class="xref" href="cat.html#cat-thread-pool" title="cat thread pool API">cat thread pool API</a> to
+see the number of active threads in each thread pool and
+how many tasks are queued, how many have been rejected, and how many have completed.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_cat/thread_pool?v&amp;s=t,n&amp;h=type,name,node_name,active,queue,rejected,completed</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1946.console"></div>
+<p><span class="strong strong"><strong>Inspect the hot threads on each node</strong></span></p>
+<p>If a particular thread pool queue is backed up,
+you can periodically poll the <a class="xref" href="cluster.html#cluster-nodes-hot-threads" title="Nodes hot threads API">Nodes hot threads</a> API
+to determine if the thread has sufficient
+resources to progress and gauge how quickly it is progressing.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_nodes/hot_threads</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1947.console"></div>
+<p><span class="strong strong"><strong>Look for long running tasks</strong></span></p>
+<p>Long-running tasks can also cause a backlog.
+You can use the <a class="xref" href="cluster.html#tasks" title="Task management API">task management</a> API to get information about the tasks that are running.
+Check the <code class="literal">running_time_in_nanos</code> to identify tasks that are taking an excessive amount of time to complete.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET /_tasks?filter_path=nodes.*.tasks</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1948.console"></div>
+<h4><a id="resolve-task-queue-backlog"></a>Resolve a task queue backlog<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/task-queue-backlog.asciidoc">edit</a></h4>
+<p><span class="strong strong"><strong>Increase available resources</strong></span></p>
+<p>If tasks are progressing slowly and the queue is backing up,
+you might need to take steps to <a class="xref" href="fix-common-cluster-issues.html#reduce-cpu-usage" title="Reduce CPU usage">Reduce CPU usage</a>.</p>
+<p>In some cases, increasing the thread pool size might help.
+For example, the <code class="literal">force_merge</code> thread pool defaults to a single thread.
+Increasing the size to 2 might help reduce a backlog of force merge requests.</p>
+<p><span class="strong strong"><strong>Cancel stuck tasks</strong></span></p>
+<p>If you find the active task&#8217;s hot thread isn&#8217;t progressing and there&#8217;s a backlog,
+consider canceling the task.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="mapping-explosion"></a>Mapping explosion<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/mapping-explosion.asciidoc">edit</a></h2>
+</div></div></div>
+<p>Elasticsearch&#8217;s search and <a href="https://www.elastic.co/guide/en/kibana/8.9/discover.html" class="ulink" target="_top">Kibana&#8217;s discover</a> Javascript rendering are
+dependent on the search&#8217;s backing indices total amount of
+<a class="xref" href="mapping-types.html" title="Field data types">mapped fields</a>, of all mapping depths. When this total
+amount is too high or is exponentially climbing, we refer to it as
+experiencing mapping explosion. Field counts going this high are uncommon
+and usually suggest an upstream document formatting issue as
+<a href="https://www.elastic.co/blog/found-crash-elasticsearch#mapping-explosion" class="ulink" target="_top">shown in this blog</a>.</p>
+<p>Mapping explosion may surface as the following performance symptoms:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<a class="xref" href="cat.html#cat-nodes" title="cat nodes API">CAT nodes</a> reporting high heap or CPU on the main node
+and/or nodes hosting the indices shards. This may potentially
+escalate to temporary node unresponsiveness and/or main overwhelm.
+</li>
+<li class="listitem">
+<a class="xref" href="cat.html#cat-tasks" title="cat task management API">CAT tasks</a> reporting long search durations only related to
+this index or indices, even on simple searches.
+</li>
+<li class="listitem">
+<a class="xref" href="cat.html#cat-tasks" title="cat task management API">CAT tasks</a> reporting long index durations only related to
+this index or indices. This usually relates to <a class="xref" href="cluster.html#cluster-pending" title="Pending cluster tasks API">pending tasks</a>
+reporting that the coordinating node is waiting for all other nodes to
+confirm they are on mapping update request.
+</li>
+<li class="listitem">
+Discover&#8217;s <span class="strong strong"><strong>Fields for wildcard</strong></span> page-loading API command or <a href="https://www.elastic.co/guide/en/kibana/8.9/console-kibana.html" class="ulink" target="_top">Dev Tools</a> page-refreshing Autocomplete API commands are taking a long time (more than 10 seconds) or
+timing out in the browser&#8217;s Developer Tools Network tab.
+</li>
+<li class="listitem">
+Discover&#8217;s <span class="strong strong"><strong>Available fields</strong></span> taking a long time to compile Javascript in the browser&#8217;s Developer Tools Performance tab. This may potentially escalate to temporary browser page unresponsiveness.
+</li>
+<li class="listitem">
+Kibana&#8217;s <a href="https://www.elastic.co/guide/en/kibana/8.9/alerting-getting-started.html" class="ulink" target="_top">alerting</a> or <a href="https://www.elastic.co/guide/en/security/8.9/detection-engine-overview.html" class="ulink" target="_top">security rules</a> may error <code class="literal">The content length (X) is bigger than the maximum allowed string (Y)</code> where <code class="literal">X</code> is attempted payload and <code class="literal">Y</code> is Kibana&#8217;s <a href="https://www.elastic.co/guide/en/kibana/8.9/settings.html#server-maxPayload" class="ulink" target="_top"><code class="literal">server-maxPayload</code></a>.
+</li>
+<li class="listitem">
+Long Elasticsearch start-up durations.
+</li>
+</ul>
+</div>
+<h4><a id="prevent"></a>Prevent or prepare<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/mapping-explosion.asciidoc">edit</a></h4>
+<p><a class="xref" href="mapping.html" title="Mapping">Mappings</a> cannot be field-reduced once initialized.
+Elasticsearch indices default to <a class="xref" href="dynamic-mapping.html" title="Dynamic mapping">dynamic mappings</a> which
+doesn&#8217;t normally cause problems unless it&#8217;s combined with overriding
+<a class="xref" href="mapping-settings-limit.html" title="Mapping limit settings"><code class="literal">index.mapping.total_fields.limit</code></a>. The
+default <code class="literal">1000</code> limit is considered generous, though overriding to <code class="literal">10000</code>
+doesn&#8217;t cause noticable impact depending on use case. However, to give
+a bad example, overriding to <code class="literal">100000</code> and this limit being hit
+by mapping totals would usually have strong performance implications.</p>
+<p>If your index mapped fields expect to contain a large, arbitrary set of
+keys, you may instead consider:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Using the <a class="xref" href="mapping-types.html#flattened" title="Flattened field type">flattened</a> data type. Please note,
+however, that flattened objects is <a href="https://github.com/elastic/kibana/issues/25820" class="ulink" target="_top">not fully supported in Kibana</a> yet. For example, this could apply to sub-mappings like { <code class="literal">host.name</code> ,
+<code class="literal">host.os</code>, <code class="literal">host.version</code> }. Desired fields are still accessed by
+<a class="xref" href="runtime.html#runtime-search-request" title="Define runtime fields in a search request">runtime fields</a>.
+</li>
+<li class="listitem">
+Using the <a class="xref" href="mapping-types.html#object" title="Object field type">object data type</a>. This is helpful when you&#8217;re
+interested in storing but not searching a group of fields. This is commonly
+used for unknown upstream scenarios which may induce however many fields.
+For example, this is recommended when sub-mappings start showing new,
+unexpected fields like { <code class="literal">o365.a01</code>, <code class="literal">o365.a02</code>, <code class="literal">o365.b01</code>, <code class="literal">o365.c99</code>}.
+</li>
+<li class="listitem">
+Setting <a class="xref" href="mapping-params.html#mapping-index" title="index"><code class="literal">index:false</code></a> to disable a particular field&#8217;s
+searchability. This cannot effect current index mapping, but can apply
+going forward via an <a class="xref" href="index-templates.html" title="Index templates">index template</a>.
+</li>
+</ul>
+</div>
+<p>Modifying to the <a class="xref" href="mapping-types.html#nested" title="Nested field type">nested</a> data type would not resolve the core
+issue.</p>
+<h4><a id="check"></a>Check for issue<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/mapping-explosion.asciidoc">edit</a></h4>
+<p>To confirm the field totals of an index to check for mapping explosion:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Check Elasticsearch cluster logs for errors <code class="literal">Limit of total fields [X] in index [Y] has been exceeded</code> where <code class="literal">X</code> is the value of  <code class="literal">index.mapping.total_fields.limit</code> and <code class="literal">Y</code> is your index. The correlated ingesting source log error would be <code class="literal">Limit of total fields [X] has been exceeded while adding new fields [Z]</code> where <code class="literal">Z</code> is attempted new fields.
+</li>
+<li class="listitem">
+For top-level fields, poll <a class="xref" href="search.html#search-field-caps" title="Field capabilities API">field capabilities</a> for <code class="literal">fields=*</code>.
+</li>
+<li class="listitem">
+Search the output of <a class="xref" href="indices.html#indices-get-mapping" title="Get mapping API">get mapping</a> for <code class="literal">"type"</code>.
+</li>
+<li class="listitem">
+<p>If you&#8217;re inclined to use the <a href="https://stedolan.github.io/jq" class="ulink" target="_top">third-party tool JQ</a>, you can process the <a class="xref" href="indices.html#indices-get-mapping" title="Get mapping API">get mapping</a> <code class="literal">mapping.json</code> output.</p>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">$ cat mapping.json | jq -c 'to_entries[]| .key as $index| [.value.mappings| to_entries[]|select(.key=="properties") | {(.key):([.value|..|.type?|select(.!=null)]|length)}]| map(to_entries)| flatten| from_entries| ([to_entries[].value]|add)| {index: $index, field_count: .}'</pre>
+</div>
+</li>
+</ul>
+</div>
+<p>You can use <a class="xref" href="indices.html#indices-disk-usage" title="Analyze index disk usage API">analyze index disk usage</a> to find fields which are never or rarely populated as easy wins.</p>
+<h4><a id="complex"></a>Complex explosions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/mapping-explosion.asciidoc">edit</a></h4>
+<p>Mapping explosions also covers when an individual index field totals are within limits but combined indices fields totals are very high. It&#8217;s very common for symptoms to first be noticed on a <a href="https://www.elastic.co/guide/en/kibana/8.9/data-views.html" class="ulink" target="_top">data view</a> and be traced back to an individual index or a subset of indices via the
+<a class="xref" href="indices.html#indices-resolve-index-api" title="Resolve index API">resolve index API</a>.</p>
+<p>However, though less common, it is possible to only experience mapping explosions on the combination of backing indices. For example, if a <a class="xref" href="data-streams.html" title="Data streams">data stream</a>'s backing indices are all at field total limit but each contain unique fields from one another.</p>
+<p>This situation most easily surfaces by adding a <a href="https://www.elastic.co/guide/en/kibana/8.9/data-views.html" class="ulink" target="_top">data view</a> and checking its <span class="strong strong"><strong>Fields</strong></span> tab for its total fields count. This statistic does tells you overall fields and not only where <a class="xref" href="mapping-params.html#mapping-index" title="index"><code class="literal">index:true</code></a>, but serves as a good baseline.</p>
+<p>If your issue only surfaces via a <a href="https://www.elastic.co/guide/en/kibana/8.9/data-views.html" class="ulink" target="_top">data view</a>, you may consider this menu&#8217;s <span class="strong strong"><strong>Field filters</strong></span> if you&#8217;re not using <a class="xref" href="mapping-types.html" title="Field data types">multi-fields</a>. Alternatively, you may consider a more targeted index pattern or using a negative pattern to filter-out problematic indices. For example, if <code class="literal">logs-*</code> has too high a field count because of problematic backing indices <code class="literal">logs-lotsOfFields-*</code>, then you could update to either <code class="literal">logs-*,-logs-lotsOfFields-*</code> or <code class="literal">logs-iMeantThisAnyway-*</code>.</p>
+<h4><a id="resolve"></a>Resolve<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/mapping-explosion.asciidoc">edit</a></h4>
+<p>Mapping explosion is not easily resolved, so it is better prevented via the above. Encountering it usually indicates unexpected upstream data changes or planning failures. If encountered, we recommend reviewing your data architecture. The following options are additional to the ones discussed earlier on this page; they should be applied as best use-case applicable:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Disable <a class="xref" href="dynamic-mapping.html" title="Dynamic mapping">dynamic mappings</a>.
+</li>
+<li class="listitem">
+<a class="xref" href="docs.html#docs-reindex" title="Reindex API">Reindex</a> into an index with a corrected mapping,
+either via <a class="xref" href="index-templates.html" title="Index templates">index template</a> or <a class="xref" href="explicit-mapping.html" title="Explicit mapping">explicitly set</a>.
+</li>
+<li class="listitem">
+If index is unneeded and/or historical, consider <a class="xref" href="indices.html#indices-delete-index" title="Delete index API">deleting</a>.
+</li>
+<li class="listitem">
+<a href="https://www.elastic.co/guide/en/logstash/8.9/plugins-inputs-elasticsearch.html" class="ulink" target="_top">Export</a> and <a href="https://www.elastic.co/guide/en/logstash/8.9/plugins-outputs-elasticsearch.html" class="ulink" target="_top">re-import</a> data into a mapping-corrected index after <a href="https://www.elastic.co/guide/en/logstash/8.9/plugins-filters-prune.html" class="ulink" target="_top">pruning</a>
+problematic fields via Logstash.
+</li>
+</ul>
+</div>
+<p><a class="xref" href="indices.html#indices-split-index" title="Split index API">Splitting index</a> would not resolve the core issue.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="hotspotting"></a>Hot spotting<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/hotspotting.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Computer <a href="https://en.wikipedia.org/wiki/Hot_spot_(computer_programming)" class="ulink" target="_top">hot spotting</a>
+may occur in Elasticsearch when resource utilizations are unevenly distributed across
+<a class="xref" href="settings.html#modules-node" title="Node">nodes</a>. Temporary spikes are not usually considered problematic, but
+ongoing significantly unique utilization may lead to cluster bottlenecks
+and should be reviewed.</p>
+<h4><a id="detect"></a>Detect hot spotting<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/hotspotting.asciidoc">edit</a></h4>
+<p>Hot spotting most commonly surfaces as significantly elevated
+resource utilization (of <code class="literal">disk.percent</code>, <code class="literal">heap.percent</code>, or <code class="literal">cpu</code>) among a
+subset of nodes as reported via <a class="xref" href="cat.html#cat-nodes" title="cat nodes API">cat nodes</a>. Individual spikes aren&#8217;t
+necessarily problematic, but if utilization repeatedly spikes or consistently remains
+high over time (for example longer than 30 seconds), the resource may be experiencing problematic
+hot spotting.</p>
+<p>For example, let&#8217;s show case two separate plausible issues using cat nodes:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/nodes?v&amp;s=master,name&amp;h=name,master,node.role,heap.percent,disk.used_percent,cpu</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1949.console"></div>
+<p>Pretend this same output pulled twice across five minutes:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">name   master node.role heap.percent disk.used_percent cpu
+node_1 *      hirstm              24                20  95
+node_2 -      hirstm              23                18  18
+node_3 -      hirstmv             25                90  10</pre>
+</div>
+<p>Here we see two significantly unique utilizations: where the master node is at
+<code class="literal">cpu: 95</code> and a hot node is at <code class="literal">disk.used_percent: 90%</code>. This would indicate
+hot spotting was occurring on these two nodes, and not necessarily from the same
+root cause.</p>
+<h4><a id="causes"></a>Causes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/hotspotting.asciidoc">edit</a></h4>
+<p>Historically, clusters experience hot spotting mainly as an effect of hardware,
+shard distributions, and/or task load. We&#8217;ll review these sequentially in order
+of their potentially impacting scope.</p>
+<h4><a id="causes-hardware"></a>Hardware<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/hotspotting.asciidoc">edit</a></h4>
+<p>Here are some common improper hardware setups which may contribute to hot
+spotting:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Resources are allocated non-uniformly. For example, if one hot node is
+given half the CPU of its peers. Elasticsearch expects all nodes on a
+<a class="xref" href="data-tiers.html" title="Data tiers">data tier</a> to share the same hardware profiles or
+specifications.
+</li>
+<li class="listitem">
+Resources are consumed by another service on the host, including other
+Elasticsearch nodes. Refer to our <a class="xref" href="setup.html#dedicated-host" title="Use dedicated hosts">dedicated host</a> recommendation.
+</li>
+<li class="listitem">
+Resources experience different network or disk throughputs. For example, if one
+node&#8217;s I/O is lower than its peers. Refer to
+<a class="xref" href="tune-for-indexing-speed.html" title="Tune for indexing speed">Use faster hardware</a> for more information.
+</li>
+<li class="listitem">
+A JVM that has been configured with a heap larger than 31GB. Refer to <a class="xref" href="settings.html#set-jvm-heap-size" title="Set the JVM heap size">Set the JVM heap size</a>
+for more information.
+</li>
+<li class="listitem">
+Problematic resources uniquely report <a class="xref" href="system-config.html#setup-configuration-memory" title="Disable swapping">memory swapping</a>.
+</li>
+</ul>
+</div>
+<h4><a id="causes-shards"></a>Shard distributions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/hotspotting.asciidoc">edit</a></h4>
+<p>Elasticsearch indices are divided into one or more <a href="https://en.wikipedia.org/wiki/Shard_(database_architecture)" class="ulink" target="_top">shards</a>
+which can sometimes be poorly distributed. Elasticsearch accounts for this by <a class="xref" href="settings.html#modules-cluster" title="Cluster-level shard allocation and routing settings">balancing shard counts</a>
+across data nodes. As <a href="https://www.elastic.co/blog/whats-new-elasticsearch-kibana-cloud-8-6-0" class="ulink" target="_top">introduced in version 8.6</a>,
+Elasticsearch by default also enables <a class="xref" href="settings.html#modules-cluster" title="Cluster-level shard allocation and routing settings">desired balancing</a> to account for ingest load.
+A node may still experience hot spotting either due to write-heavy indices or by the
+overall shards it&#8217;s hosting.</p>
+<h5><a id="causes-shards-nodes"></a>Node level<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/hotspotting.asciidoc">edit</a></h5>
+<p>You can check for shard balancing via <a class="xref" href="cat.html#cat-allocation" title="cat allocation API">cat allocation</a>, though as of version
+8.6, <a class="xref" href="settings.html#modules-cluster" title="Cluster-level shard allocation and routing settings">desired balancing</a> may no longer fully expect to
+balance shards. Kindly note, both methods may temporarily show problematic imbalance during
+<a class="xref" href="modules-discovery.html#cluster-fault-detection" title="Cluster fault detection">cluster stability issues</a>.</p>
+<p>For example, let&#8217;s showcase two separate plausible issues using cat allocation:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/allocation?v&amp;s=node&amp;h=node,shards,disk.percent,disk.indices,disk.used</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1950.console"></div>
+<p>Which could return:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">node   shards disk.percent disk.indices disk.used
+node_1    446           19      154.8gb   173.1gb
+node_2     31           52       44.6gb   372.7gb
+node_3    445           43      271.5gb   289.4gb</pre>
+</div>
+<p>Here we see two significantly unique situations. <code class="literal">node_2</code> has recently
+restarted, so it has a much lower number of shards than all other nodes. This
+also relates to <code class="literal">disk.indices</code> being much smaller than <code class="literal">disk.used</code> while shards
+are recovering as seen via <a class="xref" href="cat.html#cat-recovery" title="cat recovery API">cat recovery</a>. While <code class="literal">node_2</code>'s shard
+count is low, it may become a write hot spot due to ongoing <a class="xref" href="ilm-actions.html#ilm-rollover" title="Rollover">ILM
+rollovers</a>. This is a common root cause of write hot spots covered in the next
+section.</p>
+<p>The second situation is that <code class="literal">node_3</code> has a higher <code class="literal">disk.percent</code> than <code class="literal">node_1</code>,
+even though they hold roughly the same number of shards. This occurs when either
+shards are not evenly sized (refer to <a class="xref" href="size-your-shards.html#shard-size-recommendation" title="Aim for shards of up to 200M documents, or with sizes between 10GB and 50GB">Aim for shards of up to 200M documents, or with sizes between 10GB and 50GB</a>) or when
+there are a lot of empty indices.</p>
+<p>Cluster rebalancing based on desired balance does much of the heavy lifting
+of keeping nodes from hot spotting. It can be limited by either nodes hitting
+<a class="xref" href="settings.html#disk-based-shard-allocation" title="Disk-based shard allocation settings">watermarks</a> (refer to <a class="xref" href="fix-common-cluster-issues.html#fix-watermark-errors" title="Fix watermark errors">fixing disk watermark errors</a>) or by a
+write-heavy index&#8217;s total shards being much lower than the written-to nodes.</p>
+<p>You can confirm hot spotted nodes via <a class="xref" href="cluster.html#cluster-nodes-stats" title="Nodes stats API">the nodes stats API</a>,
+potentially polling twice over time to only checking for the stats differences
+between them rather than polling once giving you stats for the node&#8217;s
+full <a class="xref" href="cluster.html#cluster-nodes-usage" title="Nodes feature usage API">node uptime</a>. For example, to check all nodes
+indexing stats:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _nodes/stats?human&amp;filter_path=nodes.*.name,nodes.*.indices.indexing</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1951.console"></div>
+<h5><a id="causes-shards-index"></a>Index level<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/hotspotting.asciidoc">edit</a></h5>
+<p>Hot spotted nodes frequently surface via <a class="xref" href="cat.html#cat-thread-pool" title="cat thread pool API">cat thread pool</a>'s
+<code class="literal">write</code> and <code class="literal">search</code> queue backups. For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/thread_pool/write,search?v=true&amp;s=n,nn&amp;h=n,nn,q,a,r,c</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1952.console"></div>
+<p>Which could return:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">n      nn       q a r    c
+search node_1   3 1 0 1287
+search node_2   0 2 0 1159
+search node_3   0 1 0 1302
+write  node_1 100 3 0 4259
+write  node_2   0 4 0  980
+write  node_3   1 5 0 8714</pre>
+</div>
+<p>Here you can see two significantly unique situations. Firstly, <code class="literal">node_1</code> has a
+severely backed up write queue compared to other nodes. Secondly, <code class="literal">node_3</code> shows
+historically completed writes that are double any other node. These are both
+probably due to either poorly distributed write-heavy indices, or to multiple
+write-heavy indices allocated to the same node. Since primary and replica writes
+are majorly the same amount of cluster work, we usually recommend setting
+<a class="xref" href="index-modules-allocation.html#total-shards-per-node"><code class="literal">index.routing.allocation.total_shards_per_node</code></a> to
+force index spreading after lining up index shard counts to total nodes.</p>
+<p>We normally recommend heavy-write indices have sufficient primary
+<code class="literal">number_of_shards</code> and replica <code class="literal">number_of_replicas</code> to evenly spread across
+indexing nodes. Alternatively, you can <a class="xref" href="cluster.html#cluster-reroute" title="Cluster reroute API">reroute</a> shards to
+more quiet nodes to alleviate the nodes with write hot spotting.</p>
+<p>If it&#8217;s non-obvious what indices are problematic, you can introspect further via
+<a class="xref" href="indices.html#indices-stats" title="Index stats API">the index stats API</a> by running:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _stats?level=shards&amp;human&amp;expand_wildcards=all&amp;filter_path=indices.*.total.indexing.index_total</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1953.console"></div>
+<p>For more advanced analysis, you can poll for shard-level stats,
+which lets you compare joint index-level and node-level stats. This analysis
+wouldn&#8217;t account for node restarts and/or shards rerouting, but serves as
+overview:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _stats/indexing,search?level=shards&amp;human&amp;expand_wildcards=all</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1954.console"></div>
+<p>You can for example use the <a href="https://stedolan.github.io/jq" class="ulink" target="_top">third-party JQ tool</a>,
+to process the output saved as <code class="literal">indices_stats.json</code>:</p>
+<div class="pre_wrapper lang-sh">
+<pre class="programlisting prettyprint lang-sh">cat indices_stats.json | jq -rc ['.indices|to_entries[]|.key as $i|.value.shards|to_entries[]|.key as $s|.value[]|{node:.routing.node[:4], index:$i, shard:$s, primary:.routing.primary, size:.store.size, total_indexing:.indexing.index_total, time_indexing:.indexing.index_time_in_millis, total_query:.search.query_total, time_query:.search.query_time_in_millis } | .+{ avg_indexing: (if .total_indexing&gt;0 then (.time_indexing/.total_indexing|round) else 0 end), avg_search: (if .total_search&gt;0 then (.time_search/.total_search|round) else 0 end) }'] &gt; shard_stats.json
+
+# show top written-to shard simplified stats which contain their index and node references
+cat shard_stats.json | jq -rc 'sort_by(-.avg_indexing)[]' | head</pre>
+</div>
+<h4><a id="causes-tasks"></a>Task loads<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/troubleshooting/common-issues/hotspotting.asciidoc">edit</a></h4>
+<p>Shard distribution problems will most-likely surface as task load as seen
+above in the <a class="xref" href="cat.html#cat-thread-pool" title="cat thread pool API">cat thread pool</a> example. It is also
+possible for tasks to hot spot a node either due to
+individual qualitative expensiveness or overall quantitative traffic loads.</p>
+<p>For example, if <a class="xref" href="cat.html#cat-thread-pool" title="cat thread pool API">cat thread pool</a> reported a high
+queue on the <code class="literal">warmer</code> <a class="xref" href="settings.html#modules-threadpool" title="Thread pools">thread pool</a>, you would
+look-up the effected node&#8217;s <a class="xref" href="cluster.html#cluster-nodes-hot-threads" title="Nodes hot threads API">hot threads</a>.
+Let&#8217;s say it reported <code class="literal">warmer</code> threads at <code class="literal">100% cpu</code> related to
+<code class="literal">GlobalOrdinalsBuilder</code>. This would let you know to inspect
+<a class="xref" href="mapping-params.html#eager-global-ordinals" title="eager_global_ordinals">field data&#8217;s global ordinals</a>.</p>
+<p>Alternatively, let&#8217;s say <a class="xref" href="cat.html#cat-nodes" title="cat nodes API">cat nodes</a> shows a hot spotted master node
+and <a class="xref" href="cat.html#cat-thread-pool" title="cat thread pool API">cat thread pool</a> shows general queuing across nodes.
+This would suggest the master node is overwhelmed. To resolve
+this, first ensure <a class="xref" href="high-availability-cluster-design.html#high-availability-cluster-small-clusters" title="Resilience in small clusters">hardware high availability</a>
+setup and then look to ephemeral causes. In this example,
+<a class="xref" href="cluster.html#cluster-nodes-hot-threads" title="Nodes hot threads API">the nodes hot threads API</a> reports multiple threads in
+<code class="literal">other</code> which indicates they&#8217;re waiting on or blocked by either garbage collection
+or I/O.</p>
+<p>For either of these example situations, a good way to confirm the problematic tasks
+is to look at longest running non-continuous (designated <code class="literal">[c]</code>) tasks via
+<a class="xref" href="cat.html#cat-tasks" title="cat task management API">cat task management</a>. This can be supplemented checking longest
+running cluster sync tasks via <a class="xref" href="cat.html#cat-pending-tasks" title="cat pending tasks API">cat pending tasks</a>. Using
+a third example,</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _cat/tasks?v&amp;s=time:desc&amp;h=type,action,running_time,node,cancellable</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1955.console"></div>
+<p>This could return:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">type   action                running_time  node    cancellable
+direct indices:data/read/eql 10m           node_1  true
+...</pre>
+</div>
+<p>This surfaces a problematic <a class="xref" href="eql-apis.html#eql-search-api" title="EQL search API">EQL query</a>. We can gain
+further insight on it via <a class="xref" href="cluster.html#tasks" title="Task management API">the task management API</a>,</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET _tasks?human&amp;detailed</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1956.console"></div>
+<p>Its response contains a <code class="literal">description</code> that reports this query:</p>
+<div class="pre_wrapper lang-eql">
+<pre class="programlisting prettyprint lang-eql">indices[winlogbeat-*,logs-window*], sequence by winlog.computer_name with maxspan=1m\n\n[authentication where host.os.type == "windows" and event.action:"logged-in" and\n event.outcome == "success" and process.name == "svchost.exe" ] by winlog.event_data.TargetLogonId</pre>
+</div>
+<p>This lets you know which indices to check (<code class="literal">winlogbeat-*,logs-window*</code>), as well
+as the <a class="xref" href="eql-apis.html#eql-search-api" title="EQL search API">EQL search</a> request body. Most likely this is
+<a href="https://www.elastic.co/guide/en/security/8.9/es-overview.html" class="ulink" target="_top">SIEM related</a>.
+You can combine this with <a class="xref" href="enable-audit-logging.html" title="Enable audit logging">audit logging</a> as needed to
+trace the request source.</p>
+</div>
+
+</div>
+<div class="navfooter">
+<span class="prev">
+<a href="troubleshooting.html">« Troubleshooting</a>
+</span>
+<span class="next">
+<a href="diagnose-unassigned-shards.html">Diagnose unassigned shards »</a>
+</span>
+</div>
+</div>
+</body>
+</html>

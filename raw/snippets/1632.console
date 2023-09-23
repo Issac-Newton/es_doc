@@ -1,1 +1,12 @@
-GET _tasks/oTUltX4IQMOUUVeiohTt8A:124
+PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "unfollow" : {}
+        }
+      }
+    }
+  }
+}

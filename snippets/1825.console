@@ -1,5 +1,12 @@
-GET /analyze_sample/_analyze
+POST /_security/role/dept_role
 {
-  "field" : "obj1.field1",
-  "text" : "this is a test"
+  "indices" : [
+    {
+      "names" : [ "*" ],
+      "privileges" : [ "read" ],
+      "query" : {
+        "term" : { "department_id" : 12 }
+      }
+    }
+  ]
 }

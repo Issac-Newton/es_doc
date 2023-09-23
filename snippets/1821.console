@@ -1,7 +1,15 @@
-GET /_analyze
+POST /_security/role/clicks_admin
 {
-  "tokenizer" : "keyword",
-  "filter" : ["lowercase"],
-  "char_filter" : ["html_strip"],
-  "text" : "this is a <b>test</b>"
+  "run_as": [ "clicks_watcher_1" ],
+  "cluster": [ "monitor" ],
+  "indices": [
+    {
+      "names": [ "events-*" ],
+      "privileges": [ "read" ],
+      "field_security" : {
+        "grant" : [ "category", "@timestamp", "message" ]
+      },
+      "query": "{\"match\": {\"category\": \"click\"}}"
+    }
+  ]
 }

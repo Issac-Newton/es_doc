@@ -1,1 +1,14 @@
-GET _nodes/usage
+PUT _ilm/policy/my_policy
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover" : {
+            "max_primary_shard_size": "50gb"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,12 @@
-DELETE /_security/oauth2/token
+POST my-index-000001/_update_by_query
 {
-  "realm_name" : "saml1"
+  "script": {
+    "source": "ctx._source.count++",
+    "lang": "painless"
+  },
+  "query": {
+    "term": {
+      "user.id": "kimchy"
+    }
+  }
 }

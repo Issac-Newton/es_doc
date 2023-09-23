@@ -1,13 +1,10 @@
-PUT /whitespace_example
+GET my-index-000001/_search
 {
-  "settings": {
-    "analysis": {
-      "analyzer": {
-        "rebuilt_whitespace": {
-          "tokenizer": "whitespace",
-          "filter": [        
-          ]
-        }
+  "query": {
+    "match": {
+      "message": {
+        "query": "Quick foxes",
+        "analyzer": "stop"
       }
     }
   }

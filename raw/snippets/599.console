@@ -1,8 +1,35 @@
-PUT /postal_codes/_doc/1?refresh=wait_for
+PUT /_component_template/ct1
 {
-  "location": {
-    "type": "envelope",
-    "coordinates": [ [ 13.0, 53.0 ], [ 14.0, 52.0 ] ]
+  "template": {
+    "settings": {
+      "index.number_of_shards": 2
+    }
+  }
+}
+
+PUT /_component_template/ct2
+{
+  "template": {
+    "settings": {
+      "index.number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        }
+      }
+    }
+  }
+}
+
+POST /_index_template/_simulate
+{
+  "index_patterns": ["my*"],
+  "template": {
+    "settings" : {
+        "index.number_of_shards" : 3
+    }
   },
-  "postal_code": "96598"
+  "composed_of": ["ct1", "ct2"]
 }

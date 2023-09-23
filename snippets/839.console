@@ -1,13 +1,50 @@
-PUT /test/_doc/1
+PUT test
 {
-  "location": [
+  "mappings": {
+    "properties": {
+      "comments": {
+        "type": "nested",
+        "properties": {
+          "votes": {
+            "type": "nested"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT test/_doc/1?refresh
+{
+  "title": "Test title",
+  "comments": [
     {
-      "coordinates": [46.25,20.14],
-      "type": "point"
+      "author": "kimchy",
+      "text": "comment text",
+      "votes": []
     },
     {
-      "coordinates": [47.49,19.04],
-      "type": "point"
+      "author": "nik9000",
+      "text": "words words words",
+      "votes": [
+        {"value": 1 , "voter": "kimchy"},
+        {"value": -1, "voter": "other"}
+      ]
     }
   ]
+}
+
+POST test/_search
+{
+  "query": {
+    "nested": {
+      "path": "comments.votes",
+        "query": {
+          "match": {
+            "comments.votes.voter": "kimchy"
+          }
+        },
+        "inner_hits" : {}
+    }
+  }
 }

@@ -1,6 +1,8 @@
-POST test/_doc/1?pipeline=drop_guests_network
+GET /_analyze
 {
-  "network": {
-    "name": "Guest"
-  }
+  "tokenizer": "keyword",
+  "char_filter": [
+    "html_strip"
+  ],
+  "text": "<p>I&apos;m so <b>happy</b>!</p>"
 }

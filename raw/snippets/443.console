@@ -1,12 +1,8 @@
-GET _analyze
+GET file-path-test/_search
 {
-  "tokenizer": "standard",
-  "filter": [
-    {
-      "type": "hyphenation_decompounder",
-      "hyphenation_patterns_path": "analysis/hyphenation_patterns.xml",
-      "word_list": ["Kaffee", "zucker", "tasse"]
+  "query": {
+    "term": {
+      "file_path.tree": "/User/alice/photos/2017/05/16"
     }
-  ],
-  "text": "Kaffeetasse"
+  }
 }

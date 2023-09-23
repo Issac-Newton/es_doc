@@ -1,26 +1,6 @@
-GET /_search
+PUT _cluster/settings
 {
-  "query": {
-    "span_near": {
-      "clauses": [
-        {
-          "span_term": {
-            "text": "quick brown"
-          }
-        },
-        {
-          "field_masking_span": {
-            "query": {
-              "span_term": {
-                "text.stems": "fox"
-              }
-            },
-            "field": "text"
-          }
-        }
-      ],
-      "slop": 5,
-      "in_order": false
-    }
+  "persistent": {
+    "cluster.remote.cluster_two.skip_unavailable": true
   }
 }

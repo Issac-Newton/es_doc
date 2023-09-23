@@ -1,5 +1,12 @@
-GET /analyze_sample/_analyze
+POST /_security/role/test_role1
 {
-  "normalizer" : "my_normalizer",
-  "text" : "BaR"
+  "indices": [
+    {
+      "names": [ "events-*" ],
+      "privileges": [ "read" ],
+      "field_security" : {
+        "grant" : [ "category", "@timestamp", "message" ]
+      }
+    }
+  ]
 }

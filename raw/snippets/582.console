@@ -1,10 +1,6 @@
-PUT _ingest/pipeline/drop_guests_network
+GET /_analyze
 {
-  "processors": [
-    {
-      "drop": {
-        "if": "ctx.network_name == 'Guest'"
-      }
-    }
-  ]
+  "tokenizer": "keyword",
+  "filter": [ "word_delimiter_graph" ],
+  "text": "Neil's-Super-Duper-XL500--42+AutoCoder"
 }

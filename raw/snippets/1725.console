@@ -1,7 +1,8 @@
-POST test/_update/1
+PUT _snapshot/my_fs_backup
 {
-  "doc": {
-    "name": "new_name"
-  },
-  "doc_as_upsert": true
+  "type": "fs",
+  "settings": {
+    "location": "my_fs_backup_location",
+    "readonly": true
+  }
 }

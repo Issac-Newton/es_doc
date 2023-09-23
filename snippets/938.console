@@ -1,4 +1,15 @@
-PUT my-index-000001/_doc/2
+PUT product-index
 {
-  "color":   "blue"
+  "mappings": {
+    "properties": {
+      "product-vector": {
+        "type": "dense_vector",
+        "dims": 5,
+        "index": false
+      },
+      "price": {
+        "type": "long"
+      }
+    }
+  }
 }

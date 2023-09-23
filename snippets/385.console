@@ -1,68 +1,30 @@
-PUT file-path-test
+PUT /cjk_example
 {
   "settings": {
     "analysis": {
-      "analyzer": {
-        "custom_path_tree": {
-          "tokenizer": "custom_hierarchy"
-        },
-        "custom_path_tree_reversed": {
-          "tokenizer": "custom_hierarchy_reversed"
+      "filter": {
+        "english_stop": {
+          "type":       "stop",
+          "stopwords":  [
+            "a", "and", "are", "as", "at", "be", "but", "by", "for",
+            "if", "in", "into", "is", "it", "no", "not", "of", "on",
+            "or", "s", "such", "t", "that", "the", "their", "then",
+            "there", "these", "they", "this", "to", "was", "will",
+            "with", "www"
+          ]
         }
       },
-      "tokenizer": {
-        "custom_hierarchy": {
-          "type": "path_hierarchy",
-          "delimiter": "/"
-        },
-        "custom_hierarchy_reversed": {
-          "type": "path_hierarchy",
-          "delimiter": "/",
-          "reverse": "true"
-        }
-      }
-    }
-  },
-  "mappings": {
-    "properties": {
-      "file_path": {
-        "type": "text",
-        "fields": {
-          "tree": {
-            "type": "text",
-            "analyzer": "custom_path_tree"
-          },
-          "tree_reversed": {
-            "type": "text",
-            "analyzer": "custom_path_tree_reversed"
-          }
+      "analyzer": {
+        "rebuilt_cjk": {
+          "tokenizer":  "standard",
+          "filter": [
+            "cjk_width",
+            "lowercase",
+            "cjk_bigram",
+            "english_stop"
+          ]
         }
       }
     }
   }
-}
-
-POST file-path-test/_doc/1
-{
-  "file_path": "/User/alice/photos/2017/05/16/my_photo1.jpg"
-}
-
-POST file-path-test/_doc/2
-{
-  "file_path": "/User/alice/photos/2017/05/16/my_photo2.jpg"
-}
-
-POST file-path-test/_doc/3
-{
-  "file_path": "/User/alice/photos/2017/05/16/my_photo3.jpg"
-}
-
-POST file-path-test/_doc/4
-{
-  "file_path": "/User/alice/photos/2017/05/15/my_photo1.jpg"
-}
-
-POST file-path-test/_doc/5
-{
-  "file_path": "/User/bob/photos/2017/05/16/my_photo1.jpg"
 }

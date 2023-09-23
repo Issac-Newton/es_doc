@@ -1,27 +1,14 @@
-POST my-index-000001/_doc/1
-{
-  "is_published": true
-}
-
-POST my-index-000001/_doc/2
-{
-  "is_published": false
-}
-
 GET my-index-000001/_search
 {
   "aggs": {
-    "publish_state": {
-      "terms": {
-        "field": "is_published"
+    "avg_start": {
+      "avg": {
+        "field": "measures.start"
       }
-    }
-  },
-  "script_fields": {
-    "is_published": {
-      "script": {
-        "lang": "painless",
-        "source": "doc['is_published'].value"
+    },
+    "avg_end": {
+      "avg": {
+        "field": "measures.end"
       }
     }
   }

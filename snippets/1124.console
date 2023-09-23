@@ -1,15 +1,17 @@
-POST /sales/_search
+PUT /test
 {
-  "aggs" : {
-      "max_price" : {
-          "max" : {
-              "script" : {
-                  "id": "my_script",
-                  "params": {
-                      "field": "price"
-                  }
-              }
-          }
+  "mappings": {
+    "properties": {
+      "pagerank": {
+        "type": "rank_feature"
+      },
+      "url_length": {
+        "type": "rank_feature",
+        "positive_score_impact": false
+      },
+      "topics": {
+        "type": "rank_features"
       }
+    }
   }
 }

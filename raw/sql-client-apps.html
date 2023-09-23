@@ -6,7 +6,7 @@
 <meta class="elastic" name="content" content="SQL Client Applications | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="xpack-sql.html" title="SQL access"/>
+<link rel="up" href="xpack-sql.html" title="SQL"/>
 <link rel="prev" href="sql-odbc.html" title="SQL ODBC"/>
 <link rel="next" href="sql-spec.html" title="SQL Language"/>
 <meta class="elastic" name="product_version" content=""/>
@@ -21,7 +21,7 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-sql.html">SQL access</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-sql.html">SQL</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
@@ -33,9 +33,9 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps"></a>SQL Client Applications<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps"></a>SQL Client Applications<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/index.asciidoc">edit</a></h2>
 </div></div></div>
-<p>Thanks to its <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC</a> and <a class="xref" href="sql-odbc.html" title="SQL ODBC">ODBC</a> interfaces, a broad range of third-party applications can use Elasticsearch SQL capabilities.
+<p>Thanks to its <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC</a> and <a class="xref" href="sql-odbc.html" title="SQL ODBC">ODBC</a> interfaces, a broad range of third-party applications can use Elasticsearch&#8217;s SQL capabilities.
 This section lists, in alphabetical order, a number of them and their respective configuration - the list however is by no means comprehensive (feel free to <a href="https://www.elastic.co/blog/art-of-pull-request" class="ulink" target="_top">submit a PR</a> to improve it):
 as long as the app can use the Elasticsearch SQL driver, it can use Elasticsearch SQL.</p>
 <div class="ulist itemizedlist">
@@ -96,7 +96,7 @@ which covers only the configuration aspect with Elasticsearch SQL.</p>
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-dbeaver"></a>DBeaver<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-dbeaver"></a>DBeaver<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the Elasticsearch JDBC driver to access Elasticsearch data from DBeaver.</p>
 <div class="important admon">
@@ -107,7 +107,7 @@ which covers only the configuration aspect with Elasticsearch SQL.</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -123,7 +123,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_new_connection"></a>New Connection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_new_connection"></a>New Connection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Create a new connection either through the menu <span class="strong strong"><strong>File</strong></span> &gt; <span class="strong strong"><strong>New</strong></span> &gt; <span class="strong strong"><strong>Database Connection</strong></span> menu or directly through the <span class="strong strong"><strong>Database Connection</strong></span> panel.</p>
 <p><span class="image"><img src="images/sql/client-apps/dbeaver-1-new-conn.png" alt="dbeaver 1 new conn"></span></p>
@@ -131,7 +131,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_select_elasticsearch_type"></a>Select Elasticsearch type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_select_elasticsearch_type"></a>Select Elasticsearch type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Select the Elasticsearch type from the available connection types:</p>
 <p><span class="image"><img src="images/sql/client-apps/dbeaver-2-conn-es.png" alt="dbeaver 2 conn es"></span></p>
@@ -139,7 +139,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_specify_the_elasticsearch_cluster_information"></a>Specify the Elasticsearch cluster information<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_specify_the_elasticsearch_cluster_information"></a>Specify the Elasticsearch cluster information<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Configure the Elasticsearch SQL connection appropriately:</p>
 <p><span class="image"><img src="images/sql/client-apps/dbeaver-3-conn-props.png" alt="dbeaver 3 conn props"></span></p>
@@ -147,7 +147,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_verify_the_driver_version"></a>Verify the driver version<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_verify_the_driver_version"></a>Verify the driver version<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Make sure the correct JDBC driver version is used by using the <span class="strong strong"><strong>Edit Driver Settings</strong></span> button:</p>
 <p><span class="image"><img src="images/sql/client-apps/dbeaver-4-driver-ver.png" alt="dbeaver 4 driver ver"></span></p>
@@ -157,7 +157,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_test_connectivity"></a>Test connectivity<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_test_connectivity"></a>Test connectivity<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Once the driver version and the settings are in place, use <span class="strong strong"><strong>Test Connection</strong></span> to check that everything works. If things are okay, one should get a confirmation window with the version of the driver and that of Elasticsearch SQL:</p>
 <p><span class="image"><img src="images/sql/client-apps/dbeaver-5-test-conn.png" alt="dbeaver 5 test conn"></span></p>
@@ -167,7 +167,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_connect_to_elasticsearch"></a>Connect to Elasticsearch<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_connect_to_elasticsearch"></a>Connect to Elasticsearch<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbeaver.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Simply click on the Elasticsearch connection and start querying and exploring Elasticsearch:</p>
 <p><span class="image"><img src="images/sql/client-apps/dbeaver-6-data.png" alt="dbeaver 6 data"></span></p>
@@ -177,26 +177,38 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-dbvis"></a>DbVisualizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-dbvis"></a>DbVisualizer<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the Elasticsearch JDBC driver to access Elasticsearch data from DbVisualizer.</p>
 <div class="important admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>Elastic does not endorse, promote or provide support for this application; for native Elasticsearch integration in this product, please reach out to its vendor.</p>
+<p>Elastic does not endorse, promote or provide support for this application.</p>
 </div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites_2"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites_2"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a href="https://www.dbvis.com/" class="ulink" target="_top">DbVisualizer</a> 10.0.21 or higher
+<a href="https://www.dbvis.com/" class="ulink" target="_top">DbVisualizer</a> 13.0 or higher
 </li>
 <li class="listitem">
-Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC driver</a>
+<p>Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC driver</a></p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+Note
+</span>
+</dt>
+<dd>
+Pre 13.0 versions of DbVisualizer can still connect to Elasticsearch by having the <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC driver</a> set up from the generic <span class="strong strong"><strong>Custom</strong></span> template.
+</dd>
+</dl>
+</div>
 </li>
 </ul>
 </div>
@@ -204,40 +216,43 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_add_elasticsearch_jdbc_driver"></a>Add Elasticsearch JDBC driver<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_setup_the_elasticsearch_jdbc_driver"></a>Setup the Elasticsearch JDBC driver<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a></h3>
 </div></div></div>
-<p>Add the Elasticsearch JDBC driver to DbVisualizer through <span class="strong strong"><strong>Tools</strong></span> &gt; <span class="strong strong"><strong>Driver Manager</strong></span>:</p>
+<p>Setup the Elasticsearch JDBC driver through <span class="strong strong"><strong>Tools</strong></span> &gt; <span class="strong strong"><strong>Driver Manager</strong></span>:</p>
 <p><span class="image"><img src="images/sql/client-apps/dbvis-1-driver-manager.png" alt="dbvis 1 driver manager"></span></p>
-<p>Select <span class="strong strong"><strong>Elasticsearch</strong></span> driver name from the left sidebar and add the JDBC driver in the files panel through the buttons on the right; if there is no such driver name check the DbVisualizer version or create a new driver entry through <span class="strong strong"><strong>Driver</strong></span> &gt; <span class="strong strong"><strong>Create Driver</strong></span>.</p>
-<p><span class="image"><img src="images/sql/client-apps/dbvis-2-driver.png" alt="dbvis 2 driver"></span></p>
-<p>Once specified, the driver class and its version should be automatically picked up - one can force the refresh through the <span class="strong strong"><strong>Find driver in listed locations</strong></span> button, the second from the bottom on the right hand side:</p>
-<p><span class="image"><img src="images/sql/client-apps/dbvis-3-add-driver.png" alt="dbvis 3 add driver"></span></p>
+<p>Select <span class="strong strong"><strong>Elasticsearch</strong></span> driver template from the left sidebar to create a new user driver:</p>
+<p><span class="image"><img src="images/sql/client-apps/dbvis-2-driver-manager-elasticsearch.png" alt="dbvis 2 driver manager elasticsearch"></span></p>
+<p>Download the driver locally:</p>
+<p><span class="image"><img src="images/sql/client-apps/dbvis-3-driver-manager-download.png" alt="dbvis 3 driver manager download"></span></p>
+<p>and check its availability status:</p>
+<p><span class="image"><img src="images/sql/client-apps/dbvis-4-driver-manager-ready.png" alt="dbvis 4 driver manager ready"></span></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_create_a_new_connection"></a>Create a new connection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_create_a_new_connection"></a>Create a new connection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Once the Elasticsearch driver is in place, create a new connection:</p>
-<p><span class="image"><img src="images/sql/client-apps/dbvis-4-new-conn.png" alt="dbvis 4 new conn"></span></p>
-<p>One can use the wizard or add the settings all at once:</p>
-<p><span class="image"><img src="images/sql/client-apps/dbvis-5-conn-props.png" alt="dbvis 5 conn props"></span></p>
-<p>Press <span class="strong strong"><strong>Connect</strong></span> and the driver version (as that of the cluster) should show up under <span class="strong strong"><strong>Connection Message</strong></span>.</p>
+<p><span class="image"><img src="images/sql/client-apps/dbvis-5-new-conn.png" alt="dbvis 5 new conn"></span></p>
+<p>by double-clicking the Elasticsearch entry in the list of available drivers:</p>
+<p><span class="image"><img src="images/sql/client-apps/dbvis-6-new-conn-elasticsearch.png" alt="dbvis 6 new conn elasticsearch"></span></p>
+<p>Enter the connection details, then press <span class="strong strong"><strong>Connect</strong></span> and the driver version (as that of the cluster) should show up under <span class="strong strong"><strong>Connection Message</strong></span>.</p>
+<p><span class="image"><img src="images/sql/client-apps/dbvis-7-new-conn-connect.png" alt="dbvis 7 new conn connect"></span></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_execute_sql_queries"></a>Execute SQL queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_execute_sql_queries"></a>Execute SQL queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/dbvis.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The setup is done. DbVisualizer can be used to run queries against Elasticsearch and explore its content:</p>
-<p><span class="image"><img src="images/sql/client-apps/dbvis-6-data.png" alt="dbvis 6 data"></span></p>
+<p><span class="image"><img src="images/sql/client-apps/dbvis-8-data.png" alt="dbvis 8 data"></span></p>
 </div>
 
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-excel"></a>Microsoft Excel<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/excel.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-excel"></a>Microsoft Excel<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/excel.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the Elasticsearch ODBC driver to access Elasticsearch data from Microsoft Excel.</p>
 <div class="important admon">
@@ -248,7 +263,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites_3"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/excel.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites_3"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/excel.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -267,7 +282,7 @@ A preconfigured User or System DSN (see <a class="xref" href="sql-odbc.html#dsn-
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_load_data_into_a_spreadsheet"></a>Load data into a spreadsheet<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/excel.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_load_data_into_a_spreadsheet"></a>Load data into a spreadsheet<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/excel.asciidoc">edit</a></h3>
 </div></div></div>
 <p>First, you&#8217;ll need to choose ODBC as the source to load data from. To do so, click on the <em>Data</em> tab, then <em>New Query</em> button, in the
 drop-down menu expand <em>From Other Sources</em>, then choose <em>From ODBC</em>:</p>
@@ -293,7 +308,7 @@ tables will load a preview of the data within:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-powerbi"></a>Microsoft Power BI Desktop<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/powerbi.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-powerbi"></a>Microsoft Power BI Desktop<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/powerbi.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the Elasticsearch ODBC driver to access Elasticsearch data from Microsoft Power BI Desktop.</p>
 <div class="important admon">
@@ -304,7 +319,7 @@ tables will load a preview of the data within:</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites_4"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/powerbi.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites_4"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/powerbi.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -323,7 +338,7 @@ A preconfigured User or System DSN (see <a class="xref" href="sql-odbc.html#dsn-
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_data_loading"></a>Data loading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/powerbi.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_data_loading"></a>Data loading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/powerbi.asciidoc">edit</a></h3>
 </div></div></div>
 <p>First, you&#8217;ll need to choose ODBC as the source to load data from. Once launched, click on the <em>Get Data</em> button (under <em>Home</em> tab), then
 on the <em>More&#8230;&#8203;</em> button at the bottom of the list:</p>
@@ -344,7 +359,7 @@ columns. These can now be used to build the desired visualisation:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-ps1"></a>Microsoft PowerShell<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/ps1.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-ps1"></a>Microsoft PowerShell<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/ps1.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the Elasticsearch ODBC driver to access Elasticsearch data from Microsoft PowerShell.</p>
 <div class="important admon">
@@ -355,7 +370,7 @@ columns. These can now be used to build the desired visualisation:</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites_5"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/ps1.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites_5"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/ps1.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -374,7 +389,7 @@ A preconfigured User or System DSN (see <a class="xref" href="sql-odbc.html#dsn-
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_writing_a_script"></a>Writing a script<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/ps1.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_writing_a_script"></a>Writing a script<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/ps1.asciidoc">edit</a></h3>
 </div></div></div>
 <p>While putting the following instructions into a script file is not an absolute requirement, doing so will make it easier to extend and
 reuse. The following instructions exemplify how to execute a simple SELECT query from an existing index in your Elasticsearch instance, using a DSN
@@ -400,7 +415,7 @@ $dt</pre>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-microstrat"></a>MicroStrategy Desktop<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/microstrat.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-microstrat"></a>MicroStrategy Desktop<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/microstrat.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the Elasticsearch ODBC driver to access Elasticsearch data from MicroStrategy Desktop.</p>
 <div class="important admon">
@@ -411,7 +426,7 @@ $dt</pre>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites_6"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/microstrat.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites_6"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/microstrat.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -430,7 +445,7 @@ A preconfigured User or System DSN (see <a class="xref" href="sql-odbc.html#dsn-
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_data_loading_2"></a>Data loading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/microstrat.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_data_loading_2"></a>Data loading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/microstrat.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To use the Elasticsearch SQL ODBC Driver to load data into MicroStrategy Desktop perform the following steps in sequence.</p>
 <div class="olist orderedlist">
@@ -495,7 +510,7 @@ You can choose whichever, we&#8217;ll exemplify the <em>Connect Live</em> way:</
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-qlik"></a>Qlik Sense Desktop<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/qlik.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-qlik"></a>Qlik Sense Desktop<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/qlik.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the Elasticsearch ODBC driver to access Elasticsearch data from Qlik Sense Desktop.</p>
 <div class="important admon">
@@ -506,7 +521,7 @@ You can choose whichever, we&#8217;ll exemplify the <em>Connect Live</em> way:</
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites_7"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/qlik.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites_7"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/qlik.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -525,7 +540,7 @@ A preconfigured User or System DSN (see <a class="xref" href="sql-odbc.html#dsn-
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_data_loading_3"></a>Data loading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/qlik.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_data_loading_3"></a>Data loading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/qlik.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To use the Elasticsearch SQL ODBC Driver to load data into Qlik Sense Desktop perform the following steps in sequence.</p>
 <div class="olist orderedlist">
@@ -581,7 +596,7 @@ load data from:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-squirrel"></a>SQuirreL SQL<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-squirrel"></a>SQuirreL SQL<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the Elasticsearch JDBC driver to access Elasticsearch data from SQuirreL SQL.</p>
 <div class="important admon">
@@ -592,7 +607,7 @@ load data from:</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites_8"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites_8"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -608,7 +623,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_add_elasticsearch_jdbc_driver_2"></a>Add Elasticsearch JDBC Driver<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_add_elasticsearch_jdbc_driver"></a>Add Elasticsearch JDBC Driver<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To add the Elasticsearch JDBC driver, use <span class="strong strong"><strong>Windows</strong></span> &gt; <span class="strong strong"><strong>View Drivers</strong></span> menu (or Ctrl+Shift+D shortcut):</p>
 <p><span class="image"><img src="images/sql/client-apps/squirell-1-view-drivers.png" alt="squirell 1 view drivers"></span></p>
@@ -622,7 +637,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_add_an_alias_for_elasticsearch"></a>Add an alias for Elasticsearch<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_add_an_alias_for_elasticsearch"></a>Add an alias for Elasticsearch<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Add a new connection or in SQuirreL terminology an <em>alias</em> using the new driver. To do so, select the <span class="strong strong"><strong>Aliases</strong></span> panel on the left and click the <code class="literal">+</code> sign:</p>
 <p><span class="image"><img src="images/sql/client-apps/squirell-5-add-alias.png" alt="squirell 5 add alias"></span></p>
@@ -633,7 +648,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_execute_sql_queries_2"></a>Execute SQL queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_execute_sql_queries_2"></a>Execute SQL queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/squirrel.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The connection should open automatically (if it has been created before simply click on <span class="strong strong"><strong>Connect</strong></span> in the <span class="strong strong"><strong>Alias</strong></span> panel). SQuirreL SQL can now issue SQL commands to Elasticsearch:</p>
 <p><span class="image"><img src="images/sql/client-apps/squirell-7-data.png" alt="squirell 7 data"></span></p>
@@ -643,7 +658,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-workbench"></a>SQL Workbench/J<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-workbench"></a>SQL Workbench/J<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the Elasticsearch JDBC driver to access Elasticsearch data from SQL Workbench/J.</p>
 <div class="important admon">
@@ -654,7 +669,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites_9"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites_9"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -670,7 +685,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_add_elasticsearch_jdbc_driver_3"></a>Add Elasticsearch JDBC driver<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_add_elasticsearch_jdbc_driver_2"></a>Add Elasticsearch JDBC driver<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Add the Elasticsearch JDBC driver to SQL Workbench/J through <span class="strong strong"><strong>Manage Drivers</strong></span> either from the main windows in the <span class="strong strong"><strong>File</strong></span> menu or from the <span class="strong strong"><strong>Connect</strong></span> window:</p>
 <p><span class="image"><img src="images/sql/client-apps/workbench-1-manage-drivers.png" alt="workbench 1 manage drivers"></span></p>
@@ -682,7 +697,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_create_a_new_connection_profile"></a>Create a new connection profile<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_create_a_new_connection_profile"></a>Create a new connection profile<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a></h3>
 </div></div></div>
 <p>With the driver configured, create a new connection profile through <span class="strong strong"><strong>File</strong></span> &gt; <span class="strong strong"><strong>Connect Window</strong></span> (or Alt+C shortcut):</p>
 <p><span class="image"><img src="images/sql/client-apps/workbench-4-connection.png" alt="workbench 4 connection"></span></p>
@@ -693,7 +708,7 @@ Verify the connection through the <span class="strong strong"><strong>Test</stro
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_execute_sql_queries_3"></a>Execute SQL queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_execute_sql_queries_3"></a>Execute SQL queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/workbench.asciidoc">edit</a></h3>
 </div></div></div>
 <p>SQL Workbench/J is ready to talk to Elasticsearch through SQL: click on the profile created to execute statements or explore the data:</p>
 <p><span class="image"><img src="images/sql/client-apps/workbench-5-data.png" alt="workbench 5 data"></span></p>
@@ -703,7 +718,7 @@ Verify the connection through the <span class="strong strong"><strong>Test</stro
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-tableau-desktop"></a>Tableau Desktop<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/tableau-desktop.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-tableau-desktop"></a>Tableau Desktop<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/tableau-desktop.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Use the Elasticsearch JDBC driver and dedicated Elasticsearch Tableau Connector to access Elasticsearch data from Tableau Desktop.</p>
 <div class="important admon">
@@ -715,7 +730,7 @@ product, please reach out to its vendor.</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-client-apps-tableau-desktop-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/tableau-desktop.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-client-apps-tableau-desktop-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/tableau-desktop.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -734,7 +749,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-client-apps-tableau-desktop-load-data"></a>Load data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/tableau-desktop.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-client-apps-tableau-desktop-load-data"></a>Load data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/tableau-desktop.asciidoc">edit</a></h3>
 </div></div></div>
 <p>First, move or download the JDBC driver to the Tableau Desktop drivers directory:</p>
 <div class="ulist itemizedlist">
@@ -772,7 +787,7 @@ Mac: <code class="literal">/Users/[user]/Documents/My Tableau Repository/Connect
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-client-apps-tableau-server"></a>Tableau Server<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/tableau-server.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-client-apps-tableau-server"></a>Tableau Server<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/tableau-server.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Use the Elasticsearch JDBC driver and dedicated Elasticsearch Tableau Connector to access Elasticsearch data from Tableau Server.</p>
 <div class="important admon">
@@ -784,7 +799,7 @@ product, please reach out to its vendor.</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-client-apps-tableau-server-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/tableau-server.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-client-apps-tableau-server-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/tableau-server.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -803,7 +818,7 @@ Elasticsearch SQL <a class="xref" href="sql-jdbc.html" title="SQL JDBC">JDBC dri
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="sql-client-apps-tableau-server-load-data"></a>Load data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/client-apps/tableau-server.asciidoc">edit</a></h3>
+<h3 class="title"><a id="sql-client-apps-tableau-server-load-data"></a>Load data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/client-apps/tableau-server.asciidoc">edit</a></h3>
 </div></div></div>
 <p>First, move or download the JDBC driver to the Tableau Server drivers directory:</p>
 <div class="ulist itemizedlist">

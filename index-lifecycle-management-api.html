@@ -3,6 +3,7 @@
   <head>
     
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>Index lifecycle management APIs | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="Index lifecycle management APIs | Elasticsearch Guide">
 
@@ -117,15 +118,15 @@
 </div>
 <div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="index-lifecycle-management-api"></a>Index lifecycle management APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/ilm-api.asciidoc">edit</a></h2>
+<h2 class="title"><a id="index-lifecycle-management-api"></a>Index lifecycle management APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/ilm-api.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You use the following APIs to set up policies to automatically manage the index lifecycle.
-For more information about index lifecycle management (ILM), see <a class="xref" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle">ILM: Manage the index lifecycle</a>.</p>
-<h3><a id="ilm-api-policy-endpoint"></a>Policy management APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/ilm-api.asciidoc">edit</a></h3>
+For more information about index lifecycle management (ILM), see <a class="xref" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle"><em>ILM: Manage the index lifecycle</em></a>.</p>
+<h3><a id="ilm-api-policy-endpoint"></a>Policy management APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/ilm-api.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="index-lifecycle-management-api.html#ilm-put-lifecycle" title="Create lifecycle policy API">Create lifecycle policy</a>
+<a class="xref" href="index-lifecycle-management-api.html#ilm-put-lifecycle" title="Create or update lifecycle policy API">Create lifecycle policy</a>
 </li>
 <li class="listitem">
 <a class="xref" href="index-lifecycle-management-api.html#ilm-get-lifecycle" title="Get lifecycle policy API">Get lifecycle policy</a>
@@ -135,7 +136,7 @@ For more information about index lifecycle management (ILM), see <a class="xref"
 </li>
 </ul>
 </div>
-<h3><a id="ilm-api-index-endpoint"></a>Index management APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/ilm-api.asciidoc">edit</a></h3>
+<h3><a id="ilm-api-index-endpoint"></a>Index management APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/ilm-api.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -149,7 +150,7 @@ For more information about index lifecycle management (ILM), see <a class="xref"
 </li>
 </ul>
 </div>
-<h3><a id="ilm-api-management-endpoint"></a>Operation management APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/ilm-api.asciidoc">edit</a></h3>
+<h3><a id="ilm-api-management-endpoint"></a>Operation management APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/ilm-api.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -164,25 +165,28 @@ For more information about index lifecycle management (ILM), see <a class="xref"
 <li class="listitem">
 <a class="xref" href="index-lifecycle-management-api.html#ilm-explain-lifecycle" title="Explain lifecycle API">Explain API</a>
 </li>
+<li class="listitem">
+<a class="xref" href="index-lifecycle-management-api.html#ilm-migrate-to-data-tiers" title="Migrate to data tiers routing API">Migrate to data tiers routing API</a>
+</li>
 </ul>
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-put-lifecycle"></a>Create lifecycle policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-put-lifecycle"></a>Create or update lifecycle policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>Creates or updates lifecycle policy. See <a class="xref" href="getting-started-modify-data.html#ilm-policy-definition" title="ILM policy definition">ILM policy definition</a> for
+<p>Creates or updates lifecycle policy. See <a class="xref" href="ilm-concepts.html#ilm-index-lifecycle" title="Index lifecycle">Index lifecycle</a> for
 definitions of policy components.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-put-lifecycle-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-put-lifecycle-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">PUT _ilm/policy/&lt;policy_id&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-put-lifecycle-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-put-lifecycle-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -200,7 +204,7 @@ update.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-put-lifecycle-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-put-lifecycle-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Creates a lifecycle policy. If the specified policy exists, the policy is
 replaced and the policy version is incremented.</p>
@@ -215,7 +219,7 @@ previous versions.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-put-lifecycle-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-put-lifecycle-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -233,7 +237,7 @@ previous versions.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-put-lifecycle-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-put-lifecycle-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -264,13 +268,23 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-put-lifecycle-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-put-lifecycle-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/put-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
-<p>The following example creates a new policy named <code class="literal">my_policy</code>:</p>
+<p>The following example creates a new policy named <code class="literal">my_policy</code>. In addition, you can use the
+<code class="literal">_meta</code> parameter to add arbitrary metadata to the policy, the <code class="literal">_meta</code> parameter is optional
+and not automatically generated or used by Elasticsearch. To unset <code class="literal">_meta</code>, replace the policy
+without specifying one. To check the <code class="literal">_meta</code>, you can use the <a class="xref" href="index-lifecycle-management-api.html#ilm-get-lifecycle" title="Get lifecycle policy API">Get lifecycle policy</a> API.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT _ilm/policy/my_policy
 {
   "policy": {
+    "_meta": {
+      "description": "used for nginx log",
+      "project": {
+        "name": "myProject",
+        "department": "myDepartment"
+      }
+    },
     "phases": {
       "warm": {
         "min_age": "10d",
@@ -290,7 +304,7 @@ expires, the request fails and returns an error. Defaults to <code class="litera
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2014.console"></div>
+<div class="console_widget" data-snippet="snippets/2565.console"></div>
 <p>If the request succeeds, you receive the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -303,13 +317,13 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-get-lifecycle"></a>Get lifecycle policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-get-lifecycle"></a>Get lifecycle policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Retrieves a lifecycle policy.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-lifecycle-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-lifecycle-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET _ilm/policy</code></p>
 <p><code class="literal">GET _ilm/policy/&lt;policy_id&gt;</code></p>
@@ -317,7 +331,7 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-lifecycle-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-lifecycle-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -332,7 +346,7 @@ If the Elasticsearch security features are enabled, you must have the <code clas
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-lifecycle-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-lifecycle-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Returns the specified policy definition. Includes the policy version and last
 modified date. If no policy is specified, returns all defined policies.</p>
@@ -340,7 +354,7 @@ modified date. If no policy is specified, returns all defined policies.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-lifecycle-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-lifecycle-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -358,7 +372,7 @@ modified date. If no policy is specified, returns all defined policies.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-lifecycle-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-lifecycle-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -389,19 +403,19 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-lifecycle-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-lifecycle-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example retrieves <code class="literal">my_policy</code>:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET _ilm/policy/my_policy</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2015.console"></div>
+<div class="console_widget" data-snippet="snippets/2566.console"></div>
 <p>If the request succeeds, the body of the response contains the policy definition:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
   "my_policy": {
-    "version": 1, <a id="CO638-1"></a><i class="conum" data-value="1"></i>
-    "modified_date": 82392349, <a id="CO638-2"></a><i class="conum" data-value="2"></i>
+    "version": 1, <a id="CO718-1"></a><i class="conum" data-value="1"></i>
+    "modified_date": 82392349, <a id="CO718-2"></a><i class="conum" data-value="2"></i>
     "policy": {
       "phases": {
         "warm": {
@@ -421,6 +435,11 @@ expires, the request fails and returns an error. Defaults to <code class="litera
           }
         }
       }
+    },
+    "in_use_by" : { <a id="CO718-3"></a><i class="conum" data-value="3"></i>
+      "indices" : [],
+      "data_streams" : [],
+      "composable_templates" : []
     }
   }
 }</pre>
@@ -429,7 +448,7 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO638-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO718-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The policy version is incremented whenever the policy is updated</p>
@@ -437,10 +456,18 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO638-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO718-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>When this policy was last modified</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO718-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Which indices, data streams, or templates currently use this policy</p>
 </td>
 </tr>
 </table>
@@ -451,20 +478,20 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-delete-lifecycle"></a>Delete lifecycle policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-delete-lifecycle"></a>Delete lifecycle policy API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Deletes an index lifecycle policy.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-delete-lifecycle-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-delete-lifecycle-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">DELETE _ilm/policy/&lt;policy_id&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-delete-lifecycle-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-delete-lifecycle-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -479,7 +506,7 @@ cluster privilege to use this API. For more information, see
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-delete-lifecycle-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-delete-lifecycle-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Deletes the specified lifecycle policy definition. You cannot delete policies
 that are currently in use. If the policy is being used to manage any indices,
@@ -488,7 +515,7 @@ the request fails and returns an error.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-delete-lifecycle-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-delete-lifecycle-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -506,7 +533,7 @@ the request fails and returns an error.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-delete-lifecycle-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-delete-lifecycle-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -537,13 +564,13 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-delete-lifecycle-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-delete-lifecycle-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/delete-lifecycle.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example deletes <code class="literal">my_policy</code>:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">DELETE _ilm/policy/my_policy</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2016.console"></div>
+<div class="console_widget" data-snippet="snippets/2567.console"></div>
 <p>When the policy is successfully deleted, you receive the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -556,20 +583,20 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-move-to-step"></a>Move to lifecycle step API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-move-to-step"></a>Move to lifecycle step API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Triggers execution of a specific step in the lifecycle policy.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-move-to-step-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-move-to-step-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST _ilm/move/&lt;index&gt;</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-move-to-step-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-move-to-step-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -584,7 +611,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-move-to-step-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-move-to-step-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="warning admon">
 <div class="icon"></div>
@@ -601,11 +628,16 @@ body of the request.</p>
 <p>The request will fail if the current step does not match the step currently
 being executed for the index. This is to prevent the index from being moved from
 an unexpected step into the next step.</p>
+<p>When specifying the target (<code class="literal">next_step</code>) to which the index will be moved, either the <code class="literal">name</code> or both
+the <code class="literal">action</code> and <code class="literal">name</code> fields are optional. If only the phase is specified, the index will move to
+the first step of the first action in the target phase. If the phase and action are specified, the index will move to
+the first step of the specified action in the specified phase. Only actions specified in the ILM
+policy are considered valid, an index cannot move to a step that is not part of its policy.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-move-to-step-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-move-to-step-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -623,7 +655,7 @@ an unexpected step into the next step.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-move-to-step-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-move-to-step-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -654,7 +686,7 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-move-to-step-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-move-to-step-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -705,7 +737,7 @@ If ILM encounters a problem while performing an action,
 it halts execution of the policy and transitions to the <code class="literal">ERROR</code> step.
 If you are trying to advance a policy after troubleshooting a failure,
 you specify this <code class="literal">ERROR</code> step as the current step.
-For more information, see <a class="xref" href="index-lifecycle-error-handling.html" title="Resolve lifecycle policy execution errors">ILM error handling</a>.
+For more information, see <a class="xref" href="index-lifecycle-error-handling.html" title="Troubleshooting index lifecycle management errors">ILM error handling</a>.
 </dd>
 </dl>
 </div>
@@ -741,8 +773,8 @@ The name of the phase that contains the action you want to perform or resume.
 </span>
 </dt>
 <dd>
-(Required, string)
-The name action you want to perform or resume.
+(Optional, string)
+The name action you want to perform or resume. Required if <code class="literal">name</code> used.
 </dd>
 <dt>
 <span class="term">
@@ -750,8 +782,8 @@ The name action you want to perform or resume.
 </span>
 </dt>
 <dd>
-(Required, string)
-The name of the step to move to and execute.
+(Optional, string)
+The name of the step to move to and execute. Required if <code class="literal">action</code> used.
 </dd>
 </dl>
 </div>
@@ -764,31 +796,31 @@ The name of the step to move to and execute.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-move-to-step-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-move-to-step-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/move-to-step.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example moves <code class="literal">my-index-000001</code> from the initial step to the
 <code class="literal">forcemerge</code> step:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _ilm/move/my-index-000001
 {
-  "current_step": { <a id="CO639-1"></a><i class="conum" data-value="1"></i>
+  "current_step": { <a id="CO719-1"></a><i class="conum" data-value="1"></i>
     "phase": "new",
     "action": "complete",
     "name": "complete"
   },
-  "next_step": { <a id="CO639-2"></a><i class="conum" data-value="2"></i>
+  "next_step": { <a id="CO719-2"></a><i class="conum" data-value="2"></i>
     "phase": "warm",
-    "action": "forcemerge",
-    "name": "forcemerge"
+    "action": "forcemerge", <a id="CO719-3"></a><i class="conum" data-value="3"></i>
+    "name": "forcemerge" <a id="CO719-4"></a><i class="conum" data-value="4"></i>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2017.console"></div>
+<div class="console_widget" data-snippet="snippets/2568.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO639-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO719-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The step that the index is expected to be in</p>
@@ -796,10 +828,26 @@ The name of the step to move to and execute.
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO639-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO719-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The step that you want to execute</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO719-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The optional action to which the index will be moved</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO719-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The optional step name to which the index will be moved</p>
 </td>
 </tr>
 </table>
@@ -812,27 +860,43 @@ The name of the step to move to and execute.
 </div>
 <p>The request will fail if the index is not in the <code class="literal">new</code> phase as specified
 by the <code class="literal">current_step</code>.</p>
+<p>The following example pushes <code class="literal">my-index-000001</code> from the end of hot phase into
+the start of warm:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _ilm/move/my-index-000001
+{
+  "current_step": {
+    "phase": "hot",
+    "action": "complete",
+    "name": "complete"
+  },
+  "next_step": {
+    "phase": "warm"
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2569.console"></div>
 </div>
 
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-remove-policy"></a>Remove policy from index API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-remove-policy"></a>Remove policy from index API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Removes assigned lifecycle policies from an index or a data stream&#8217;s backing
 indices.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-remove-policy-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-remove-policy-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST &lt;target&gt;/_ilm/remove</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-remove-policy-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-remove-policy-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -847,7 +911,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-remove-policy-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-remove-policy-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
 </div></div></div>
 <p>For indices, the remove lifecycle policy API removes the assigned lifecycle
 policy and stops managing the specified index.</p>
@@ -857,7 +921,7 @@ the stream&#8217;s backing indices and stops managing the indices.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-remove-policy-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-remove-policy-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -867,12 +931,9 @@ the stream&#8217;s backing indices and stops managing the indices.</p>
 </span>
 </dt>
 <dd>
-<p>
-(Required, string)
-Comma-separated list of data streams, indices, and index aliases to target.
-Wildcard expressions (<code class="literal">*</code>) are supported.
-</p>
-<p>To target all data streams and indices in a cluster, use <code class="literal">_all</code> or <code class="literal">*</code>.</p>
+(Required, string) Comma-separated list of data streams, indices, and aliases to
+target. Supports wildcards (<code class="literal">*</code>). To target all data streams and indices, use
+<code class="literal">*</code> or <code class="literal">_all</code>.
 </dd>
 </dl>
 </div>
@@ -880,7 +941,7 @@ Wildcard expressions (<code class="literal">*</code>) are supported.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-remove-policy-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-remove-policy-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -911,13 +972,13 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-remove-policy-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-remove-policy-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/remove-policy-from-index.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example removes the assigned policy from <code class="literal">my-index-000001</code>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST my-index-000001/_ilm/remove</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2018.console"></div>
+<div class="console_widget" data-snippet="snippets/2570.console"></div>
 <p>If the request succeeds, you receive the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -931,20 +992,20 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-retry-policy"></a>Retry policy execution API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-retry-policy"></a>Retry policy execution API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Retry executing the policy for an index that is in the ERROR step.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-retry-policy-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-retry-policy-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST &lt;index&gt;/_ilm/retry</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-retry-policy-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-retry-policy-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -959,7 +1020,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-retry-policy-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-retry-policy-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Sets the policy back to the step where the error occurred and executes the step.
 Use the <a class="xref" href="index-lifecycle-management-api.html#ilm-explain-lifecycle" title="Explain lifecycle API">ILM Explain API</a> to determine if an index is in the ERROR
@@ -968,7 +1029,7 @@ step.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-retry-policy-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-retry-policy-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -986,7 +1047,7 @@ step.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-retry-policy-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-retry-policy-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1017,7 +1078,7 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-retry-policy-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-retry-policy-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/retry-policy.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example retries the policy for <code class="literal">my-index-000001</code>.</p>
 <div class="pre_wrapper lang-js">
@@ -1035,20 +1096,22 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-get-status"></a>Get index lifecycle management status API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-status.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-get-status"></a>Get index lifecycle management status API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Retrieves the current index lifecycle management (ILM) status.</p>
+<p>You can start or stop ILM with the <a class="xref" href="index-lifecycle-management-api.html#ilm-start" title="Start index lifecycle management API">start ILM</a> and
+<a class="xref" href="index-lifecycle-management-api.html#ilm-stop" title="Stop index lifecycle management API">stop ILM</a> APIs.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-status-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-status-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET /_ilm/status</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-status-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-status-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1063,17 +1126,7 @@ If the Elasticsearch security features are enabled, you must have the <code clas
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-status-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
-</div></div></div>
-<p><a id="ilm-operating-modes"></a>Returns the status of the ILM plugin.
-The <code class="literal">operation_mode</code> in the response shows one of three states: <code class="literal">STARTED</code>, <code class="literal">STOPPING</code>, or <code class="literal">STOPPED</code>.
-You can start or stop ILM with the
-<a class="xref" href="index-lifecycle-management-api.html#ilm-start" title="Start index lifecycle management API">start ILM</a> and <a class="xref" href="index-lifecycle-management-api.html#ilm-stop" title="Stop index lifecycle management API">stop ILM</a> APIs.</p>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-status-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-status-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1102,15 +1155,70 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 </div>
 </div>
 
+<div class="section child_attributes">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-get-status-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<a id="ilm-operating-modes"></a>
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">operation_mode</code>
+</span>
+</dt>
+<dd>
+<p>
+(string) Current operation mode for ILM.
+</p>
+<details open>
+<summary class="title">Possible values for <code class="literal">operation_mode</code></summary>
+<div class="content">
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">RUNNING</code>
+</span>
+</dt>
+<dd>
+ILM is running.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">STOPPING</code>
+</span>
+</dt>
+<dd>
+ILM is finishing sensitive actions, such as <a class="xref" href="ilm-actions.html#ilm-shrink" title="Shrink">shrink</a>, that
+are in progress. When these actions finish, ILM will move to <code class="literal">STOPPED</code>.
+</dd>
+<dt>
+<span class="term">
+<code class="literal">STOPPED</code>
+</span>
+</dt>
+<dd>
+ILM is not running.
+</dd>
+</dl>
+</div>
+</div>
+</details>
+</dd>
+</dl>
+</div>
+</div>
+
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-get-status-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-get-status-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/get-status.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example gets the ILM plugin status.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET _ilm/status</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2019.console"></div>
+<div class="console_widget" data-snippet="snippets/2571.console"></div>
 <p>If the request succeeds, the body of the response shows the operation mode:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -1123,7 +1231,7 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-explain-lifecycle"></a>Explain lifecycle API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/explain.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-explain-lifecycle"></a>Explain lifecycle API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/explain.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Retrieves the current lifecycle status for one or more indices. For data
@@ -1131,14 +1239,14 @@ streams, the API retrieves the current lifecycle status for the stream&#8217;s b
 indices.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-explain-lifecycle-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-explain-lifecycle-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">GET &lt;target&gt;/_ilm/explain</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-explain-lifecycle-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-explain-lifecycle-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1153,7 +1261,7 @@ managed to use this API. For more information, see <a class="xref" href="authori
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-explain-lifecycle-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-explain-lifecycle-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Retrieves information about the index&#8217;s current lifecycle state, such as
 the currently executing phase, action, and step. Shows when the index entered
@@ -1163,7 +1271,7 @@ about any failures.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-explain-lifecycle-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-explain-lifecycle-path-params"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1173,12 +1281,9 @@ about any failures.</p>
 </span>
 </dt>
 <dd>
-<p>
-(Required, string)
-Comma-separated list of data streams, indices, and index aliases to target.
-Wildcard expressions (<code class="literal">*</code>) are supported.
-</p>
-<p>To target all data streams and indices in a cluster, use <code class="literal">_all</code> or <code class="literal">*</code>.</p>
+(Required, string) Comma-separated list of data streams, indices, and aliases to
+target. Supports wildcards (<code class="literal">*</code>).To target all data streams and indices, use <code class="literal">*</code>
+or <code class="literal">_all</code>.
 </dd>
 </dl>
 </div>
@@ -1186,7 +1291,7 @@ Wildcard expressions (<code class="literal">*</code>) are supported.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-explain-lifecycle-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-explain-lifecycle-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1236,13 +1341,13 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-explain-lifecycle-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-explain-lifecycle-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/explain.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example retrieves the lifecycle state of <code class="literal">my-index-000001</code>:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET my-index-000001/_ilm/explain</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2020.console"></div>
+<div class="console_widget" data-snippet="snippets/2572.console"></div>
 <p>When management of the index is first taken over by ILM, <code class="literal">explain</code> shows
 that the index is managed and in the <code class="literal">new</code> phase:</p>
 <div class="pre_wrapper lang-console-result">
@@ -1250,16 +1355,18 @@ that the index is managed and in the <code class="literal">new</code> phase:</p>
   "indices": {
     "my-index-000001": {
       "index": "my-index-000001",
-      "managed": true, <a id="CO640-1"></a><i class="conum" data-value="1"></i>
-      "policy": "my_policy", <a id="CO640-2"></a><i class="conum" data-value="2"></i>
-      "lifecycle_date_millis": 1538475653281, <a id="CO640-3"></a><i class="conum" data-value="3"></i>
-      "age": "15s", <a id="CO640-4"></a><i class="conum" data-value="4"></i>
+      "index_creation_date_millis": 1538475653281,  <a id="CO720-1"></a><i class="conum" data-value="1"></i>
+      "time_since_index_creation": "15s",           <a id="CO720-2"></a><i class="conum" data-value="2"></i>
+      "managed": true,                              <a id="CO720-3"></a><i class="conum" data-value="3"></i>
+      "policy": "my_policy",                        <a id="CO720-4"></a><i class="conum" data-value="4"></i>
+      "lifecycle_date_millis": 1538475653281,       <a id="CO720-5"></a><i class="conum" data-value="5"></i>
+      "age": "15s",                                 <a id="CO720-6"></a><i class="conum" data-value="6"></i>
       "phase": "new",
-      "phase_time_millis": 1538475653317, <a id="CO640-5"></a><i class="conum" data-value="5"></i>
-      "action": "complete",
-      "action_time_millis": 1538475653317, <a id="CO640-6"></a><i class="conum" data-value="6"></i>
+      "phase_time_millis": 1538475653317,           <a id="CO720-7"></a><i class="conum" data-value="7"></i>
+      "action": "complete"
+      "action_time_millis": 1538475653317,          <a id="CO720-8"></a><i class="conum" data-value="8"></i>
       "step": "complete",
-      "step_time_millis": 1538475653317 <a id="CO640-7"></a><i class="conum" data-value="7"></i>
+      "step_time_millis": 1538475653317             <a id="CO720-9"></a><i class="conum" data-value="9"></i>
     }
   }
 }</pre>
@@ -1268,7 +1375,25 @@ that the index is managed and in the <code class="literal">new</code> phase:</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO640-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO720-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>When the index was created, this timestamp is used to determine when to
+rollover</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO720-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The time since the index creation (used for calculating when to rollover
+the index via the <code class="literal">max_age</code>)</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO720-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Shows if the index is being managed by ILM. If the index is not managed by
@@ -1277,7 +1402,7 @@ ILM the other fields will not be shown</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO640-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO720-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The name of the policy which ILM is using for this index</p>
@@ -1285,7 +1410,7 @@ ILM the other fields will not be shown</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO640-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO720-5"><i class="conum" data-value="5"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The timestamp used for the <code class="literal">min_age</code></p>
@@ -1293,7 +1418,7 @@ ILM the other fields will not be shown</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO640-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO720-6"><i class="conum" data-value="6"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The age of the index (used for calculating when to enter the next phase)</p>
@@ -1301,7 +1426,7 @@ ILM the other fields will not be shown</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO640-5"><i class="conum" data-value="5"></i></a></p>
+<p><a href="#CO720-7"><i class="conum" data-value="7"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>When the index entered the current phase</p>
@@ -1309,7 +1434,7 @@ ILM the other fields will not be shown</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO640-6"><i class="conum" data-value="6"></i></a></p>
+<p><a href="#CO720-8"><i class="conum" data-value="8"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>When the index entered the current action</p>
@@ -1317,7 +1442,7 @@ ILM the other fields will not be shown</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO640-7"><i class="conum" data-value="7"></i></a></p>
+<p><a href="#CO720-9"><i class="conum" data-value="9"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>When the index entered the current step</p>
@@ -1334,6 +1459,8 @@ phase completes.</p>
   "indices": {
     "test-000069": {
       "index": "test-000069",
+      "index_creation_date_millis": 1538475653281,
+      "time_since_index_creation": "25.14s",
       "managed": true,
       "policy": "my_lifecycle3",
       "lifecycle_date_millis": 1538475653281,
@@ -1350,7 +1477,7 @@ phase completes.</p>
       "step_time": "2018-10-15T13:45:22.577Z",
       "phase_execution": {
         "policy": "my_lifecycle3",
-        "phase_definition": { <a id="CO641-1"></a><i class="conum" data-value="1"></i>
+        "phase_definition": { <a id="CO721-1"></a><i class="conum" data-value="1"></i>
           "min_age": "0ms",
           "actions": {
             "rollover": {
@@ -1358,9 +1485,9 @@ phase completes.</p>
             }
           }
         },
-        "version": 3, <a id="CO641-2"></a><i class="conum" data-value="2"></i>
-        "modified_date": "2018-10-15T13:21:41.576Z", <a id="CO641-3"></a><i class="conum" data-value="3"></i>
-        "modified_date_in_millis": 1539609701576 <a id="CO641-4"></a><i class="conum" data-value="4"></i>
+        "version": 3, <a id="CO721-2"></a><i class="conum" data-value="2"></i>
+        "modified_date": "2018-10-15T13:21:41.576Z", <a id="CO721-3"></a><i class="conum" data-value="3"></i>
+        "modified_date_in_millis": 1539609701576 <a id="CO721-4"></a><i class="conum" data-value="4"></i>
       }
     }
   }
@@ -1370,7 +1497,7 @@ phase completes.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO641-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO721-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The JSON phase definition loaded from the specified policy when the index
@@ -1379,7 +1506,7 @@ entered this phase</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO641-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO721-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The version of the policy that was loaded</p>
@@ -1387,7 +1514,7 @@ entered this phase</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO641-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO721-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The date the loaded policy was last modified</p>
@@ -1395,7 +1522,7 @@ entered this phase</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO641-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO721-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The epoch time when the loaded policy was last modified</p>
@@ -1410,6 +1537,8 @@ information for the step that&#8217;s being performed on the index.</p>
   "indices": {
     "test-000020": {
       "index": "test-000020",
+      "index_creation_date_millis": 1538475653281,
+      "time_since_index_creation": "4.12m",
       "managed": true,
       "policy": "my_lifecycle3",
       "lifecycle_date_millis": 1538475653281,
@@ -1424,7 +1553,7 @@ information for the step that&#8217;s being performed on the index.</p>
       "step": "check-allocation",
       "step_time_millis": 1538475653317,
       "step_time": "2018-10-15T13:45:22.577Z",
-      "step_info": { <a id="CO642-1"></a><i class="conum" data-value="1"></i>
+      "step_info": { <a id="CO722-1"></a><i class="conum" data-value="1"></i>
         "message": "Waiting for all shard copies to be active",
         "shards_left_to_allocate": -1,
         "all_shards_active": false,
@@ -1460,7 +1589,7 @@ information for the step that&#8217;s being performed on the index.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO642-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO722-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Status of the step that&#8217;s in progress.</p>
@@ -1480,6 +1609,8 @@ the case.</p>
   "indices": {
     "test-000056": {
       "index": "test-000056",
+      "index_creation_date_millis": 1538475653281,
+      "time_since_index_creation": "50.1d",
       "managed": true,
       "policy": "my_lifecycle3",
       "lifecycle_date_millis": 1538475653281,
@@ -1494,10 +1625,10 @@ the case.</p>
       "step": "ERROR",
       "step_time_millis": 1538475653317,
       "step_time": "2018-10-15T13:45:22.577Z",
-      "failed_step": "check-rollover-ready", <a id="CO643-1"></a><i class="conum" data-value="1"></i>
-      "is_auto_retryable_error": true, <a id="CO643-2"></a><i class="conum" data-value="2"></i>
-      "failed_step_retry_count": 1, <a id="CO643-3"></a><i class="conum" data-value="3"></i>
-      "step_info": { <a id="CO643-4"></a><i class="conum" data-value="4"></i>
+      "failed_step": "check-rollover-ready", <a id="CO723-1"></a><i class="conum" data-value="1"></i>
+      "is_auto_retryable_error": true, <a id="CO723-2"></a><i class="conum" data-value="2"></i>
+      "failed_step_retry_count": 1, <a id="CO723-3"></a><i class="conum" data-value="3"></i>
+      "step_info": { <a id="CO723-4"></a><i class="conum" data-value="4"></i>
         "type": "cluster_block_exception",
         "reason": "index [test-000057/H7lF9n36Rzqa-KfKcnGQMg] blocked by: [FORBIDDEN/5/index read-only (api)",
         "index_uuid": "H7lF9n36Rzqa-KfKcnGQMg",
@@ -1525,7 +1656,7 @@ the case.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO643-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO723-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The step that caused the error</p>
@@ -1533,7 +1664,7 @@ the case.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO643-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO723-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Indicates if retrying the failed step can overcome the error. If this
@@ -1542,7 +1673,7 @@ is true, ILM will retry the failed step automatically.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO643-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO723-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Shows the number of attempted automatic retries to execute the failed
@@ -1551,7 +1682,7 @@ step.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO643-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO723-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>What went wrong</p>
@@ -1565,20 +1696,20 @@ step.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-start"></a>Start index lifecycle management API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/start.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-start"></a>Start index lifecycle management API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/start.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Start the index lifecycle management (ILM) plugin.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-start-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-start-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST /_ilm/start</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-start-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-start-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1593,7 +1724,7 @@ cluster privilege to use this API. For more information, see
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-start-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-start-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Starts the ILM plugin if it is currently stopped. ILM is started
 automatically when the cluster is formed. Restarting ILM is only
@@ -1602,7 +1733,7 @@ necessary if it has been stopped using the <a class="xref" href="index-lifecycle
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-start-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-start-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1633,13 +1764,13 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-start-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-start-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/start.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example starts the ILM plugin.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _ilm/start</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2021.console"></div>
+<div class="console_widget" data-snippet="snippets/2573.console"></div>
 <p>If the request succeeds, you receive the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -1652,20 +1783,20 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ilm-stop"></a>Stop index lifecycle management API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/stop.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ilm-stop"></a>Stop index lifecycle management API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/stop.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Stop the index lifecycle management (ILM) plugin.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-stop-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-stop-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST /_ilm/stop</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-stop-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-stop-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1680,7 +1811,7 @@ cluster privilege to use this API. For more information, see
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-stop-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-stop-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Halts all lifecycle management operations and stops the ILM plugin. This
 is useful when you are performing maintenance on the cluster and need to prevent
@@ -1693,7 +1824,7 @@ if ILM is running.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-stop-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-stop-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1724,18 +1855,196 @@ expires, the request fails and returns an error. Defaults to <code class="litera
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ilm-stop-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ilm-stop-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/stop.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following example stops the ILM plugin.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _ilm/stop</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2022.console"></div>
+<div class="console_widget" data-snippet="snippets/2574.console"></div>
 <p>If the request does not encounter errors, you receive the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
   "acknowledged": true
 }</pre>
+</div>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="ilm-migrate-to-data-tiers"></a>Migrate to data tiers routing API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/migrate-to-data-tiers.asciidoc">edit</a></h2>
+</div></div></div>
+
+<p>Switches the indices, ILM policies, and legacy, composable and component templates from using custom node attributes and
+<a class="xref" href="index-modules-allocation.html#shard-allocation-filtering" title="Index-level shard allocation filtering">attribute-based allocation filters</a> to using <a class="xref" href="data-tiers.html" title="Data tiers">data tiers</a>, and
+optionally deletes one legacy index template.
+Using node roles enables ILM to <a class="xref" href="data-tiers.html#data-tier-migration" title="Automatic data tier migration">automatically move the indices</a> between
+data tiers.</p>
+<p>Migrating away from custom node attributes routing can be manually performed
+as indicated in the <a class="xref" href="migrate-index-allocation-filters.html" title="Migrate index allocation filters to node roles">Migrate index allocation
+filters to node roles</a> page.</p>
+<p>This API provides an automated way of executing three out of the four manual steps listed
+in the <a class="xref" href="migrate-index-allocation-filters.html" title="Migrate index allocation filters to node roles">migration guide</a>:</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<a class="xref" href="migrate-index-allocation-filters.html#stop-setting-custom-hot-attribute" title="Stop setting the custom hot attribute on new indices">Stop setting the custom hot attribute on new indices</a>
+</li>
+<li class="listitem">
+<a class="xref" href="migrate-index-allocation-filters.html#remove-custom-allocation-settings" title="Remove custom allocation settings from existing ILM policies">Remove custom allocation settings from existing ILM policies</a>
+</li>
+<li class="listitem">
+<a class="xref" href="migrate-index-allocation-filters.html#set-tier-preference" title="Set a tier preference for existing indices">Replace custom allocation settings from existing indices</a> with the corresponding <a class="xref" href="index-modules-allocation.html#tier-preference-allocation-filter">tier preference</a>
+</li>
+</ol>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-migrate-to-data-tiers-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/migrate-to-data-tiers.asciidoc">edit</a></h3>
+</div></div></div>
+<p><code class="literal">POST /_ilm/migrate_to_data_tiers</code></p>
+<p>The API accepts an optional body that allows you to specify:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The legacy index template name to delete. Defaults to none.
+</li>
+<li class="listitem">
+The name of the custom node attribute used for the indices and ILM policies allocation filtering.
+Defaults to <code class="literal">data</code>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-migrate-to-data-tiers-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/migrate-to-data-tiers.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+ILM must be stopped before performing the migration. Use the <a class="xref" href="index-lifecycle-management-api.html#ilm-stop-request" title="Request">stop ILM API</a>
+to stop ILM and <a class="xref" href="index-lifecycle-management-api.html#ilm-get-status-request" title="Request">get status API</a> to wait until the
+reported operation mode is <code class="literal">STOPPED</code>.
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-migrate-to-data-tiers-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/migrate-to-data-tiers.asciidoc">edit</a></h3>
+</div></div></div>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<code class="literal">dry_run</code>
+</span>
+</dt>
+<dd>
+(Optional, Boolean)
+If <code class="literal">true</code>, simulates the migration from node attributes based allocation filters to data tiers, but does
+not perform the migration. This provides a way to retrieve the indices and ILM policies that need to be
+migrated.
+Defaults to <code class="literal">false</code>.
+</dd>
+</dl>
+</div>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>When simulating a migration (ie. <code class="literal">dry_run</code> is <code class="literal">true</code>) ILM doesn&#8217;t need to be stopped.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="ilm-migrate-to-data-tiers-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ilm/apis/migrate-to-data-tiers.asciidoc">edit</a></h3>
+</div></div></div>
+<p>The following example migrates the indices, ILM policies, legacy templates,
+composable, and component templates away from defining custom allocation filtering
+using the <code class="literal">custom_attribute_name</code> node attribute, and deletes the legacy template
+with name <code class="literal">global-template</code> if it exists in the system.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST /_ilm/migrate_to_data_tiers
+{
+  "legacy_template_to_delete": "global-template",
+  "node_attribute": "custom_attribute_name"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2575.console"></div>
+<p>If the request succeeds, a response like the following will be received:</p>
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "dry_run": false,
+  "removed_legacy_template":"global-template", <a id="CO724-1"></a><i class="conum" data-value="1"></i>
+  "migrated_ilm_policies":["policy_with_allocate_action"], <a id="CO724-2"></a><i class="conum" data-value="2"></i>
+  "migrated_indices":["warm-index-to-migrate-000001"], <a id="CO724-3"></a><i class="conum" data-value="3"></i>
+  "migrated_legacy_templates":["a-legacy-template"], <a id="CO724-4"></a><i class="conum" data-value="4"></i>
+  "migrated_composable_templates":["a-composable-template"], <a id="CO724-5"></a><i class="conum" data-value="5"></i>
+  "migrated_component_templates":["a-component-template"] <a id="CO724-6"></a><i class="conum" data-value="6"></i>
+}</pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO724-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Shows the name of the legacy index template that was deleted. This will be missing
+if no legacy index template was deleted.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO724-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The ILM policies that were updated.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO724-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The indices that were migrated to <a class="xref" href="index-modules-allocation.html#tier-preference-allocation-filter">tier preference</a> routing.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO724-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The legacy index templates that were updated to not contain custom routing settings for the
+provided data attribute.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO724-5"><i class="conum" data-value="5"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The composable index templates that were updated to not contain custom routing settings for the
+provided data attribute.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO724-6"><i class="conum" data-value="6"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The component templates that were updated to not contain custom routing settings for the
+provided data attribute.</p>
+</td>
+</tr>
+</table>
 </div>
 </div>
 

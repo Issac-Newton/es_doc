@@ -1,1 +1,19 @@
-POST /_snapshot/my_backup/snapshot_1/_restore
+GET sales/_search
+{
+  "size": 0,
+  "aggs": {
+    "by_date": {
+      "date_histogram": {
+        "field": "date",
+        "calendar_interval": "month" 
+      },
+      "aggs": {
+        "my_rate": {
+          "rate": {
+            "unit": "year" 
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,1 +1,7 @@
-POST /my-index-000001/_search?size=surprise_me&error_trace=true
+POST _scripts/calculate-score
+{
+  "script": {
+    "lang": "painless",
+    "source": "Math.log(_score * 2) + params['my_modifier']"
+  }
+}

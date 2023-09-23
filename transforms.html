@@ -117,13 +117,14 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transforms"></a>Transforming data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transforms"></a>Transforming data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Transforms enable you to convert existing Elasticsearch indices into summarized
 indices, which provide opportunities for new insights and analytics.
 For example, you can use transforms to pivot your data into entity-centric
 indices that summarize the behavior of users or sessions or other entities in
-your data.</p>
+your data. Or you can use transforms to find the latest document among all the
+documents that have a certain unique key.</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -134,6 +135,9 @@ your data.</p>
 </li>
 <li class="listitem">
 <a class="xref" href="transforms.html#transform-usage" title="When to use transforms">When to use transforms</a>
+</li>
+<li class="listitem">
+<a class="xref" href="transforms.html#transform-alerts" title="Generating alerts for transforms">Generating alerts for transforms</a>
 </li>
 <li class="listitem">
 <a class="xref" href="transforms.html#transform-scale" title="Working with transforms at scale">Transforms at scale</a>
@@ -154,7 +158,7 @@ your data.</p>
 <a class="xref" href="transforms.html#transform-painless-examples" title="Painless examples for transforms">Painless examples</a>
 </li>
 <li class="listitem">
-<a class="xref" href="transforms.html#transform-troubleshooting" title="Troubleshooting transforms">Troubleshooting</a>
+<a class="xref" href="transform-troubleshooting.html" title="Troubleshooting transforms"><em>Troubleshooting transforms</em></a>
 </li>
 <li class="listitem">
 <a class="xref" href="transforms.html#transform-limitations" title="Transform limitations">Limitations</a>
@@ -163,9 +167,37 @@ your data.</p>
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-overview"></a>Transform overview<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/overview.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transform-overview"></a>Transform overview<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/overview.asciidoc">edit</a></h2>
 </div></div></div>
 
+<p>You can choose either of the following methods to transform your data:
+<a class="xref" href="transforms.html#pivot-transform-overview" title="Pivot transforms">pivot</a> or <a class="xref" href="transforms.html#latest-transform-overview" title="Latest transforms">latest</a>.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+All transforms leave your source index intact. They create a new
+index that is dedicated to the transformed data.
+</li>
+<li class="listitem">
+Transforms might have more configuration options provided by the APIs
+than the options available in Kibana. For all the transform configuration
+options, refer to the <a class="xref" href="transform-apis.html" title="Transform APIs">API documentation</a>.
+</li>
+</ul>
+</div>
+</div>
+</div>
+<p>Transforms are persistent tasks; they are stored in cluster state which
+makes them resilient for node failures. Refer to <a class="xref" href="transforms.html#transform-checkpoints" title="How transform checkpoints work">How checkpoints work</a> and
+<a class="xref" href="transforms.html#ml-transform-checkpoint-errors" title="Error handling">Error handling</a> to learn more about the machinery behind
+transforms.</p>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="pivot-transform-overview"></a>Pivot transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/overview.asciidoc">edit</a></h3>
+</div></div></div>
 <p>You can use transforms to <em>pivot</em> your data into a new entity-centric index.
 By transforming and summarizing your data, it becomes possible to visualize and
 analyze it in alternative and interesting ways.</p>
@@ -198,7 +230,7 @@ checkpoints as new source data is ingested.</p>
 <p>Imagine that you run a webshop that sells clothes. Every order creates a
 document that contains a unique order ID, the name and the category of the
 ordered product, its price, the ordered quantity, the exact date of the order,
-and some customer information (name, gender, location, etc). Your dataset
+and some customer information (name, gender, location, etc). Your data set
 contains all the transactions from last year.</p>
 <p>If you want to check the sales in the different categories in your last fiscal
 year, define a transform that groups the data by the product categories
@@ -208,17 +240,36 @@ quantity. The result is an entity-centric index that shows the number of sold
 items in every product category in the last year.</p>
 <div class="imageblock screenshot">
 <div class="content">
-<img src="images/pivot-preview.png" alt="Example of a transform pivot in Kibana">
+<img src="images/pivot-preview.png" alt="Example of a pivot transform preview in Kibana">
 </div>
 </div>
-<div class="important admon">
-<div class="icon"></div>
-<div class="admon_content">
-<p>The transform leaves your source index intact. It
-creates a new index that is dedicated to the transformed data.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="latest-transform-overview"></a>Latest transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/overview.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can use the <code class="literal">latest</code> type of transform to copy the most recent documents
+into a new index. You must identify one or more fields as the unique key for
+grouping your data, as well as a date field that sorts the data chronologically.
+For example, you can use this type of transform to keep track of the latest
+purchase for each customer or the latest event for each host.</p>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/latest-preview.png" alt="Example of a latest transform preview in Kibana">
 </div>
 </div>
-<h4><a id="transform-performance"></a>Performance considerations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/overview.asciidoc">edit</a></h4>
+<p>As in the case of a pivot, a latest transform can run once or continuously. It
+performs a composite aggregation on the data in the source index and stores the
+output in the destination index. If the transform runs continuously, new unique
+key values are automatically added to the destination index and the most recent
+documents for existing key values are automatically updated at each checkpoint.</p>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="transform-performance"></a>Performance considerations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/overview.asciidoc">edit</a></h3>
+</div></div></div>
 <p>Transforms perform search aggregations on the source indices then index
 the results into the destination index. Therefore, a transform never takes
 less time or uses less resources than the aggregation and indexing processes.</p>
@@ -235,59 +286,166 @@ transform), you can throttle the rate at which it performs search and index
 requests. Set the <code class="literal">docs_per_second</code> limit when you <a class="xref" href="transform-apis.html#put-transform" title="Create transform API">create</a> or
 <a class="xref" href="transform-apis.html#update-transform" title="Update transform API">update</a> your transform. If you want to calculate the
 current rate, use the following information from the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/get-transform-stats.html" class="ulink" target="_top">get transform stats API</a>:</p>
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/get-transform-stats.html" class="ulink" target="_top">get transform stats API</a>:</p>
 <pre class="screen">documents_processed / search_time_in_ms * 1000</pre>
 </div>
 
+</div>
+
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-setup"></a>Set up transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/setup.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transform-setup"></a>Set up transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/setup.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>To use the transforms, you must have the
-<a href="https://www.elastic.co/subscriptions" class="ulink" target="_top">appropriate license</a> and at least one
-<a class="xref" href="transforms.html#transform-setup-nodes" title="Transform nodes">transform node</a> in your Elasticsearch cluster. If Elastic Stack
-security features are enabled, you must also ensure your users have the
-<a class="xref" href="transforms.html#transform-privileges" title="Security privileges">necessary privileges</a>.</p>
-<h4><a id="transform-setup-nodes"></a>Transform nodes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/setup.asciidoc">edit</a></h4>
-<p>To use transforms, there must be at least one transform node in your cluster.
-If you want to control which nodes run transforms, add or remove <code class="literal">transform</code>
-from the <code class="literal">node.roles</code> setting on some nodes. For more information, see
-<a class="xref" href="settings.html#modules-node" title="Node">Node</a> and <a class="xref" href="settings.html#transform-settings" title="Transforms settings in Elasticsearch">Transforms settings</a>.</p>
-<h4><a id="transform-privileges"></a>Security privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/setup.asciidoc">edit</a></h4>
-<p>The Elasticsearch security features provide <a class="xref" href="authorization.html#built-in-roles" title="Built-in roles">built-in roles</a>
-and <a class="xref" href="authorization.html#security-privileges" title="Security privileges">privileges</a> that make it easier to control
-which users can manage or view transforms.</p>
-<p>To <em>view</em> the configuration and status of transforms, you must have:</p>
+<h4><a id="requirements-overview"></a>Requirements overview<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/setup.asciidoc">edit</a></h4>
+<p>To use transforms, you must have:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<code class="literal">transform_user</code> built-in role or <code class="literal">monitor_transform</code>
-cluster privileges
+at least one <a class="xref" href="settings.html#transform-node" title="Transform node">transform node</a>,
 </li>
-</ul>
-</div>
-<p>To <em>manage</em> transforms, you must have:</p>
+<li class="listitem">
+management features visible in the Kibana space, and
+</li>
+<li class="listitem">
+<p>security privileges that:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<code class="literal">transform_admin</code> built-in role or <code class="literal">manage_transform</code>
-cluster privileges
+grant use of transforms, and
 </li>
 <li class="listitem">
-<code class="literal">read</code> and <code class="literal">view_index_metadata</code> index privileges on source indices
-</li>
-<li class="listitem">
-<code class="literal">read</code>, <code class="literal">create_index</code>, and <code class="literal">index</code> index privileges on destination indices
+grant access to source and destination indices
 </li>
 </ul>
 </div>
-<p>For more information, see <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a> and <a class="xref" href="authorization.html#built-in-roles" title="Built-in roles">Built-in roles</a>.</p>
+</li>
+</ul>
+</div>
+<h4><a id="transform-privileges"></a>Security privileges<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/setup.asciidoc">edit</a></h4>
+<p>Assigning security privileges affects how users access transforms. Consider
+the two main categories:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<span class="strong strong"><strong><a class="xref" href="transforms.html#transform-es-security-privileges" title="Elasticsearch API user">Elasticsearch API user</a></strong></span>: uses an Elasticsearch client, cURL, or Kibana
+<span class="strong strong"><strong>Dev Tools</strong></span> to access transforms via Elasticsearch APIs. This scenario requires
+Elasticsearch security privileges.
+</li>
+<li class="listitem">
+<span class="strong strong"><strong><a class="xref" href="transforms.html#transform-kib-security-privileges" title="Kibana user">Kibana user</a></strong></span>: uses transforms in Kibana. This
+scenario requires Kibana feature privileges <em>and</em> Elasticsearch security privileges.
+</li>
+</ul>
+</div>
+<h5><a id="transform-es-security-privileges"></a>Elasticsearch API user<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/setup.asciidoc">edit</a></h5>
+<p>To <em>manage</em> transforms, you must meet all of the following requirements:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">transform_admin</code> built-in role or <code class="literal">manage_transform</code> cluster privileges,
+</li>
+<li class="listitem">
+<code class="literal">read</code> and <code class="literal">view_index_metadata</code> index privileges on source indices, and
+</li>
+<li class="listitem">
+<code class="literal">create_index</code>, <code class="literal">index</code>, <code class="literal">manage</code>, and <code class="literal">read</code> index privileges on destination
+indices. If a <code class="literal">retention_policy</code> is configured, <code class="literal">delete</code> index privilege is
+also required on the destination index.
+</li>
+</ul>
+</div>
+<p>To view only the configuration and status of transforms, you must have:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">transform_user</code> built-in role or <code class="literal">monitor_transform</code> cluster privileges
+</li>
+</ul>
+</div>
+<p>For more information about Elasticsearch roles and privileges, refer to
+<a class="xref" href="authorization.html#built-in-roles" title="Built-in roles">Built-in roles</a> and <a class="xref" href="authorization.html#security-privileges" title="Security privileges">Security privileges</a>.</p>
+<h5><a id="transform-kib-security-privileges"></a>Kibana user<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/setup.asciidoc">edit</a></h5>
+<p>Within a Kibana space, for full access to transforms, you must meet all of the
+following requirements:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Management features visible in the Kibana space, including
+<code class="literal">Data View Management</code> and <code class="literal">Stack Monitoring</code>,
+</li>
+<li class="listitem">
+<code class="literal">monitoring_user</code> built-in role,
+</li>
+<li class="listitem">
+<code class="literal">transform_admin</code> built-in role or <code class="literal">manage_transform</code> cluster privileges,
+</li>
+<li class="listitem">
+<code class="literal">kibana_admin</code> built-in role or a custom role with <code class="literal">read</code> or <code class="literal">all</code> Kibana
+privileges for the <code class="literal">Data View Management</code> feature (dependent on whether data
+views already exist for your destination indices),
+</li>
+<li class="listitem">
+data views for your source indices,
+</li>
+<li class="listitem">
+<code class="literal">read</code> and <code class="literal">view_index_metadata</code> index privileges on source indices, and
+</li>
+<li class="listitem">
+<code class="literal">create_index</code>, <code class="literal">index</code>, <code class="literal">manage</code>, and <code class="literal">read</code> index privileges on destination
+indices. Additionally, when using a <code class="literal">retention_policy</code>, <code class="literal">delete</code> index privilege is required
+on destination indices.
+</li>
+<li class="listitem">
+<code class="literal">read_pipeline</code> cluster privileges, if the transform uses an ingest pipeline
+</li>
+</ul>
+</div>
+<p>Within a Kibana space, for read-only access to transforms, you must meet all of
+the following requirements:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Management features visible in the Kibana space, including <code class="literal">Stack Monitoring</code>,
+</li>
+<li class="listitem">
+<code class="literal">monitoring_user</code> built-in role,
+</li>
+<li class="listitem">
+<code class="literal">transform_user</code> built-in role or <code class="literal">monitor_transform</code> cluster privileges,
+</li>
+<li class="listitem">
+<code class="literal">kibana_admin</code> built-in role or a custom role with <code class="literal">read</code> Kibana privileges
+for at least one feature in the space,
+</li>
+<li class="listitem">
+data views for your source and destination indices, and
+</li>
+<li class="listitem">
+<code class="literal">read</code>, and <code class="literal">view_index_metadata</code> index privileges on source indices and
+destination indices
+</li>
+</ul>
+</div>
+<p>For more information and Kibana security features, see
+<a href="https://www.elastic.co/guide/en/kibana/8.9/kibana-role-management.html" class="ulink" target="_top">Kibana role management</a> and
+<a href="https://www.elastic.co/guide/en/kibana/8.9/kibana-privileges.html" class="ulink" target="_top">Kibana privileges</a>.</p>
+<h4><a id="transform-kib-spaces"></a>Kibana spaces<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/setup.asciidoc">edit</a></h4>
+<p><a href="https://www.elastic.co/guide/en/kibana/8.9/xpack-spaces.html" class="ulink" target="_top">Spaces</a> enable you to organize your source and
+destination indices and other saved objects in Kibana and to see only the objects
+that belong to your space. However, a transform is a long running task which
+is managed on cluster level and therefore not limited in scope to certain
+spaces. Space awareness can be implemented for a data view under
+<span class="strong strong"><strong>Stack Management &gt; Kibana</strong></span> which allows privileges to the transform
+destination index.</p>
+<p>To successfully create transforms in Kibana, you must be logged into a space
+where the source indices are visible and the <code class="literal">Data View Management</code> and
+<code class="literal">Stack Monitoring</code> features are visible.</p>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-usage"></a>When to use transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/usage.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transform-usage"></a>When to use transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/usage.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Elasticsearch aggregations are a powerful and flexible feature that enable you to
 summarize and retrieve complex insights about your data. You can summarize
@@ -316,9 +474,9 @@ feature indices that are created by transforms.</p>
 <p>This scenario also applies when you are trying to search across the results of
 an aggregation or multiple aggregations. Aggregation results can be ordered or
 filtered, but there are
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-order" class="ulink" target="_top">limitations to ordering</a>
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-order" class="ulink" target="_top">limitations to ordering</a>
 and
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline-bucket-selector-aggregation.html" class="ulink" target="_top">filtering by bucket selector</a>
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/search-aggregations-pipeline-bucket-selector-aggregation.html" class="ulink" target="_top">filtering by bucket selector</a>
 is constrained by the maximum number of buckets returned. If you want to search
 all aggregation results, you need to create the complete data frame. If you
 need to sort or filter the aggregation results by multiple fields, transforms
@@ -326,7 +484,7 @@ are particularly useful.</p>
 </li>
 <li class="listitem">
 <p>You need to sort aggregation results by a pipeline aggregation.</p>
-<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline.html" class="ulink" target="_top">Pipeline aggregations</a> cannot be used
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/search-aggregations-pipeline.html" class="ulink" target="_top">Pipeline aggregations</a> cannot be used
 for sorting. Technically, this is because pipeline aggregations are run during
 the reduce phase after all other aggregations have already completed. If you
 create a transform, you can effectively perform multiple passes over the data.</p>
@@ -345,7 +503,132 @@ aggregation query.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-scale"></a>Working with transforms at scale<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transform-alerts"></a>Generating alerts for transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transform-alerts.asciidoc">edit</a></h2>
+</div></div></div>
+<div class="warning admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>This functionality is in beta and is subject to change. The design and code is less mature than official GA features and is being provided as-is with no warranties. Beta features are not subject to the support SLA of official GA features.</p>
+</div>
+</div>
+<p>Kibana alerting features include support for transform rules, which check the
+health of continuous transforms with certain conditions. If the conditions of the rule
+are met, an alert is created and the associated action is triggered. For
+example, you can create a rule to check if a continuous transform is started and to
+notify you in an email if it is not. To learn more about Kibana alerting features,
+refer to
+<a href="https://www.elastic.co/guide/en/kibana/8.9/alerting-getting-started.html#alerting-getting-started" class="ulink" target="_top">Alerting</a>.</p>
+<p>The following transform rules are available:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+Transform health
+</span>
+</dt>
+<dd>
+Monitors transforms health and alerts if an operational issue occurred.
+</dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="creating-transform-rules"></a>Creating a rule<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transform-alerts.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can create transform rules under <span class="strong strong"><strong>Stack Management &gt; Rules</strong></span>.</p>
+<p>On the <span class="strong strong"><strong>Create rule</strong></span> window, give a name to the rule and optionally provide
+tags. Select the transform health rule type:</p>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/transform-rule.png" alt="Creating a transform health rule" width="500">
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div>
+<h4 class="title"><a id="creating-transform-health-rules"></a>Transform health<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transform-alerts.asciidoc">edit</a></h4>
+</div></div></div>
+<p>Select the transform or transforms to include. You can also use a special
+character (<code class="literal">*</code>) to apply the rule to all your transforms. Transforms
+created after the rule are automatically included.</p>
+<p>The following health check is available and enabled by default:</p>
+<div class="variablelist">
+<dl class="variablelist">
+<dt>
+<span class="term">
+<em>Transform is not started</em>
+</span>
+</dt>
+<dd>
+Notifies if the corresponding transforms is not started or it does not index
+any data. The notification message recommends the necessary actions to solve
+the error.
+</dd>
+<dt>
+<span class="term">
+<em>Errors in transform messages</em>
+</span>
+</dt>
+<dd>
+Notifies if transform messages contain errors.
+</dd>
+</dl>
+</div>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/transform-check-config.png" alt="Selecting health check" width="500">
+</div>
+</div>
+<p>As the last step in the rule creation process, define its actions.</p>
+</div>
+
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="defining-actions"></a>Defining actions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transform-alerts.asciidoc">edit</a></h3>
+</div></div></div>
+<p>You can add one or more actions to your rule to generate notifications when its
+conditions are met and when they are no longer met.</p>
+<p>Each action uses a connector, which stores connection information for a Kibana
+service or supported third-party integration, depending on where you want to
+send the notifications. For example, you can use a Slack connector to send a
+message to a channel. Or you can use an index connector that writes an JSON
+object to a specific index. For details about creating connectors, refer to
+<a href="https://www.elastic.co/guide/en/kibana/8.9/action-types.html" class="ulink" target="_top">Connectors</a>.</p>
+<p>You must set the action frequency, which involves choosing how often to run
+the action (for example, at each check interval, only when the alert status
+changes, or at a custom action interval). Each rule type also has a list of
+valid action groups and you must choose one of these groups (for example, the
+action runs when the issue is detected or when it is recovered).</p>
+<div class="tip admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>If you choose a custom action interval, it cannot be shorter than the
+rule&#8217;s check interval.</p>
+</div>
+</div>
+<p>It&#8217;s also possible to customize the notification messages for each action. A
+list of variables is available to include in the message, like transform ID,
+description, transform state, and so on.</p>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/transform-alert-actions.png" alt="Selecting connector type" width="500">
+</div>
+</div>
+<p>After you save the configurations, the rule appears in the <span class="strong strong"><strong>Rules</strong></span> list
+where you can check its status and see the overview of its configuration
+information.</p>
+<p>The name of an alert is always the same as the transform ID of the associated
+transform that triggered it. You can mute the notifications for a particular
+transform on the page of the rule that lists the individual alerts. You can
+open it via <span class="strong strong"><strong>Rules</strong></span> by selecting the rule name.</p>
+</div>
+
+</div>
+
+<div class="section xpack">
+<div class="titlepage"><div><div>
+<h2 class="title"><a id="transform-scale"></a>Working with transforms at scale<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Transforms convert existing Elasticsearch indices into summarized indices, which
@@ -389,26 +672,26 @@ a list item only applies to one transform type, this exception is highlighted
 in the description.</p>
 <p>The keywords in parenthesis at the end of each recommendation title indicates
 the bottleneck area that may be improved by following the given recommendation.</p>
-<h4><a id="measure-performance"></a>Measure transforms performance<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+<h4><a id="measure-performance"></a>Measure transforms performance<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <p>In order to optimize transform performance, start by identifying the areas
 where most work is being done. The <span class="strong strong"><strong>Stats</strong></span> interface of the
 <span class="strong strong"><strong>Transforms</strong></span> page in Kibana contains information that covers three main
 areas: indexing, searching, and processing time (alternatively, you can use the
 <a class="xref" href="transform-apis.html#get-transform-stats" title="Get transform statistics API">transforms stats API</a>). If, for example, the results
-show that the highest proportion of  time is spent on search, then prioritize
+show that the highest proportion of time is spent on search, then prioritize
 efforts on optimizing the search query of the transform. Transforms also
 has <a href="https://esrally.readthedocs.io" class="ulink" target="_top">Rally support</a> that makes it possible to run
 performance checks on transforms configurations if it is required. If you
 optimized the crucial factors and you still experience performance issues, you
 may also want to consider improving your hardware.</p>
-<h4><a id="frequency"></a>1. Optimize <code class="literal">frequency</code> (index)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+<h4><a id="frequency"></a>1. Optimize <code class="literal">frequency</code> (index)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <p>In a continuous transform, the <code class="literal">frequency</code> configuration option sets the interval
 between checks for changes in the source indices. If changes are detected, then
 the source data is searched and the changes are applied to the destination
 index. Depending on your use case, you may wish to reduce the frequency at which
 changes are applied. By setting <code class="literal">frequency</code> to a higher value (maximum is one
 hour), the workload can be spread over time at the cost of less up-to-date data.</p>
-<h4><a id="increase-shards-dest-index"></a>2. Increase the number of shards of the destination index (index)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+<h4><a id="increase-shards-dest-index"></a>2. Increase the number of shards of the destination index (index)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <p>Depending on the size of the destination index, you may consider increasing its
 shard count. Transforms use one shard by default when creating the
 destination index. To override the index settings, create the destination index
@@ -422,7 +705,7 @@ would use to create the destination index. You can copy and adjust these in
 order to create the destination index prior to starting the transform.</p>
 </div>
 </div>
-<h4><a id="search-queries"></a>3. Profile and optimize your search queries (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+<h4><a id="search-queries"></a>3. Profile and optimize your search queries (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <p>If you have defined a transform source index <code class="literal">query</code>, ensure it is as
 efficient as possible. Use the <span class="strong strong"><strong>Search Profiler</strong></span> under <span class="strong strong"><strong>Dev Tools</strong></span> in Kibana
 to get detailed timing information about the execution of individual components
@@ -433,7 +716,7 @@ them.</p>
 <p>Transforms execute standard Elasticsearch search requests. There are different ways
 to write Elasticsearch queries, and some of them are more efficient than others. Consult
 <a class="xref" href="tune-for-search-speed.html" title="Tune for search speed"><em>Tune for search speed</em></a> to learn more about Elasticsearch performance tuning.</p>
-<h4><a id="limit-source-query"></a>4. Limit the scope of the source query (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+<h4><a id="limit-source-query"></a>4. Limit the scope of the source query (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <p>Imagine your continuous transform is configured to group by <code class="literal">IP</code> and calculate the sum
 of <code class="literal">bytes_sent</code>. For each checkpoint, a continuous transform detects changes in the
 source data since the previous checkpoint, identifying the IPs for which new
@@ -445,14 +728,27 @@ limiting the scope that the source index pattern and query will match.</p>
 example, greater than <code class="literal">2020-01-01T00:00:00</code>) to limit which historical indices
 are accessed. If you use a relative time value (for example, <code class="literal">now-30d</code>) then
 this date range is re-evaluated at the point of each checkpoint execution.</p>
-<h4><a id="optimize-shading-strategy"></a>5. Optimize the sharding strategy for the source index (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+<p>Consider using <a class="xref" href="api-conventions.html#api-date-math-index-names" title="Date math support in index and index alias names">date math</a> in your index names to
+reduce the number of indices to resolve in your queries. Add a date pattern
+- for example, <code class="literal">yyyy-MM-dd</code> - to your index names and use it to limit your query
+to a specific date. The example below queries indices only from yesterday and
+today:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">  "source": {
+    "index": [
+        "&lt;mydata-{now/d-1d{yyyy-MM-dd}}*&gt;",
+        "&lt;mydata-{now/d{yyyy-MM-dd}}*&gt;"
+    ]
+  },</pre>
+</div>
+<h4><a id="optimize-shading-strategy"></a>5. Optimize the sharding strategy for the source index (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <p>There is no one-size-fits-all sharding strategy. A strategy that works in one
 environment may not scale in another. A good sharding strategy must account for
 your infrastructure, use case, and performance expectations.</p>
 <p>Too few shards may mean that the benefits of distributing the workload cannot be
 realised; however too many shards may impact your cluster health. To learn more
-about sizing your shards, read this <a class="xref" href="size-your-shards.html" title="How to size your shards">guide</a>.</p>
-<h4><a id="tune-max-page-search-size"></a>6. Tune <code class="literal">max_page_search_size</code> (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+about sizing your shards, read this <a class="xref" href="size-your-shards.html" title="Size your shards">guide</a>.</p>
+<h4><a id="tune-max-page-search-size"></a>6. Tune <code class="literal">max_page_search_size</code> (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <p>The <code class="literal">max_page_search_size</code> transform configuration option defines the number
 of buckets that are returned for each search request. The default value is 500.
 If you increase this value, you get better throughput at the cost of higher
@@ -461,26 +757,23 @@ latency and memory usage.</p>
 transform executes memory-intensive aggregations – for example, cardinality or
 percentiles – then increasing <code class="literal">max_page_search_size</code> requires more available
 memory. If memory limits are exceeded, a circuit breaker exception occurs.</p>
-<h4><a id="indexed-fields-in-source"></a>7. Use indexed fields in your source indices (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
-<p>Scripted fields are not indexed fields; their values are only
-computed at search time. While these fields provide flexibility in
+<h4><a id="indexed-fields-in-source"></a>7. Use indexed fields in your source indices (search)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+<p>Runtime fields and scripted fields are not indexed fields; their values are only
+extracted or computed at search time. While these fields provide flexibility in
 how you access your data, they increase performance costs at search time. If
-transform performance using scripted fields is a concern,
-you may wish to consider using indexed fields instead.</p>
-<h4><a id="index-sorting-group-by-ordering"></a>8. Use index sorting and <code class="literal">group_by</code> ordering (search, process)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
-<p>If you use more than one <code class="literal">group_by</code> field in your transform, then the order of
-the fields in conjunction with the use of <a class="xref" href="index-modules-index-sorting.html" title="Index Sorting"><em>Index Sorting</em></a> may
-improve runtime.</p>
+transform performance using runtime fields or scripted fields is a concern,
+you may wish to consider using indexed fields instead. For performance reasons,
+we do not recommend using a runtime field as the time field that synchronizes a
+continuous transform.</p>
+<h4><a id="index-sorting-group-by-ordering"></a>8. Use index sorting (search, process)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <p>Index sorting enables you to store documents on disk in a specific order which
 can improve query efficiency. The ideal sorting logic depends on your use case,
 but the rule of thumb may be to sort the fields in descending order (high to low
-cardinality) starting with the time-based fields. Then put the time-based
-components first in the <code class="literal">group_by</code> if you have any, and then apply the same
-order to your <code class="literal">group_by</code> fields as configured for index sorting. Index sorting
+cardinality) starting with the time-based fields. Index sorting
 can be defined only once at index creation. If you don&#8217;t already have index
 sorting on the index that you want to use as a source, consider reindexing it to
 a new, sorted index.</p>
-<h4><a id="disable-source-dest"></a>9. Disable the <code class="literal">_source</code> field on the destination index (storage)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+<h4><a id="disable-source-dest"></a>9. Disable the <code class="literal">_source</code> field on the destination index (storage)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <p>The <a class="xref" href="mapping-fields.html#mapping-source-field" title="_source field"><code class="literal">_source</code> field</a> contains the original JSON document body that was
 passed at index time. The <code class="literal">_source</code> field itself is not indexed (and thus is not
 searchable), but it is still stored in the index and incurs a storage overhead.
@@ -494,7 +787,7 @@ supported. Consult <a class="xref" href="mapping-fields.html#disable-source-fiel
 before disabling it.</p>
 </div>
 </div>
-<h4><a id="_further_reading"></a>Further reading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
+<h4><a id="_further_reading"></a>Further reading<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/transforms-at-scale.asciidoc">edit</a></h4>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -504,7 +797,7 @@ before disabling it.</p>
 <a class="xref" href="tune-for-indexing-speed.html" title="Tune for indexing speed"><em>Tune for indexing speed</em></a>
 </li>
 <li class="listitem">
-<a class="xref" href="size-your-shards.html" title="How to size your shards"><em>Size your shards</em></a>
+<a class="xref" href="size-your-shards.html" title="Size your shards"><em>Size your shards</em></a>
 </li>
 <li class="listitem">
 <a class="xref" href="ilm-concepts.html#ilm-index-lifecycle" title="Index lifecycle">Index lifecycle</a>
@@ -515,49 +808,51 @@ before disabling it.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-checkpoints"></a>How transform checkpoints work<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/checkpoints.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transform-checkpoints"></a>How transform checkpoints work<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/checkpoints.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>Each time a transform examines the source indices and creates or
-updates the destination index, it generates a <em>checkpoint</em>.</p>
-<p>If your transform runs only once, there is logically only one
-checkpoint. If your transform runs continuously, however, it creates
-checkpoints as it ingests and transforms new source data.</p>
+<p>Each time a transform examines the source indices and creates or updates the
+destination index, it generates a <em>checkpoint</em>.</p>
+<p>If your transform runs only once, there is logically only one checkpoint. If
+your transform runs continuously, however, it creates checkpoints as it
+ingests and transforms new source data. The <code class="literal">sync</code> property of the transform
+configures checkpointing by specifying a time field.</p>
 <p>To create a checkpoint, the continuous transform:</p>
 <div class="olist orderedlist">
 <ol class="orderedlist">
 <li class="listitem">
 <p>Checks for changes to source indices.</p>
-<p>Using a simple periodic timer, the transform checks for changes to
-the source indices. This check is done based on the interval defined in the
-transform&#8217;s <code class="literal">frequency</code> property.</p>
+<p>Using a simple periodic timer, the transform checks for changes to the source
+indices. This check is done based on the interval defined in the transform&#8217;s
+<code class="literal">frequency</code> property.</p>
 <p>If the source indices remain unchanged or if a checkpoint is already in progress
 then it waits for the next timer.</p>
+<p>If changes are found a checkpoint is created.</p>
 </li>
 <li class="listitem">
-<p>Identifies which entities have changed.</p>
-<p>The transform searches to see which entities have changed since the
-last time it checked. The <code class="literal">sync</code> configuration object in the transform
-identifies a time field in the source indices. The transform uses the values
-in that field to synchronize the source and destination indices.</p>
+<p>Identifies which entities and/or time buckets have changed.</p>
+<p>The transform searches to see which entities or time buckets have changed
+between the last and the new checkpoint. The transform uses the values to
+synchronize the source and destination indices with fewer operations than a
+full re-run.</p>
 </li>
 <li class="listitem">
-<p>Updates the destination index (the data frame) with the changed entities.</p>
-<p>The transform applies changes related to either new or changed
-entities to the destination index. The set of changed entities is paginated. For
-each page, the transform performs a composite aggregation using a
-<code class="literal">terms</code> query. After all the pages of changes have been applied, the checkpoint
+<p>Updates the destination index (the data frame) with the changes.</p>
+<p>The transform applies changes related to either new or changed entities or
+time buckets to the destination index. The set of changes can be paginated. The
+transform performs a composite aggregation similarly to the batch transform
+operation, however it also injects query filters based on the previous step to
+reduce the amount of work. After all changes have been applied, the checkpoint
 is complete.</p>
 </li>
 </ol>
 </div>
 <p>This checkpoint process involves both search and indexing activity on the
 cluster. We have attempted to favor control over performance while developing
-transforms. We decided it was preferable for the
-transform to take longer to complete, rather than to finish quickly
-and take precedence in resource consumption. That being said, the cluster still
-requires enough resources to support both the composite aggregation search and
-the indexing of its results.</p>
+transforms. We decided it was preferable for the transform to take longer to
+complete, rather than to finish quickly and take precedence in resource
+consumption. That being said, the cluster still requires enough resources to
+support both the composite aggregation search and the indexing of its results.</p>
 <div class="tip admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -565,7 +860,56 @@ the indexing of its results.</p>
 transform, stop the transform and refer to <a class="xref" href="transforms.html#transform-performance" title="Performance considerations">Performance considerations</a>.</p>
 </div>
 </div>
-<h4><a id="ml-transform-checkpoint-errors"></a>Error handling<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/checkpoints.asciidoc">edit</a></h4>
+<h4><a id="sync-field-ingest-timestamp"></a>Using the ingest timestamp for syncing the transform<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/checkpoints.asciidoc">edit</a></h4>
+<p>In most cases, it is strongly recommended to use the ingest timestamp of the
+source indices for syncing the transform. This is the most optimal way for
+transforms to be able to identify new changes. If your data source follows the
+<a href="https://www.elastic.co/guide/en/ecs/8.9/ecs-reference.html" class="ulink" target="_top">ECS standard</a>, you might already have an
+<a href="https://www.elastic.co/guide/en/ecs/8.9/ecs-event.html#field-event-ingested" class="ulink" target="_top"><code class="literal">event.ingested</code></a> field. In this
+case, use <code class="literal">event.ingested</code> as the <code class="literal">sync</code>.<code class="literal">time</code>.<code class="literal">field</code> property of your
+transform.</p>
+<p>If you don&#8217;t have a <code class="literal">event.ingested</code> field or it isn&#8217;t populated, you can set it
+by using an ingest pipeline. Create an ingest pipeline either using the
+<a class="xref" href="ingest-apis.html#put-pipeline-api" title="Create or update pipeline API">ingest pipeline API</a> (like the example below) or via Kibana
+under <span class="strong strong"><strong>Stack Management &gt; Ingest Pipelines</strong></span>. Use a
+<a class="xref" href="processors.html#set-processor" title="Set processor"><code class="literal">set</code> processor</a> to set the field and associate it with the
+value of the ingest timestamp.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _ingest/pipeline/set_ingest_time
+{
+  "description": "Set ingest timestamp.",
+  "processors": [
+    {
+      "set": {
+        "field": "event.ingested",
+        "value": "{{{_ingest.timestamp}}}"
+      }
+    }
+  ]
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1672.console"></div>
+<p>After you created the ingest pipeline, apply it to the source indices of your
+transform. The pipeline adds the field <code class="literal">event.ingested</code> to every document with
+the value of the ingest timestamp. Configure the <code class="literal">sync</code>.<code class="literal">time</code>.<code class="literal">field</code> property
+of your transform to use the field by using the
+<a class="xref" href="transform-apis.html#put-transform" title="Create transform API">create transform API</a> for new transforms or the
+<a class="xref" href="transform-apis.html#update-transform" title="Update transform API">update transform API</a> for existing transforms. The
+<code class="literal">event.ingested</code> field is used for syncing the transform.</p>
+<p>Refer to <a class="xref" href="ingest.html#add-pipeline-to-indexing-request" title="Add a pipeline to an indexing request">Add a pipeline to an indexing request</a> and <a class="xref" href="ingest.html" title="Ingest pipelines">Ingest pipelines</a> to learn more about
+how to use an ingest pipeline.</p>
+<h4><a id="ml-transform-checkpoint-heuristics"></a>Change detection heuristics<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/checkpoints.asciidoc">edit</a></h4>
+<p>When the transform runs in continuous mode, it updates the documents in the
+destination index as new data comes in. The transform uses a set of heuristics
+called change detection to update the destination index with fewer operations.</p>
+<p>In this example, the data is grouped by host names. Change detection detects
+which host names have changed,  for example, host <code class="literal">A</code>, <code class="literal">C</code> and <code class="literal">G</code> and only
+updates documents with those hosts but does not update documents that store
+information about host <code class="literal">B</code>, <code class="literal">D</code>, or any other host that are not changed.</p>
+<p>Another heuristic can be applied for time buckets when a <code class="literal">date_histogram</code> is
+used to group by time buckets. Change detection detects which time buckets have
+changed and only update those.</p>
+<h4><a id="ml-transform-checkpoint-errors"></a>Error handling<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/checkpoints.asciidoc">edit</a></h4>
 <p>Failures in transforms tend to be related to searching or indexing.
 To increase the resiliency of transforms, the cursor positions of
 the aggregated search and the changed entities search are tracked in memory and
@@ -575,34 +919,32 @@ persisted periodically.</p>
 <ul class="itemizedlist">
 <li class="listitem">
 Temporary failures: The checkpoint is retried. If 10 consecutive failures
-occur, the transform has a failed status. For example, this
-situation might occur when there are shard failures and queries return only
-partial results.
+occur, the transform has a failed status. For example, this situation might
+occur when there are shard failures and queries return only partial results.
 </li>
 <li class="listitem">
-Irrecoverable failures: The transform immediately fails. For
-example, this situation occurs when the source index is not found.
+Irrecoverable failures: The transform immediately fails. For example, this
+situation occurs when the source index is not found.
 </li>
 <li class="listitem">
-Adjustment failures: The transform retries with adjusted settings.
-For example, if a parent circuit breaker memory errors occur during the
-composite aggregation, the transform receives partial results. The aggregated
-search is retried with a smaller number of buckets. This retry is performed at
-the interval defined in the <code class="literal">frequency</code> property for the transform. If the
-search is retried to the point where it reaches a minimal number of buckets, an
+Adjustment failures: The transform retries with adjusted settings. For
+example, if a parent circuit breaker memory errors occur during the composite
+aggregation, the transform receives partial results. The aggregated search is
+retried with a smaller number of buckets. This retry is performed at the
+interval defined in the <code class="literal">frequency</code> property for the transform. If the search
+is retried to the point where it reaches a minimal number of buckets, an
 irrecoverable failure occurs.
 </li>
 </ul>
 </div>
-<p>If the node running the transforms fails, the transform restarts
-from the most recent persisted cursor position. This recovery process might
-repeat some of the work the transform had already done, but it ensures data
-consistency.</p>
+<p>If the node running the transforms fails, the transform restarts from the
+most recent persisted cursor position. This recovery process might repeat some
+of the work the transform had already done, but it ensures data consistency.</p>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-api-quickref"></a>API quick reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/api-quickref.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transform-api-quickref"></a>API quick reference<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/api-quickref.asciidoc">edit</a></h2>
 </div></div></div>
 <p>All transform endpoints have the following base:</p>
 <div class="pre_wrapper lang-js">
@@ -626,6 +968,12 @@ consistency.</p>
 <a class="xref" href="transform-apis.html#preview-transform" title="Preview transform API">Preview transforms</a>
 </li>
 <li class="listitem">
+<a class="xref" href="transform-apis.html#reset-transform" title="Reset transform API">Reset transforms</a>
+</li>
+<li class="listitem">
+<a class="xref" href="transform-apis.html#schedule-now-transform" title="Schedule now transform API">Schedule now transforms</a>
+</li>
+<li class="listitem">
 <a class="xref" href="transform-apis.html#start-transform" title="Start transform API">Start transforms</a>
 </li>
 <li class="listitem">
@@ -641,11 +989,11 @@ consistency.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ecommerce-transforms"></a>Tutorial: Transforming the eCommerce sample data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/ecommerce-tutorial.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ecommerce-transforms"></a>Tutorial: Transforming the eCommerce sample data<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/ecommerce-tutorial.asciidoc">edit</a></h2>
 </div></div></div>
 <p><a class="xref" href="transforms.html" title="Transforming data">Transforms</a> enable you to retrieve information
 from an Elasticsearch index, transform it, and store it in another index. Let&#8217;s use the
-<a href="https://www.elastic.co/guide/en/kibana/7.10/add-sample-data.html" class="ulink" target="_top">Kibana sample data</a> to demonstrate how you can
+<a href="https://www.elastic.co/guide/en/kibana/8.9/add-sample-data.html" class="ulink" target="_top">Kibana sample data</a> to demonstrate how you can
 pivot and summarize your data with transforms.</p>
 <div class="olist orderedlist">
 <ol class="orderedlist">
@@ -664,9 +1012,11 @@ already familiar with the <code class="literal">kibana_sample_data_ecommerce</co
 might want to derive from this eCommerce data.</p>
 </li>
 <li class="listitem">
-<p>Play with various options for grouping and aggregating the data.</p>
-<p><em>Pivoting</em> your data involves using at least one field to group it and applying
-at least one aggregation. You can preview what the transformed data will look
+<p>Choose the pivot type of transform and play with various options for
+grouping and aggregating the data.</p>
+<p>There are two types of transforms, but first we&#8217;ll try out <em>pivoting</em> your
+data, which involves using at least one field to group it and applying at least
+one aggregation. You can preview what the transformed data will look
 like, so go ahead and play with it! You can also enable histogram charts to get
 a better understanding of the distribution of values in your data.</p>
 <p>For example, you might want to group the data by product ID and calculate the
@@ -683,14 +1033,12 @@ the wizard to create a transform:</p>
 <img src="images/ecommerce-pivot1.png" alt="Creating a simple transform in Kibana">
 </div>
 </div>
-<p>In this case, we grouped the data by customer ID and calculated the sum of
-products each customer purchased.</p>
-<p>Let&#8217;s add some more aggregations to learn more about our customers' orders. For
-example, let&#8217;s calculate the total sum of their purchases, the maximum number of
-products that they purchased in a single order, and their total number of orders.
-We&#8217;ll accomplish this by using the
+<p>Group the data by customer ID and add one or more aggregations to learn more
+about each customer&#8217;s orders. For example, let&#8217;s calculate the sum of products
+they purchased, the total price of their purchases, the maximum number of
+products that they purchased in a single order, and their total number of orders. We&#8217;ll accomplish this by using the
 <a class="xref" href="search-aggregations-metrics.html#search-aggregations-metrics-sum-aggregation" title="Sum aggregation"><code class="literal">sum</code> aggregation</a> on the
-<code class="literal">taxless_total_price</code> field, the
+<code class="literal">total_quantity</code> and <code class="literal">taxless_total_price</code> fields, the
 <a class="xref" href="search-aggregations-metrics.html#search-aggregations-metrics-max-aggregation" title="Max aggregation"><code class="literal">max</code> aggregation</a> on the
 <code class="literal">total_quantity</code> field, and the
 <a class="xref" href="search-aggregations-metrics.html#search-aggregations-metrics-cardinality-aggregation" title="Cardinality aggregation"><code class="literal">cardinality</code> aggregation</a>
@@ -708,7 +1056,7 @@ on the <code class="literal">order_id</code> field:</p>
 example, we&#8217;ve filtered the data so that we&#8217;re only looking at orders with a
 <code class="literal">currency</code> of <code class="literal">EUR</code>. Alternatively, we could group the data by that field too.
 If you want to use more complex queries, you can create your data frame from a
-<a href="https://www.elastic.co/guide/en/kibana/7.10/save-open-search.html" class="ulink" target="_top">saved search</a>.</p>
+<a href="https://www.elastic.co/guide/en/kibana/8.9/save-open-search.html" class="ulink" target="_top">saved search</a>.</p>
 </div>
 </div>
 <p>If you prefer, you can use the
@@ -762,7 +1110,7 @@ If you want to use more complex queries, you can create your data frame from a
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1369.console"></div>
+<div class="console_widget" data-snippet="snippets/1673.console"></div>
 </div>
 </details>
 </li>
@@ -772,20 +1120,40 @@ transform.</p>
 <div class="olist orderedlist">
 <ol class="orderedlist">
 <li class="listitem">
-Supply a job ID and the name of the target (or <em>destination</em>) index. If the
-target index does not exist, it will be created automatically.
+Supply a transform ID, the name of the destination index and optionally a
+description. If the destination index does not exist, it will be created
+automatically when you start the transform.
 </li>
 <li class="listitem">
-Decide whether you want the transform to run once or continuously.
+Decide whether you want the transform to run once or continuously. Since
+this sample data index is unchanging, let&#8217;s use the default behavior and just
+run the transform once. If you want to try it out, however, go ahead and click
+on <span class="strong strong"><strong>Continuous mode</strong></span>. You must choose a field that the transform can use to
+check which entities have changed. In general, it&#8217;s a good idea to use the
+ingest timestamp field. In this example, however, you can use the <code class="literal">order_date</code>
+field.
+</li>
+<li class="listitem">
+Optionally, you can configure a retention policy that applies to your
+transform. Select a date field that is used to identify old documents
+in the destination index and provide a maximum age. Documents that are older
+than the configured value are removed from the destination index.
 </li>
 </ol>
 </div>
-<p>Since this sample data index is unchanging, let&#8217;s use the default behavior and
-just run the transform once.</p>
-<p>If you want to try it out, however, go ahead and click on <span class="strong strong"><strong>Continuous mode</strong></span>.
-You must choose a field that the transform can use to check which
-entities have changed. In general, it&#8217;s a good idea to use the ingest timestamp
-field. In this example, however, you can use the <code class="literal">order_date</code> field.</p>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/ecommerce-pivot3.png" alt="Adding transfrom ID and retention policy to a transform in Kibana">
+</div>
+</div>
+<p>In Kibana, before you finish creating the transform, you can copy the preview
+transform API request to your clipboard. This information is useful later when
+you&#8217;re deciding whether you want to manually create the destination index.</p>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/ecommerce-pivot4.png" alt="Copy the Dev Console statement of the transform preview to the clipboard">
+</div>
+</div>
 <p>If you prefer, you can use the
 <a class="xref" href="transform-apis.html#put-transform" title="Create transform API">create transforms API</a>.</p>
 <details>
@@ -841,10 +1209,158 @@ field. In this example, however, you can use the <code class="literal">order_dat
   },
   "dest": {
     "index": "ecommerce-customers"
+  },
+  "retention_policy": {
+    "time": {
+      "field": "order_date",
+      "max_age": "60d"
+    }
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1370.console"></div>
+<div class="console_widget" data-snippet="snippets/1674.console"></div>
+</div>
+</details>
+</li>
+<li class="listitem">
+<p>Optional: Create the destination index.</p>
+<p>If the destination index does not exist, it is created the first time you start
+your transform. A pivot transform deduces the mappings for the destination
+index from the source indices and the transform aggregations. If there are
+fields in the destination index that are derived from scripts (for example,
+if you use
+<a class="xref" href="search-aggregations-metrics.html#search-aggregations-metrics-scripted-metric-aggregation" title="Scripted metric aggregation"><code class="literal">scripted_metrics</code></a>
+or <a class="xref" href="search-aggregations-pipeline.html#search-aggregations-pipeline-bucket-script-aggregation" title="Bucket script aggregation"><code class="literal">bucket_scripts</code></a>
+aggregations), they&#8217;re created with <a class="xref" href="dynamic-mapping.html" title="Dynamic mapping">dynamic mappings</a>. You
+can use the preview transform API to preview the mappings it will use for the
+destination index. In Kibana, if you copied the API request to your
+clipboard, paste it into the console, then refer to the <code class="literal">generated_dest_index</code>
+object in the API response.</p>
+<div class="note admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>Transforms might have more configuration options provided by the
+APIs than the options available in Kibana. For example, you can set an ingest
+pipeline for <code class="literal">dest</code> by calling the <a class="xref" href="transform-apis.html#put-transform" title="Create transform API">Create transform</a>. For all the transform
+configuration options, refer to the <a class="xref" href="transform-apis.html" title="Transform APIs">documentation</a>.</p>
+</div>
+</div>
+<details>
+<summary class="title">API example</summary>
+<div class="content">
+<div class="pre_wrapper lang-console-result">
+<pre class="programlisting prettyprint lang-console-result">{
+  "preview" : [
+    {
+      "total_quantity" : {
+        "max" : 2,
+        "sum" : 118.0
+      },
+      "taxless_total_price" : {
+        "sum" : 3946.9765625
+      },
+      "customer_id" : "10",
+      "order_id" : {
+        "cardinality" : 59
+      }
+    },
+    ...
+  ],
+  "generated_dest_index" : {
+    "mappings" : {
+      "_meta" : {
+        "_transform" : {
+          "transform" : "transform-preview",
+          "version" : {
+            "created" : "8.0.0"
+          },
+          "creation_date_in_millis" : 1621991264061
+        },
+        "created_by" : "transform"
+      },
+      "properties" : {
+        "total_quantity.sum" : {
+          "type" : "double"
+        },
+        "total_quantity" : {
+          "type" : "object"
+        },
+        "taxless_total_price" : {
+          "type" : "object"
+        },
+        "taxless_total_price.sum" : {
+          "type" : "double"
+        },
+        "order_id.cardinality" : {
+          "type" : "long"
+        },
+        "customer_id" : {
+          "type" : "keyword"
+        },
+        "total_quantity.max" : {
+          "type" : "integer"
+        },
+        "order_id" : {
+          "type" : "object"
+        }
+      }
+    },
+    "settings" : {
+      "index" : {
+        "number_of_shards" : "1",
+        "auto_expand_replicas" : "0-1"
+      }
+    },
+    "aliases" : { }
+  }
+}</pre>
+</div>
+</div>
+</details>
+<p>In some instances the deduced mappings might be incompatible with the actual
+data. For example, numeric overflows might occur or dynamically mapped fields
+might contain both numbers and strings. To avoid this problem, create your
+destination index before you start the transform. For more information, see
+the <a class="xref" href="indices.html#indices-create-index" title="Create index API">create index API</a>.</p>
+<details>
+<summary class="title">API example</summary>
+<div class="content">
+<p>You can use the information from the transform preview to create the
+destination index. For example:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /ecommerce-customers
+{
+  "mappings": {
+    "properties": {
+      "total_quantity.sum" : {
+        "type" : "double"
+      },
+      "total_quantity" : {
+        "type" : "object"
+      },
+      "taxless_total_price" : {
+        "type" : "object"
+      },
+      "taxless_total_price.sum" : {
+        "type" : "double"
+      },
+      "order_id.cardinality" : {
+        "type" : "long"
+      },
+      "customer_id" : {
+        "type" : "keyword"
+      },
+      "total_quantity.max" : {
+        "type" : "integer"
+      },
+      "order_id" : {
+        "type" : "object"
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1675.console"></div>
 </div>
 </details>
 </li>
@@ -859,22 +1375,25 @@ cluster while it runs. If you&#8217;re experiencing an excessive load, however, 
 can stop it.</p>
 </div>
 </div>
-<p>You can start, stop, and manage transforms in Kibana:</p>
+<p>You can start, stop, reset, and manage transforms in Kibana:</p>
 <div class="imageblock screenshot">
 <div class="content">
 <img src="images/manage-transforms.png" alt="Managing transforms in Kibana">
 </div>
 </div>
 <p>Alternatively, you can use the
-<a class="xref" href="transform-apis.html#start-transform" title="Start transform API">start transforms</a> and
-<a class="xref" href="transform-apis.html#stop-transform" title="Stop transforms API">stop transforms</a> APIs.</p>
+<a class="xref" href="transform-apis.html#start-transform" title="Start transform API">start transforms</a>, <a class="xref" href="transform-apis.html#stop-transform" title="Stop transforms API">stop transforms</a> and
+<a class="xref" href="transform-apis.html#reset-transform" title="Reset transform API">reset transforms</a> APIs.</p>
+<p>If you reset a transform, all checkpoints, states, and the destination index
+(if it was created by the transform) are deleted. The transform is ready to
+start again as if it had just been created.</p>
 <details>
 <summary class="title">API example</summary>
 <div class="content">
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _transform/ecommerce-customer-transform/_start</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1371.console"></div>
+<div class="console_widget" data-snippet="snippets/1676.console"></div>
 </div>
 </details>
 <div class="tip admon">
@@ -896,33 +1415,73 @@ data is ingested.</p>
 </div>
 </div>
 </li>
-</ol>
+<li class="listitem">
+<p>Optional: Create another transform, this time using the <code class="literal">latest</code> method.</p>
+<p>This method populates the destination index with the latest documents for each
+unique key value. For example, you might want to find the latest orders (sorted
+by the <code class="literal">order_date</code> field) for each customer or for each country and region.</p>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/ecommerce-latest1.png" alt="Creating a latest transform in Kibana">
 </div>
+</div>
+<details>
+<summary class="title">API example</summary>
+<div class="content">
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _transform/_preview
+{
+  "source": {
+    "index": "kibana_sample_data_ecommerce",
+    "query": {
+      "bool": {
+        "filter": {
+          "term": {"currency": "EUR"}
+        }
+      }
+    }
+  },
+  "latest": {
+    "unique_key": ["geoip.country_iso_code", "geoip.region_name"],
+    "sort": "order_date"
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1677.console"></div>
+</div>
+</details>
 <div class="tip admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>If you do not want to keep the transform, you can delete it in
-Kibana or use the
-<a class="xref" href="transform-apis.html#delete-transform" title="Delete transform API">delete transform API</a>. When
-you delete a transform, its destination index and Kibana index
-patterns remain.</p>
+<p>If the destination index does not exist, it is created the first time you
+start your transform. Unlike pivot transforms, however, latest transforms
+do not deduce mapping definitions when they create the index. Instead, they use
+dynamic mappings. To use explicit mappings, create the destination index
+before you start the transform.</p>
 </div>
 </div>
-<p>Now that you&#8217;ve created a simple transform for Kibana sample data, consider
+</li>
+<li class="listitem">
+If you do not want to keep a transform, you can delete it in
+Kibana or use the <a class="xref" href="transform-apis.html#delete-transform" title="Delete transform API">delete transform API</a>. By default, when
+you delete a transform, its destination index and Kibana index patterns remain.
+</li>
+</ol>
+</div>
+<p>Now that you&#8217;ve created simple transforms for Kibana sample data, consider
 possible use cases for your own data. For more ideas, see
 <a class="xref" href="transforms.html#transform-usage" title="When to use transforms">When to use transforms</a> and <a class="xref" href="transforms.html#transform-examples" title="Transform examples">Examples</a>.</p>
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-examples"></a>Transform examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/examples.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transform-examples"></a>Transform examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/examples.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>These examples demonstrate how to use transforms to derive useful
-insights from your data. All the examples use one of the
-<a href="https://www.elastic.co/guide/en/kibana/7.10/add-sample-data.html" class="ulink" target="_top">Kibana sample datasets</a>. For a more detailed,
-step-by-step example, see
-<a class="xref" href="transforms.html#ecommerce-transforms" title="Tutorial: Transforming the eCommerce sample data">Tutorial: Transforming the eCommerce sample data</a>.</p>
+<p>These examples demonstrate how to use transforms to derive useful insights
+from your data. All the examples use one of the
+<a href="https://www.elastic.co/guide/en/kibana/8.9/add-sample-data.html" class="ulink" target="_top">Kibana sample datasets</a>. For a more detailed,
+step-by-step example, see <a class="xref" href="transforms.html#ecommerce-transforms" title="Tutorial: Transforming the eCommerce sample data">Tutorial: Transforming the eCommerce sample data</a>.</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -934,28 +1493,47 @@ step-by-step example, see
 <li class="listitem">
 <a class="xref" href="transforms.html#example-clientips" title="Finding suspicious client IPs">Finding suspicious client IPs</a>
 </li>
+<li class="listitem">
+<a class="xref" href="transforms.html#example-last-log" title="Finding the last log event for each IP address">Finding the last log event for each IP address</a>
+</li>
+<li class="listitem">
+<a class="xref" href="transforms.html#example-bytes" title="Finding client IPs that sent the most bytes to the server">Finding client IPs that sent the most bytes to the server</a>
+</li>
+<li class="listitem">
+<a class="xref" href="transforms.html#example-customer-names" title="Getting customer name and email address by customer ID">Getting customer name and email address by customer ID</a>
+</li>
 </ul>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="example-best-customers"></a>Finding your best customers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/examples.asciidoc">edit</a></h3>
+<h3 class="title"><a id="example-best-customers"></a>Finding your best customers<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/examples.asciidoc">edit</a></h3>
 </div></div></div>
-<p>In this example, we use the eCommerce orders sample dataset to find the
-customers who spent the most in our hypothetical webshop. Let&#8217;s transform the
-data such that the destination index contains the number of orders, the total
-price of the orders, the amount of unique products and the average price per
-order, and the total amount of ordered products for each customer.</p>
+<p>This example uses the eCommerce orders sample data set to find the customers who
+spent the most in a hypothetical webshop. Let&#8217;s use the <code class="literal">pivot</code> type of
+transform such that the destination index contains the number of orders, the
+total price of the orders, the amount of unique products and the average price
+per order, and the total amount of ordered products for each customer.</p>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/transform-ex1-1.jpg" alt="Finding your best customers with transforms in Kibana">
+</div>
+</div>
+<p>Alternatively, you can use the <a class="xref" href="transform-apis.html#preview-transform" title="Preview transform API">preview transform</a> and
+the <a class="xref" href="transform-apis.html#put-transform" title="Create transform API">create transform API</a>.</p>
+<details>
+<summary class="title">API example</summary>
+<div class="content">
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _transform/_preview
 {
   "source": {
     "index": "kibana_sample_data_ecommerce"
   },
-  "dest" : { <a id="CO487-1"></a><i class="conum" data-value="1"></i>
+  "dest" : { <a id="CO534-1"></a><i class="conum" data-value="1"></i>
     "index" : "sample_ecommerce_orders_by_customer"
   },
   "pivot": {
-    "group_by": { <a id="CO487-2"></a><i class="conum" data-value="2"></i>
+    "group_by": { <a id="CO534-2"></a><i class="conum" data-value="2"></i>
       "user": { "terms": { "field": "user" }},
       "customer_id": { "terms": { "field": "customer_id" }}
     },
@@ -969,27 +1547,26 @@ order, and the total amount of ordered products for each customer.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1372.console"></div>
+<div class="console_widget" data-snippet="snippets/1678.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO487-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO534-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>This is the destination index for the transform. It is ignored by
-<code class="literal">_preview</code>.</p>
+<p>The destination index for the transform. It is ignored by <code class="literal">_preview</code>.</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO487-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO534-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>Two <code class="literal">group_by</code> fields have been selected. This means the transform will
-contain a unique row per <code class="literal">user</code> and <code class="literal">customer_id</code> combination. Within this
-dataset both these fields are unique. By including both in the transform it
-gives more context to the final results.</p>
+<p>Two <code class="literal">group_by</code> fields is selected. This means the transform contains a
+unique row per <code class="literal">user</code> and <code class="literal">customer_id</code> combination. Within this data set, both
+these fields are unique. By including both in the transform, it gives more
+context to the final results.</p>
 </td>
 </tr>
 </table>
@@ -997,12 +1574,12 @@ gives more context to the final results.</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>In the example above, condensed JSON formatting has been used for easier
+<p>In the example above, condensed JSON formatting is used for easier
 readability of the pivot object.</p>
 </div>
 </div>
-<p>The preview transforms API enables you to see the layout of the
-transform in advance, populated with some sample values. For example:</p>
+<p>The preview transforms API enables you to see the layout of the transform in
+advance, populated with some sample values. For example:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">{
   "preview" : [
@@ -1019,6 +1596,8 @@ transform in advance, populated with some sample values. For example:</p>
     ]
   }</pre>
 </div>
+</div>
+</details>
 <p>This transform makes it easier to answer questions such as:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1045,13 +1624,13 @@ make creating visualizations much simpler.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="example-airline"></a>Finding air carriers with the most delays<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/examples.asciidoc">edit</a></h3>
+<h3 class="title"><a id="example-airline"></a>Finding air carriers with the most delays<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/examples.asciidoc">edit</a></h3>
 </div></div></div>
-<p>In this example, we use the Flights sample dataset to find out which air carrier
-had the most delays. First, we filter the source data such that it excludes all
-the cancelled flights by using a query filter. Then we transform the data to
+<p>This example uses the Flights sample data set to find out which air carrier
+had the most delays. First, filter the source data such that it excludes all
+the cancelled flights by using a query filter. Then transform the data to
 contain the distinct number of flights, the sum of delayed minutes, and the sum
-of the flight minutes by air carrier. Finally, we use a
+of the flight minutes by air carrier. Finally, use a
 <a class="xref" href="search-aggregations-pipeline.html#search-aggregations-pipeline-bucket-script-aggregation" title="Bucket script aggregation"><code class="literal">bucket_script</code></a>
 to determine what percentage of the flight time was actually delay.</p>
 <div class="pre_wrapper lang-console">
@@ -1059,7 +1638,7 @@ to determine what percentage of the flight time was actually delay.</p>
 {
   "source": {
     "index": "kibana_sample_data_flights",
-    "query": { <a id="CO488-1"></a><i class="conum" data-value="1"></i>
+    "query": { <a id="CO535-1"></a><i class="conum" data-value="1"></i>
       "bool": {
         "filter": [
           { "term":  { "Cancelled": false } }
@@ -1067,18 +1646,18 @@ to determine what percentage of the flight time was actually delay.</p>
       }
     }
   },
-  "dest" : { <a id="CO488-2"></a><i class="conum" data-value="2"></i>
+  "dest" : { <a id="CO535-2"></a><i class="conum" data-value="2"></i>
     "index" : "sample_flight_delays_by_carrier"
   },
   "pivot": {
-    "group_by": { <a id="CO488-3"></a><i class="conum" data-value="3"></i>
+    "group_by": { <a id="CO535-3"></a><i class="conum" data-value="3"></i>
       "carrier": { "terms": { "field": "Carrier" }}
     },
     "aggregations": {
       "flights_count": { "value_count": { "field": "FlightNum" }},
       "delay_mins_total": { "sum": { "field": "FlightDelayMin" }},
       "flight_mins_total": { "sum": { "field": "FlightTimeMin" }},
-      "delay_time_percentage": { <a id="CO488-4"></a><i class="conum" data-value="4"></i>
+      "delay_time_percentage": { <a id="CO535-4"></a><i class="conum" data-value="4"></i>
         "bucket_script": {
           "buckets_path": {
             "delay_time": "delay_mins_total.value",
@@ -1091,29 +1670,28 @@ to determine what percentage of the flight time was actually delay.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1373.console"></div>
+<div class="console_widget" data-snippet="snippets/1679.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO488-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO535-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>Filter the source data to select only flights that were not cancelled.</p>
+<p>Filter the source data to select only flights that are not cancelled.</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO488-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO535-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>This is the destination index for the transform. It is ignored by
-<code class="literal">_preview</code>.</p>
+<p>The destination index for the transform. It is ignored by <code class="literal">_preview</code>.</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO488-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO535-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The data is grouped by the <code class="literal">Carrier</code> field which contains the airline name.</p>
@@ -1121,7 +1699,7 @@ to determine what percentage of the flight time was actually delay.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO488-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO535-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>This <code class="literal">bucket_script</code> performs calculations on the results that are returned
@@ -1158,40 +1736,40 @@ Which air carrier has the most delays as a percentage of flight time?
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>This data is fictional and does not reflect actual delays
-or flight stats for any of the featured destination or origin airports.</p>
+<p>This data is fictional and does not reflect actual delays or flight stats
+for any of the featured destination or origin airports.</p>
 </div>
 </div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="example-clientips"></a>Finding suspicious client IPs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/examples.asciidoc">edit</a></h3>
+<h3 class="title"><a id="example-clientips"></a>Finding suspicious client IPs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/examples.asciidoc">edit</a></h3>
 </div></div></div>
-<p>In this example, we use the web log sample dataset to identify suspicious client
-IPs. We transform the data such that the new index contains the sum of bytes and
-the number of distinct URLs, agents, incoming requests by location, and
-geographic destinations for each client IP. We also use filter aggregations to
-count the specific types of HTTP responses that each client IP receives.
-Ultimately, the example below transforms web log data into an entity centric
-index where the entity is <code class="literal">clientip</code>.</p>
+<p>This example uses the web log sample data set to identify suspicious client IPs.
+It transforms the data such that the new index contains the sum of bytes and the
+number of distinct URLs, agents, incoming requests by location, and geographic
+destinations for each client IP. It also uses filter aggregations to count the
+specific types of HTTP responses that each client IP receives. Ultimately, the
+example below transforms web log data into an entity centric index where the
+entity is <code class="literal">clientip</code>.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT _transform/suspicious_client_ips
 {
   "source": {
     "index": "kibana_sample_data_logs"
   },
-  "dest" : { <a id="CO489-1"></a><i class="conum" data-value="1"></i>
+  "dest" : { <a id="CO536-1"></a><i class="conum" data-value="1"></i>
     "index" : "sample_weblogs_by_clientip"
   },
-  "sync" : { <a id="CO489-2"></a><i class="conum" data-value="2"></i>
+  "sync" : { <a id="CO536-2"></a><i class="conum" data-value="2"></i>
     "time": {
       "field": "timestamp",
       "delay": "60s"
     }
   },
   "pivot": {
-    "group_by": {  <a id="CO489-3"></a><i class="conum" data-value="3"></i>
+    "group_by": {  <a id="CO536-3"></a><i class="conum" data-value="3"></i>
       "clientip": { "terms": { "field": "clientip" } }
       },
     "aggregations": {
@@ -1201,7 +1779,7 @@ index where the entity is <code class="literal">clientip</code>.</p>
       "agent_dc": { "cardinality": { "field": "agent.keyword" }},
       "geo.dest_dc": { "cardinality": { "field": "geo.dest" }},
       "responses.total": { "value_count": { "field": "timestamp" }},
-      "success" : { <a id="CO489-4"></a><i class="conum" data-value="4"></i>
+      "success" : { <a id="CO536-4"></a><i class="conum" data-value="4"></i>
          "filter": {
             "term": { "response" : "200"}}
         },
@@ -1209,13 +1787,13 @@ index where the entity is <code class="literal">clientip</code>.</p>
          "filter": {
             "term": { "response" : "404"}}
         },
-      "error503" : {
+      "error5xx" : {
          "filter": {
-            "term": { "response" : "503"}}
+            "range": { "response" : { "gte": 500, "lt": 600}}}
         },
       "timestamp.min": { "min": { "field": "timestamp" }},
       "timestamp.max": { "max": { "field": "timestamp" }},
-      "timestamp.duration_ms": { <a id="CO489-5"></a><i class="conum" data-value="5"></i>
+      "timestamp.duration_ms": { <a id="CO536-5"></a><i class="conum" data-value="5"></i>
         "bucket_script": {
           "buckets_path": {
             "min_time": "timestamp.min.value",
@@ -1228,30 +1806,30 @@ index where the entity is <code class="literal">clientip</code>.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1374.console"></div>
+<div class="console_widget" data-snippet="snippets/1680.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO489-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO536-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>This is the destination index for the transform.</p>
+<p>The destination index for the transform.</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO489-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO536-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
-<p>Configures the transform to run continuously. It uses the <code class="literal">timestamp</code> field
-to synchronize the source and destination indices. The worst case
+<p>Configures the transform to run continuously. It uses the <code class="literal">timestamp</code>
+field to synchronize the source and destination indices. The worst case
 ingestion delay is 60 seconds.</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO489-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO536-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The data is grouped by the <code class="literal">clientip</code> field.</p>
@@ -1259,17 +1837,18 @@ ingestion delay is 60 seconds.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO489-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO536-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Filter aggregation that counts the occurrences of successful (<code class="literal">200</code>)
 responses in the <code class="literal">response</code> field. The following two aggregations (<code class="literal">error404</code>
-and <code class="literal">error503</code>) count the error responses by error codes.</p>
+and <code class="literal">error5xx</code>) count the error responses by error codes, matching an exact
+value or a range of response codes.</p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO489-5"><i class="conum" data-value="5"></i></a></p>
+<p><a href="#CO536-5"><i class="conum" data-value="5"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>This <code class="literal">bucket_script</code> calculates the duration of the <code class="literal">clientip</code> access based
@@ -1282,13 +1861,13 @@ on the results of the aggregation.</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST _transform/suspicious_client_ips/_start</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1375.console"></div>
+<div class="console_widget" data-snippet="snippets/1681.console"></div>
 <p>Shortly thereafter, the first results should be available in the destination
 index:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET sample_weblogs_by_clientip/_search</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1376.console"></div>
+<div class="console_widget" data-snippet="snippets/1682.console"></div>
 <p>The search result shows you data like this for each client IP:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">    "hits" : [
@@ -1349,16 +1928,437 @@ Which client IPs are interacting with a high number of destination countries?
 </div>
 </div>
 
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="example-last-log"></a>Finding the last log event for each IP address<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/examples.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example uses the web log sample data set to find the last log from an IP
+address. Let&#8217;s use the <code class="literal">latest</code> type of transform in continuous mode. It
+copies the most recent document for each unique key from the source index to the
+destination index and updates the destination index as new data comes into the
+source index.</p>
+<p>Pick the <code class="literal">clientip</code> field as the unique key; the data is grouped by this field.
+Select <code class="literal">timestamp</code> as the date field that sorts the data chronologically. For
+continuous mode, specify a date field that is used to identify new documents,
+and an interval between checks for changes in the source index.</p>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/transform-ex4-1.jpg" alt="Finding the last log event for each IP address with transforms in Kibana">
+</div>
+</div>
+<p>Let&#8217;s assume that we&#8217;re interested in retaining documents only for IP addresses
+that appeared recently in the log. You can define a retention policy and specify
+a date field that is used to calculate the age of a document. This example uses
+the same date field that is used to sort the data. Then set the maximum age of a
+document; documents that are older than the value you set will be removed from
+the destination index.</p>
+<div class="imageblock screenshot">
+<div class="content">
+<img src="images/transform-ex4-2.jpg" alt="Defining retention policy for transforms in Kibana">
+</div>
+</div>
+<p>This transform creates the destination index that contains the latest login
+date for each client IP. As the transform runs in continuous mode, the
+destination index will be updated as new data that comes into the source index.
+Finally, every document that is older than 30 days will be removed from the
+destination index due to the applied retention policy.</p>
+<details>
+<summary class="title">API example</summary>
+<div class="content">
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT _transform/last-log-from-clientip
+{
+  "source": {
+    "index": [
+      "kibana_sample_data_logs"
+    ]
+  },
+  "latest": {
+    "unique_key": [ <a id="CO537-1"></a><i class="conum" data-value="1"></i>
+      "clientip"
+    ],
+    "sort": "timestamp" <a id="CO537-2"></a><i class="conum" data-value="2"></i>
+  },
+  "frequency": "1m", <a id="CO537-3"></a><i class="conum" data-value="3"></i>
+  "dest": {
+    "index": "last-log-from-clientip"
+  },
+  "sync": { <a id="CO537-4"></a><i class="conum" data-value="4"></i>
+    "time": {
+      "field": "timestamp",
+      "delay": "60s"
+    }
+  },
+  "retention_policy": { <a id="CO537-5"></a><i class="conum" data-value="5"></i>
+    "time": {
+      "field": "timestamp",
+      "max_age": "30d"
+    }
+  },
+  "settings": {
+    "max_page_search_size": 500
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1683.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO537-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Specifies the field for grouping the data.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO537-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Specifies the date field that is used for sorting the data.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO537-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Sets the interval for the transform to check for changes in the source
+index.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO537-4"><i class="conum" data-value="4"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Contains the time field and delay settings used to synchronize the source
+and destination indices.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO537-5"><i class="conum" data-value="5"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Specifies the retention policy for the transform. Documents that are older
+than the configured value will be removed from the destination index.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>After you create the transform, start it:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _transform/last-log-from-clientip/_start</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1684.console"></div>
+</div>
+</details>
+<p>After the transform processes the data, search the destination index:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">GET last-log-from-clientip/_search</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1685.console"></div>
+<p>The search result shows you data like this for each client IP:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">{
+  "_index" : "last-log-from-clientip",
+  "_id" : "MOeHH_cUL5urmartKj-b5UQAAAAAAAAA",
+  "_score" : 1.0,
+  "_source" : {
+    "referer" : "http://twitter.com/error/don-lind",
+    "request" : "/elasticsearch",
+    "agent" : "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)",
+    "extension" : "",
+    "memory" : null,
+    "ip" : "0.72.176.46",
+    "index" : "kibana_sample_data_logs",
+    "message" : "0.72.176.46 - - [2018-09-18T06:31:00.572Z] \"GET /elasticsearch HTTP/1.1\" 200 7065 \"-\" \"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)\"",
+    "url" : "https://www.elastic.co/downloads/elasticsearch",
+    "tags" : [
+      "success",
+      "info"
+    ],
+    "geo" : {
+      "srcdest" : "IN:PH",
+      "src" : "IN",
+      "coordinates" : {
+        "lon" : -124.1127917,
+        "lat" : 40.80338889
+      },
+      "dest" : "PH"
+    },
+    "utc_time" : "2021-05-04T06:31:00.572Z",
+    "bytes" : 7065,
+    "machine" : {
+      "os" : "ios",
+      "ram" : 12884901888
+    },
+    "response" : 200,
+    "clientip" : "0.72.176.46",
+    "host" : "www.elastic.co",
+    "event" : {
+      "dataset" : "sample_web_logs"
+    },
+    "phpmemory" : null,
+    "timestamp" : "2021-05-04T06:31:00.572Z"
+  }
+}</pre>
+</div>
+<p>This transform makes it easier to answer questions such as:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+What was the most recent log event associated with a specific IP address?
+</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="example-bytes"></a>Finding client IPs that sent the most bytes to the server<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/examples.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example uses the web log sample data set to find the client IP that sent
+the most bytes to the server in every hour. The example uses a <code class="literal">pivot</code>
+transform with a <a class="xref" href="search-aggregations-metrics.html#search-aggregations-metrics-top-metrics" title="Top metrics aggregation"><code class="literal">top_metrics</code></a>
+aggregation.</p>
+<p>Group the data by a <a class="xref" href="search-aggregations-bucket.html#_date_histogram" title="Date histogram">date histogram</a> on the time field with an
+interval of one hour. Use a
+<a class="xref" href="search-aggregations-metrics.html#search-aggregations-metrics-max-aggregation" title="Max aggregation">max aggregation</a> on the <code class="literal">bytes</code>
+field to get the maximum amount of data that is sent to the server. Without
+the <code class="literal">max</code> aggregation, the API call still returns the client IP that sent the
+most bytes, however, the amount of bytes that it sent is not returned. In the
+<code class="literal">top_metrics</code> property, specify <code class="literal">clientip</code> and <code class="literal">geo.src</code>, then sort them by the
+<code class="literal">bytes</code> field in descending order. The transform returns the client IP that
+sent the biggest amount of data and the 2-letter ISO code of the corresponding
+location.</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _transform/_preview
+{
+  "source": {
+    "index": "kibana_sample_data_logs"
+  },
+  "pivot": {
+    "group_by": { <a id="CO538-1"></a><i class="conum" data-value="1"></i>
+      "timestamp": {
+        "date_histogram": {
+          "field": "timestamp",
+          "fixed_interval": "1h"
+        }
+      }
+    },
+    "aggregations": {
+      "bytes.max": { <a id="CO538-2"></a><i class="conum" data-value="2"></i>
+        "max": {
+          "field": "bytes"
+        }
+      },
+      "top": {
+        "top_metrics": { <a id="CO538-3"></a><i class="conum" data-value="3"></i>
+          "metrics": [
+            {
+              "field": "clientip"
+            },
+            {
+              "field": "geo.src"
+            }
+          ],
+          "sort": {
+            "bytes": "desc"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1686.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO538-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The data is grouped by a date histogram of the time field with a one hour
+interval.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO538-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Calculates the maximum value of the <code class="literal">bytes</code> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO538-3"><i class="conum" data-value="3"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Specifies the fields (<code class="literal">clientip</code> and <code class="literal">geo.src</code>) of the top document to
+return and the sorting method (document with the highest <code class="literal">bytes</code> value).</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The API call above returns a response similar to this:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">{
+  "preview" : [
+    {
+      "top" : {
+        "clientip" : "223.87.60.27",
+        "geo.src" : "IN"
+      },
+      "bytes" : {
+        "max" : 6219
+      },
+      "timestamp" : "2021-04-25T00:00:00.000Z"
+    },
+    {
+      "top" : {
+        "clientip" : "99.74.118.237",
+        "geo.src" : "LK"
+      },
+      "bytes" : {
+        "max" : 14113
+      },
+      "timestamp" : "2021-04-25T03:00:00.000Z"
+    },
+    {
+      "top" : {
+        "clientip" : "218.148.135.12",
+        "geo.src" : "BR"
+      },
+      "bytes" : {
+        "max" : 4531
+      },
+      "timestamp" : "2021-04-25T04:00:00.000Z"
+    },
+    ...
+  ]
+}</pre>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="example-customer-names"></a>Getting customer name and email address by customer ID<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/examples.asciidoc">edit</a></h3>
+</div></div></div>
+<p>This example uses the ecommerce sample data set to create an entity-centric
+index based on customer ID, and to get the customer name and email address by
+using the <code class="literal">top_metrics</code> aggregation.</p>
+<p>Group the data by <code class="literal">customer_id</code>, then add a <code class="literal">top_metrics</code> aggregation where the
+<code class="literal">metrics</code> are the <code class="literal">email</code>, the <code class="literal">customer_first_name.keyword</code>, and the
+<code class="literal">customer_last_name.keyword</code> fields. Sort the <code class="literal">top_metrics</code> by <code class="literal">order_date</code> in
+descending order. The API call looks like this:</p>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">POST _transform/_preview
+{
+  "source": {
+    "index": "kibana_sample_data_ecommerce"
+  },
+  "pivot": {
+    "group_by": { <a id="CO539-1"></a><i class="conum" data-value="1"></i>
+      "customer_id": {
+        "terms": {
+          "field": "customer_id"
+        }
+      }
+    },
+    "aggregations": {
+      "last": {
+        "top_metrics": { <a id="CO539-2"></a><i class="conum" data-value="2"></i>
+          "metrics": [
+            {
+              "field": "email"
+            },
+            {
+              "field": "customer_first_name.keyword"
+            },
+            {
+              "field": "customer_last_name.keyword"
+            }
+          ],
+          "sort": {
+            "order_date": "desc"
+          }
+        }
+      }
+    }
+  }
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/1687.console"></div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO539-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The data is grouped by a <code class="literal">terms</code> aggregation on the <code class="literal">customer_id</code> field.</p>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO539-2"><i class="conum" data-value="2"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>Specifies the fields to return (email and name fields) in a descending order
+by the order date.</p>
+</td>
+</tr>
+</table>
+</div>
+<p>The API returns a response that is similar to this:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js"> {
+  "preview" : [
+    {
+      "last" : {
+        "customer_last_name.keyword" : "Long",
+        "customer_first_name.keyword" : "Recip",
+        "email" : "recip@long-family.zzz"
+      },
+      "customer_id" : "10"
+    },
+    {
+      "last" : {
+        "customer_last_name.keyword" : "Jackson",
+        "customer_first_name.keyword" : "Fitzgerald",
+        "email" : "fitzgerald@jackson-family.zzz"
+      },
+      "customer_id" : "11"
+    },
+    {
+      "last" : {
+        "customer_last_name.keyword" : "Cross",
+        "customer_first_name.keyword" : "Brigitte",
+        "email" : "brigitte@cross-family.zzz"
+      },
+      "customer_id" : "12"
+    },
+    ...
+  ]
+}</pre>
+</div>
+</div>
+
 </div>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-painless-examples"></a>Painless examples for transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/painless-examples.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transform-painless-examples"></a>Painless examples for transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/painless-examples.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>These examples demonstrate how to use Painless in transforms. You can learn
 more about the Painless scripting language in the
-<a href="https://www.elastic.co/guide/en/elasticsearch/painless/7.10/painless-guide.html" class="ulink" target="_top">Painless guide</a>.</p>
+<a href="https://www.elastic.co/guide/en/elasticsearch/painless/8.9/painless-guide.html" class="ulink" target="_top">Painless guide</a>.</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -1366,9 +2366,6 @@ more about the Painless scripting language in the
 </li>
 <li class="listitem">
 <a class="xref" href="transforms.html#painless-time-features" title="Getting time features by using aggregations">Getting time features by using aggregations</a>
-</li>
-<li class="listitem">
-<a class="xref" href="transforms.html#painless-group-by" title="Using Painless in group_by">Using Painless in <code class="literal">group_by</code></a>
 </li>
 <li class="listitem">
 <a class="xref" href="transforms.html#painless-bucket-script" title="Getting duration by using bucket script">Getting duration by using bucket script</a>
@@ -1407,7 +2404,7 @@ transform in case you want explicit mappings.
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="painless-top-hits"></a>Getting top hits by using scripted metric aggregation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
+<h3 class="title"><a id="painless-top-hits"></a>Getting top hits by using scripted metric aggregation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This snippet shows how to find the latest document, in other words the document
 with the latest timestamp. From a technical perspective, it helps to achieve
@@ -1417,15 +2414,15 @@ scripted metric aggregation in a transform, which provides a metric output.</p>
 <pre class="programlisting prettyprint lang-js">"aggregations": {
   "latest_doc": {
     "scripted_metric": {
-      "init_script": "state.timestamp_latest = 0L; state.last_doc = ''", <a id="CO490-1"></a><i class="conum" data-value="1"></i>
-      "map_script": """ <a id="CO490-2"></a><i class="conum" data-value="2"></i>
+      "init_script": "state.timestamp_latest = 0L; state.last_doc = ''", <a id="CO540-1"></a><i class="conum" data-value="1"></i>
+      "map_script": """ <a id="CO540-2"></a><i class="conum" data-value="2"></i>
         def current_date = doc['@timestamp'].getValue().toInstant().toEpochMilli();
         if (current_date &gt; state.timestamp_latest)
         {state.timestamp_latest = current_date;
         state.last_doc = new HashMap(params['_source']);}
       """,
-      "combine_script": "return state", <a id="CO490-3"></a><i class="conum" data-value="3"></i>
-      "reduce_script": """ <a id="CO490-4"></a><i class="conum" data-value="4"></i>
+      "combine_script": "return state", <a id="CO540-3"></a><i class="conum" data-value="3"></i>
+      "reduce_script": """ <a id="CO540-4"></a><i class="conum" data-value="4"></i>
         def last_doc = '';
         def timestamp_latest = 0L;
         for (s in states) {if (s.timestamp_latest &gt; (timestamp_latest))
@@ -1440,7 +2437,7 @@ scripted metric aggregation in a transform, which provides a metric output.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO490-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO540-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">init_script</code> creates a long type <code class="literal">timestamp_latest</code> and a string type
@@ -1449,7 +2446,7 @@ scripted metric aggregation in a transform, which provides a metric output.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO490-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO540-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">map_script</code> defines <code class="literal">current_date</code> based on the timestamp of the
@@ -1461,7 +2458,7 @@ object from one phase to the next.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO490-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO540-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">combine_script</code> returns <code class="literal">state</code> from each shard.</p>
@@ -1469,7 +2466,7 @@ object from one phase to the next.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO490-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO540-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">reduce_script</code> iterates through the value of <code class="literal">s.timestamp_latest</code>
@@ -1480,9 +2477,8 @@ nested below the <code class="literal">latest_doc</code> field.</p>
 </tr>
 </table>
 </div>
-<p>Check the
-<a class="xref" href="search-aggregations-metrics.html#scripted-metric-aggregation-scope" title="Scope of scripts">scope of scripts</a>
-for detailed explanation on the respective scripts.</p>
+<p>Check the <a class="xref" href="search-aggregations-metrics.html#scripted-metric-aggregation-scope" title="Scope of scripts">scope of scripts</a> for detailed
+explanation on the respective scripts.</p>
 <p>You can retrieve the last value in a similar way:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"aggregations": {
@@ -1507,33 +2503,129 @@ for detailed explanation on the respective scripts.</p>
   }
 }</pre>
 </div>
+<h5><a id="top-hits-stored-scripts"></a>Getting top hits by using stored scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/painless-examples.asciidoc">edit</a></h5>
+<p>You can also use the power of
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/create-stored-script-api.html" class="ulink" target="_top">stored scripts</a> to get the latest value.
+Stored scripts reduce compilation time,  make searches faster, and are
+updatable.</p>
+<div class="olist orderedlist">
+<ol class="orderedlist">
+<li class="listitem">
+<p>Create the stored scripts:</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">POST _scripts/last-value-map-init
+{
+  "script": {
+    "lang": "painless",
+    "source": """
+        state.timestamp_latest = 0L; state.last_value = ''
+    """
+  }
+}
+
+POST _scripts/last-value-map
+{
+  "script": {
+    "lang": "painless",
+    "source": """
+      def current_date = doc['@timestamp'].getValue().toInstant().toEpochMilli();
+        if (current_date &gt; state.timestamp_latest)
+        {state.timestamp_latest = current_date;
+        state.last_value = doc[params['key']].value;}
+    """
+  }
+}
+
+POST _scripts/last-value-combine
+{
+  "script": {
+    "lang": "painless",
+    "source": """
+        return state
+    """
+  }
+}
+
+POST _scripts/last-value-reduce
+{
+  "script": {
+    "lang": "painless",
+    "source": """
+        def last_value = '';
+        def timestamp_latest = 0L;
+        for (s in states) {if (s.timestamp_latest &gt; (timestamp_latest))
+        {timestamp_latest = s.timestamp_latest; last_value = s.last_value;}}
+        return last_value
+    """
+  }
+}</pre>
+</div>
+</li>
+<li class="listitem">
+<p>Use the stored scripts in a scripted metric aggregation.</p>
+<div class="pre_wrapper lang-js">
+<pre class="programlisting prettyprint lang-js">"aggregations":{
+   "latest_value":{
+      "scripted_metric":{
+         "init_script":{
+            "id":"last-value-map-init"
+         },
+         "map_script":{
+            "id":"last-value-map",
+            "params":{
+               "key":"field_with_last_value" <a id="CO541-1"></a><i class="conum" data-value="1"></i>
+            }
+         },
+         "combine_script":{
+            "id":"last-value-combine"
+         },
+         "reduce_script":{
+            "id":"last-value-reduce"
+         }</pre>
+</div>
+<div class="calloutlist">
+<table border="0" summary="Callout list">
+<tr>
+<td align="left" valign="top" width="5%">
+<p><a href="#CO541-1"><i class="conum" data-value="1"></i></a></p>
+</td>
+<td align="left" valign="top">
+<p>The parameter <code class="literal">field_with_last_value</code> can be set any field that you want the
+latest value for.</p>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="painless-time-features"></a>Getting time features by using aggregations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
+<h3 class="title"><a id="painless-time-features"></a>Getting time features by using aggregations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This snippet shows how to extract time based features by using Painless in a
 transform. The snippet uses an index where <code class="literal">@timestamp</code> is defined as a <code class="literal">date</code>
 type field.</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"aggregations": {
-  "avg_hour_of_day": { <a id="CO491-1"></a><i class="conum" data-value="1"></i>
+  "avg_hour_of_day": { <a id="CO542-1"></a><i class="conum" data-value="1"></i>
     "avg":{
-      "script": { <a id="CO491-2"></a><i class="conum" data-value="2"></i>
+      "script": { <a id="CO542-2"></a><i class="conum" data-value="2"></i>
         "source": """
-          ZonedDateTime date =  doc['@timestamp'].value; <a id="CO491-3"></a><i class="conum" data-value="3"></i>
-          return date.getHour(); <a id="CO491-4"></a><i class="conum" data-value="4"></i>
+          ZonedDateTime date =  doc['@timestamp'].value; <a id="CO542-3"></a><i class="conum" data-value="3"></i>
+          return date.getHour(); <a id="CO542-4"></a><i class="conum" data-value="4"></i>
         """
       }
     }
   },
-  "avg_month_of_year": { <a id="CO491-5"></a><i class="conum" data-value="5"></i>
+  "avg_month_of_year": { <a id="CO542-5"></a><i class="conum" data-value="5"></i>
     "avg":{
-      "script": { <a id="CO491-6"></a><i class="conum" data-value="6"></i>
+      "script": { <a id="CO542-6"></a><i class="conum" data-value="6"></i>
         "source": """
-          ZonedDateTime date =  doc['@timestamp'].value; <a id="CO491-7"></a><i class="conum" data-value="7"></i>
-          return date.getMonthValue(); <a id="CO491-8"></a><i class="conum" data-value="8"></i>
+          ZonedDateTime date =  doc['@timestamp'].value; <a id="CO542-7"></a><i class="conum" data-value="7"></i>
+          return date.getMonthValue(); <a id="CO542-8"></a><i class="conum" data-value="8"></i>
         """
       }
     }
@@ -1545,7 +2637,7 @@ type field.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO491-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO542-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Name of the aggregation.</p>
@@ -1553,7 +2645,7 @@ type field.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO491-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO542-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Contains the Painless script that returns the hour of the day.</p>
@@ -1561,7 +2653,7 @@ type field.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO491-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO542-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Sets <code class="literal">date</code> based on the timestamp of the document.</p>
@@ -1569,7 +2661,7 @@ type field.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO491-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO542-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Returns the hour value from <code class="literal">date</code>.</p>
@@ -1577,7 +2669,7 @@ type field.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO491-5"><i class="conum" data-value="5"></i></a></p>
+<p><a href="#CO542-5"><i class="conum" data-value="5"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Name of the aggregation.</p>
@@ -1585,7 +2677,7 @@ type field.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO491-6"><i class="conum" data-value="6"></i></a></p>
+<p><a href="#CO542-6"><i class="conum" data-value="6"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Contains the Painless script that returns the month of the year.</p>
@@ -1593,7 +2685,7 @@ type field.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO491-7"><i class="conum" data-value="7"></i></a></p>
+<p><a href="#CO542-7"><i class="conum" data-value="7"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Sets <code class="literal">date</code> based on the timestamp of the document.</p>
@@ -1601,7 +2693,7 @@ type field.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO491-8"><i class="conum" data-value="8"></i></a></p>
+<p><a href="#CO542-8"><i class="conum" data-value="8"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Returns the month value from <code class="literal">date</code>.</p>
@@ -1613,215 +2705,7 @@ type field.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="painless-group-by"></a>Using Painless in <code class="literal">group_by</code><a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
-</div></div></div>
-<p>It is possible to base the <code class="literal">group_by</code> property of a transform on the output of
-a script. The following example uses the Kibana sample web logs dataset. The goal
-here is to make the transform output easier to understand through normalizing
-the value of the fields that the data is grouped by.</p>
-<div class="pre_wrapper lang-console">
-<pre class="programlisting prettyprint lang-console">POST _transform/_preview
-{
-  "source": {
-    "index": [ <a id="CO492-1"></a><i class="conum" data-value="1"></i>
-      "kibana_sample_data_logs"
-    ]
-  },
-  "pivot": {
-    "group_by": {
-      "agent": {
-        "terms": {
-          "script": { <a id="CO492-2"></a><i class="conum" data-value="2"></i>
-            "source": """String agent = doc['agent.keyword'].value;
-            if (agent.contains("MSIE")) {
-              return "internet explorer";
-            } else if (agent.contains("AppleWebKit")) {
-              return "safari";
-            } else if (agent.contains('Firefox')) {
-              return "firefox";
-            } else { return agent }""",
-            "lang": "painless"
-          }
-        }
-      }
-    },
-    "aggregations": { <a id="CO492-3"></a><i class="conum" data-value="3"></i>
-      "all": {
-        "value_count": {
-          "field": "response.keyword"
-        }
-      },
-      "200": {
-        "filter": {
-          "term": {
-            "response": "200"
-          }
-        }
-      },
-      "404": {
-        "filter": {
-          "term": {
-            "response": "404"
-          }
-        }
-      },
-      "503": {
-        "filter": {
-          "term": {
-            "response": "503"
-          }
-        }
-      }
-    }
-  },
-  "dest": { <a id="CO492-4"></a><i class="conum" data-value="4"></i>
-    "index": "pivot_logs"
-  }
-}</pre>
-</div>
-<div class="console_widget" data-snippet="snippets/1377.console"></div>
-<div class="calloutlist">
-<table border="0" summary="Callout list">
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO492-1"><i class="conum" data-value="1"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>Specifies the source index or indices.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO492-2"><i class="conum" data-value="2"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The script defines an <code class="literal">agent</code> string based on the <code class="literal">agent</code> field of the
-documents, then iterates through the values. If an <code class="literal">agent</code> field contains
-"MSIE", than the script returns "Internet Explorer". If it contains
-<code class="literal">AppleWebKit</code>, it returns "safari". It returns "firefox" if the field value
-contains "Firefox". Finally, in every other case, the value of the field is
-returned.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO492-3"><i class="conum" data-value="3"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>The aggregations object contains filters that narrow down the results to
-documents that contains <code class="literal">200</code>, <code class="literal">404</code>, or <code class="literal">503</code> values in the <code class="literal">response</code> field
-and an aggregation that counts responses for each agent.</p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top" width="5%">
-<p><a href="#CO492-4"><i class="conum" data-value="4"></i></a></p>
-</td>
-<td align="left" valign="top">
-<p>Specifies the destination index of the transform.</p>
-</td>
-</tr>
-</table>
-</div>
-<p>The API returns the following result:</p>
-<div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">{
-  "preview" : [
-    {
-      "all" : 4010,
-      "agent" : "explorer",
-      "200" : 3674,
-      "404" : 210,
-      "503" : 126
-    },
-    {
-      "all" : 5362,
-      "agent" : "firefox",
-      "200" : 4931,
-      "404" : 259,
-      "503" : 172
-    },
-    {
-      "all" : 4702,
-      "agent" : "safari",
-      "200" : 4227,
-      "404" : 332,
-      "503" : 143
-    }
-  ],
-  "generated_dest_index" : {
-    "mappings" : {
-      "_meta" : {
-        "_transform" : {
-          "transform" : "transform-preview",
-          "version" : {
-            "created" : "7.10.0"
-          },
-          "creation_date_in_millis" : 1610454866455
-        },
-        "created_by" : "transform"
-      },
-      "properties" : {
-        "all" : {
-          "type" : "long"
-        },
-        "200" : {
-          "type" : "long"
-        },
-        "404" : {
-          "type" : "long"
-        },
-        "503" : {
-          "type" : "long"
-        }
-      }
-    },
-    "settings" : {
-      "index" : {
-        "number_of_shards" : "1",
-        "auto_expand_replicas" : "0-1"
-      }
-    },
-    "aliases" : { }
-  }
-}</pre>
-</div>
-<p>You can see that the <code class="literal">agent</code> values are simplified so it is easier to interpret
-them. The table below shows how normalization modifies the output of the
-transform in our example compared to the non-normalized values.</p>
-<div class="informaltable">
-<table border="1" cellpadding="4px" width="50%">
-<colgroup>
-<col class="col_1"/>
-<col class="col_2"/>
-</colgroup>
-<thead>
-<tr>
-<th align="left" valign="top">Non-normalized <code class="literal">agent</code> value</th>
-<th align="left" valign="top">Normalized <code class="literal">agent</code> value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)"</p></td>
-<td align="left" valign="top"><p>"internet explorer"</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>"Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.50 Safari/534.24"</p></td>
-<td align="left" valign="top"><p>"safari"</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>"Mozilla/5.0 (X11; Linux x86_64; rv:6.0a1) Gecko/20110421 Firefox/6.0a1"</p></td>
-<td align="left" valign="top"><p>"firefox"</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div class="section">
-<div class="titlepage"><div><div>
-<h3 class="title"><a id="painless-bucket-script"></a>Getting duration by using bucket script<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
+<h3 class="title"><a id="painless-bucket-script"></a>Getting duration by using bucket script<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example shows you how to get the duration of a session by client IP from a
 data log by using
@@ -1852,25 +2736,25 @@ The example uses the Kibana sample web logs dataset.</p>
           "field": "timestamp"
         }
       },
-      "time_length": { <a id="CO493-1"></a><i class="conum" data-value="1"></i>
+      "time_length": { <a id="CO543-1"></a><i class="conum" data-value="1"></i>
         "bucket_script": {
-          "buckets_path": { <a id="CO493-2"></a><i class="conum" data-value="2"></i>
+          "buckets_path": { <a id="CO543-2"></a><i class="conum" data-value="2"></i>
             "min": "time_frame.gte.value",
             "max": "time_frame.lte.value"
           },
-          "script": "params.max - params.min" <a id="CO493-3"></a><i class="conum" data-value="3"></i>
+          "script": "params.max - params.min" <a id="CO543-3"></a><i class="conum" data-value="3"></i>
         }
       }
     }
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1378.console"></div>
+<div class="console_widget" data-snippet="snippets/1688.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO493-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO543-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>To define the length of the sessions, we use a bucket script.</p>
@@ -1878,7 +2762,7 @@ The example uses the Kibana sample web logs dataset.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO493-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO543-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The bucket path is a map of script variables and their associated path to
@@ -1888,7 +2772,7 @@ the buckets you want to use for the variable. In this particular case, <code cla
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO493-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO543-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Finally, the script substracts the start date of the session from the end
@@ -1901,21 +2785,21 @@ date which results in the duration of the session.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="painless-count-http"></a>Counting HTTP responses by using scripted metric aggregation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
+<h3 class="title"><a id="painless-count-http"></a>Counting HTTP responses by using scripted metric aggregation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
 </div></div></div>
 <p>You can count the different HTTP response types in a web log data set by using
-scripted metric aggregation as part of the transform. You can achieve a similar
-function with filter aggregations, check the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/transform-examples.html#example-clientips" class="ulink" target="_top">Finding suspicious client IPs</a>
+scripted metric aggregation as part of the transform. You can achieve a
+similar function with filter aggregations, check the
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/transform-examples.html#example-clientips" class="ulink" target="_top">Finding suspicious client IPs</a>
 example for details.</p>
 <p>The example below assumes that the HTTP response codes are stored as keywords in
 the <code class="literal">response</code> field of the documents.</p>
 <div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">"aggregations": { <a id="CO494-1"></a><i class="conum" data-value="1"></i>
-  "responses.counts": { <a id="CO494-2"></a><i class="conum" data-value="2"></i>
-    "scripted_metric": { <a id="CO494-3"></a><i class="conum" data-value="3"></i>
-      "init_script": "state.responses = ['error':0L,'success':0L,'other':0L]", <a id="CO494-4"></a><i class="conum" data-value="4"></i>
-      "map_script": """ <a id="CO494-5"></a><i class="conum" data-value="5"></i>
+<pre class="programlisting prettyprint lang-js">"aggregations": { <a id="CO544-1"></a><i class="conum" data-value="1"></i>
+  "responses.counts": { <a id="CO544-2"></a><i class="conum" data-value="2"></i>
+    "scripted_metric": { <a id="CO544-3"></a><i class="conum" data-value="3"></i>
+      "init_script": "state.responses = ['error':0L,'success':0L,'other':0L]", <a id="CO544-4"></a><i class="conum" data-value="4"></i>
+      "map_script": """ <a id="CO544-5"></a><i class="conum" data-value="5"></i>
         def code = doc['response.keyword'].value;
         if (code.startsWith('5') || code.startsWith('4')) {
           state.responses.error += 1 ;
@@ -1925,8 +2809,8 @@ the <code class="literal">response</code> field of the documents.</p>
           state.responses.other += 1;
         }
         """,
-      "combine_script": "state.responses", <a id="CO494-6"></a><i class="conum" data-value="6"></i>
-      "reduce_script": """ <a id="CO494-7"></a><i class="conum" data-value="7"></i>
+      "combine_script": "state.responses", <a id="CO544-6"></a><i class="conum" data-value="6"></i>
+      "reduce_script": """ <a id="CO544-7"></a><i class="conum" data-value="7"></i>
         def counts = ['error': 0L, 'success': 0L, 'other': 0L];
         for (responses in states) {
           counts.error += responses['error'];
@@ -1944,7 +2828,7 @@ the <code class="literal">response</code> field of the documents.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO494-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO544-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">aggregations</code> object of the transform that contains all aggregations.</p>
@@ -1952,7 +2836,7 @@ the <code class="literal">response</code> field of the documents.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO494-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO544-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Object of the <code class="literal">scripted_metric</code> aggregation.</p>
@@ -1960,7 +2844,7 @@ the <code class="literal">response</code> field of the documents.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO494-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO544-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>This <code class="literal">scripted_metric</code> performs a distributed operation on the web log data
@@ -1969,7 +2853,7 @@ to count specific types of HTTP responses (error, success, and other).</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO494-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO544-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">init_script</code> creates a <code class="literal">responses</code> array in the <code class="literal">state</code> object with
@@ -1978,7 +2862,7 @@ three properties (<code class="literal">error</code>, <code class="literal">succ
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO494-5"><i class="conum" data-value="5"></i></a></p>
+<p><a href="#CO544-5"><i class="conum" data-value="5"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">map_script</code> defines <code class="literal">code</code> based on the <code class="literal">response.keyword</code> value of the
@@ -1988,7 +2872,7 @@ first digit of the responses.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO494-6"><i class="conum" data-value="6"></i></a></p>
+<p><a href="#CO544-6"><i class="conum" data-value="6"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">combine_script</code> returns <code class="literal">state.responses</code> from each shard.</p>
@@ -1996,7 +2880,7 @@ first digit of the responses.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO494-7"><i class="conum" data-value="7"></i></a></p>
+<p><a href="#CO544-7"><i class="conum" data-value="7"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">reduce_script</code> creates a <code class="literal">counts</code> array with the <code class="literal">error</code>, <code class="literal">success</code>,
@@ -2013,7 +2897,7 @@ Finally, returns the <code class="literal">counts</code> array with the response
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="painless-compare"></a>Comparing indices by using scripted metric aggregations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
+<h3 class="title"><a id="painless-compare"></a>Comparing indices by using scripted metric aggregations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example shows how to compare the content of two indices by a transform
 that uses a scripted metric aggregation.</p>
@@ -2021,7 +2905,7 @@ that uses a scripted metric aggregation.</p>
 <pre class="programlisting prettyprint lang-console">POST _transform/_preview
 {
   "id" : "index_compare",
-  "source" : { <a id="CO495-1"></a><i class="conum" data-value="1"></i>
+  "source" : { <a id="CO545-1"></a><i class="conum" data-value="1"></i>
     "index" : [
       "index1",
       "index2"
@@ -2030,23 +2914,23 @@ that uses a scripted metric aggregation.</p>
       "match_all" : { }
     }
   },
-  "dest" : { <a id="CO495-2"></a><i class="conum" data-value="2"></i>
+  "dest" : { <a id="CO545-2"></a><i class="conum" data-value="2"></i>
     "index" : "compare"
   },
   "pivot" : {
     "group_by" : {
       "unique-id" : {
         "terms" : {
-          "field" : "&lt;unique-id-field&gt;" <a id="CO495-3"></a><i class="conum" data-value="3"></i>
+          "field" : "&lt;unique-id-field&gt;" <a id="CO545-3"></a><i class="conum" data-value="3"></i>
         }
       }
     },
     "aggregations" : {
-      "compare" : { <a id="CO495-4"></a><i class="conum" data-value="4"></i>
+      "compare" : { <a id="CO545-4"></a><i class="conum" data-value="4"></i>
         "scripted_metric" : {
-          "map_script" : "state.doc = new HashMap(params['_source'])", <a id="CO495-5"></a><i class="conum" data-value="5"></i>
-          "combine_script" : "return state", <a id="CO495-6"></a><i class="conum" data-value="6"></i>
-          "reduce_script" : """ <a id="CO495-7"></a><i class="conum" data-value="7"></i>
+          "map_script" : "state.doc = new HashMap(params['_source'])", <a id="CO545-5"></a><i class="conum" data-value="5"></i>
+          "combine_script" : "return state", <a id="CO545-6"></a><i class="conum" data-value="6"></i>
+          "reduce_script" : """ <a id="CO545-7"></a><i class="conum" data-value="7"></i>
             if (states.size() != 2) {
               return "count_mismatch"
             }
@@ -2062,12 +2946,12 @@ that uses a scripted metric aggregation.</p>
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1379.console"></div>
+<div class="console_widget" data-snippet="snippets/1689.console"></div>
 <div class="calloutlist">
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO495-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO545-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The indices referenced in the <code class="literal">source</code> object are compared to each other.</p>
@@ -2075,7 +2959,7 @@ that uses a scripted metric aggregation.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO495-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO545-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">dest</code> index contains the results of the comparison.</p>
@@ -2083,7 +2967,7 @@ that uses a scripted metric aggregation.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO495-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO545-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">group_by</code> field needs to be a unique identifier for each document.</p>
@@ -2091,7 +2975,7 @@ that uses a scripted metric aggregation.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO495-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO545-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>Object of the <code class="literal">scripted_metric</code> aggregation.</p>
@@ -2099,7 +2983,7 @@ that uses a scripted metric aggregation.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO495-5"><i class="conum" data-value="5"></i></a></p>
+<p><a href="#CO545-5"><i class="conum" data-value="5"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">map_script</code> defines <code class="literal">doc</code> in the state object. By using
@@ -2109,7 +2993,7 @@ want to pass the full source object from one phase to the next.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO495-6"><i class="conum" data-value="6"></i></a></p>
+<p><a href="#CO545-6"><i class="conum" data-value="6"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">combine_script</code> returns <code class="literal">state</code> from each shard.</p>
@@ -2117,7 +3001,7 @@ want to pass the full source object from one phase to the next.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO495-7"><i class="conum" data-value="7"></i></a></p>
+<p><a href="#CO545-7"><i class="conum" data-value="7"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">reduce_script</code> checks if the size of the indices are equal. If they are
@@ -2132,7 +3016,7 @@ returns a <code class="literal">match</code>, otherwise returns a <code class="l
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="painless-web-session"></a>Getting web session details by using scripted metric aggregation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
+<h3 class="title"><a id="painless-web-session"></a>Getting web session details by using scripted metric aggregation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/painless-examples.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example shows how to derive multiple features from a single transaction.
 Let&#8217;s take a look on the example source document from the data:</p>
@@ -2187,13 +3071,13 @@ aggregation.</p>
   },
   "pivot": {
     "group_by": {
-      "sessionid": { <a id="CO496-1"></a><i class="conum" data-value="1"></i>
+      "sessionid": { <a id="CO546-1"></a><i class="conum" data-value="1"></i>
         "terms": {
           "field": "apache.access.sessionid"
         }
       }
     },
-    "aggregations": { <a id="CO496-2"></a><i class="conum" data-value="2"></i>
+    "aggregations": { <a id="CO546-2"></a><i class="conum" data-value="2"></i>
       "distinct_paths": {
         "cardinality": {
           "field": "apache.access.path"
@@ -2206,8 +3090,8 @@ aggregation.</p>
       },
       "session_details": {
         "scripted_metric": {
-          "init_script": "state.docs = []", <a id="CO496-3"></a><i class="conum" data-value="3"></i>
-          "map_script": """ <a id="CO496-4"></a><i class="conum" data-value="4"></i>
+          "init_script": "state.docs = []", <a id="CO546-3"></a><i class="conum" data-value="3"></i>
+          "map_script": """ <a id="CO546-4"></a><i class="conum" data-value="4"></i>
             Map span = [
               '@timestamp':doc['@timestamp'].value,
               'url':doc['apache.access.url'].value,
@@ -2215,19 +3099,19 @@ aggregation.</p>
             ];
             state.docs.add(span)
           """,
-          "combine_script": "return state.docs;", <a id="CO496-5"></a><i class="conum" data-value="5"></i>
-          "reduce_script": """ <a id="CO496-6"></a><i class="conum" data-value="6"></i>
+          "combine_script": "return state.docs;", <a id="CO546-5"></a><i class="conum" data-value="5"></i>
+          "reduce_script": """ <a id="CO546-6"></a><i class="conum" data-value="6"></i>
             def all_docs = [];
             for (s in states) {
               for (span in s) {
                 all_docs.add(span);
               }
             }
-            all_docs.sort((HashMap o1, HashMap o2)-&gt;o1['@timestamp'].millis.compareTo(o2['@timestamp'].millis));
+            all_docs.sort((HashMap o1, HashMap o2)-&gt;o1['@timestamp'].toEpochMilli().compareTo(o2['@timestamp'].toEpochMilli()));
             def size = all_docs.size();
             def min_time = all_docs[0]['@timestamp'];
             def max_time = all_docs[size-1]['@timestamp'];
-            def duration = max_time.millis - min_time.millis;
+            def duration = max_time.toEpochMilli() - min_time.toEpochMilli();
             def entry_page = all_docs[0]['url'];
             def exit_path = all_docs[size-1]['url'];
             def first_referrer = all_docs[0]['referrer'];
@@ -2250,7 +3134,7 @@ aggregation.</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO496-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO546-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The data is grouped by <code class="literal">sessionid</code>.</p>
@@ -2258,7 +3142,7 @@ aggregation.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO496-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO546-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The aggregations counts the number of paths and enumerate the viewed pages
@@ -2267,7 +3151,7 @@ during the session.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO496-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO546-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">init_script</code> creates an array type <code class="literal">doc</code> in the <code class="literal">state</code> object.</p>
@@ -2275,7 +3159,7 @@ during the session.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO496-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO546-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">map_script</code> defines a <code class="literal">span</code> array with a timestamp, a URL, and a
@@ -2285,7 +3169,7 @@ adds the value of the <code class="literal">span</code> array to the <code class
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO496-5"><i class="conum" data-value="5"></i></a></p>
+<p><a href="#CO546-5"><i class="conum" data-value="5"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">combine_script</code> returns <code class="literal">state.docs</code> from each shard.</p>
@@ -2293,7 +3177,7 @@ adds the value of the <code class="literal">span</code> array to the <code class
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO496-6"><i class="conum" data-value="6"></i></a></p>
+<p><a href="#CO546-6"><i class="conum" data-value="6"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <code class="literal">reduce_script</code> defines various objects like <code class="literal">min_time</code>, <code class="literal">max_time</code>, and
@@ -2310,7 +3194,7 @@ based on the corresponding object defined earlier, finally returns <code class="
 <pre class="programlisting prettyprint lang-js">{
   "num_pages_viewed" : 2.0,
   "session_details" : {
-    "duration" : 131374,
+    "duration" : 100300001,
     "first_referrer" : "https://www.bing.com/",
     "entry_page" : "http://www.leroymerlin.fr/v3/p/produits/materiaux-menuiserie/porte-coulissante-porte-interieure-escalier-et-rambarde/barriere-de-securite-l1308218463",
     "first_time" : "2017-01-10T21:22:52.982Z",
@@ -2323,7 +3207,7 @@ based on the corresponding object defined earlier, finally returns <code class="
 {
   "num_pages_viewed" : 10.0,
   "session_details" : {
-    "duration" : 343112,
+    "duration" : 343100405,
     "first_referrer" : "https://www.google.fr/",
     "entry_page" : "http://www.leroymerlin.fr/",
     "first_time" : "2017-01-10T16:57:39.937Z",
@@ -2341,97 +3225,109 @@ based on the corresponding object defined earlier, finally returns <code class="
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-troubleshooting"></a>Troubleshooting transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/troubleshooting.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="transform-limitations"></a>Transform limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>Use the information in this section to troubleshoot common problems.</p>
-<p>For issues that you cannot fix yourself … we’re here to help.
-If you are an existing Elastic customer with a support contract, please create
-a ticket in the
-<a href="https://support.elastic.co/customers/s/login/" class="ulink" target="_top">Elastic Support portal</a>.
-Or post in the <a href="https://discuss.elastic.co/" class="ulink" target="_top">Elastic forum</a>.</p>
-<p>If you encounter problems with your transforms, you can gather more
-information from the following files and APIs:</p>
+<p>The following limitations and known problems apply to the 8.9.2 release of
+the Elastic transform feature. The limitations are grouped into the following
+categories:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-Lightweight audit messages are stored in <code class="literal">.transform-notifications-read</code>. Search
-by your <code class="literal">transform_id</code>.
+<a class="xref" href="transforms.html#transform-config-limitations" title="Configuration limitations">Configuration limitations</a> apply to the configuration process of the
+transforms.
 </li>
 <li class="listitem">
-The <a class="xref" href="transform-apis.html#get-transform-stats" title="Get transform statistics API">get transform statistics API</a> provides
-information about the transform status and failures.
+<a class="xref" href="transforms.html#transform-operational-limitations" title="Operational limitations">Operational limitations</a> affect the behavior of the transforms
+that are running.
 </li>
 <li class="listitem">
-If the transform exists as a task, you can use the
-<a class="xref" href="cluster.html#tasks" title="Task management API">task management API</a> to gather task information. For example:
-<code class="literal">GET _tasks?actions=data_frame/transforms*&amp;detailed</code>. Typically, the task exists
-when the transform is in a started or failed state.
-</li>
-<li class="listitem">
-The Elasticsearch logs from the node that was running the transform might
-also contain useful information. You can identify the node from the notification
-messages. Alternatively, if the task still exists, you can get that information
-from the get transform statistics API. For more information, see
-<a class="xref" href="settings.html#logging" title="Logging">Logging</a>.
+<a class="xref" href="transforms.html#transform-ui-limitations" title="Limitations in Kibana">Limitations in Kibana</a> only apply to transforms managed via the user
+interface.
 </li>
 </ul>
 </div>
+<h4><a id="transform-config-limitations"></a>Configuration limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transforms-underscore-limitation"></a>Field names prefixed with underscores are omitted from latest transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p>If you use the <code class="literal">latest</code> type of transform and the source index has field names
+that start with an underscore (_) character, they are assumed to be internal
+fields. Those fields are omitted from the documents in the destination index.</p>
+<h5><a id="transforms-ccs-limitation"></a>Transforms support cross-cluster search if the remote cluster is configured properly<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p>If you use <a class="xref" href="modules-cross-cluster-search.html" title="Search across clusters">cross-cluster search</a>, the remote cluster must
+support the search and aggregations you use in your transforms.
+Transforms validate their configuration; if you use cross-cluster search and the
+validation fails, make sure that the remote cluster supports the query and
+aggregations you use.</p>
+<h5><a id="transform-painless-limitation"></a>Using scripts in transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p>Transforms support scripting in every case when aggregations support them.
+However, there are certain factors you might want to consider when using scripts
+in transforms:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+Transforms cannot deduce index mappings for output fields when the
+fields are created by a script. In this case, you might want to create the
+mappings of the destination index yourself prior to creating the transform.
+</li>
+<li class="listitem">
+Scripted fields may increase the runtime of the transform.
+</li>
+<li class="listitem">
+Transforms cannot optimize queries when you use scripts for all the
+groupings defined in <code class="literal">group_by</code>, you will receive a warning message when you
+use scripts this way.
+</li>
+</ul>
 </div>
-
-<div class="section xpack">
-<div class="titlepage"><div><div>
-<h2 class="title"><a id="transform-limitations"></a>Transform limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
-</div></div></div>
-
-<p>The following limitations and known problems apply to the 7.10.2 release of
-the Elastic transform feature:</p>
-<h4><a id="transform-ui-limitation"></a>Transforms UI will not work during a rolling upgrade from 7.2<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
-<p>If your cluster contains mixed version nodes, for example during a rolling
-upgrade from 7.2 to a newer version, and transforms have been created in 7.2,
-the transforms UI (earler data frame UI) will not work. Please wait until all
-nodes have been upgraded to the newer version before using the transforms UI.</p>
-<h4><a id="transform-rolling-upgrade-limitation"></a>Transforms reassignment suspended during a rolling upgrade from 7.2 and 7.3<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
-<p>If your cluster contains mixed version nodes, for example during a rolling
-upgrade from 7.2 or 7.3 to a newer version, transforms whose nodes are stopped
-will not be reassigned until the upgrade is complete. After the upgrade is done,
-transforms resume automatically; no action is required.</p>
-<h4><a id="transform-datatype-limitations"></a>Data frame data type limitation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
-<p>Data frames do not (yet) support fields containing arrays – in the UI or
-the API. If you try to create one, the UI will fail to show the source index
-table.</p>
-<h4><a id="transform-kibana-limitations"></a>Up to 1,000 transforms are supported<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
-<p>A single cluster will support up to 1,000 transforms. When using the
-<a class="xref" href="transform-apis.html#get-transform" title="Get transforms API">GET transforms API</a> a total <code class="literal">count</code> of transforms
-is returned. Use the <code class="literal">size</code> and <code class="literal">from</code> parameters to enumerate through the full
-list.</p>
-<h4><a id="transform-aggresponse-limitations"></a>Aggregation responses may be incompatible with destination index mappings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
-<p>When a transform is first started, it will deduce the mappings
+<h5><a id="transform-painless-warning-limitation"></a>Deprecation warnings for Painless scripts in transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p>If a transform contains Painless scripts that use deprecated syntax,
+deprecation warnings are displayed when the transform is previewed or started.
+However, it is not possible to check for deprecation warnings across all
+transforms as a bulk action because running the required queries might be a
+resource intensive process. Therefore any deprecation warnings due to deprecated
+Painless syntax are not available in the Upgrade Assistant.</p>
+<h5><a id="transform-runtime-field-limitation"></a>Transforms perform better on indexed fields<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p>Transforms sort data by a user-defined time field, which is frequently
+accessed. If the time field is a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.9/runtime.html" class="ulink" target="_top">runtime field</a>, the
+performance impact of calculating field values at query time can significantly
+slow the transform. Use an indexed field as a time field when using
+transforms.</p>
+<h5><a id="transform-scheduling-limitations"></a>Continuous transform scheduling limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p>A continuous transform periodically checks for changes to source data. The functionality
+of the scheduler is currently limited to a basic periodic timer which can be
+within the <code class="literal">frequency</code> range from 1s to 1h. The default is 1m. This is designed
+to run little and often. When choosing a <code class="literal">frequency</code> for this timer consider
+your ingest rate along with the impact that the transform
+search/index operations has other users in your cluster. Also note that retries
+occur at <code class="literal">frequency</code> interval.</p>
+<h4><a id="transform-operational-limitations"></a>Operational limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-aggresponse-limitations"></a>Aggregation responses may be incompatible with destination index mappings<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p>When a pivot transform is first started, it will deduce the mappings
 required for the destination index. This process is based on the field types of
 the source index and the aggregations used. If the fields are derived from
 <a class="xref" href="search-aggregations-metrics.html#search-aggregations-metrics-scripted-metric-aggregation" title="Scripted metric aggregation"><code class="literal">scripted_metrics</code></a>
 or <a class="xref" href="search-aggregations-pipeline.html#search-aggregations-pipeline-bucket-script-aggregation" title="Bucket script aggregation"><code class="literal">bucket_scripts</code></a>,
-<a class="xref" href="dynamic-mapping.html" title="Dynamic Mapping">dynamic mappings</a> will be used. In some instances the
+<a class="xref" href="dynamic-mapping.html" title="Dynamic mapping">dynamic mappings</a> will be used. In some instances the
 deduced mappings may be incompatible with the actual data. For example, numeric
 overflows might occur or dynamically mapped fields might contain both numbers
 and strings. Please check Elasticsearch logs if you think this may have occurred.</p>
 <p>You can view the deduced mappings by using the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/preview-transform.html" class="ulink" target="_top">Preview transform API</a>.
+<a class="xref" href="transform-apis.html#preview-transform" title="Preview transform API">preview transform API</a>.
 See the <code class="literal">generated_dest_index</code> object in the API response.</p>
 <p>If it&#8217;s required, you may define custom mappings prior to starting the
 transform by creating a custom destination index using the
-<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html" class="ulink" target="_top">Create index API</a>.
-As deduced mappings cannot be overwritten by an index template, use the Create
+<a class="xref" href="indices.html#indices-create-index" title="Create index API">create index API</a>.
+As deduced mappings cannot be overwritten by an index template, use the create
 index API to define custom mappings. The index templates only apply to fields
 derived from scripts that use dynamic mappings.</p>
-<h4><a id="transform-batch-limitations"></a>Batch transforms may not account for changed documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-batch-limitations"></a>Batch transforms may not account for changed documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p>A batch transform uses a
 <a class="xref" href="search-aggregations-bucket.html#search-aggregations-bucket-composite-aggregation" title="Composite aggregation">composite aggregation</a>
 which allows efficient pagination through all buckets. Composite aggregations
 do not yet support a search context, therefore if the source data is changed
 (deleted, updated, added) while the batch data frame is in progress, then the
 results may not include these changes.</p>
-<h4><a id="transform-consistency-limitations"></a>Continuous transform consistency does not account for deleted or updated documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-consistency-limitations"></a>Continuous transform consistency does not account for deleted or updated documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p>While the process for transforms allows the continual recalculation of the
 transform as new data is being ingested, it does also have some limitations.</p>
 <p>Changed entities will only be identified if their time field has also been
@@ -2448,11 +3344,11 @@ after deletions. Alternatively, if your use case is tolerant to historical
 archiving, you may wish to include a max ingest timestamp in your aggregation.
 This will allow you to exclude results that have not been recently updated when
 viewing the destination index.</p>
-<h4><a id="transform-deletion-limitations"></a>Deleting a transform does not delete the destination index or Kibana index pattern<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-deletion-limitations"></a>Deleting a transform does not delete the destination index or Kibana index pattern<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p>When deleting a transform using <code class="literal">DELETE _transform/index</code>
 neither the destination index nor the Kibana index pattern, should one have been
 created, are deleted. These objects must be deleted separately.</p>
-<h4><a id="transform-aggregation-page-limitations"></a>Handling dynamic adjustment of aggregation page size<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-aggregation-page-limitations"></a>Handling dynamic adjustment of aggregation page size<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p>During the development of transforms, control was favoured over performance.
 In the design considerations, it is preferred for the transform to take longer
 to complete quietly in the background rather than to finish quickly and take
@@ -2474,7 +3370,7 @@ buckets at once. Per default this is 500 buckets per search/index operation. The
 default can be changed using <code class="literal">max_page_search_size</code> and the minimum value is 10.
 If failures still occur once the number of buckets requested has been reduced to
 its minimum, then the transform will be set to a failed state.</p>
-<h4><a id="transform-dynamic-adjustments-limitations"></a>Handling dynamic adjustments for many terms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-dynamic-adjustments-limitations"></a>Handling dynamic adjustments for many terms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p>For each checkpoint, entities are identified that have changed since the last
 time the check was performed. This list of changed entities is supplied as a
 <a class="xref" href="term-level-queries.html#query-dsl-terms-query" title="Terms query">terms query</a> to the transform composite aggregation,
@@ -2489,21 +3385,13 @@ is 65536. If <code class="literal">max_page_search_size</code> exceeds <code cla
 transform will fail.</p>
 <p>Using smaller values for <code class="literal">max_page_search_size</code> may result in a longer duration
 for the transform checkpoint to complete.</p>
-<h4><a id="transform-scheduling-limitations"></a>Continuous transform scheduling limitations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
-<p>A continuous transform periodically checks for changes to source data. The functionality
-of the scheduler is currently limited to a basic periodic timer which can be
-within the <code class="literal">frequency</code> range from 1s to 1h. The default is 1m. This is designed
-to run little and often. When choosing a <code class="literal">frequency</code> for this timer consider
-your ingest rate along with the impact that the transform
-search/index operations has other users in your cluster. Also note that retries
-occur at <code class="literal">frequency</code> interval.</p>
-<h4><a id="transform-failed-limitations"></a>Handling of failed transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-failed-limitations"></a>Handling of failed transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p>Failed transforms remain as a persistent task and should be handled
 appropriately, either by deleting it or by resolving the root cause of the
 failure and re-starting.</p>
 <p>When using the API to delete a failed transform, first stop it using
 <code class="literal">_stop?force=true</code>, then delete it.</p>
-<h4><a id="transform-availability-limitations"></a>Continuous transforms may give incorrect results if documents are not yet available to search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-availability-limitations"></a>Continuous transforms may give incorrect results if documents are not yet available to search<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p>After a document is indexed, there is a very small delay until it is available
 to search.</p>
 <p>A continuous transform periodically checks for changed entities between the time since
@@ -2514,46 +3402,40 @@ this entity will not be updated.</p>
 <p>If using a <code class="literal">sync.time.field</code> that represents the data ingest time and using a
 zero second or very small <code class="literal">sync.time.delay</code>, then it is more likely that this
 issue will occur.</p>
-<h4><a id="transform-date-nanos"></a>Support for date nanoseconds data type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-date-nanos"></a>Support for date nanoseconds data type<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p>If your data uses the <a class="xref" href="mapping-types.html#date_nanos" title="Date nanoseconds field type">date nanosecond data type</a>, aggregations
 are nonetheless on millisecond resolution. This limitation also affects the
 aggregations in your transforms.</p>
-<h4><a id="transform-data-streams-destination"></a>Data streams as destination indices are not supported<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-data-streams-destination"></a>Data streams as destination indices are not supported<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p>Transforms update data in the destination index which requires writing
 into the destination. <a class="xref" href="data-streams.html" title="Data streams"><em>Data streams</em></a> are designed to be append-only, which
 means you cannot send update or delete requests directly to a data stream. For
 this reason, data streams are not supported as destination indices for
 transforms.</p>
-<h4><a id="transform-ilm-destination"></a>ILM as destination index may cause duplicated documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-ilm-destination"></a>ILM as destination index may cause duplicated documents<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
 <p><a class="xref" href="index-lifecycle-management.html" title="ILM: Manage the index lifecycle">ILM</a> is not recommended to use as a transform
 destination index. Transforms update documents in the current destination,
 and cannot delete documents in the indices previously used by ILM. This may lead
 to duplicated documents when you use transforms combined with ILM in case of a
 rollover.</p>
 <p>If you use ILM to have time-based indices, please consider using the
-<a class="xref" href="ingest-processors.html#date-index-name-processor" title="Date index name processor">Date index name</a> instead. The processor works without duplicated
+<a class="xref" href="processors.html#date-index-name-processor" title="Date index name processor">Date index name</a> instead. The processor works without duplicated
 documents if your transform contains a <code class="literal">group_by</code> based on <code class="literal">date_histogram</code>.</p>
-<h4><a id="transform-painless-imitation"></a>Using scripts in transforms<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/transform/limitations.asciidoc">edit</a></h4>
-<p>Transforms support scripting in every case when aggregations support them.
-However, there are certain factors you might want to consider when using scripts
-in transforms:</p>
-<div class="ulist itemizedlist">
-<ul class="itemizedlist">
-<li class="listitem">
-Transforms cannot deduce index mappings for output fields when the
-fields are created by a script. In this case, you might want to create the
-mappings of the destination index yourself prior to creating the transform.
-</li>
-<li class="listitem">
-Scripted fields may increase the runtime of the transform.
-</li>
-<li class="listitem">
-Transforms cannot optimize queries when you use scripts for all the
-groupings defined in <code class="literal">group_by</code>, you will receive a warning message when you
-use scripts this way.
-</li>
-</ul>
-</div>
+<h4><a id="transform-ui-limitations"></a>Limitations in Kibana<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h4>
+<h5><a id="transform-space-limitations"></a>Transforms are visible in all Kibana spaces<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p><a href="https://www.elastic.co/guide/en/kibana/8.9/xpack-spaces.html" class="ulink" target="_top">Spaces</a> enable you to organize your source and
+destination indices and other saved objects in Kibana and to see only the objects
+that belong to your space. However, a transform is a long running task which
+is managed on cluster level and therefore not limited in scope to certain
+spaces. Space awareness can be implemented for a data view under
+<span class="strong strong"><strong>Stack Management &gt; Kibana</strong></span> which allows privileges to the transform
+destination index.</p>
+<h5><a id="transform-kibana-limitations"></a>Up to 1,000 transforms are listed in Kibana<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p>The transforms management page in Kibana lists up to 1000 transforms.</p>
+<h5><a id="transform-ui-support"></a>Kibana might not support every transform configuration option<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/transform/limitations.asciidoc">edit</a></h5>
+<p>There might be configuration options available via the transform APIs that are
+not supported in Kibana. For an exhaustive list of configuration options, refer
+to the <a class="xref" href="transform-apis.html" title="Transform APIs">documentation</a>.</p>
 </div>
 
 </div>

@@ -1,14 +1,6 @@
-POST _reindex
+PUT _cluster/settings
 {
-  "source": {
-    "index": "my-index-000001",
-    "query": {
-      "term": {
-        "user.id": "kimchy"
-      }
-    }
-  },
-  "dest": {
-    "index": "my-new-index-000001"
+  "persistent": {
+    "xpack.profiling.templates.enabled": false
   }
 }

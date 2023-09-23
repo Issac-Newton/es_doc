@@ -1,6 +1,32 @@
-GET /_analyze
+PUT /russian_example
 {
-  "tokenizer" : "standard",
-  "filter" : ["cjk_bigram"],
-  "text" : "東京都は、日本の首都であり"
+  "settings": {
+    "analysis": {
+      "filter": {
+        "russian_stop": {
+          "type":       "stop",
+          "stopwords":  "_russian_"
+        },
+        "russian_keywords": {
+          "type":       "keyword_marker",
+          "keywords":   ["пример"]
+        },
+        "russian_stemmer": {
+          "type":       "stemmer",
+          "language":   "russian"
+        }
+      },
+      "analyzer": {
+        "rebuilt_russian": {
+          "tokenizer":  "standard",
+          "filter": [
+            "lowercase",
+            "russian_stop",
+            "russian_keywords",
+            "russian_stemmer"
+          ]
+        }
+      }
+    }
+  }
 }

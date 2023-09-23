@@ -1,19 +1,17 @@
-GET /items/_search
+POST _render/template
 {
-  "query": {
-    "bool": {
-      "must": {
+    "source": {
+      "query": {
         "match": {
-          "name": "chocolate"
+          "message": "{{query_string}}"
         }
       },
-      "should": {
-        "distance_feature": {
-          "field": "location",
-          "pivot": "1000m",
-          "origin": [-71.3, 41.15]
-        }
-      }
-    }
+      "from": "{{from}}",
+      "size": "{{size}}"
+    },
+  "params": {
+    "query_string": "hello world",
+    "from": 20,
+    "size": 10
   }
 }

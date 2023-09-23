@@ -1,9 +1,19 @@
-GET my-index-000001/_search
+PUT /_index_template/new-data-stream-template
 {
-  "track_total_hits": false,
-  "query": {
-    "match": {
-      "user.id": "elkbee"
+  "index_patterns": [ "new-data-stream*" ],
+  "data_stream": { },
+  "priority": 500,
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date_nanos"                
+        }
+      }
+    },
+    "settings": {
+      "sort.field": [ "@timestamp"],         
+      "sort.order": [ "desc"]                
     }
   }
 }

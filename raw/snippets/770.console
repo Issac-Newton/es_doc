@@ -1,10 +1,11 @@
-GET /_search
+POST _aliases
 {
-  "query": {
-    "match_phrase_prefix": {
-      "message": {
-        "query": "quick brown f"
+  "actions": [
+    {
+      "remove": {
+        "index": "logs-nginx.access-prod",
+        "alias": "logs"
       }
     }
-  }
+  ]
 }

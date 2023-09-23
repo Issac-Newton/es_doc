@@ -1,6 +1,17 @@
-GET /_analyze
+POST /_security/api_key
 {
-  "tokenizer" : "whitespace",
-  "filter" : ["lowercase", {"type": "stop", "stopwords": ["a", "is", "this"]}],
-  "text" : "this is a test"
+  "name": "my-restricted-api-key",
+  "role_descriptors": {
+    "my-restricted-role-descriptor": {
+      "indices": [
+        {
+          "names": ["my-search-app"],
+          "privileges": ["read"]
+        }
+      ],
+      "restriction":  {
+        "workflows": ["search_application_query"]
+      }
+    }
+  }
 }

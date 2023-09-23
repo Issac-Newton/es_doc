@@ -1,1 +1,10 @@
-POST /_index_template/_simulate_index/my-index-000001
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": [
+    "keyword_repeat",
+    "stemmer",
+    "remove_duplicates"
+  ],
+  "text": "jumping dog"
+}

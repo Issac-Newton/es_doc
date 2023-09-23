@@ -1,13 +1,19 @@
-PUT my-index-000001/_doc/1?refresh
+PUT my-index-000001
 {
-  "my_id": "1",
-  "text": "This is a question",
-  "my_join_field": "question"
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "text"
+      },
+      "blob": {
+        "type": "binary"
+      }
+    }
+  }
 }
 
-PUT my-index-000001/_doc/2?refresh
+PUT my-index-000001/_doc/1
 {
-  "my_id": "2",
-  "text": "This is another question",
-  "my_join_field": "question"
+  "name": "Some binary blob",
+  "blob": "U29tZSBiaW5hcnkgYmxvYg=="
 }

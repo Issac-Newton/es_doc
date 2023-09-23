@@ -117,9 +117,9 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="shape-queries"></a>Shape queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/shape-queries.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="shape-queries"></a>Shape queries<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/shape-queries.asciidoc">edit</a></h2>
 </div></div></div>
-<p>Like <a class="xref" href="mapping-types.html#geo-shape" title="Geo-shape field type"><code class="literal">geo_shape</code></a> Elasticsearch supports the ability to index
+<p>Like <a class="xref" href="mapping-types.html#geo-shape" title="Geoshape field type"><code class="literal">geo_shape</code></a> Elasticsearch supports the ability to index
 arbitrary two dimension (non Geospatial) geometries making it possible to
 map out virtual worlds, sporting venues, theme parks, and CAD diagrams.</p>
 <p>Elasticsearch supports two types of cartesian data:
@@ -153,7 +153,7 @@ with the specified shape
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="query-dsl-shape-query"></a>Shape query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/shape-query.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="query-dsl-shape-query"></a>Shape query<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/shape-query.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Queries documents that contain fields indexed using the <code class="literal">shape</code> type.</p>
@@ -164,7 +164,7 @@ pre-indexed in another index. Both formats are defined below with
 examples.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_inline_shape_definition_2"></a>Inline Shape Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/shape-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_inline_shape_definition_2"></a>Inline Shape Definition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/shape-query.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Similar to the <code class="literal">geo_shape</code> query, the <code class="literal">shape</code> query uses
 <a href="http://geojson.org" class="ulink" target="_top">GeoJSON</a> or
@@ -192,7 +192,7 @@ PUT /example/_doc/1?refresh=wait_for
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/841.console"></div>
+<div class="console_widget" data-snippet="snippets/1066.console"></div>
 <p>The following query will find the point using the Elasticsearch&#8217;s
 <code class="literal">envelope</code> GeoJSON extension:</p>
 <div class="pre_wrapper lang-console">
@@ -211,12 +211,12 @@ PUT /example/_doc/1?refresh=wait_for
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/842.console"></div>
+<div class="console_widget" data-snippet="snippets/1067.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_pre_indexed_shape_2"></a>Pre-Indexed Shape<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/shape-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_pre_indexed_shape_2"></a>Pre-Indexed Shape<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/shape-query.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The Query also supports using a shape which has already been indexed in
 another index. This is particularly useful for when
@@ -279,12 +279,12 @@ GET /example/_search
   }
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/843.console"></div>
+<div class="console_widget" data-snippet="snippets/1068.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_spatial_relations_2"></a>Spatial Relations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/shape-query.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_spatial_relations"></a>Spatial Relations<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/shape-query.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following is a complete list of spatial relation operators available:</p>
 <div class="ulist itemizedlist">
@@ -307,7 +307,7 @@ contains the query geometry.
 </li>
 </ul>
 </div>
-<h4><a id="_ignore_unmapped_5"></a>Ignore Unmapped<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/query-dsl/shape-query.asciidoc">edit</a></h4>
+<h4><a id="_ignore_unmapped_5"></a>Ignore Unmapped<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/query-dsl/shape-query.asciidoc">edit</a></h4>
 <p>When set to <code class="literal">true</code> the <code class="literal">ignore_unmapped</code> option will ignore an unmapped field
 and will not match any documents for this query. This can be useful when
 querying multiple indexes which might have different mappings. When set to

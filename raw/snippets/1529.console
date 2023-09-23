@@ -1,15 +1,10 @@
-GET index/_search
+POST /_security/role/cli_or_drivers_minimal
 {
-  "query": {
-    "constant_score": {
-      "filter": {
-        "range": {
-          "my_date": {
-            "gte": "now-1h/m",
-            "lte": "now/m"
-          }
-        }
-      }
+  "cluster": ["cluster:monitor/main"],
+  "indices": [
+    {
+      "names": ["test"],
+      "privileges": ["read", "indices:admin/get"]
     }
-  }
+  ]
 }

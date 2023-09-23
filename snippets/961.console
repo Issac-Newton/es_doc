@@ -1,11 +1,16 @@
-GET my-index-00001/_search?size=0
+GET /_search
 {
-  "aggs": {
-    "by_day": {
-      "auto_date_histogram": {
-        "field":     "date",
-        "buckets" : 3,
-        "time_zone": "-01:00"
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "name.first": { "query": "shay", "_name": "first" } } },
+        { "match": { "name.last": { "query": "banon", "_name": "last" } } }
+      ],
+      "filter": {
+        "terms": {
+          "name.last": [ "banon", "kimchy" ],
+          "_name": "test"
+        }
       }
     }
   }

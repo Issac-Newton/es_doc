@@ -1,6 +1,8 @@
-POST _analyze
+GET _search
 {
-  "tokenizer": "standard",
-  "filter":  [ "lowercase", "asciifolding" ],
-  "text":      "Is this déja vu?"
+  "query": {
+    "exists": {
+      "field": "_ignored"
+    }
+  }
 }

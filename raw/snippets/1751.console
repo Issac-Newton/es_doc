@@ -1,16 +1,1 @@
-GET /_mget?routing=key1
-{
-  "docs": [
-    {
-      "_index": "test",
-      "_type": "_doc",
-      "_id": "1",
-      "routing": "key2"
-    },
-    {
-      "_index": "test",
-      "_type": "_doc",
-      "_id": "2"
-    }
-  ]
-}
+GET _index_template/*?filter_path=index_templates.name,index_templates.index_template.index_patterns,index_templates.index_template.data_stream

@@ -2,16 +2,22 @@ PUT my-index-000001
 {
   "mappings": {
     "properties": {
-      "number_of_bytes": {
-        "type": "integer"
-      },
-      "time_in_seconds": {
-        "type": "float"
-      },
-      "price": {
-        "type": "scaled_float",
-        "scaling_factor": 100
+      "flattened_field": {
+        "type": "flattened"
       }
     }
   }
+}
+
+PUT my-index-000001/_doc/1?refresh=true
+{
+  "flattened_field" : {
+    "subfield" : "value"
+  }
+}
+
+POST my-index-000001/_search
+{
+  "fields": ["flattened_field.subfield"],
+  "_source": false
 }

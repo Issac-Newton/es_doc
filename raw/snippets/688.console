@@ -1,17 +1,12 @@
-POST my-index-000001/_search
+PUT _ingest/pipeline/my-pipeline
 {
-  "query": {
-    "match": {
-      "user.id": "kimchy"
-    }
-  },
-  "fields": [
-    "user.id",
-    "http.response.*",
+  "processors": [
     {
-      "field": "@timestamp",
-      "format": "epoch_millis"
+      "set": {
+        "description": "Set '_routing' to 'geoip.country_iso_code' value",
+        "field": "_routing",
+        "value": "{{{geoip.country_iso_code}}}"
+      }
     }
-  ],
-  "_source": false
+  ]
 }

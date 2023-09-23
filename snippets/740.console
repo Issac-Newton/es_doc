@@ -1,17 +1,37 @@
-GET /_search
+PUT geocells
 {
-  "query": {
-    "bool": {
-      "should": [
-        { "match": { "name.first": { "query": "shay", "_name": "first" } } },
-        { "match": { "name.last": { "query": "banon", "_name": "last" } } }
-      ],
-      "filter": {
-        "terms": {
-          "name.last": [ "banon", "kimchy" ],
-          "_name": "test"
-        }
+  "mappings": {
+    "properties": {
+      "geocell": {
+        "type": "geo_shape"
       }
     }
   }
+}
+
+PUT _ingest/pipeline/geotile2shape
+{
+  "description": "translate rectangular z/x/y geotile to bounding box",
+  "processors": [
+    {
+      "geo_grid": {
+        "field": "geocell",
+        "tile_type": "geotile"
+      }
+    }
+  ]
+}
+
+PUT _ingest/pipeline/geohex2shape
+{
+  "description": "translate H3 cell to polygon",
+  "processors": [
+    {
+      "geo_grid": {
+        "field": "geocell",
+        "tile_type": "geohex",
+        "target_format": "wkt"
+      }
+    }
+  ]
 }

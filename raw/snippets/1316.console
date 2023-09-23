@@ -1,16 +1,16 @@
-PUT _ilm/policy/my_policy
+POST /stackoverflow/_search?size=0
 {
-  "policy": {
-    "phases": {
-      "warm": {
-        "actions": {
-          "allocate" : {
-            "number_of_replicas": 1,
-            "require" : {
-              "box_type": "cold"
-            }
-        }
-        }
+  "query": {
+    "query_string": {
+      "query": "tags:kibana OR tags:javascript"
+    }
+  },
+  "aggs": {
+    "low_quality_keywords": {
+      "significant_terms": {
+        "field": "tags",
+        "size": 3,
+        "exclude": [ "kibana", "javascript" ]
       }
     }
   }

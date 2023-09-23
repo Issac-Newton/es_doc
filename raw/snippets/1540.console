@@ -1,1 +1,9 @@
-GET _cat/shards?v=true
+POST /_sql?format=txt
+{
+  "query": "SELECT * FROM library",
+  "filter": {
+    "terms": {
+      "_routing": ["abc"]
+    }
+  }
+}

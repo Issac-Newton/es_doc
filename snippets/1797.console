@@ -1,5 +1,17 @@
-PUT products/_doc/1567
+PUT /_security/role_mapping/direct_pki_only
 {
-  "product" : "r2d2",
-  "details" : "A resourceful astromech droid"
+  "roles" : [ "role_for_pki1_direct" ],
+  "rules" : {
+    "all": [
+      {
+        "field": {"realm.name": "pki1"}
+      },
+      {
+        "field": {
+          "metadata.pki_delegated_by_user": null
+        }
+      }
+    ]
+  },
+  "enabled": true
 }

@@ -1,17 +1,9 @@
-PUT index
+GET /my-data-stream/_eql/search
 {
-  "mappings": {
-    "properties": {
-      "price_range": {
-        "type": "keyword"
-      }
-    }
-  }
-}
-
-PUT index/_doc/1
-{
-  "designation": "spoon",
-  "price": 13,
-  "price_range": "10-100"
+  "query": """
+    sequence by process.pid
+      [process where process.name == "regsvr32.exe"]
+      [library where dll.name == "scrobj.dll"]
+      [network where true]
+  """
 }

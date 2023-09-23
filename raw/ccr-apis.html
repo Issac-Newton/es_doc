@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>Cross-cluster replication APIs | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="Cross-cluster replication APIs | Elasticsearch Guide">
 
@@ -33,10 +34,10 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-apis"></a>Cross-cluster replication APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-apis"></a>Cross-cluster replication APIs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h2>
 </div></div></div>
 <p>You can use the following APIs to perform cross-cluster replication operations.</p>
-<h3><a id="ccr-api-top-level"></a>Top-Level<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h3>
+<h3><a id="ccr-api-top-level"></a>Top-Level<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -44,7 +45,7 @@
 </li>
 </ul>
 </div>
-<h3><a id="ccr-api-follow"></a>Follow<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h3>
+<h3><a id="ccr-api-follow"></a>Follow<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -70,7 +71,7 @@
 </li>
 </ul>
 </div>
-<h3><a id="ccr-api-auto-follow"></a>Auto-follow<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h3>
+<h3><a id="ccr-api-auto-follow"></a>Auto-follow<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/ccr-apis.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -92,23 +93,23 @@
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-get-stats"></a>Get cross-cluster replication stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-get-stats"></a>Get cross-cluster replication stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Get cross-cluster replication stats.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-stats-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-stats-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_ccr/stats</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1643.console"></div>
+<div class="console_widget" data-snippet="snippets/2204.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_prerequisites_10"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_prerequisites_14"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -123,7 +124,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-stats-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-stats-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API gets cross-cluster replication stats. This API will return all stats related to cross-cluster replication. In
 particular, this API returns stats about auto-following, and returns the same
@@ -132,7 +133,7 @@ shard-level stats as in the <a class="xref" href="ccr-apis.html#ccr-get-follow-s
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-stats-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-stats-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -209,13 +210,13 @@ the details of the response in the
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-stats-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-stats-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/get-ccr-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example retrieves cross-cluster replication stats:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_ccr/stats</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1644.console"></div>
+<div class="console_widget" data-snippet="snippets/2205.console"></div>
 <p>The API returns the following results:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -273,13 +274,13 @@ the details of the response in the
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-put-follow"></a>Create follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-put-follow"></a>Create follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Creates a follower index.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-follow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-follow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT /&lt;follower_index&gt;/_ccr/follow?wait_for_active_shards=1
@@ -288,12 +289,12 @@ the details of the response in the
   "leader_index" : "&lt;leader_index&gt;"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1645.console"></div>
+<div class="console_widget" data-snippet="snippets/2206.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-follow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-follow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -310,7 +311,7 @@ For more information, see <a class="xref" href="authorization.html#security-priv
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-follow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-follow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API creates a new follower index that is configured to follow the
 referenced leader index. When this API returns, the follower index exists, and
@@ -319,7 +320,7 @@ cross-cluster replication starts replicating operations from the leader index to
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-follow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-follow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -337,7 +338,7 @@ cross-cluster replication starts replicating operations from the leader index to
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-follow-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-follow-query-params"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -359,13 +360,13 @@ the follower index.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-follow-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-follow-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
 <span class="term">
-<code class="literal">leader_index</code>
+<a id="ccr-put-follow-request-body-leader_index"></a><code class="literal">leader_index</code>
 </span>
 </dt>
 <dd>
@@ -373,15 +374,37 @@ the follower index.
 </dd>
 <dt>
 <span class="term">
-<code class="literal">remote_cluster</code>
+<a id="ccr-put-follow-request-body-remote_cluster"></a><code class="literal">remote_cluster</code>
 </span>
 </dt>
 <dd>
-(Required, string) The <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a> containing
+(Required, string) The <a class="xref" href="remote-clusters.html" title="Remote clusters">remote cluster</a> containing
 the leader index.
+</dd>
+<dt>
+<span class="term">
+<a id="ccr-put-follow-request-body-data_stream_name"></a><code class="literal">data_stream_name</code>
+</span>
+</dt>
+<dd>
+(Optional, string) If the leader index is part of a <a class="xref" href="data-streams.html" title="Data streams">data stream</a>, the name to
+which the local data stream for the followed index should be renamed. For example, A request like:
 </dd>
 </dl>
 </div>
+<div class="pre_wrapper lang-console">
+<pre class="programlisting prettyprint lang-console">PUT /.ds-logs-mysql-default_copy-2022-01-01-000001/_ccr/follow
+{
+  "remote_cluster" : "remote_cluster",
+  "leader_index" : ".ds-logs-mysql-default-2022-01-01-000001",
+  "data_stream_name": "logs-mysql-default_copy"
+}</pre>
+</div>
+<div class="console_widget" data-snippet="snippets/2207.console"></div>
+<p>Replicates the leader index <code class="literal">.ds-logs-mysql-default-2022-01-01-000001</code> into the follower index
+<code class="literal">.ds-logs-mysql-default_copy-2022-01-01-000001</code> and will do so using the data stream
+<code class="literal">logs-mysql-default_copy</code>, as opposed to the original leader data stream name of
+<code class="literal">logs-mysql-default</code>.</p>
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
@@ -393,6 +416,10 @@ the leader index.
 (object) Settings to override from the leader index. Note that certain
 settings can not be overrode (e.g., <code class="literal">index.number_of_shards</code>).
 </dd>
+</dl>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
 <dt>
 <span class="term">
 <code class="literal">max_read_request_operation_count</code>
@@ -493,7 +520,7 @@ immediately attempt to read from the leader again.
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_default_values"></a>Default values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_default_values"></a>Default values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The following output from the follow info api describes all the default
 values for the above described index follow request parameters:</p>
@@ -523,7 +550,7 @@ values for the above described index follow request parameters:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-follow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-follow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/put-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example creates a follower index named <code class="literal">follower_index</code>:</p>
 <div class="pre_wrapper lang-console">
@@ -546,7 +573,7 @@ values for the above described index follow request parameters:</p>
   "read_poll_timeout" : "30s"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1646.console"></div>
+<div class="console_widget" data-snippet="snippets/2208.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -561,23 +588,23 @@ values for the above described index follow request parameters:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-post-pause-follow"></a>Pause follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-post-pause-follow"></a>Pause follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Pauses a follower index.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-pause-follow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-pause-follow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /&lt;follower_index&gt;/_ccr/pause_follow</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1647.console"></div>
+<div class="console_widget" data-snippet="snippets/2209.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-pause-follow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-pause-follow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -592,7 +619,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-pause-follow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-pause-follow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API pauses a follower index. When this API returns, the follower index will
 not fetch any additional operations from the leader index. You can resume
@@ -603,7 +630,7 @@ following task.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-pause-follow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-pause-follow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -621,13 +648,13 @@ following task.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-pause-follow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-pause-follow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-pause-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example pauses a follower index named <code class="literal">follower_index</code>:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /follower_index/_ccr/pause_follow</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1648.console"></div>
+<div class="console_widget" data-snippet="snippets/2210.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -640,25 +667,25 @@ following task.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-post-resume-follow"></a>Resume follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-post-resume-follow"></a>Resume follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Resumes a follower index.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-resume-follow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-resume-follow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /&lt;follower_index&gt;/_ccr/resume_follow
 {
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1649.console"></div>
+<div class="console_widget" data-snippet="snippets/2211.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-resume-follow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-resume-follow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -675,7 +702,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-resume-follow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-resume-follow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API resumes a follower index that has been paused either explicitly with
 the <a class="xref" href="ccr-apis.html#ccr-post-pause-follow" title="Pause follower API">pause follower API</a> or implicitly due to
@@ -685,7 +712,7 @@ returns, the follower index will resume fetching operations from the leader inde
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-resume-follow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-resume-follow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -703,19 +730,10 @@ returns, the follower index will resume fetching operations from the leader inde
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-resume-follow-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-resume-follow-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
-<dt>
-<span class="term">
-<code class="literal">settings</code>
-</span>
-</dt>
-<dd>
-(object) Settings to override from the leader index. Note that certain
-settings can not be overrode (e.g., <code class="literal">index.number_of_shards</code>).
-</dd>
 <dt>
 <span class="term">
 <code class="literal">max_read_request_operation_count</code>
@@ -816,7 +834,7 @@ immediately attempt to read from the leader again.
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_default_values_2"></a>Default values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_default_values_2"></a>Default values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The following output from the follow info api describes all the default
 values for the above described index follow request parameters:</p>
@@ -846,7 +864,7 @@ values for the above described index follow request parameters:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-resume-follow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-resume-follow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-resume-follow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example resumes a follower index named <code class="literal">follower_index</code>:</p>
 <div class="pre_wrapper lang-console">
@@ -864,7 +882,7 @@ values for the above described index follow request parameters:</p>
   "read_poll_timeout" : "30s"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1650.console"></div>
+<div class="console_widget" data-snippet="snippets/2212.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -877,23 +895,23 @@ values for the above described index follow request parameters:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-post-unfollow"></a>Unfollow API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-post-unfollow"></a>Unfollow API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Converts a follower index to a regular index.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-unfollow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-unfollow-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /&lt;follower_index&gt;/_ccr/unfollow</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1651.console"></div>
+<div class="console_widget" data-snippet="snippets/2213.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-unfollow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-unfollow-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -908,7 +926,7 @@ index privileges for the follower index. For more information, see
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-unfollow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-unfollow-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API stops the following task associated with a follower index and removes
 index metadata and settings associated with cross-cluster replication. This enables the index to
@@ -926,7 +944,7 @@ irreversible operation.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-unfollow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-unfollow-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -944,13 +962,13 @@ irreversible operation.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-unfollow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-unfollow-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-unfollow.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example converts <code class="literal">follower_index</code> from a follower index to a regular index:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /follower_index/_ccr/unfollow</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1652.console"></div>
+<div class="console_widget" data-snippet="snippets/2214.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -963,13 +981,13 @@ irreversible operation.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-post-forget-follower"></a>Forget follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-post-forget-follower"></a>Forget follower API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Removes the follower retention leases from the leader.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-forget-follower-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-forget-follower-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /&lt;leader_index&gt;/_ccr/forget_follower
@@ -980,7 +998,7 @@ irreversible operation.</p>
   "leader_remote_cluster" : "&lt;leader_remote_cluster&gt;"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1653.console"></div>
+<div class="console_widget" data-snippet="snippets/2215.console"></div>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
   "_shards" : {
@@ -995,7 +1013,7 @@ irreversible operation.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-forget-follower-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-forget-follower-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1010,7 +1028,7 @@ index privileges for the leader index. For more information, see
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-forget-follower-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-forget-follower-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
 </div></div></div>
 <p>A following index takes out retention leases on its leader index. These
 retention leases are used to increase the likelihood that the shards of the
@@ -1039,7 +1057,7 @@ the <a class="xref" href="ccr-apis.html#ccr-post-unfollow" title="Unfollow API">
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-forget-follower-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-forget-follower-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1057,7 +1075,7 @@ the <a class="xref" href="ccr-apis.html#ccr-post-unfollow" title="Unfollow API">
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-forget-follower-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-forget-follower-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1092,7 +1110,7 @@ the <a class="xref" href="ccr-apis.html#ccr-post-unfollow" title="Unfollow API">
 </dt>
 <dd>
 (Required, string) The alias (from the perspective of the cluster containing
-the follower index) of the <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a>
+the follower index) of the <a class="xref" href="remote-clusters.html" title="Remote clusters">remote cluster</a>
 containing the leader index.
 </dd>
 </dl>
@@ -1101,7 +1119,7 @@ containing the leader index.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-post-forget-follower-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-post-forget-follower-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/post-forget-follower.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example removes the follower retention leases for <code class="literal">follower_index</code> from
 <code class="literal">leader_index</code>.</p>
@@ -1114,7 +1132,7 @@ containing the leader index.
   "leader_remote_cluster" : "leader_cluster"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1654.console"></div>
+<div class="console_widget" data-snippet="snippets/2216.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -1132,23 +1150,23 @@ containing the leader index.
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-get-follow-stats"></a>Get follower stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-get-follow-stats"></a>Get follower stats API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Get follower stats.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-stats-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-stats-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /&lt;index&gt;/_ccr/stats</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1655.console"></div>
+<div class="console_widget" data-snippet="snippets/2217.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-stats-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-stats-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1163,7 +1181,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-stats-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-stats-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API gets follower stats. This API will return shard-level stats about the
 following tasks associated with each shard for the specified indices.</p>
@@ -1171,7 +1189,7 @@ following tasks associated with each shard for the specified indices.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-stats-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-stats-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1189,7 +1207,7 @@ following tasks associated with each shard for the specified indices.</p>
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-stats-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-stats-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1269,7 +1287,7 @@ task. In this situation, the following task must be resumed manually with the
 </dd>
 <dt>
 <span class="term">
-failed_write_requests`
+<code class="literal">failed_write_requests</code>
 </span>
 </dt>
 <dd>
@@ -1369,7 +1387,7 @@ task.
 </dd>
 <dt>
 <span class="term">
-operations_written`
+<code class="literal">operations_written</code>
 </span>
 </dt>
 <dd>
@@ -1444,7 +1462,7 @@ operations_written`
 </span>
 </dt>
 <dd>
-(string) The <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a> containing the leader
+(string) The <a class="xref" href="remote-clusters.html" title="Remote clusters">remote cluster</a> containing the leader
 index.
 </dd>
 <dt>
@@ -1525,7 +1543,7 @@ sent to the leader to the time a reply was returned to the follower.
 </dd>
 <dt>
 <span class="term">
-write_buffer_size_in_bytes`
+<code class="literal">write_buffer_size_in_bytes</code>
 </span>
 </dt>
 <dd>
@@ -1547,13 +1565,13 @@ write_buffer_size_in_bytes`
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-stats-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-stats-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-stats.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example retrieves follower stats:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /follower_index/_ccr/stats</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1656.console"></div>
+<div class="console_widget" data-snippet="snippets/2218.console"></div>
 <p>The API returns the following results:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -1602,23 +1620,23 @@ write_buffer_size_in_bytes`
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-get-follow-info"></a>Get follower info API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-get-follow-info"></a>Get follower info API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Retrieves information about all follower indices.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-info-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-info-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /&lt;index&gt;/_ccr/info</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1657.console"></div>
+<div class="console_widget" data-snippet="snippets/2219.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-info-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-info-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1632,7 +1650,7 @@ privileges. For more information, see <a class="xref" href="authorization.html#s
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-info-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-info-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API lists the parameters and the status for each follower index.
 For example, the results include follower index names, leader index names,
@@ -1641,7 +1659,7 @@ replication options and whether the follower indices are active or paused.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-info-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-info-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1659,7 +1677,7 @@ replication options and whether the follower indices are active or paused.</p>
 
 <div class="section child_attributes">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-info-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-info-response-body"></a>Response body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1817,7 +1835,7 @@ to read from the leader again.
 </span>
 </dt>
 <dd>
-(string) The <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a> that contains the
+(string) The <a class="xref" href="remote-clusters.html" title="Remote clusters">remote cluster</a> that contains the
 leader index.
 </dd>
 <dt>
@@ -1839,13 +1857,13 @@ leader index.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-follow-info-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-follow-info-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow/get-follow-info.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example retrieves follower info:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /follower_index/_ccr/info</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1658.console"></div>
+<div class="console_widget" data-snippet="snippets/2220.console"></div>
 <p>If the follower index is <code class="literal">active</code>, the API returns the following results:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -1890,13 +1908,13 @@ leader index.
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-put-auto-follow-pattern"></a>Create auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-put-auto-follow-pattern"></a>Create auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Creates an auto-follow pattern.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">PUT /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;
@@ -1906,15 +1924,19 @@ leader index.
   [
     "&lt;leader_index_pattern&gt;"
   ],
+  "leader_index_exclusion_patterns":
+  [
+    "&lt;leader_index_exclusion_pattern&gt;"
+  ],
   "follow_index_pattern" : "&lt;follow_index_pattern&gt;"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1659.console"></div>
+<div class="console_widget" data-snippet="snippets/2221.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -1930,18 +1952,23 @@ information, see <a class="xref" href="authorization.html#security-privileges" t
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API creates a new named collection of
 <a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow patterns</a> against the remote cluster
 specified in the request body. Newly created indices on the remote cluster
 matching any of the specified patterns will be automatically configured as follower
-indices.</p>
+indices. Indices on the remote cluster that were created before the auto-follow
+pattern is created won&#8217;t be auto-followed even if they match the pattern.</p>
+<p>This API can also be used to update existing
+<a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow patterns</a>. Note that follower indices that were configured automatically
+before updating an auto-follow pattern will remain unchanged even if they don&#8217;t match against
+the new patterns.</p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1959,7 +1986,7 @@ indices.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-auto-follow-pattern-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-request-body"></a>Request body<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -1969,7 +1996,7 @@ indices.</p>
 </span>
 </dt>
 <dd>
-(Required, string) The <a class="xref" href="modules-remote-clusters.html" title="Remote clusters">remote cluster</a> containing
+(Required, string) The <a class="xref" href="remote-clusters.html" title="Remote clusters">remote cluster</a> containing
 the leader indices to match against.
 </dd>
 <dt>
@@ -1983,18 +2010,29 @@ in the remote cluster specified by the <code class="literal">remote_cluster</cod
 </dd>
 <dt>
 <span class="term">
+<code class="literal">leader_index_exclusion_patterns</code>
+</span>
+</dt>
+<dd>
+(Optional, array) An array of simple index patterns that can be used to exclude indices
+from being auto-followed. Indices in the remote cluster whose names are matching one or
+more <code class="literal">leader_index_patterns</code> and one or more <code class="literal">leader_index_exclusion_patterns</code> won&#8217;t be followed.
+</dd>
+<dt>
+<span class="term">
 <code class="literal">follow_index_pattern</code>
 </span>
 </dt>
 <dd>
-(Optional, string) The name of follower index. The template <code class="literal">{{leader_index}}</code>
-can be used to derive the name of the follower index from the name of the
-leader index.
+(Optional, string) The name of follower index. The template <code class="literal">{{leader_index}}</code> can be used to
+derive the name of the follower index from the name of the leader index. When following a data
+stream, the <code class="literal">follow_index_pattern</code> will be used for renaming not only the leader index, but also
+the data stream containing the leader index. For example, a data stream called
+<code class="literal">logs-mysql-default</code> with a backing index of <code class="literal">.ds-logs-mysql-default-2022-01-01-000001</code> and a
+<code class="literal">follow_index_pattern</code> of <code class="literal">{{leader_index}}_copy</code> will replicate the data stream as
+<code class="literal">logs-mysql-default_copy</code> and the backing index as
+<code class="literal">.ds-logs-mysql-default_copy-2022-01-01-000001</code>.
 </dd>
-</dl>
-</div>
-<div class="variablelist">
-<dl class="variablelist">
 <dt>
 <span class="term">
 <code class="literal">settings</code>
@@ -2004,6 +2042,10 @@ leader index.
 (object) Settings to override from the leader index. Note that certain
 settings can not be overrode (e.g., <code class="literal">index.number_of_shards</code>).
 </dd>
+</dl>
+</div>
+<div class="variablelist">
+<dl class="variablelist">
 <dt>
 <span class="term">
 <code class="literal">max_read_request_operation_count</code>
@@ -2104,7 +2146,7 @@ immediately attempt to read from the leader again.
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="_default_values_3"></a>Default values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h4>
+<h4 class="title"><a id="_default_values_3"></a>Default values<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/follow-request-body.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The following output from the follow info api describes all the default
 values for the above described index follow request parameters:</p>
@@ -2134,7 +2176,7 @@ values for the above described index follow request parameters:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-put-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-put-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/put-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example creates an auto-follow pattern named <code class="literal">my_auto_follow_pattern</code>:</p>
 <div class="pre_wrapper lang-console">
@@ -2161,7 +2203,7 @@ values for the above described index follow request parameters:</p>
   "read_poll_timeout" : "30s"
 }</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1660.console"></div>
+<div class="console_widget" data-snippet="snippets/2222.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -2174,23 +2216,23 @@ values for the above described index follow request parameters:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-delete-auto-follow-pattern"></a>Delete auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-delete-auto-follow-pattern"></a>Delete auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Delete auto-follow patterns.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-delete-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">DELETE /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1661.console"></div>
+<div class="console_widget" data-snippet="snippets/2223.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-delete-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -2205,7 +2247,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-delete-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API deletes a configured collection of
 <a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow patterns</a>.</p>
@@ -2213,7 +2255,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-delete-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -2231,14 +2273,14 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-delete-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-delete-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/delete-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example deletes an auto-follow pattern collection named
 <code class="literal">my_auto_follow_pattern</code>:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">DELETE /_ccr/auto_follow/my_auto_follow_pattern</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1662.console"></div>
+<div class="console_widget" data-snippet="snippets/2224.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -2251,27 +2293,27 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-get-auto-follow-pattern"></a>Get auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-get-auto-follow-pattern"></a>Get auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Get auto-follow patterns.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_ccr/auto_follow/</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1663.console"></div>
+<div class="console_widget" data-snippet="snippets/2225.console"></div>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1664.console"></div>
+<div class="console_widget" data-snippet="snippets/2226.console"></div>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -2286,7 +2328,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API gets configured <a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow patterns</a>.
 This API will return the specified auto-follow pattern collection.</p>
@@ -2294,7 +2336,7 @@ This API will return the specified auto-follow pattern collection.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -2314,14 +2356,14 @@ collections.
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-get-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-get-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/get-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example retrieves information about an auto-follow pattern collection
 named <code class="literal">my_auto_follow_pattern</code>:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_ccr/auto_follow/my_auto_follow_pattern</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1665.console"></div>
+<div class="console_widget" data-snippet="snippets/2227.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -2335,6 +2377,10 @@ named <code class="literal">my_auto_follow_pattern</code>:</p>
         [
           "leader_index*"
         ],
+        "leader_index_exclusion_patterns":
+        [
+          "leader_index_001"
+        ],
         "follow_index_pattern" : "{{leader_index}}-follower"
       }
     }
@@ -2347,20 +2393,20 @@ named <code class="literal">my_auto_follow_pattern</code>:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-pause-auto-follow-pattern"></a>Pause auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-pause-auto-follow-pattern"></a>Pause auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Pauses an auto-follow pattern.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-pause-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;/pause</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-pause-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -2375,7 +2421,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-pause-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API pauses an <a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow pattern</a>. When this API returns, the auto-follow pattern
 is inactive and ignores any new index created on the remote cluster that matches any of
@@ -2391,7 +2437,7 @@ meantime.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-pause-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -2409,13 +2455,13 @@ meantime.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-pause-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-pause-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/pause-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example pauses an auto-follow pattern named <code class="literal">my_auto_follow_pattern</code>:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /_ccr/auto_follow/my_auto_follow_pattern/pause</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1666.console"></div>
+<div class="console_widget" data-snippet="snippets/2228.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
@@ -2428,20 +2474,20 @@ meantime.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="ccr-resume-auto-follow-pattern"></a>Resume auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="ccr-resume-auto-follow-pattern"></a>Resume auto-follow pattern API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Resumes an auto-follow pattern.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-resume-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p><code class="literal">POST /_ccr/auto_follow/&lt;auto_follow_pattern_name&gt;/resume</code></p>
 </div>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-resume-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -2456,7 +2502,7 @@ see <a class="xref" href="authorization.html#security-privileges" title="Securit
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-resume-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This API resumes an <a class="xref" href="xpack-ccr.html#ccr-auto-follow" title="Manage auto-follow patterns">auto-follow pattern</a> that has been paused with the
 <a class="xref" href="ccr-apis.html#ccr-pause-auto-follow-pattern" title="Pause auto-follow pattern API">pause auto-follow pattern API</a>. When this API
@@ -2468,7 +2514,7 @@ have been deleted or closed in the meantime.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-resume-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-path-parms"></a>Path parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="variablelist">
 <dl class="variablelist">
@@ -2486,14 +2532,14 @@ have been deleted or closed in the meantime.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="ccr-resume-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
+<h3 class="title"><a id="ccr-resume-auto-follow-pattern-examples"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/ccr/apis/auto-follow/resume-auto-follow-pattern.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This example resumes the activity of a paused auto-follow pattern
 named <code class="literal">my_auto_follow_pattern</code>:</p>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">POST /_ccr/auto_follow/my_auto_follow_pattern/resume</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/1667.console"></div>
+<div class="console_widget" data-snippet="snippets/2229.console"></div>
 <p>The API returns the following result:</p>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{

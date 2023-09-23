@@ -1,19 +1,24 @@
-PUT my-index-000001/_doc/3?routing=1&refresh
+PUT my-index-000001
 {
-  "my_id": "3",
-  "text": "This is an answer",
-  "my_join_field": {
-    "name": "answer",
-    "parent": "1"
+  "mappings": {
+    "properties": {
+      "is_published": {
+        "type": "boolean"
+      }
+    }
   }
 }
 
-PUT my-index-000001/_doc/4?routing=1&refresh
+POST my-index-000001/_doc/1?refresh
 {
-  "my_id": "4",
-  "text": "This is another answer",
-  "my_join_field": {
-    "name": "answer",
-    "parent": "1"
+  "is_published": "true"
+}
+
+GET my-index-000001/_search
+{
+  "query": {
+    "term": {
+      "is_published": true
+    }
   }
 }

@@ -3,15 +3,16 @@ PUT /my-index-000001
   "settings": {
     "analysis": {
       "analyzer": {
-        "my_analyzer": {
+        "en": {
           "tokenizer": "standard",
-          "filter": [ "lowercase", "custom_stems", "porter_stem" ]
+          "filter": [ "my_en_US_dict_stemmer" ]
         }
       },
       "filter": {
-        "custom_stems": {
-          "type": "stemmer_override",
-          "rules_path": "analysis/stemmer_override.txt"
+        "my_en_US_dict_stemmer": {
+          "type": "hunspell",
+          "locale": "en_US",
+          "dedup": false
         }
       }
     }

@@ -3,8 +3,8 @@
   <head>
     
 <meta charset="UTF-8">
-<title>Watch for cluster and index events | Elasticsearch Guide | Elastic</title>
-<meta class="elastic" name="content" content="Watch for cluster and index events | Elasticsearch Guide">
+<title>Watcher | Elasticsearch Guide | Elastic</title>
+<meta class="elastic" name="content" content="Watcher | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
 <link rel="up" href="index.html" title="Elasticsearch Guide"/>
@@ -116,7 +116,7 @@
 </div>
 <div class="part xpack">
 <div class="titlepage"><div><div>
-<h1 class="title"><a id="xpack-alerting"></a>Watch for cluster and index events<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/index.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h1>
+<h1 class="title"><a id="xpack-alerting"></a>Watcher<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/index.asciidoc">edit</a></h1>
 </div></div></div>
 <div class="openblock partintro">
 <div class="content">
@@ -127,11 +127,11 @@
 that are integrated with applications such as APM, Metrics, Security, and Uptime.
 You can use Kibana Alerting to detect complex conditions within different Kibana apps
 and trigger actions when those conditions are met.
-For more information, see <a href="https://www.elastic.co/guide/en/kibana/7.10/alerting-getting-started.html" class="ulink" target="_top">Alerting and actions</a>.</p>
+For more information, see <a href="https://www.elastic.co/guide/en/kibana/8.9/alerting-getting-started.html" class="ulink" target="_top">Alerting and actions</a>.</p>
 </div>
 </div>
-<p>You can watch for changes or anomalies in your data and perform the necessary actions in
-response. For example, you might want to:</p>
+<p>You can use Watcher to watch for changes or anomalies in your data and perform
+the necessary actions in response. For example, you might want to:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -177,7 +177,7 @@ One or more actions are taken if the condition is true&#8201;&#8212;&#8201;an em
 </li>
 </ul>
 </div>
-<h3><a id="_how_watches_work"></a>How watches work<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/index.asciidoc">edit</a></h3>
+<h3><a id="_how_watches_work"></a>How watches work<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/index.asciidoc">edit</a></h3>
 <p>The alerting features provide an API for creating, managing and testing <em>watches</em>.
 A watch describes a single alert and can contain multiple notification actions.</p>
 <p>A watch is constructed from four simple building blocks:</p>
@@ -228,8 +228,6 @@ history keeps track of each time a watch is triggered and records the results
 from the query, whether the condition was met, and what actions were taken.</p>
 </div>
 </div>
-
-
 
 
 

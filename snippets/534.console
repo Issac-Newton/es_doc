@@ -1,6 +1,23 @@
-GET /my-index-000001/_analyze
+PUT /my-index-000001
 {
-  "tokenizer": "keyword",
-  "char_filter": [ "my_mappings_char_filter" ],
-  "text": "I'm delighted about it :("
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "keyword",
+          "filter": [
+            "my_pattern_replace_filter"
+          ]
+        }
+      },
+      "filter": {
+        "my_pattern_replace_filter": {
+          "type": "pattern_replace",
+          "pattern": "[£|€]",
+          "replacement": "",
+          "all": false
+        }
+      }
+    }
+  }
 }

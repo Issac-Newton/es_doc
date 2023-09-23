@@ -1,12 +1,28 @@
-PUT _ingest/pipeline/check_url
+PUT _component_template/component_template1
 {
-  "processors": [
-    {
-      "set": {
-        "if": "ctx.href?.url =~ /^http[^s]/",
-        "field": "href.insecure",
-        "value": true
+  "template": {
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        }
       }
     }
-  ]
+  }
+}
+
+PUT _component_template/runtime_component_template
+{
+  "template": {
+    "mappings": {
+      "runtime": {
+        "day_of_week": {
+          "type": "keyword",
+          "script": {
+            "source": "emit(doc['@timestamp'].value.dayOfWeekEnum.getDisplayName(TextStyle.FULL, Locale.ROOT))"
+          }
+        }
+      }
+    }
+  }
 }

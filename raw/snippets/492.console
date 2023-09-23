@@ -1,15 +1,13 @@
-GET /_analyze
+PUT fingerprint_example
 {
-  "tokenizer": "whitespace",
-  "filter": [
-    {
-      "type": "stop",
-      "stopwords": [ "a" ]
-    },
-    {
-      "type": "shingle",
-      "filler_token": "+"
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "whitespace_fingerprint": {
+          "tokenizer": "whitespace",
+          "filter": [ "fingerprint" ]
+        }
+      }
     }
-  ],
-  "text": "fox jumps a lazy dog"
+  }
 }

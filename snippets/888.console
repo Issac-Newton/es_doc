@@ -1,11 +1,9 @@
-GET /my-index-00001/_search
+POST _render/template
 {
-  "query": {
-    "percolate": {
-      "field": "query",
-      "index": "my-index-00001",
-      "id": "2",
-      "version": 1
+  "source": "{ \"query\": {{#toJson}}my_query{{/toJson}} }",
+  "params": {
+    "my_query": {
+      "match_all": { }
     }
   }
 }

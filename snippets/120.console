@@ -1,7 +1,6 @@
-GET /_search
+PUT my-index-000001/_mapping
 {
-  "query" : {
-    "match_all": {}
-  },
-  "_source": "route_length_miles"
+ "runtime": {
+   "day_of_week": null
+ }
 }

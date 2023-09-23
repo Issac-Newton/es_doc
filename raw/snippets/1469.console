@@ -1,6 +1,24 @@
-POST /_aliases
+POST /sales/_search
 {
-  "actions" : [
-    { "add" : { "index" : "2015", "alias" : "current_year" } }
-  ]
+  "size": 0,
+  "aggs": {
+    "sales_per_month": {
+      "date_histogram": {
+        "field": "date",
+        "calendar_interval": "month"
+      },
+      "aggs": {
+        "sales": {
+          "sum": {
+            "field": "price"
+          }
+        },
+        "sales_deriv": {
+          "derivative": {
+            "buckets_path": "sales"
+          }
+        }
+      }
+    }
+  }
 }

@@ -1,1 +1,11 @@
-POST /my-index-000001,my-index-000002/_flush
+GET .watcher-history*/_search?pretty
+{
+  "query" : {
+    "bool" : {
+      "must" : [
+        { "match" : { "result.condition.met" : true }},
+        { "range" : { "result.execution_time" : { "from" : "now-10s" }}}
+      ]
+    }
+  }
+}

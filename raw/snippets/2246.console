@@ -1,8 +1,8 @@
-POST /_security/role_mapping/mapping3
+PUT my-index-000001/_create/1
 {
-  "roles": [ "ldap-user" ],
-  "enabled": true,
-  "rules": {
-    "field" : { "realm.name" : "ldap1" }
+  "@timestamp": "2099-11-15T13:12:00",
+  "message": "GET /search HTTP/1.1 200 1070000",
+  "user": {
+    "id": "kimchy"
   }
 }

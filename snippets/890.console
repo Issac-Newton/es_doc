@@ -1,8 +1,8 @@
-PUT /my-index-00001/_doc/4?refresh
+POST _render/template
 {
-  "query": {
-    "match": {
-      "message": "lazy dog"
-    }
+  "source": "{ \"query\": { \"bool\": { \"filter\": [ {{#year_scope}} { \"range\": { \"@timestamp\": { \"gte\": \"now-1y/d\", \"lt\": \"now/d\" } } }, {{/year_scope}} { \"term\": { \"user.id\": \"{{user_id}}\" }}]}}}",
+  "params": {
+    "year_scope": true,
+    "user_id": "kimchy"
   }
 }

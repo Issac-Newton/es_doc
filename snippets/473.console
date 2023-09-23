@@ -1,13 +1,14 @@
-PUT ngram_example
+GET /_analyze
 {
-  "settings": {
-    "analysis": {
-      "analyzer": {
-        "standard_ngram": {
-          "tokenizer": "standard",
-          "filter": [ "ngram" ]
-        }
+  "tokenizer": "standard",
+  "filter": [
+    {
+      "type": "condition",
+      "filter": [ "lowercase" ],
+      "script": {
+        "source": "token.getTerm().length() < 5"
       }
     }
-  }
+  ],
+  "text": "THE QUICK BROWN FOX"
 }

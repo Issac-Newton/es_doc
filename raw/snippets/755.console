@@ -1,19 +1,12 @@
-POST _search
+PUT _ingest/pipeline/pipelineA
 {
-  "query": {
-    "intervals" : {
-      "my_text" : {
-        "match" : {
-          "query" : "salty",
-          "filter" : {
-            "contained_by" : {
-              "match" : {
-                "query" : "hot porridge"
-              }
-            }
-          }
-        }
+  "description" : "inner pipeline",
+  "processors" : [
+    {
+      "set" : {
+        "field": "inner_pipeline_set",
+        "value": "inner"
       }
     }
-  }
+  ]
 }

@@ -1,9 +1,12 @@
 GET /_search
 {
-  "query": {
-    "simple_query_string" : {
-      "query" : "this is a test",
-      "fields" : [ "subject^3", "message" ]
+  "query" : {
+    "match": { "user.id": "kimchy" }
+  },
+  "highlight" : {
+    "order" : "score",
+    "fields" : {
+      "comment" : {"fragment_size" : 150, "number_of_fragments" : 3}
     }
   }
 }

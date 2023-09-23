@@ -1,5 +1,4 @@
-GET /_analyze
+POST /_security/oidc/prepare
 {
-  "analyzer" : "standard",
-  "text" : "this is a test"
+  "realm" : "oidc1"
 }

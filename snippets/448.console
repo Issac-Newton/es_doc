@@ -1,11 +1,24 @@
-GET _analyze
+PUT my-index-000001
 {
-  "tokenizer": "whitespace",
-  "filter": [
-    {
-      "type": "keep",
-      "keep_words": [ "dog", "elephant", "fox" ]
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "my_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type": "pattern",
+          "pattern": ","
+        }
+      }
     }
-  ],
-  "text": "the quick fox jumps over the lazy dog"
+  }
+}
+
+POST my-index-000001/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "comma,separated,values"
 }

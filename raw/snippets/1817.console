@@ -1,5 +1,5 @@
-GET /_analyze
+POST /_security/user/facilitator
 {
-  "analyzer" : "standard",
-  "text" : "Quick Brown Foxes!"
+  "password" : "<somePasswordHere>",
+  "roles"    : [ "facilitator-role"]
 }

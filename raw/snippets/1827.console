@@ -1,5 +1,12 @@
-GET /_analyze
+POST /_security/role/test_role2
 {
-  "filter" : ["lowercase"],
-  "text" : "BaR"
+  "indices" : [
+    {
+      "names" : [ "*" ],
+      "privileges" : [ "read" ],
+      "field_security" : {
+        "grant" : [ "event_*" ]
+      }
+    }
+  ]
 }

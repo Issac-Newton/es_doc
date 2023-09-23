@@ -1,6 +1,4 @@
-PUT /my-index-000001/_settings
+PUT my_index,my_other_index/_settings
 {
-  "index" : {
-    "refresh_interval" : "1s"
-  }
+  "index.number_of_replicas": 1
 }

@@ -1,11 +1,9 @@
-GET /_search
+GET my-index/_search/template
 {
-  "query": {
-    "more_like_this" : {
-      "fields" : ["title", "description"],
-      "like" : "Once upon a time",
-      "min_term_freq" : 1,
-      "max_query_terms" : 12
-    }
+  "id": "my-search-template",
+  "params": {
+    "query_string": "hello world",
+    "from": 0,
+    "size": 10
   }
 }

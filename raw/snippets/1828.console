@@ -1,8 +1,12 @@
-GET /_analyze
+POST /_security/role/test_role3
 {
-  "tokenizer" : "standard",
-  "filter" : ["snowball"],
-  "text" : "detailed output",
-  "explain" : true,
-  "attributes" : ["keyword"]
+  "indices" : [
+    {
+      "names" : [ "*" ],
+      "privileges" : [ "read" ],
+      "field_security" : {
+        "grant" : [ "customer.handle" ]
+      }
+    }
+  ]
 }

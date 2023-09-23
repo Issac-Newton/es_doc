@@ -1,16 +1,19 @@
-GET latency/_search
+GET /my-index-000001/_explain/0
 {
-  "size": 0,
-  "aggs": {
-    "load_time_ranks": {
-      "percentile_ranks": {
-        "values": [ 500, 600 ],
-        "script": {
-          "id": "my_script",
-          "params": {
-            "field": "load_time"
+  "query": {
+    "script_score": {
+      "query": {
+        "match": { "message": "elasticsearch" }
+      },
+      "script": {
+        "source": """
+          long count = doc['count'].value;
+          double normalizedCount = count / 10;
+          if (explanation != null) {
+            explanation.set('normalized count = count / 10 = ' + count + ' / 10 = ' + normalizedCount);
           }
-        }
+          return normalizedCount;
+        """
       }
     }
   }

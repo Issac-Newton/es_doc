@@ -1,15 +1,24 @@
-POST /_security/role/cluster_two_logs
+POST /_search
 {
-  "cluster": [],
-  "indices": [
-    {
-      "names": [
-        "logs-*"
-      ],
-      "privileges": [
-        "read",
-        "read_cross_cluster"
-      ]
+  "size": 0,
+  "aggs": {
+    "my_date_histo": {
+      "date_histogram": {
+        "field": "date",
+        "calendar_interval": "1M"
+      },
+      "aggs": {
+        "the_sum": {
+          "sum": { "field": "price" }
+        },
+        "the_movavg": {
+          "moving_fn": {
+            "buckets_path": "the_sum",
+            "window": 10,
+            "script": "MovingFunctions.linearWeightedAvg(values)"
+          }
+        }
+      }
     }
-  ]
+  }
 }

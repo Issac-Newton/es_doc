@@ -1,9 +1,19 @@
-GET index/_search
+PUT /_cluster/settings
 {
-  "query": {
-    "simple_query_string": {
-      "fields": [ "body.exact" ],
-      "query": "ski"
+  "persistent": {
+    "cluster": {
+      "remote": {
+        "cluster_one": {
+          "seeds": [
+            "127.0.0.1:9300"
+          ]
+        },
+        "cluster_two": {
+          "seeds": [
+            "127.0.0.1:9301"
+          ]
+        }
+      }
     }
   }
 }

@@ -1,22 +1,25 @@
-POST /_search
+GET /_search
 {
+  "runtime_mappings": {
+    "day_of_week": {
+      "type": "keyword",
+      "script": """
+        emit(doc['timestamp'].value.dayOfWeekEnum
+          .getDisplayName(TextStyle.FULL, Locale.ROOT))
+      """
+    }
+  },
+  "size": 0,
   "aggs": {
-    "sales_per_month": {
-      "date_histogram": {
-        "field": "date",
-        "calendar_interval": "month"
-      },
-      "aggs": {
-        "sales": {
-          "sum": {
-            "field": "price"
+    "my_buckets": {
+      "composite": {
+        "sources": [
+          {
+            "dow": {
+              "terms": { "field": "day_of_week" }
+            }
           }
-        }
-      }
-    },
-    "max_monthly_sales": {
-      "max_bucket": {
-        "buckets_path": "sales_per_month>sales"
+        ]
       }
     }
   }

@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="keywords" content="hot-spotting, hotspot, hot-spot, hot spot, hotspots, hotspotting">
 <title>Usage API | Elasticsearch Guide | Elastic</title>
 <meta class="elastic" name="content" content="Usage API | Elasticsearch Guide">
 
@@ -33,12 +34,12 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="usage-api"></a>Usage API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/usage.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="usage-api"></a>Usage API<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/usage.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Provides usage information about the installed X-Pack features.</p>
-<h3><a id="usage-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
+<h3><a id="usage-api-request"></a>Request<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
 <p><code class="literal">GET /_xpack/usage</code></p>
-<h3><a id="usage-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
+<h3><a id="usage-api-prereqs"></a>Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -47,10 +48,10 @@ If the Elasticsearch security features are enabled, you must have the <code clas
 </li>
 </ul>
 </div>
-<h3><a id="usage-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
+<h3><a id="usage-api-desc"></a>Description<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
 <p>This API provides information about which features are currently enabled and
 available under the current license and some usage statistics.</p>
-<h3><a id="usage-api-query-parms"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
+<h3><a id="usage-api-query-parms"></a>Query parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
 <div class="variablelist">
 <dl class="variablelist">
 <dt>
@@ -66,24 +67,16 @@ before the timeout expires, the request fails and returns an error. Defaults to
 </dd>
 </dl>
 </div>
-<h3><a id="usage-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
+<h3><a id="usage-api-example"></a>Examples<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/rest-api/usage.asciidoc">edit</a></h3>
 <div class="pre_wrapper lang-console">
 <pre class="programlisting prettyprint lang-console">GET /_xpack/usage</pre>
 </div>
-<div class="console_widget" data-snippet="snippets/2352.console"></div>
+<div class="console_widget" data-snippet="snippets/3021.console"></div>
 <div class="pre_wrapper lang-console-result">
 <pre class="programlisting prettyprint lang-console-result">{
   "security" : {
     "available" : true,
-    "enabled" : false,
-    "ssl" : {
-      "http" : {
-        "enabled" : false
-      },
-      "transport" : {
-        "enabled" : false
-      }
-    }
+    "enabled" : false
   },
   "monitoring" : {
     "available" : true,
@@ -94,16 +87,16 @@ before the timeout expires, the request fails and returns an error. Defaults to
     }
   },
   "watcher" : {
-    "available" : true,
-    "enabled" : true,
-    "execution" : {
-      "actions" : {
-        "_all" : {
-          "total" : 0,
-          "total_time_in_ms" : 0
+      "available" : true,
+      "enabled" : true,
+      "execution" : {
+        "actions" : {
+          "_all" : {
+            "total" : 0,
+            "total_time_in_ms" : 0
+          }
         }
-      }
-    },
+      },
     "watch" : {
       "input" : {
         "_all" : {
@@ -154,6 +147,15 @@ before the timeout expires, the request fails and returns an error. Defaults to
     "data_frame_analytics_jobs" : {
       "_all" : {
         "count" : 0
+      },
+      "analysis_counts": { },
+      "memory_usage": {
+        "peak_usage_bytes": {
+          "min": 0.0,
+          "max": 0.0,
+          "avg": 0.0,
+          "total": 0.0
+        }
       }
     },
     "inference" : {
@@ -181,7 +183,42 @@ before the timeout expires, the request fails and returns an error. Defaults to
       },
       "trained_models" : {
         "_all" : {
-          "count" : 0
+          "count": 1
+        },
+        "count": {
+          "total": 1,
+          "prepackaged": 1,
+          "other": 0
+        },
+        "model_size_bytes": {
+          "min": 0.0,
+          "max": 0.0,
+          "avg": 0.0,
+          "total": 0.0
+        },
+        "estimated_operations": {
+          "min": 0.0,
+          "max": 0.0,
+          "avg": 0.0,
+          "total": 0.0
+        }
+      },
+      "deployments": {
+        "count": 0,
+        "inference_counts": {
+          "total": 0.0,
+          "min": 0.0,
+          "avg": 0.0,
+          "max": 0.0
+        },
+        "model_sizes_bytes": {
+          "total": 0.0,
+          "min": 0.0,
+          "avg": 0.0,
+          "max": 0.0
+        },
+        "time_ms": {
+          "avg": 0.0
         }
       }
     },
@@ -275,25 +312,9 @@ before the timeout expires, the request fails and returns an error. Defaults to
     "follower_indices_count" : 0,
     "auto_follow_patterns_count" : 0
   },
-  "enrich" : {
-    "available" : true,
-    "enabled" : true
-  },
   "transform" : {
     "available" : true,
     "enabled" : true
-  },
-  "flattened" : {
-    "available" : true,
-    "enabled" : true,
-    "field_count" : 0
-  },
-  "vectors" : {
-    "available" : true,
-    "enabled" : true,
-    "dense_vector_fields_count" : 0,
-    "dense_vector_dims_avg_count" : 0,
-    "sparse_vector_fields_count" : 0
   },
   "voting_only" : {
     "available" : true,
@@ -302,7 +323,9 @@ before the timeout expires, the request fails and returns an error. Defaults to
   "searchable_snapshots" : {
     "available" : true,
     "enabled" : true,
-    "indices_count" : 0
+    "indices_count" : 0,
+    "full_copy_indices_count" : 0,
+    "shared_cache_indices_count" : 0
   },
   "frozen_indices" : {
     "available" : true,
@@ -324,7 +347,8 @@ before the timeout expires, the request fails and returns an error. Defaults to
       "t_test_usage" : 0,
       "rate_usage" : 0,
       "string_stats_usage" : 0,
-      "moving_percentiles_usage" : 0
+      "moving_percentiles_usage" : 0,
+      "multi_terms_usage" : 0
     }
   },
   "data_streams" : {
@@ -333,11 +357,34 @@ before the timeout expires, the request fails and returns an error. Defaults to
     "data_streams" : 0,
     "indices_count" : 0
   },
+  "data_lifecycle" : {
+    "available": true,
+    "enabled": true,
+    "count": 0,
+    "default_rollover_used": true,
+    "retention": {
+        "minimum_millis": 0,
+        "maximum_millis": 0,
+        "average_millis": 0.0
+    }
+  },
   "data_tiers" : {
     "available" : true,
     "enabled" : true,
     "data_warm" : {
       "node_count" : 0,
+      "index_count" : 0,
+      "total_shard_count" : 0,
+      "primary_shard_count" : 0,
+      "doc_count" : 0,
+      "total_size_bytes" : 0,
+      "primary_size_bytes" : 0,
+      "primary_shard_size_avg_bytes" : 0,
+      "primary_shard_size_median_bytes" : 0,
+      "primary_shard_size_mad_bytes" : 0
+    },
+    "data_frozen" : {
+      "node_count" : 1,
       "index_count" : 0,
       "total_shard_count" : 0,
       "primary_shard_count" : 0,
@@ -383,6 +430,32 @@ before the timeout expires, the request fails and returns an error. Defaults to
       "primary_shard_size_avg_bytes" : 0,
       "primary_shard_size_median_bytes" : 0,
       "primary_shard_size_mad_bytes" : 0
+    }
+  },
+  "aggregate_metric" : {
+    "available" : true,
+    "enabled" : true
+  },
+  "archive" : {
+    "available" : true,
+    "enabled" : true,
+    "indices_count" : 0
+  },
+  "health_api" : {
+    "available" : true,
+    "enabled" : true,
+    "invocations": {
+      "total": 0
+    }
+  },
+  "enterprise_search" : {
+    "available": true,
+    "enabled": true,
+    "search_applications" : {
+      "count": 0
+    },
+    "analytics_collections": {
+      "count": 0
     }
   }
 }</pre>

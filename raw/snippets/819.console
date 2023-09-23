@@ -1,17 +1,10 @@
-GET my_locations/_search
+GET /_search
 {
+  "from": 5,
+  "size": 20,
   "query": {
-    "bool": {
-      "must": {
-        "match_all": {}
-      },
-      "filter": {
-        "geo_bounding_box": {
-          "pin.location": {
-            "wkt": "BBOX (-74.1, -71.12, 40.73, 40.01)"
-          }
-        }
-      }
+    "match": {
+      "user.id": "kimchy"
     }
   }
 }

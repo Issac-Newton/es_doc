@@ -1,1 +1,1 @@
-GET _rollup/job/sensor
+GET /_cat/nodeattrs?v=true&h=name,pid,attr,value

@@ -1,4 +1,6 @@
-DELETE /_security/api_key
+POST test/_update/1
 {
-  "id" : "VuaCfGcBCdbkQm-e5aOx"
+  "doc": {
+    "name": "new_name"
+  }
 }

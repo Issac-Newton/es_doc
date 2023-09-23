@@ -1,7 +1,9 @@
-POST /example/_doc
+GET my-index-000001/_search
 {
-  "location" : {
-    "type" : "envelope",
-    "coordinates" : [ [100.0, 1.0], [101.0, 0.0] ]
-  }
+  "query": {
+    "match": {
+      "http.responses": "304"
+    }
+  },
+  "fields" : ["http.client_ip","timestamp","http.verb"]
 }

@@ -6,7 +6,7 @@
 <meta class="elastic" name="content" content="SQL ODBC | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="xpack-sql.html" title="SQL access"/>
+<link rel="up" href="xpack-sql.html" title="SQL"/>
 <link rel="prev" href="sql-jdbc.html" title="SQL JDBC"/>
 <link rel="next" href="sql-client-apps.html" title="SQL Client Applications"/>
 <meta class="elastic" name="product_version" content=""/>
@@ -21,7 +21,7 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-sql.html">SQL access</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-sql.html">SQL</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
@@ -31,11 +31,11 @@
 <a href="sql-client-apps.html">SQL Client Applications »</a>
 </span>
 </div>
-<div class="chapter xpack">
+<div class="chapter">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-odbc"></a>SQL ODBC<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-odbc"></a>SQL ODBC<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc.asciidoc">edit</a></h2>
 </div></div></div>
-<h3><a id="sql-odbc-overview"></a>Overview<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc.asciidoc">edit</a></h3>
+<h3><a id="sql-odbc-overview"></a>Overview<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc.asciidoc">edit</a></h3>
 <p>Elasticsearch SQL ODBC Driver is a 3.80 compliant ODBC driver for Elasticsearch.
 It is a core level driver, exposing all of the functionality accessible through
 the Elasticsearch&#8217;s SQL API, converting ODBC calls into Elasticsearch SQL.</p>
@@ -53,22 +53,22 @@ running with the valid license.</p>
 </div>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-odbc-installation"></a>Driver installation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-odbc-installation"></a>Driver installation<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h2>
 </div></div></div>
 <p>The Elasticsearch SQL ODBC Driver can be installed on Microsoft Windows using an MSI package. The installation process is simple and is composed of standard MSI wizard steps.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="prerequisites"></a>Installation Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h3>
+<h3 class="title"><a id="prerequisites"></a>Installation Prerequisites<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h3>
 </div></div></div>
-<p>The recommended installation platform is Windows 10 64 bit <em>or</em> Windows Server 2016 64 bit.</p>
+<p>The recommended installation platform is Windows 10 64 bit or Windows Server 2016 64 bit.</p>
 <p>Before you install the Elasticsearch SQL ODBC Driver you need to meet the following prerequisites;</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-.NET Framework 4.0 full - <a href="https://www.microsoft.com/en-au/download/details.aspx?id=17718" class="ulink" target="_top">https://www.microsoft.com/en-au/download/details.aspx?id=17718</a>
+.NET Framework 4.x full, latest - <a href="https://dotnet.microsoft.com/download/dotnet-framework" class="ulink" target="_top">https://dotnet.microsoft.com/download/dotnet-framework</a>
 </li>
 <li class="listitem">
-<p>Microsoft Visual C++ Redistributable for Visual Studio 2017 - <a href="https://support.microsoft.com/en-au/help/2977003/the-latest-supported-visual-c-downloads" class="ulink" target="_top">https://support.microsoft.com/en-au/help/2977003/the-latest-supported-visual-c-downloads</a></p>
+<p>Microsoft Visual C++ Redistributable for Visual Studio 2017 or later - <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist" class="ulink" target="_top">https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist</a></p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
@@ -105,9 +105,90 @@ installation to continue (<code class="literal">Run anyway</code>).</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="download"></a>Download the <code class="literal">.msi</code> package(s)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h3>
+<h3 class="title"><a id="odbc-compatibility"></a>Version compatibility<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h3>
 </div></div></div>
-<p>Download the <code class="literal">.msi</code> package for Elasticsearch SQL ODBC Driver 7.10.2 from:
+<p>Your driver must be compatible with your Elasticsearch server version.</p>
+<div class="important admon">
+<div class="icon"></div>
+<div class="admon_content">
+<p>The driver version cannot be newer than the Elasticsearch server version.
+For example, A 7.10.0 server is not compatible with 8.9.2 drivers.</p>
+</div>
+</div>
+<div class="informaltable">
+<table border="1" cellpadding="4px">
+<colgroup>
+<col class="col_1"/>
+<col class="col_2"/>
+<col class="col_3"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" valign="top">Elasticsearch server version</th>
+<th align="left" valign="top">Compatible driver versions</th>
+<th align="left" valign="top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>8.0.0–8.9.2</p></td>
+<td align="left" valign="top">
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The same version
+</li>
+<li class="listitem">
+Any earlier 8.x version
+</li>
+<li class="listitem">
+Any 7.x version after 7.7.0.
+</li>
+</ul>
+</div>
+</td>
+<td align="left" valign="top"><p>An 8.9.2 server is compatible with 8.9.2 and earlier 8.x drivers. An
+8.9.2 server is also compatible with 7.7.0 and later 7.x drivers.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>7.7.1-7.17</p></td>
+<td align="left" valign="top">
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The same version
+</li>
+<li class="listitem">
+An earlier 7.x version, back to 7.7.0.
+</li>
+</ul>
+</div>
+</td>
+<td align="left" valign="top"><p>A 7.10.0 server is compatible with 7.7.0-7.10.0 drivers.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>7.7.0 and earlier versions</p></td>
+<td align="left" valign="top">
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+The same version.
+</li>
+</ul>
+</div>
+</td>
+<td align="left" valign="top"><p>A 7.6.1 server is only compatible with 7.6.1 drivers.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="titlepage"><div><div>
+<h3 class="title"><a id="download"></a>Download the <code class="literal">.msi</code> package(s)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h3>
+</div></div></div>
+<p>Download the <code class="literal">.msi</code> package for Elasticsearch SQL ODBC Driver 8.9.2 from:
 <a href="https://www.elastic.co/downloads/odbc-client" class="ulink" target="_top">https://www.elastic.co/downloads/odbc-client</a></p>
 <p>There are two versions of the installer available:</p>
 <div class="ulist itemizedlist">
@@ -125,7 +206,7 @@ installation to continue (<code class="literal">Run anyway</code>).</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="installation-gui"></a>Installation using the graphical user interface (GUI)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h3>
+<h3 class="title"><a id="installation-gui"></a>Installation using the graphical user interface (GUI)<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Double-click the downloaded <code class="literal">.msi</code> package to launch a GUI wizard that will guide you through the installation process.</p>
 <p>You will first be presented with a welcome screen:</p>
@@ -144,7 +225,7 @@ installation to continue (<code class="literal">Run anyway</code>).</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
-<p>The default installation path is of the format: <span class="strong strong"><strong>%ProgramFiles%\Elastic\ODBCDriver\7.10.2</strong></span></p>
+<p>The default installation path is of the format: <span class="strong strong"><strong>%ProgramFiles%\Elastic\ODBCDriver\8.9.2</strong></span></p>
 </div>
 </div>
 <div class="imageblock">
@@ -182,7 +263,7 @@ installation to continue (<code class="literal">Run anyway</code>).</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="installation-cmd"></a>Installation using the command line<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h3>
+<h3 class="title"><a id="installation-cmd"></a>Installation using the command line<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="note admon">
 <div class="icon"></div>
@@ -192,15 +273,15 @@ installation to continue (<code class="literal">Run anyway</code>).</p>
 </div>
 <p>The <code class="literal">.msi</code> can also be installed via the command line. The simplest installation using the same defaults as the GUI is achieved by first navigating to the download directory, then running:</p>
 <div class="pre_wrapper lang-sh">
-<pre class="programlisting prettyprint lang-sh">msiexec.exe /i esodbc-7.10.2-windows-x86_64.msi /qn</pre>
+<pre class="programlisting prettyprint lang-sh">msiexec.exe /i esodbc-8.9.2-windows-x86_64.msi /qn</pre>
 </div>
 <p>By default, <code class="literal">msiexec.exe</code> does not wait for the installation process to complete, since it runs in the Windows subsystem. To wait on the process to finish and ensure that <code class="literal">%ERRORLEVEL%</code> is set accordingly, it is recommended to use <code class="literal">start /wait</code> to create a process and wait for it to exit:</p>
 <div class="pre_wrapper lang-sh">
-<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /i esodbc-7.10.2-windows-x86_64.msi /qn</pre>
+<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /i esodbc-8.9.2-windows-x86_64.msi /qn</pre>
 </div>
 <p>As with any MSI installation package, a log file for the installation process can be found within the <code class="literal">%TEMP%</code> directory, with a randomly generated name adhering to the format <code class="literal">MSI&lt;random&gt;.LOG</code>. The path to a log file can be supplied using the <code class="literal">/l</code> command line argument</p>
 <div class="pre_wrapper lang-sh">
-<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /i esodbc-7.10.2-windows-x86_64.msi /qn /l install.log</pre>
+<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /i esodbc-8.9.2-windows-x86_64.msi /qn /l install.log</pre>
 </div>
 <p>Supported Windows Installer command line arguments can be viewed using:</p>
 <div class="pre_wrapper lang-sh">
@@ -209,7 +290,7 @@ installation to continue (<code class="literal">Run anyway</code>).</p>
 <p>&#8230;&#8203;or by consulting the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa367988(v=vs.85).aspx" class="ulink" target="_top">Windows Installer SDK Command-Line Options</a>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="odbc-msi-command-line-options"></a>Command line options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h4>
+<h4 class="title"><a id="odbc-msi-command-line-options"></a>Command line options<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h4>
 </div></div></div>
 <p>All settings exposed within the GUI are also available as command line arguments (referred to as <em>properties</em> within Windows Installer documentation) that can be passed to <code class="literal">msiexec.exe</code>:</p>
 <div class="informaltable">
@@ -228,7 +309,7 @@ installation to continue (<code class="literal">Run anyway</code>).</p>
 <td valign="top">
 <p>
 The installation directory.
-Defaults to <code class="literal">%ProgramFiles%\Elastic\ODBCDriver\7.10.2</code>.
+Defaults to <code class="literal">%ProgramFiles%\Elastic\ODBCDriver\8.9.2</code>.
 </p>
 </td>
 </tr>
@@ -238,7 +319,7 @@ Defaults to <code class="literal">%ProgramFiles%\Elastic\ODBCDriver\7.10.2</code
 <p>To pass a value, simply append the property name and value using the format <code class="literal">&lt;PROPERTYNAME&gt;="&lt;VALUE&gt;"</code> to
 the installation command. For example, to use a different installation directory to the default one:</p>
 <div class="pre_wrapper lang-sh">
-<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /i esodbc-7.10.2-windows-x86_64.msi /qn INSTALLDIR="c:\CustomDirectory"</pre>
+<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /i esodbc-8.9.2-windows-x86_64.msi /qn INSTALLDIR="c:\CustomDirectory"</pre>
 </div>
 <p>Consult the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa367988(v=vs.85).aspx" class="ulink" target="_top">Windows Installer SDK Command-Line Options</a>
 for additional rules related to values containing quotation marks.</p>
@@ -246,7 +327,7 @@ for additional rules related to values containing quotation marks.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="odbc-uninstall-msi-gui"></a>Uninstall using Add/Remove Programs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h4>
+<h4 class="title"><a id="odbc-uninstall-msi-gui"></a>Uninstall using Add/Remove Programs<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h4>
 </div></div></div>
 <p>The <code class="literal">.msi</code> package handles uninstallation of all directories and files added as part of installation.</p>
 <div class="warning admon">
@@ -266,16 +347,16 @@ for additional rules related to values containing quotation marks.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h4 class="title"><a id="odbc-uninstall-msi-command-line"></a>Uninstall using the command line<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h4>
+<h4 class="title"><a id="odbc-uninstall-msi-command-line"></a>Uninstall using the command line<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/installation.asciidoc">edit</a></h4>
 </div></div></div>
 <p>Uninstallation can also be performed from the command line by navigating to the directory
 containing the <code class="literal">.msi</code> package and running:</p>
 <div class="pre_wrapper lang-sh">
-<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /x esodbc-7.10.2-windows-x86_64.msi /qn</pre>
+<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /x esodbc-8.9.2-windows-x86_64.msi /qn</pre>
 </div>
 <p>Similar to the install process, a path for a log file for the uninstallation process can be passed using the <code class="literal">/l</code> command line argument</p>
 <div class="pre_wrapper lang-sh">
-<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /x esodbc-7.10.2-windows-x86_64.msi /qn /l uninstall.log</pre>
+<pre class="programlisting prettyprint lang-sh">start /wait msiexec.exe /x esodbc-8.9.2-windows-x86_64.msi /qn /l uninstall.log</pre>
 </div>
 </div>
 
@@ -285,7 +366,7 @@ containing the <code class="literal">.msi</code> package and running:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="sql-odbc-setup"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="sql-odbc-setup"></a>Configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h2>
 </div></div></div>
 <p>Once the driver has been installed, in order for an application to be able to connect to Elasticsearch through ODBC, a set of configuration parameters must be provided to the driver. Depending on the application, there are generally three ways of providing these parameters:</p>
 <div class="ulist itemizedlist">
@@ -307,7 +388,7 @@ through a File DSN.
 <p>We will focus on DSN usage only.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="data-source-administrator"></a>1. Launching ODBC Data Source Administrator<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h3>
+<h3 class="title"><a id="data-source-administrator"></a>1. Launching ODBC Data Source Administrator<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h3>
 </div></div></div>
 <p>For DSN management, ODBC provides the <em>ODBC Data Source Administrator</em> application, readily installed on all recent desktop Windows operating systems.</p>
 <div class="ulist itemizedlist">
@@ -329,7 +410,7 @@ The 64-bit version of the Odbcad32.exe file is located in the <code class="liter
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="dsn-configuration"></a>2. Configure a DSN<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h3>
+<h3 class="title"><a id="dsn-configuration"></a>2. Configure a DSN<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The next step is to configure a DSN. You can choose between the following options mapped on the first three tabs of the Administrator application:</p>
 <div class="ulist itemizedlist">
@@ -351,7 +432,7 @@ The 64-bit version of the Odbcad32.exe file is located in the <code class="liter
 </ul>
 </div>
 <p>The configuration steps are similar for all the above points. Following is an example of configuring a System DSN.</p>
-<h5><a id="_2_1_launch_elasticsearch_sql_odbc_driver_dsn_editor"></a>2.1 Launch Elasticsearch SQL ODBC Driver DSN Editor<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
+<h5><a id="_2_1_launch_elasticsearch_sql_odbc_driver_dsn_editor"></a>2.1 Launch Elasticsearch SQL ODBC Driver DSN Editor<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
 <p>Click on the <em>System DSN</em> tab, then on the <em>Add&#8230;&#8203;</em> button:</p>
 <p><a id="system_add"></a><strong>Add a new DSN</strong><span class="image"><img src="images/sql/odbc/administrator_system_add.png" alt="administrator system add"></span></p>
 <p>A new window will open, listing all available installed drivers. Click on <em>Elasticsearch Driver</em>, to highlight it, then on the <em>Finish</em> button:</p>
@@ -359,7 +440,7 @@ The 64-bit version of the Odbcad32.exe file is located in the <code class="liter
 <p>This action closes the previously opened second window and open a new one instead, Elasticsearch SQL ODBC Driver&#8217;s DSN Editor:</p>
 <p><a id="dsn_editor"></a><strong>Elasticsearch SQL ODBC Driver DSN Editor</strong><span class="image"><img src="images/sql/odbc/dsn_editor_basic.png" alt="dsn editor basic"></span></p>
 <p>This new window has three tabs, each responsible for a set of configuration parameters, as follows.</p>
-<h5><a id="_2_2_connection_parameters"></a>2.2 Connection parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
+<h5><a id="connection_parameters"></a>2.2 Connection parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
 <p>This tab allows configuration for the following items:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -420,7 +501,7 @@ settings are provisioned as well and their respective inputs disabled.</p>
 <p>Connection encryption is enabled by default. This will need to be changed if connecting to an Elasticsearch node with no encryption.</p>
 </div>
 </div>
-<h5><a id="_2_3_cryptography_parameters"></a>2.3 Cryptography parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
+<h5><a id="_2_3_cryptography_parameters"></a>2.3 Cryptography parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
 <p>One of the following SSL options can be chosen:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
@@ -470,7 +551,7 @@ security option and is the recommended setting for production deployments.</p>
 <li class="listitem">
 <p>Certificate File</p>
 <p>In case the server uses a certificate that is not part of the PKI, for example using a self-signed certificate, you can configure the path to a X.509 certificate file that will be used by the driver to validate server&#8217;s offered certificate.</p>
-<p>The driver will only read the contents of the file just before a connection is attempted. See <a class="xref" href="sql-odbc.html#connection_testing" title="2.5 Testing the connection">2.5 Testing the connection</a> section further on how to check the validity of the provided parameters.</p>
+<p>The driver will only read the contents of the file just before a connection is attempted. See <a class="xref" href="sql-odbc.html#connection_testing" title="2.7 Testing the connection">2.7 Testing the connection</a> section further on how to check the validity of the provided parameters.</p>
 <div class="note admon">
 <div class="icon"></div>
 <div class="admon_content">
@@ -483,80 +564,195 @@ will be considered by default. Choose <em>All Files (*.*)</em> from the drop dow
 </li>
 </ul>
 </div>
-<h5><a id="_2_4_connection_parameters"></a>2.4 Connection parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
+<h5><a id="_2_4_proxy_parameters"></a>2.4 Proxy parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
+<p>If connecting to the Elasticsearch node needs to go through a proxy, the following parameters need to be configured:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<p>Type</p>
+<p>What kind of protocol to use when connecting to the proxy host. This also mandates how the Elasticsearch node you want to connect to over the proxy needs to be specified under <a class="xref" href="sql-odbc.html#connection_parameters" title="2.2 Connection parameters">2.2 Connection parameters</a>:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+HTTP, SOCKS4A, SOCKS5H: either IP address or host name is accepted; the proxy will resolve the DNS name;
+</li>
+<li class="listitem">
+SOCKS4, SOCKS5: Elasticsearch node location needs to be provided as an IP address;
+</li>
+</ul>
+</div>
+</li>
+<li class="listitem">
+<p>Port</p>
+<p>The TCP port the proxy is listening for connections on.</p>
+</li>
+<li class="listitem">
+<p>Username</p>
+<p>The user part of the credentials used to authenticate to the proxy.</p>
+</li>
+<li class="listitem">
+<p>Password</p>
+<p>The password part of the credentials for the proxy.</p>
+</li>
+</ul>
+</div>
+<p><a id="dsn_editor_proxy"></a><strong>Proxy parameters</strong><span class="image"><img src="images/sql/odbc/dsn_editor_proxy.png" alt="dsn editor proxy"></span></p>
+<h5><a id="_2_5_connection_parameters"></a>2.5 Connection parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
 <p>The connection configuration can further be tweaked by the following parameters.</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
 <p>Request timeout (s)</p>
-<p>The maximum number of seconds for a request to the server. The value 0 disables the timeout.
-This corresponds to the <code class="literal">Timeout</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>The maximum time (in seconds) a request to the server can take. This can be
+overridden by a larger statement-level timeout setting. The value 0 means no
+timeout.</p>
 </li>
 <li class="listitem">
 <p>Max page size (rows)</p>
-<p>The maximum number of rows that Elasticsearch SQL server should send the driver for one page.
-This corresponds to the <code class="literal">MaxFetchSize</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>The maximum number of rows that Elasticsearch SQL server should send the driver for one
+page. This corresponds to the SQL search API&#8217;s
+<a class="xref" href="sql-apis.html#sql-search-api-fetch-size"><code class="literal">fetch_size</code></a> parameter. A <code class="literal">0</code> value indicates a
+server default.</p>
 </li>
 <li class="listitem">
 <p>Max page length (MB)</p>
-<p>The maximum number of megabytes that the driver will accept for one page.
-This corresponds to the <code class="literal">MaxBodySizeMB</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>The maximum size (in megabytes) that an answer can grow to, before being
+rejected as too large by the driver.
+This is concerning the HTTP answer body of one page, not the cumulated data
+volume that a query might generate.</p>
 </li>
 <li class="listitem">
 <p>Varchar limit</p>
-<p>The maximum character length of the string type columns.
-this correspeonds to the <code class="literal">VarcharLimit</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>The maximum width of the string columns.
+If this setting is greater than zero, the driver will advertise all the string
+type columns as having a maximum character length equal to this value and will
+truncate any longer string to it. The string types are textual fields
+(TEXT, KEYWORD etc.) and some specialized fields (IP, the GEOs etc.). Note that
+no interpretation of the value is performed before truncation, which can lead
+to invalid values if the limit is set too low.
+This is required for those applications that do not support column lengths as
+large as Elasticsearch fields can be.</p>
 </li>
 <li class="listitem">
 <p>Floats format</p>
-<p>How should the floating point numbers be printed, when these are converted to string by the driver.
-This corresponds to the <code class="literal">ScientificFloats</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>Controls how the floating point numbers will be printed, when these are
+converted to string by the driver. Possible values given to this parameter:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">scientific</code>: the exponential notation (ex.: 1.23E01);
+</li>
+<li class="listitem">
+<code class="literal">default</code>: the default notation (ex.: 12.3);
+</li>
+<li class="listitem">
+<code class="literal">auto</code>: the driver will choose one of the above depending on the value to be
+printed.
+Note that the number of decimals is dependent on the precision (or ODBC scale)
+of the value being printed and varies with the different floating point types
+supported by Elasticsearch SQL.
+This setting is not effective when the application fetches from the driver the
+values as numbers and then does the conversion subsequently itself.
+</li>
+</ul>
+</div>
 </li>
 <li class="listitem">
 <p>Data encoding</p>
-<p>How should the data between the server and the driver be encoded as.
-This corresponds to the <code class="literal">Packing</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>This value controls which data format to encode the REST content in. Possible
+values are:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">CBOR</code>: use the Concise Binary Object Representation format. This is the
+preferred encoding, given its more compact format.
+</li>
+<li class="listitem">
+<code class="literal">JSON</code>: use the JavaScript Object Notation format. This format is more
+verbose, but easier to read, especially useful if troubleshooting.
+</li>
+</ul>
+</div>
 </li>
 <li class="listitem">
 <p>Data compression</p>
-<p>Should the data between the server and the driver be compressed?
-This corresponds to the <code class="literal">Compression</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>This setting controls if and when the REST content - encoded in one of the above
+formats -  is going to be compressed. The possible values are:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+<code class="literal">on</code>: enables the compression;
+</li>
+<li class="listitem">
+<code class="literal">off</code>: disables the compression;
+</li>
+<li class="listitem">
+<code class="literal">auto</code>: enables the compression, except for the case when the data flows
+through a secure connection; since in this case the encryption layer employs
+its own data compression and there can be security implications when an
+additional compression is enabled, the setting should be kept to this value.
+</li>
+</ul>
+</div>
 </li>
 <li class="listitem">
 <p>Follow HTTP redirects</p>
-<p>Should the driver follow HTTP redirects of the requests to the server?
-This corresponds to the <code class="literal">Follow</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>Should the driver follow HTTP redirects of the requests to the server?</p>
 </li>
 <li class="listitem">
 <p>Use local timezone</p>
-<p>Should the driver use machine&#8217;s local timezone? The default is UTC.
-This corresponds to the <code class="literal">ApplyTZ</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>This setting controls the timezone of:</p>
+<div class="ulist itemizedlist">
+<ul class="itemizedlist">
+<li class="listitem">
+the context in which the query will execute (especially relevant for functions dealing with timestamp components);
+</li>
+<li class="listitem">
+<p>the timestamps received from / sent to the server.</p>
+<p>If disabled, the UTC timezone will apply; otherwise, the local machine&#8217;s set
+timezone.</p>
+</li>
+</ul>
+</div>
 </li>
 <li class="listitem">
 <p>Auto-escape PVAs</p>
-<p>Should the driver auto-escape the pattern-value arguments?
-This corresponds to the <code class="literal">AutoEscapePVA</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>The pattern-value arguments make use of <code class="literal">_</code> and <code class="literal">%</code> as special characters to
+build pattern matching values. Some applications however use these chars as
+regular ones, which can lead to Elasticsearch SQL returning more data than the app
+intended. With the auto escaping, the driver will inspect the arguments and
+will escape these special characters if not already done by the application.</p>
 </li>
 <li class="listitem">
 <p>Multi value field lenient</p>
-<p>Should the server return one value out of a multi-value field (instead of rejecting the request)?
-This corresponds to the <code class="literal">MultiFieldLenient</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>This setting controls the behavior of the server in case a
+multi-value field is queried. In case this is set and the server encounters
+such a field, it will pick a value in the set - without any guarantees of what
+that will be, but typically the first in natural ascending order - and return
+it as the value for the column. If not set, the server will return an error.
+This corresponds to the SQL search API&#8217;s
+<a class="xref" href="sql-apis.html#sql-search-api-field-multi-value-leniency"><code class="literal">field_multi_value_leniency</code></a>
+parameter.</p>
 </li>
 <li class="listitem">
 <p>Include frozen indices</p>
-<p>Should the server consider the frozen indices when servicing a request?
-This corresponds to the <code class="literal">IndexIncludeFrozen</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>If this parameter is <code class="literal">true</code>, the server will include the frozen indices in the
+query execution.
+This corresponds to Elasticsearch SQL&#8217;s request parameter <code class="literal">index_include_frozen</code></p>
 </li>
 <li class="listitem">
 <p>Early query execution</p>
-<p>Should the driver execute a non-parameterized query as soon as it&#8217;s submitted
-for preparation?
-This corresponds to the <code class="literal">EarlyExecution</code> setting in <a class="xref" href="sql-odbc.html#odbc-cfg-dsnparams" title="Connection string parameters">Connection string parameters</a>.</p>
+<p>If this configuration is set, the driver will execute a statement as soon as the
+application submits it for preparation - i.e. early - and is functionally
+equivalent to a direct execution. This will only happen if the query lacks
+parameters. Early execution is useful with those applications that inspect the
+result before actually executing the query. Elasticsearch SQL lacks a preparation API,
+so early execution is required for interoperability with these applications.</p>
 </li>
 </ul>
 </div>
 <p><a id="dsn_editor_misc"></a><strong>Connection parameters</strong><span class="image"><img src="images/sql/odbc/dsn_editor_misc.png" alt="dsn editor misc"></span></p>
-<h5><a id="_2_5_logging_parameters"></a>2.5 Logging parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
+<h5><a id="_2_6_logging_parameters"></a>2.6 Logging parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
 <p>For troubleshooting purposes, the Elasticsearch SQL ODBC Driver offers functionality to log the API calls that an application makes; this is enabled in the Administrator application:</p>
 <p><a id="administrator_tracing"></a><strong>Enable Application ODBC API logging</strong><span class="image"><img src="images/sql/odbc/administrator_tracing.png" alt="administrator tracing"></span></p>
 <p>However, this only logs the ODBC API calls made by the application into the <em>Driver Manager</em> and not those made by the <em>Driver Manager</em> into the driver itself. To enable logging of the calls that the driver receives, as well as internal driver processing events, you can enable driver&#8217;s logging on Editor&#8217;s <em>Logging</em> tab:</p>
@@ -592,7 +788,7 @@ However the specified logging directory will be saved in the DSN if provided, ev
 instructed so and preferably only when fetching low volumes of data.</p>
 </div>
 </div>
-<h5><a id="connection_testing"></a>2.5 Testing the connection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
+<h5><a id="connection_testing"></a>2.7 Testing the connection<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h5>
 <p>Once the <em>Hostname</em>, the <em>Port</em> (if different from implicit default) and the SSL options are configured, you can test if the provided
 parameters are correct by pressing the <em>Test Connection</em> button. This will instruct the driver to connect to the Elasticsearch instance and perform
 a simple SQL test query. (This will thus require a running Elasticsearch instance with the SQL plugin enabled.)</p>
@@ -609,11 +805,11 @@ early detection of potential file/directory access rights conflicts.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="available-dsn"></a>3. DSN is available<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h3>
+<h3 class="title"><a id="available-dsn"></a>3. DSN is available<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Once everything is in place, pressing the <em>Save</em> button will store the configuration into the chosen destination (Registry or file).</p>
 <p>Before saving a DSN configuration the provided file/directory paths are verified to be valid on the current system. The DSN editor
-will however not verify in any way the validity or reachability of the configured <em>Hostname</em> : <em>Port</em>. See <a class="xref" href="sql-odbc.html#connection_testing" title="2.5 Testing the connection">2.5 Testing the connection</a>
+will however not verify in any way the validity or reachability of the configured <em>Hostname</em> : <em>Port</em>. See <a class="xref" href="sql-odbc.html#connection_testing" title="2.7 Testing the connection">2.7 Testing the connection</a>
 for an exhaustive check.</p>
 <p>If everything is correct, the name of the newly created DSN will be listed as available to use:</p>
 <p><a id="system_added"></a><strong>Connection added</strong><span class="image"><img src="images/sql/odbc/administrator_system_added.png" alt="administrator system added"></span></p>
@@ -621,7 +817,7 @@ for an exhaustive check.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="alternative_logging"></a>Alternative logging configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h3>
+<h3 class="title"><a id="alternative_logging"></a>Alternative logging configuration<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Due to the specification of the ODBC API, the driver will receive the configured DSN parameters - including the logging ones - only once a
 connection API is invoked (such as <em>SQLConnect</em> or <em>SQLDriverConnect</em>). The <em>Driver Manager</em> will however always make a set of API calls
@@ -653,226 +849,6 @@ Name: <em>ESODBC_LOG_DIR</em>
 destination logging directory. However, one logging message will only be logged
 once, the connection logging taking precedence over the environment variable
 logging.</p>
-<h4><a id="odbc-cfg-dsnparams"></a>Connection string parameters<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/docs/reference/sql/endpoints/odbc/configuration.asciidoc">edit</a></h4>
-<p>The following is a list of additional parameters that can be configured for a
-particular connection, in case the default behavior of the driver is not
-suitable. For earlier versions of the driver, this needs to be done within the
-client application, in a manner particular to that application, generally in a
-free text input box (sometimes named "Connection string", "String extras", or
-similar).  The format of the string is <code class="literal">Attribute1=Value1</code>. Multiple attributes
-can be specified, separated by a semicolon
-<code class="literal">Attribute1=Value1;Attribute2=Value2;</code>. The attribute names are given below.</p>
-<div class="variablelist">
-<dl class="variablelist">
-<dt>
-<span class="term">
-<code class="literal">Timeout</code> (default: <code class="literal">0</code>)
-</span>
-</dt>
-<dd>
-The maximum time (in seconds) a request to the server can take. This can be
-overridden by a larger statement-level timeout setting. The value 0 means no
-timeout.
-</dd>
-<dt>
-<span class="term">
-<code class="literal">Follow</code> (default: <code class="literal">yes</code>)
-</span>
-</dt>
-<dd>
-A boolean value (<code class="literal">yes</code>|<code class="literal">no</code> / <code class="literal">true</code>|<code class="literal">false</code> / <code class="literal">0</code>|<code class="literal">1</code>) controlling if the
-driver will follow HTTP redirects.
-</dd>
-<dt>
-<span class="term">
-<code class="literal">Packing</code> (default: <code class="literal">CBOR</code>)
-</span>
-</dt>
-<dd>
-<p>
-This value controls which data format to encode the REST content in. Possible
-values are:
-</p>
-<div class="ulist itemizedlist">
-<ul class="itemizedlist">
-<li class="listitem">
-<code class="literal">CBOR</code>: use the Concise Binary Object Representation format. This is the
-preferred encoding, given its more compact format.
-</li>
-<li class="listitem">
-<code class="literal">JSON</code>: use the JavaScript Object Notation format. This format is more
-verbose, but easier to read, useful in debugging cases.
-</li>
-</ul>
-</div>
-</dd>
-<dt>
-<span class="term">
-<code class="literal">Compression</code> (default: <code class="literal">auto</code>)
-</span>
-</dt>
-<dd>
-<p>
-This value controls if and when the REST content - encoded in one of the above
-formats -  is going to be compressed. The possible values are:
-</p>
-<div class="ulist itemizedlist">
-<ul class="itemizedlist">
-<li class="listitem">
-<code class="literal">on</code>: enables the compression;
-</li>
-<li class="listitem">
-<code class="literal">off</code>: disables the compression;
-</li>
-<li class="listitem">
-<code class="literal">auto</code>: enables the compression, except for the case when the data flows
-through a secure connection; since in this case the encryption layer employs
-its own data compression and there can be security implications when an
-additional compression is enabled, the setting should be kept to this value.
-</li>
-</ul>
-</div>
-</dd>
-<dt>
-<span class="term">
-<code class="literal">MaxFetchSize</code> (default: <code class="literal">0</code>)
-</span>
-</dt>
-<dd>
-The maximum number of rows that Elasticsearch SQL server should send the driver for one
-page. This corresponds to Elasticsearch SQL&#8217;s request parameter <code class="literal">fetch_size</code> (see
-<a class="xref" href="sql-rest.html#sql-rest-fields" title="Supported REST parameters">Supported REST parameters</a>). The value 0 means server default.
-</dd>
-<dt>
-<span class="term">
-<code class="literal">MaxBodySizeMB</code> (default: <code class="literal">100</code>)
-</span>
-</dt>
-<dd>
-The maximum size (in megabytes) that an answer can grow to, before being
-rejected as too large by the driver.
-This is concerning the HTTP answer body of one page, not the cumulated data
-volume that a query might generate.
-</dd>
-<dt>
-<span class="term">
-<code class="literal">VarcharLimit</code> (default: <code class="literal">0</code>)
-</span>
-</dt>
-<dd>
-The maximum width of the string columns.
-If this setting is greater than zero, the driver will advertise all the string
-type columns as having a maximum character length equal to this value and will
-truncate any longer string to it. The string types are textual fields
-(TEXT, KEYWORD etc.) and some specialized fields (IP, the GEOs etc.). Note that
-no interpretation of the value is performed before trunctation, which can lead
-to invalid values if the limit is set too low.
-This is required for those applications that do not support column lengths as
-large as Elasticsearch fields can be.
-</dd>
-<dt>
-<span class="term">
-<code class="literal">ApplyTZ</code> (default: <code class="literal">no</code>)
-</span>
-</dt>
-<dd>
-<p>
-A boolean value controlling the timezone of:
-</p>
-<div class="ulist itemizedlist">
-<ul class="itemizedlist">
-<li class="listitem">
-the context in which the query will execute (especially relevant for functions dealing with timestamp components);
-</li>
-<li class="listitem">
-the timestamps received from / sent to the server.
-If disabled, the UTC timezone will apply; otherwise, the local machine&#8217;s set
-timezone.
-</li>
-</ul>
-</div>
-</dd>
-<dt>
-<span class="term">
-<code class="literal">ScientificFloats</code> (default: <code class="literal">default</code>)
-</span>
-</dt>
-<dd>
-<p>
-Controls how the floating point numbers will be printed, when these are
-converted to string by the driver. Possible values given to this parameter:
-</p>
-<div class="ulist itemizedlist">
-<ul class="itemizedlist">
-<li class="listitem">
-<code class="literal">scientific</code>: the exponential notation (ex.: 1.23E01);
-</li>
-<li class="listitem">
-<code class="literal">default</code>: the default notation (ex.: 12.3);
-</li>
-<li class="listitem">
-<code class="literal">auto</code>: the driver will choose one of the above depending on the value to be
-printed.
-Note that the number of decimals is dependent on the precision (or ODBC scale)
-of the value being printed and varies with the different floating point types
-supported by Elasticsearch SQL.
-This setting is not effective when the application fetches from the driver the
-values as numbers and then does the conversion subsequently itself.
-</li>
-</ul>
-</div>
-</dd>
-<dt>
-<span class="term">
-<code class="literal">MultiFieldLenient</code> (default: <code class="literal">true</code>)
-</span>
-</dt>
-<dd>
-This boolean parameter controls the behavior of the server in case a
-multi-value field is queried. In case this is set and the server encounters
-such a field, it will pick a value in the set - without any guarantees of what
-that will be, but typically the first in natural ascending order - and return
-it as the value for the column. If not set, the server will return an error.
-This corresponds to Elasticsearch SQL&#8217;s request parameter <code class="literal">field_multi_value_leniency</code>
-(see <a class="xref" href="sql-rest.html#sql-rest-fields" title="Supported REST parameters">Supported REST parameters</a>).
-</dd>
-<dt>
-<span class="term">
-<code class="literal">AutoEscapePVA</code> (default: <code class="literal">true</code>)
-</span>
-</dt>
-<dd>
-The pattern-value arguments make use of <code class="literal">_</code> and <code class="literal">%</code> as special characters to
-build patern matching values. Some applications however use these chars as
-regular ones, which can lead to Elasticsearch SQL returning more data than the app
-intended. With the auto escaping, the driver will inspect the arguments and
-will escape these special characters if not already done by the application.
-</dd>
-<dt>
-<span class="term">
-<code class="literal">IndexIncludeFrozen</code> (default: <code class="literal">false</code>)
-</span>
-</dt>
-<dd>
-If this parameter is <code class="literal">true</code>, the server will include the frozen indices in the
-query execution.
-This corresponds to Elasticsearch SQL&#8217;s request parameter <code class="literal">index_include_frozen</code>
-</dd>
-<dt>
-<span class="term">
-<code class="literal">EarlyExecution</code> (default: <code class="literal">true</code>)
-</span>
-</dt>
-<dd>
-If this parameter is <code class="literal">true</code>, the driver will execute a statement as soon as the
-application submits it for preparation, i.e. early and is functionally
-equivalent to a direct execution. This will only happen if the query lacks
-parameters. Early execution is useful with those applications that inspect the
-result before actually executing the query. Elasticsearch SQL lacks a preparation API,
-so early execution is required for interoperability with these applications.
-</dd>
-</dl>
-</div>
 </div>
 
 </div>

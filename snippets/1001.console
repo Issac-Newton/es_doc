@@ -1,16 +1,10 @@
-POST /sales/_search?size=0
+GET /_search
 {
-   "aggs": {
-       "range": {
-           "date_range": {
-               "field": "date",
-               "time_zone": "CET",
-               "ranges": [
-                  { "to": "2016/02/01" },
-                  { "from": "2016/02/01", "to" : "now/d" },
-                  { "from": "now/d" }
-              ]
-          }
-      }
-   }
+  "query": {
+    "multi_match" : {
+      "query":      "quick brown fox",
+      "type":       "most_fields",
+      "fields":     [ "title", "title.original", "title.shingles" ]
+    }
+  }
 }

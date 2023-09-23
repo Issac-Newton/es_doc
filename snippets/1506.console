@@ -1,21 +1,14 @@
-PUT _watcher/watch/cluster_health_watch
+GET /my-data-stream/_eql/search?filter_path=-hits.events._source
 {
-  "trigger" : {
-    "schedule" : { "interval" : "10s" }
-  },
-  "input" : {
-    "http" : {
-      "request" : {
-        "host" : "localhost",
-        "port" : 9200,
-        "path" : "/_cluster/health",
-        "auth": {
-          "basic": {
-            "username": "elastic",
-            "password": "x-pack-test-password"
-          }
-        }
-      }
+  "query": """
+    process where process.name == "regsvr32.exe"
+  """,
+  "fields": [
+    "event.type",
+    "process.*",               
+    {
+      "field": "@timestamp",
+      "format": "epoch_millis" 
     }
-  }
+  ]
 }

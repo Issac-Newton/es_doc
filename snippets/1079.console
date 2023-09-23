@@ -1,13 +1,14 @@
 GET /_search
 {
-  "aggs": {
-    "genres": {
-      "terms": {
-        "script": {
-          "source": "doc['genre'].value",
-          "lang": "painless"
-        }
-      }
+  "query": {
+    "has_child": {
+      "type": "child",
+      "query": {
+        "match_all": {}
+      },
+      "max_children": 10,
+      "min_children": 2,
+      "score_mode": "min"
     }
   }
 }

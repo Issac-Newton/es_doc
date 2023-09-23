@@ -1,10 +1,16 @@
-POST /sales/_search
+GET /_search
 {
-  "aggs": {
-    "min_price": {
-      "min": {
+  "query": {
+    "bool": {
+      "filter": {
         "script": {
-          "source": "doc.price.value"
+          "script": {
+            "source": "doc['num1'].value > params.param1",
+            "lang": "painless",
+            "params": {
+              "param1": 5
+            }
+          }
         }
       }
     }

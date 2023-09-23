@@ -1,8 +1,8 @@
-PUT /index_long
+PUT /_enrich/policy/networks-policy
 {
-  "mappings": {
-    "properties": {
-      "field": { "type": "date_nanos" }
-    }
+  "range": {
+    "indices": "networks",
+    "match_field": "range",
+    "enrich_fields": ["name", "department"]
   }
 }

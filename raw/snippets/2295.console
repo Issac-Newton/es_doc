@@ -1,5 +1,8 @@
-DELETE /_security/api_key
+POST my-index-000001/_update_by_query?conflicts=proceed
 {
-  "username" : "myuser",
-  "realm_name" : "native1"
+  "query": {
+    "term": {
+      "user.id": "kimchy"
+    }
+  }
 }

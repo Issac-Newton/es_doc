@@ -7,7 +7,7 @@
 <meta class="elastic" name="content" content="Watcher conditions | Elasticsearch Guide">
 
 <link rel="home" href="index.html" title="Elasticsearch Guide"/>
-<link rel="up" href="xpack-alerting.html" title="Watch for cluster and index events"/>
+<link rel="up" href="xpack-alerting.html" title="Watcher"/>
 <link rel="prev" href="trigger.html" title="Watcher triggers"/>
 <link rel="next" href="actions.html" title="Watcher actions"/>
 <meta class="elastic" name="product_version" content=""/>
@@ -105,7 +105,7 @@
 <div class="breadcrumbs">
 <span class="breadcrumb-link"><a href="/guide/">Elastic Docs</a></span>
 <span class="chevron-right">›</span><span class="breadcrumb-link"><a href="index.html">Elasticsearch Guide</a></span>
-<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-alerting.html">Watch for cluster and index events</a></span>
+<span class="chevron-right">›</span><span class="breadcrumb-link"><a href="xpack-alerting.html">Watcher</a></span>
 </div>
 <div class="navheader">
 <span class="prev">
@@ -117,7 +117,7 @@
 </div>
 <div class="chapter xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="condition"></a>Watcher conditions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="condition"></a>Watcher conditions<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>When a watch is triggered, its condition determines whether or not to execute
@@ -125,11 +125,10 @@ the watch actions. Watcher supports the following condition types:</p>
 <div class="ulist itemizedlist">
 <ul class="itemizedlist">
 <li class="listitem">
-<a class="xref" href="condition.html#condition-always" title="Watcher always condition"><code class="literal">always</code></a>: set the watch condition to <code class="literal">true</code> so the watch
-actions are always executed.
+<a class="xref" href="condition.html#condition-always" title="Watcher always condition"><code class="literal">always</code></a>: The condition always evaluates to <code class="literal">true</code>, so the watch actions are always performed.
 </li>
 <li class="listitem">
-<a class="xref" href="condition.html#condition-never" title="Watcher never condition"><code class="literal">never</code></a>: set the watch condition to <code class="literal">false</code> so the watch
+<a class="xref" href="condition.html#condition-never" title="Watcher never condition"><code class="literal">never</code></a>: The condition always evaluates to <code class="literal">false</code>, so the watch
 actions are never executed.
 </li>
 <li class="listitem">
@@ -163,17 +162,17 @@ conditions are met.</p>
 per <a class="xref" href="actions.html#action-conditions" title="Adding conditions to Watcher actions">action</a>.</p>
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="condition-always"></a>Watcher always condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/always.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="condition-always"></a>Watcher always condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/always.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>Use the <code class="literal">always</code> condition to set the condition to <code class="literal">true</code>. This forces the watch
-actions to be executed unless they are <a class="xref" href="actions.html#actions-ack-throttle" title="Acknowledgement and throttling">throttled</a>.</p>
+<p>Use the <code class="literal">always</code> condition to perform the watch actions whenever the watch is triggered, unless they are
+<a class="xref" href="actions.html#actions-ack-throttle" title="Acknowledgement and throttling">throttled</a>.</p>
 <p>The <code class="literal">always</code> condition enables you to perform watch actions on a fixed schedule,
 such as, <em>"Every Friday at noon, send a status report email to
 <a href="mailto:sys.admin@example.com" class="ulink" target="_top">sys.admin@example.com</a>."</em></p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_using_the_always_condition"></a>Using the always condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/always.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_using_the_always_condition"></a>Using the always condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/always.asciidoc">edit</a></h3>
 </div></div></div>
 <p>This is the default if you omit the condition definition from a watch.</p>
 <p>There are no attributes to specify for the <code class="literal">always</code> condition. To explicitly
@@ -190,16 +189,15 @@ object:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="condition-never"></a>Watcher never condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/never.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="condition-never"></a>Watcher never condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/never.asciidoc">edit</a></h2>
 </div></div></div>
 
-<p>Use the <code class="literal">never</code> condition to set the condition to <code class="literal">false</code>. This means the
-watch actions are never executed when the watch is triggered. The watch input is
-executed, a record is added to the watch history, and the watch execution ends.
+<p>Use the <code class="literal">never</code> condition to skip performing the watch actions whenever the watch is triggered. The watch input is processed, a record is
+added to the watch history, and watch execution ends.
 This condition is generally used for testing.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_using_the_never_condition"></a>Using the never condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/never.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_using_the_never_condition"></a>Using the never condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/never.asciidoc">edit</a></h3>
 </div></div></div>
 <p>There are no attributes to specify for the <code class="literal">never</code> condition. To use the it,
 you specify the condition type and associate it with an empty object:</p>
@@ -214,7 +212,7 @@ you specify the condition type and associate it with an empty object:</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="condition-compare"></a>Watcher compare condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/compare.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="condition-compare"></a>Watcher compare condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/compare.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Use the <code class="literal">compare</code> condition to perform a simple comparison against a value in
@@ -222,7 +220,7 @@ the watch payload. You can use the <code class="literal">compare</code> conditio
 dynamic scripting.</p>
 <div class="table">
 <a id="condition-compare-operators"></a>
-<p class="title"><strong>Table 90. Supported comparison operators</strong></p>
+<p class="title"><strong>Table 81. Supported comparison operators</strong></p>
 <div class="table-contents">
 <table border="1" cellpadding="4px" summary="Supported comparison operators">
 <colgroup>
@@ -272,7 +270,7 @@ dynamic scripting.</p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_using_a_compare_condition"></a>Using a compare condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/compare.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_using_a_compare_condition"></a>Using a compare condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/compare.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To use the <code class="literal">compare</code> condition, you specify the value in the execution context
 that you want to evaluate, a <a class="xref" href="condition.html#condition-compare-operators" title="Supported comparison operators">comparison operator</a>,
@@ -283,8 +281,8 @@ condition returns <code class="literal">true</code> if the number of the total h
 <pre class="programlisting prettyprint lang-js">{
   "condition" : {
     "compare" : {
-      "ctx.payload.hits.total" : { <a id="CO558-3"></a><i class="conum" data-value="1"></i>
-        "gte" : 5 <a id="CO558-4"></a><i class="conum" data-value="2"></i>
+      "ctx.payload.hits.total" : { <a id="CO598-3"></a><i class="conum" data-value="1"></i>
+        "gte" : 5 <a id="CO598-4"></a><i class="conum" data-value="2"></i>
       }
     }
   }
@@ -294,7 +292,7 @@ condition returns <code class="literal">true</code> if the number of the total h
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO558-1"><i class="conum" data-value="1"></i></a><a href="#CO558-3"></a></p>
+<p><a href="#CO598-1"><i class="conum" data-value="1"></i></a><a href="#CO598-3"></a></p>
 </td>
 <td align="left" valign="top">
 <p>Use dot notation to reference a value in the execution context.</p>
@@ -302,7 +300,7 @@ condition returns <code class="literal">true</code> if the number of the total h
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO558-2"><i class="conum" data-value="2"></i></a><a href="#CO558-4"></a></p>
+<p><a href="#CO598-2"><i class="conum" data-value="2"></i></a><a href="#CO598-4"></a></p>
 </td>
 <td align="left" valign="top">
 <p>Specify a comparison operator and the value you want to compare against.</p>
@@ -343,7 +341,7 @@ to the <code class="literal">ctx.payload.aggregations.handled.buckets.true.doc_c
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_accessing_values_in_the_execution_context"></a>Accessing values in the execution context<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/compare.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_accessing_values_in_the_execution_context"></a>Accessing values in the execution context<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/compare.asciidoc">edit</a></h3>
 </div></div></div>
 <p>You use "dot-notation" to access values in the execution context. Values loaded
 into the execution context by the input are prefixed by <code class="literal">ctx.payload</code>.</p>
@@ -396,15 +394,15 @@ array, use <code class="literal">ctx.payload.hits.hits.2</code>.</p>
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="condition-array-compare"></a>Watcher array compare condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/array-compare.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="condition-array-compare"></a>Watcher array compare condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/array-compare.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>Use <code class="literal">array_compare</code> to compare an array of values in the execution context to a
-given value. See <a class="xref" href="condition.html#condition-compare-operators" title="Supported comparison operators">Table 90, &#8220;Supported comparison operators&#8221;</a>
+given value. See <a class="xref" href="condition.html#condition-compare-operators" title="Supported comparison operators">Table 81</a>
 for the operators you can use.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_using_an_array_compare_condition"></a>Using an array compare condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/array-compare.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_using_an_array_compare_condition"></a>Using an array compare condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/array-compare.asciidoc">edit</a></h3>
 </div></div></div>
 <p>To use the <code class="literal">array_compare</code> condition, you specify the array in the execution
 context that you want to evaluate, a
@@ -418,10 +416,10 @@ than or equal to 25:</p>
 <pre class="programlisting prettyprint lang-js">{
   "condition": {
     "array_compare": {
-      "ctx.payload.aggregations.top_tweeters.buckets" : { <a id="CO559-1"></a><i class="conum" data-value="1"></i>
-        "path": "doc_count", <a id="CO559-2"></a><i class="conum" data-value="2"></i>
-        "gte": { <a id="CO559-3"></a><i class="conum" data-value="3"></i>
-          "value": 25 <a id="CO559-4"></a><i class="conum" data-value="4"></i>
+      "ctx.payload.aggregations.top_tweeters.buckets" : { <a id="CO599-1"></a><i class="conum" data-value="1"></i>
+        "path": "doc_count", <a id="CO599-2"></a><i class="conum" data-value="2"></i>
+        "gte": { <a id="CO599-3"></a><i class="conum" data-value="3"></i>
+          "value": 25 <a id="CO599-4"></a><i class="conum" data-value="4"></i>
         }
       }
     }
@@ -432,7 +430,7 @@ than or equal to 25:</p>
 <table border="0" summary="Callout list">
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO559-1"><i class="conum" data-value="1"></i></a></p>
+<p><a href="#CO599-1"><i class="conum" data-value="1"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The path to the array in the execution
@@ -441,7 +439,7 @@ context that you want to evaluate, specified in dot notation.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO559-2"><i class="conum" data-value="2"></i></a></p>
+<p><a href="#CO599-2"><i class="conum" data-value="2"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The path to the field in each array element that you want to evaluate.</p>
@@ -449,7 +447,7 @@ context that you want to evaluate, specified in dot notation.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO559-3"><i class="conum" data-value="3"></i></a></p>
+<p><a href="#CO599-3"><i class="conum" data-value="3"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The <a class="xref" href="condition.html#condition-compare-operators" title="Supported comparison operators">comparison operator</a> to use.</p>
@@ -457,7 +455,7 @@ context that you want to evaluate, specified in dot notation.</p>
 </tr>
 <tr>
 <td align="left" valign="top" width="5%">
-<p><a href="#CO559-4"><i class="conum" data-value="4"></i></a></p>
+<p><a href="#CO599-4"><i class="conum" data-value="4"></i></a></p>
 </td>
 <td align="left" valign="top">
 <p>The comparison value. Supports date math like the
@@ -477,7 +475,7 @@ work, use a <a class="xref" href="condition.html#condition-script" title="Watche
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_array_compare_condition_attributes"></a>Array-compare condition attributes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/array-compare.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_array_compare_condition_attributes"></a>Array-compare condition attributes<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/array-compare.asciidoc">edit</a></h3>
 </div></div></div>
 <div class="informaltable">
 <table border="1" cellpadding="4px">
@@ -528,7 +526,7 @@ work, use a <a class="xref" href="condition.html#condition-script" title="Watche
 
 <div class="section xpack">
 <div class="titlepage"><div><div>
-<h2 class="title"><a id="condition-script"></a>Watcher script condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a><a class="xpack_tag" href="/subscriptions"></a></h2>
+<h2 class="title"><a id="condition-script"></a>Watcher script condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a></h2>
 </div></div></div>
 
 <p>A watch <a class="xref" href="condition.html" title="Watcher conditions">condition</a> that evaluates a script. The default scripting
@@ -538,7 +536,7 @@ values. Note that the <code class="literal">mustache</code> and <code class="lit
 used by this condition. For more information, see <a class="xref" href="modules-scripting.html" title="Scripting">Scripting</a>.</p>
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="_using_a_script_condition"></a>Using a script condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a></h3>
+<h3 class="title"><a id="_using_a_script_condition"></a>Using a script condition<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a></h3>
 </div></div></div>
 <p>The following snippet configures an inline <code class="literal">script</code> condition that always returns
 <code class="literal">true</code>:</p>
@@ -571,7 +569,7 @@ parameter, <code class="literal">result</code>:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="condition-script-inline"></a>Inline scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a></h3>
+<h3 class="title"><a id="condition-script-inline"></a>Inline scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Inline scripts are scripts that are defined in the condition itself. The
 following snippet shows the formal configuration of a simple painless script that
@@ -587,10 +585,10 @@ always returns <code class="literal">true</code>.</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="condition-script-stored"></a>Stored scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a></h3>
+<h3 class="title"><a id="condition-script-stored"></a>Stored scripts<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a></h3>
 </div></div></div>
 <p>Stored scripts refer to scripts that were
-<a class="xref" href="modules-scripting-using.html#modules-scripting-stored-scripts" title="Stored scripts">stored</a> in Elasticsearch. The following
+<a class="xref" href="modules-scripting-using.html" title="How to write scripts">stored</a> in Elasticsearch. The following
 snippet shows how to refer to a script by its <code class="literal">id</code>:</p>
 <div class="pre_wrapper lang-js">
 <pre class="programlisting prettyprint lang-js">"condition" : {
@@ -614,7 +612,7 @@ script language and parameters:</p>
 
 <div class="section">
 <div class="titlepage"><div><div>
-<h3 class="title"><a id="accessing-watch-payload"></a>Accessing the watch payload<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/7.10/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a></h3>
+<h3 class="title"><a id="accessing-watch-payload"></a>Accessing the watch payload<a class="edit_me" rel="nofollow" title="Edit this page on GitHub" href="https://github.com/elastic/elasticsearch/edit/8.9/x-pack/docs/en/watcher/condition/script.asciidoc">edit</a></h3>
 </div></div></div>
 <p>A script can access the current watch execution context, including the payload
 data, as well as any parameters passed in through the condition definition.</p>
@@ -625,10 +623,12 @@ number of hits is above a specified threshold:</p>
 <pre class="programlisting prettyprint lang-js">{
   "input" : {
     "search" : {
-      "indices" : "log-events",
-      "body" : {
-        "size" : 0,
-        "query" : { "match" : { "status" : "error" } }
+      "request": {
+        "indices" : "log-events",
+        "body" : {
+          "size" : 0,
+          "query" : { "match" : { "status" : "error" } }
+        }
       }
     }
   },
@@ -646,9 +646,9 @@ number of hits is above a specified threshold:</p>
 keep in mind that the fields in the response are no longer in their native data
 types. For example, the <code class="literal">@timestamp</code> in the response is a string, rather than a
 <code class="literal">DateTime</code>. To compare the response <code class="literal">@timestamp</code> against the <code class="literal">ctx.execution_time</code>,
-you need to parse the <code class="literal">@timestamp</code> string into a <code class="literal">DateTime</code>. For example:</p>
+you need to parse the <code class="literal">@timestamp</code> string into a <code class="literal">ZonedDateTime</code>. For example:</p>
 <div class="pre_wrapper lang-js">
-<pre class="programlisting prettyprint lang-js">org.elasticsearch.common.joda.time.DateTime.parse(@timestamp)</pre>
+<pre class="programlisting prettyprint lang-js">java.time.ZonedDateTime.parse(@timestamp)</pre>
 </div>
 <p>You can reference the following variables in the watch context:</p>
 <div class="informaltable">

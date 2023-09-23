@@ -1,14 +1,10 @@
-PUT _ilm/policy/shrink-index
+GET /_search
 {
-  "policy": {
-    "phases": {
-      "warm": {
-        "min_age": "5d",
-        "actions": {
-          "shrink": {
-            "number_of_shards": 1
-          }
-        }
+  "aggs": {
+    "tags": {
+      "terms": {
+        "field": "tags",
+        "missing": "N/A"
       }
     }
   }

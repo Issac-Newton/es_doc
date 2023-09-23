@@ -1,14 +1,9 @@
-POST /exams/_search?size=0
+GET /_search
 {
-  "aggs": {
-    "avg_grade": {
-      "avg": {
-        "script": {
-          "id": "my_script",
-          "params": {
-            "field": "grade"
-          }
-        }
+  "query": {
+    "span_multi": {
+      "match": {
+        "prefix": { "user.id": { "value": "ki", "boost": 1.08 } }
       }
     }
   }

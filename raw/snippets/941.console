@@ -1,6 +1,13 @@
-PUT /job-candidates/_doc/1?refresh
+PUT my-index
 {
-  "name": "Jane Smith",
-  "programming_languages": [ "c++", "java" ],
-  "required_matches": 2
+  "mappings": {
+    "properties": {
+      "my_embeddings.tokens": {
+        "type": "rank_features"
+      },
+      "my_text_field": {
+        "type": "text"
+      }
+    }
+  }
 }

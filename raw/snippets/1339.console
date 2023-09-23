@@ -1,1 +1,12 @@
-DELETE _template/.cloud-hot-warm-allocation-0
+GET /_search
+{
+  "aggs": {
+    "tags": {
+      "terms": {
+        "field": "tags",
+        "include": ".*sport.*",
+        "exclude": "water_.*"
+      }
+    }
+  }
+}

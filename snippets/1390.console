@@ -1,9 +1,27 @@
-POST /follower_index/_ccr/pause_follow
-
-POST /follower_index/_close
-
-PUT /follower_index/_ccr/follow?wait_for_active_shards=1
+GET reviews/_search?filter_path=aggregations
 {
-  "remote_cluster" : "remote_cluster",
-  "leader_index" : "leader_index"
+  "size": 0,
+  "runtime_mappings": {
+    "rating.out_of_ten": {
+      "type": "long",
+      "script": {
+        "source": "emit(doc['rating'].value * params.scaleFactor)",
+        "params": {
+          "scaleFactor": 2
+        }
+      }
+    }
+  },
+  "aggs": {
+    "review_average": {
+      "avg": {
+        "field": "rating.out_of_ten"
+      }
+    },
+    "review_variability": {
+      "median_absolute_deviation": {
+        "field": "rating.out_of_ten"
+      }
+    }
+  }
 }

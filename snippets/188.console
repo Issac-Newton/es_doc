@@ -1,5 +1,7 @@
-POST /test_index/_analyze
+POST /example/_doc
 {
-  "analyzer" : "my_analyzer",
-  "text" : "missing bicycles"
+  "location" : {
+    "type" : "Point",
+    "coordinates" : [-77.03653, 38.897676]
+  }
 }

@@ -1,20 +1,8 @@
-GET /_search
+PUT /my-index-000001/_doc/2?routing=1&refresh
 {
-  "aggs": {
-    "actors": {
-      "terms": {
-        "field": "actors",
-        "size": 10,
-        "collect_mode": "breadth_first"
-      },
-      "aggs": {
-        "costars": {
-          "terms": {
-            "field": "actors",
-            "size": 5
-          }
-        }
-      }
-    }
+  "text": "This is a child document.",
+  "my-join-field": {
+    "name": "my-child",
+    "parent": "1"
   }
 }
